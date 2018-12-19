@@ -3,5 +3,10 @@
     "react-native"
   ],
   "plugins": [
-  ]
+  ],
+  "env": {
+    "production": {
+      "plugins": ["transform-remove-console"]
+    }
+  }
 }
