@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
-import {
-  StyleSheet,
-} from 'react-native';
-import { TYSdk, NavigatorLayout, TopBar } from 'tuya-panel-kit';
+import { StyleSheet } from 'react-native';
+import { TYSdk, NavigatorLayout } from 'tuya-panel-kit';
 import composeLayout from './composeLayout';
 import configureStore from './redux/configureStore';
 import Home from './containers/Home';
@@ -21,38 +19,37 @@ class MainLayout extends NavigatorLayout {
     super(props);
     console.log('TYSdk :', TYSdk);
   }
-  /*
-  hookRoute 可以做一些控制处理
-  return 是一个 Object,
-  {
-    background: backgroundImage | linearGradientBackground,
-    backgroundColor: '#FCFCFC', // 颜色值
-    style: ViewPropTypes.style,
-    // topbarStyle: ViewPropTypes.style, // 需要 Android TopBar 组件支持设置 style
-    hideFullView: true | false,   // 控制是否隐藏 FullView
-    renderFullView: (props) => {
-      return (
-        <FullView>
-        </FullView>
-      );
-    },
-    FullView: ReactComponent,     // 自定义的 FullView 组件, 如果使用自定义 FullView 组件，TopBar、OfflineView 也需要在 FullView 里面调用
-    hideTopbar: true | false,   // 控制是否隐藏 TopBar
-    OfflineView: ReactComponent, // 自定义的 OfflineView 组件
-    showOfflineView: true | false, // 是否渲染 OfflineView
-  }
-  */
+
+  /**
+   * 
+   * @desc
+   * hookRoute 可以在这里针对特定路由做一些控制处理
+   * 
+   * @param {Object} route
+   * @return {Object} - 提供给当前页面组件父容器布局的一些控制值
+   * {
+   * style: ViewPropTypes.style, // 容器样式，可在此调整背景颜色
+   * background: backgroundImage | linearGradientBackground, // 面板图片背景或渐变背景，渐变格式可参考LinearGradient和RadialGradient组件
+   * topbarStyle: ViewPropTypes.style, // TopBar 样式，可在调整TopBar背景色
+   * topbarTextStyle: Text.propTypes.style, // TopBar的文字样式
+   * renderTopBar: () => {}, // 自定义渲染TopBar
+   * hideTopbar: true | false,   // 控制是否隐藏 TopBar
+   * renderStatusBar: () => {}, // 自定义渲染StatusBar，IOS only
+   * showOfflineView: true | false, // 控制是否渲染 OfflineView
+   * OfflineView: ReactComponent, // 自定义的 OfflineView 组件
+   * }
+   */
   // eslint-disable-next-line
   hookRoute(route) {
-  //   switch (route.id) {
-  //     case 'main':
-  //       // eslint-disable-next-line
-  //       route.background = background;
-  //       break;
+    // switch (route.id) {
+    //   case 'main':
+    //     // eslint-disable-next-line
+    //     route.background = background;
+    //     break;
 
-  //     default:
-  //       break;
-  //   }
+    //   default:
+    //     break;
+    // }
 
     return {
       background: linearGradientBackground,
@@ -60,6 +57,15 @@ class MainLayout extends NavigatorLayout {
     };
   }
 
+
+  /**
+   * @desc
+   * 在此可以通过route中的id来判断使用哪个页面组件，
+   * 此外如果有额外的props需要传递给页面组件的，可以在此进行传递。
+   * 
+   * @param {Object} route - route对象
+   * @param {object} navigator - Navigator对象，具体使用方法可参考https://facebook.github.io/react-native/docs/0.43/navigator.html
+   */
   renderScene(route, navigator) {
     let component;
     let schema = {};
