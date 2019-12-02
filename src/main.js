@@ -1,18 +1,14 @@
 import _ from 'lodash';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { TYSdk, NavigatorLayout } from 'tuya-panel-kit';
 import composeLayout from './composeLayout';
 import configureStore from './redux/configureStore';
 import Home from './containers/Home';
 import { formatUiConfig } from './utils';
 
-export const store = configureStore();
+console.disableYellowBox = true;
 
-const linearGradientBackground = {
-  '3%': '#FF7E38',
-  '90%': '#FF624C',
-};
+export const store = configureStore();
 
 class MainLayout extends NavigatorLayout {
   constructor(props) {
@@ -51,10 +47,7 @@ class MainLayout extends NavigatorLayout {
     //     break;
     // }
 
-    return {
-      background: linearGradientBackground,
-      style: styles.fullview,
-    };
+    return {};
   }
 
 
@@ -95,11 +88,5 @@ class MainLayout extends NavigatorLayout {
     return component;
   }
 }
-
-const styles = StyleSheet.create({
-  fullview: {
-    // backgroundColor: 'red',
-  },
-});
 
 export default composeLayout(store, MainLayout);

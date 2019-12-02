@@ -1,19 +1,9 @@
-// import React, { Component } from 'react';
-// import {View} from 'react-native';
+/* eslint-disable react/prefer-stateless-function */
+import React, { Component } from 'react';
+import { SwitchButton } from 'tuya-panel-kit';
 
-import {
-  SwitchButton,
-} from 'tuya-panel-kit';
-
-export default class BoolView extends SwitchButton {
-  // static propTypes = {
-  //   style: View.propTypes.style,
-  // };
-
-  // static defaultProps = {
-  // };
-
-  // constructor(props) {
-  //   super(props);
-  // }
+export default class BoolView extends Component {
+  render() {
+    return <SwitchButton {...this.props} />;
+  }
 }

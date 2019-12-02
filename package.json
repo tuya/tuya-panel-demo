@@ -3,7 +3,7 @@
   "license": "MIT",
   "author": "tuya-panel-example",
   "name": "tuyaPanelExample",
-  "templateName": "Basic Template (基础模板 1.0)",
+  "templateName": "Basic Template (基础模板 2.0)",
   "pid": [],
   "uiid": "",
   "version": "1.0.0",
@@ -28,10 +28,11 @@
     "redux-actions": "^2.6.1",
     "redux-logger": "^3.0.6",
     "redux-observable": "^1.0.0",
+    "redux-thunk": "^2.3.0",
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
-    "tuya-panel-kit": "^1.0.0"
+    "tuya-panel-kit": "git+https://github.com/TuyaInc/tuya-panel-kit.git#53a1be720536c005acac768a74fee884e651f9ab"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
@@ -41,13 +42,17 @@
     "babel-preset-react-native": "^4.0.0",
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-import-resolver-react-native": "^0.2.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-react-native": "^3.2.1",
     "generate-changelog": "^1.7.1",
     "jest": "^22.1.1",
+    "prettier": "^1.16.4",
     "react-test-renderer": "^16.2.0"
   },
   "jest": {

@@ -2,12 +2,13 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { TYSdk } from 'tuya-panel-kit';
+import { TYSdk, Theme } from 'tuya-panel-kit';
 import {
   devInfoChange,
   deviceChange,
   responseUpdateDp,
 } from './redux/modules/common';
+import theme from './config/theme';
 
 const TYEvent = TYSdk.event;
 const TYDevice = TYSdk.device;
@@ -54,7 +55,9 @@ const composeLayout = (store, component) => {
     render() {
       return (
         <Provider store={store}>
-          <NavigatorLayoutContainer />
+          <Theme theme={theme}>
+            <NavigatorLayoutContainer />
+          </Theme>
         </Provider>
       );
     }
