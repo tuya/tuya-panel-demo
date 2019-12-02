@@ -22,88 +22,47 @@ export const consoleChange = createAction('CONSOLECHNAGE');
 export const clearConsole = createAction('CLEARCONSOLE');
 
 // reducer
-const dpState = handleActions({
-  [devInfoChange.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload.state,
-  }),
+const dpState = handleActions(
+  {
+    [devInfoChange.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload.state,
+    }),
 
-  [responseUpdateDp.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload,
-  }),
-
-}, {});
-
-const devInfo = handleActions({
-  [devInfoChange.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload,
-  }),
-
-  [deviceChange.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload,
-  }),
-
-}, {});
-
-let isSend = false;
-
-const formatLogs = (state, action, send) => {
-  const ret = Object.keys(action.payload).reduce((obj, p) => {
-    const id = TYSdk.device.getDpIdByCode(p);
-    return { ...obj, [id]: action.payload[p] };
-  }, {});
-  const strIds = JSON.stringify(ret, null, 2);
-  const strCodes = JSON.stringify(action.payload, null, 2);
-  const date = new Date();
-  const time = `[${[
-    date.getHours(),
-    date.getMinutes(),
-    date.getSeconds(),
-    date.getMilliseconds(),
-  ].join(':')}]`;
-  const s = [{ strCodes, strIds, time, isSend: send }, ...state];
-  return s.slice(0, 30);
-};
-
-const logs = handleActions({
-  [consoleChange.toString()]: state => {
-    isSend = true;
-    return state;
+    [responseUpdateDp.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
   },
+  {}
+);
 
-  [updateDp.toString()]: (state, action) => {
-    isSend = true;
-    return formatLogs(state, action, isSend);
+const devInfo = handleActions(
+  {
+    [devInfoChange.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
+
+    [deviceChange.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
   },
-
-  [devInfoChange.toString()]: (state, action) => {
-    const formatAction = { payload: action.payload.state };
-    return formatLogs(state, formatAction, isSend);
-  },
-
-  [responseUpdateDp.toString()]: (state, action) => {
-    isSend = false;
-    return formatLogs(state, action, isSend);
-  },
-
-  [clearConsole.toString()]: () => [],
-}, []);
+  {}
+);
 
 export const reducers = {
   dpState,
   devInfo,
-  logs,
 };
 
 // epics
-const dpUpdateEpic$ = action$ => action$.ofType(updateDp)
-  .mergeMap(action => {
+const dpUpdateEpic$ = action$ =>
+  action$.ofType(updateDp).mergeMap(action => {
     const { payload } = action;
     const [success, error] = Observable.fromPromise(putDeviceData(payload))
-      .catch(() => Observable.of(responseUpdateDp({})))
+      .catch(err => Observable.of(responseUpdateDp({})))
       .partition(x => x.success);
 
     return Observable.merge(
@@ -112,7 +71,4 @@ const dpUpdateEpic$ = action$ => action$.ofType(updateDp)
     );
   });
 
-
-export const epics = [
-  dpUpdateEpic$,
-];
+export const epics = [dpUpdateEpic$];
