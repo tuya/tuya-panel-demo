@@ -68,6 +68,7 @@ export default class ConsoleLayout extends Component {
         </ScrollView>
 
         <Button
+          wrapperStyle={{ alignSelf: 'flex-end' }}
           style={styles.clear}
           onPress={this.doClear}
         >
@@ -75,6 +76,7 @@ export default class ConsoleLayout extends Component {
         </Button>
 
         <Button
+          wrapperStyle={{ alignSelf: 'flex-end' }}
           style={[styles.format, this.state.code ?
             { backgroundColor: '#F5A623' } : null]}
           onPress={this.tapCodeBtn}
