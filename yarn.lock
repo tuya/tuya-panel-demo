@@ -1257,11 +1257,6 @@ camelcase@^4.1.0:
   version "4.1.0"
   resolved "http://registry.npm.taobao.org/camelcase/download/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
-camelcase@^5.3.1:
-  version "5.3.1"
-  resolved "https://registry.npm.taobao.org/camelcase/download/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
-  integrity sha1-48mzFWnhBoEd8kL3FXJaH0xJQyA=
-
 camelize@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/camelize/download/camelize-1.0.0.tgz#164a5483e630fa4321e5af07020e531831b2609b"
@@ -5518,9 +5513,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-"tuya-panel-kit@git+https://github.com/TuyaInc/tuya-panel-kit.git#53a1be720536c005acac768a74fee884e651f9ab":
-  version "1.0.1"
-  resolved "git+https://github.com/TuyaInc/tuya-panel-kit.git#53a1be720536c005acac768a74fee884e651f9ab"
+tuya-panel-kit@~2.0.0-rc.0:
+  version "2.0.0-rc.0"
+  resolved "https://registry.npm.taobao.org/tuya-panel-kit/download/tuya-panel-kit-2.0.0-rc.0.tgz#2aaaac71e3fb83492625a708e7e6913cc95578e9"
+  integrity sha1-KqqsceP7g0kmJacI5+aRPMlVeOk=
   dependencies:
     babel-cli "^6.26.0"
     color "^0.11.1"

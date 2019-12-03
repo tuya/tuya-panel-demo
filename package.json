@@ -32,7 +32,7 @@
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
-    "tuya-panel-kit": "git+https://github.com/TuyaInc/tuya-panel-kit.git#53a1be720536c005acac768a74fee884e651f9ab"
+    "tuya-panel-kit": "~2.0.0-rc.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
