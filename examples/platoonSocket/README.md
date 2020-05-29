@@ -24,7 +24,7 @@ This template project is suitable for doodling and inserting products of differe
 4. DP point countdown function
 5. DP point setting page self-adaptation
 
-You can scan the following QR code through the graffiti app to preview.
+You can scan the following QR code through the Tuya app to preview.
 
 ![PlatoonSocket](https://images.tuyacn.com/rms-static/31ac00e0-a190-11ea-9acd-135316db2bdb-1590745126894.png?tyName=platoonSocket.png)
 
