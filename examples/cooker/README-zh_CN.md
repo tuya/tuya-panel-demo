@@ -1,0 +1,43 @@
+# Tuya Panel Basic Template
+
+[English](./README.md) | 简体中文
+
+如需获取更多信息，请浏览 [涂鸦官方文档](https://docs.tuya.com)
+
+对于中国大陆以外的用户，请删除 `.npmrc` 文件。
+
+## 手动下载
+
+```bash
+$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/cooker
+$ mv cooker tuya-panel-cooker-example
+$ cd tuya-panel-cooker-example
+```
+
+## 介绍
+
+该模板项目可以用来快速启动厨电项目，支持以下功能:**dp 功能点自动适配/设置页面 dp 点自动适配/食谱相关组件适配**
+
+## Attention
+
+> 1, dp(power)为必选项。
+>
+> 2，菜谱功能需要在平台上进行开通后才可以使用。
+>
+> 3, 通过是否有 **cloud_recipe_number** 这个 dp 来判断是否要展示云菜谱相关内容
+
+## API （使用接口）
+
+[cloud recipe interfaces](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/cooker-recipe-sdk/cooker-recipe-api?id=K9mcn0f0m1q0w)
+
+## 快速运行
+
+```bash
+$ npm install && npm run start
+# 或者
+$ yarn && yarn start
+```
+
+## 许可证
+
+Copyright © 2020
