@@ -26,6 +26,11 @@ $ cd tuya-panel-lampClassic-example
 
 The template project can be used to quickly create lighting 1-5-way bulb lamp project, supporting the following functions: color light setting / white light setting / scenario setting / cloud timing / using device storage interface
 
+You can scan the following QR code through the graffiti app to preview.
+
+![LampClassic](https://images.tuyacn.com/rms-static/2cc2ade0-a190-11ea-9acd-135316db2bdb-1590745118654.png?tyName=lampClassic.png)
+
+
 
 ## Running
 

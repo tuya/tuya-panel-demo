@@ -18,6 +18,10 @@ $ cd tuya-panel-electricHeatingTable-example
 
 该模板工程可用于快速启动电暖桌项目，支持以下功能: **dp 功能点自动适配 / 设置页面 DP 点自动适配 / 云端定时 / 使用设备统计接口**
 
+您可以通过涂鸦 App 扫描以下二维码进行预览。
+
+![ElectricHeatingTable](https://images.tuyacn.com/rms-static/3667db40-a190-11ea-9acd-135316db2bdb-1590745134836.png?tyName=electricHeatingTable.png)
+
 ## 注意事项
 
 > 1、dp(countdown_left,countdown_set)同时存在时，才会有倒计时动画。

@@ -18,6 +18,10 @@ $ cd tuya-panel-basic-example
 
 The template project is the basic template, which can start all Tuya products and be used to debug the DP points of the current product.
 
+You can scan the following QR code through the graffiti app to preview.
+
+![Basic](https://images.tuyacn.com/rms-static/a50d6c50-a199-11ea-9acd-135316db2bdb-1590749185941.png?tyName=basic.png)
+
 ## Running
 
 ```bash

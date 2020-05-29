@@ -18,6 +18,10 @@ $ cd tuya-panel-electricHeatingTable-example
 
 This template project can be used to quickly start the electric heating desk project, supporting the following functions: **dp function point automatic adaptation/dp point rename/setting page dp point automatic adaptation/cloud timing/use device statistics interface **
 
+You can scan the following QR code through the graffiti app to preview.
+
+![ElectricHeatingTable](https://images.tuyacn.com/rms-static/3667db40-a190-11ea-9acd-135316db2bdb-1590745134836.png?tyName=electricHeatingTable.png)
+
 ## Attention
 
 > 1、 dp(countdown_left,countdown_set) exists at the same time, then there will be a countdown animation.

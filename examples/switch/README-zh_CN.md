@@ -23,6 +23,10 @@ $ cd tuya-panel-switch-example
 3. DP 点改名功能
 4. DP 点定时功能
 
+您可以通过涂鸦 App 扫描以下二维码进行预览。
+
+![Switch](https://images.tuyacn.com/rms-static/5a7867d0-a199-11ea-9acd-135316db2bdb-1590749060813.png?tyName=switch.png)
+
 ## 快速运行
 
 ```bash
