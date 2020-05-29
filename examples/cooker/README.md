@@ -18,6 +18,11 @@ $ cd tuya-panel-cooker-example
 
 This template project can be used to quickly launch the kitchen power project, supporting the following functions: **dp function point automatic adaptation/Settings page dp point automatic adaptation/recipe related component adaptation**
 
+You can scan the following QR code through the graffiti app to preview.
+
+![Cooker](https://images.tuyacn.com/rms-static/b91d36c0-a195-11ea-96f0-cda03b175b6c-1590747501612.png?tyName=cooker.png)
+
+
 ## Attention
 
 > 1, dp(power) is required.

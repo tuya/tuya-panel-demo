@@ -18,7 +18,11 @@ $ cd tuya-panel-cooker-example
 
 该模板项目可以用来快速启动厨电项目，支持以下功能:**dp 功能点自动适配/设置页面 dp 点自动适配/食谱相关组件适配**
 
-## Attention
+您可以通过涂鸦 App 扫描以下二维码进行预览。
+
+![Cooker](https://images.tuyacn.com/rms-static/b91d36c0-a195-11ea-96f0-cda03b175b6c-1590747501612.png?tyName=cooker.png)
+
+## 注意事项
 
 > 1, dp(power)为必选项。
 >

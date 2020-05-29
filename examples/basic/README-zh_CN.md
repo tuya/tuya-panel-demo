@@ -18,6 +18,10 @@ $ cd tuya-panel-basic-example
 
 该模板工程为基础模板，可启动所有涂鸦产品，用于调试当前产品的功能点。
 
+您可以通过涂鸦 App 扫描以下二维码进行预览。
+
+![Basic](https://images.tuyacn.com/rms-static/a50d6c50-a199-11ea-9acd-135316db2bdb-1590749185941.png?tyName=basic.png)
+
 ## 快速运行
 
 ```bash

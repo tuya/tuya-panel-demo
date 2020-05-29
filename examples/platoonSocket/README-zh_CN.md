@@ -23,6 +23,10 @@ $ cd tuya-panel-platoonSocket-example
 4. DP 点倒计时功能
 5. DP 点设置页自适配
 
+您可以通过涂鸦 App 扫描以下二维码进行预览。
+
+![PlatoonSocket](https://images.tuyacn.com/rms-static/31ac00e0-a190-11ea-9acd-135316db2bdb-1590745126894.png?tyName=platoonSocket.png)
+
 ## 快速运行
 
 ```bash
