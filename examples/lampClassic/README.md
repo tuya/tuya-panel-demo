@@ -23,8 +23,8 @@ $ cd tuya-panel-lampClassic-example
 ```
 
 ## Introduction
-该模板工程可用于快速创建照明1-5路球泡灯项目，支持以下功能: 彩光设置 / 白光设置 / 情景设置 / 云端定时 / 使用设备存储接口
 
+The template project can be used to quickly create lighting 1-5-way bulb lamp project, supporting the following functions: color light setting / white light setting / scenario setting / cloud timing / using device storage interface
 
 
 ## Running
