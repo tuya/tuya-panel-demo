@@ -1,0 +1,36 @@
+/* eslint-disable */
+module.exports = {
+  en: {
+    home_tip: '点击进入智能化',
+    back: 'back',
+    edit_title: '修改名称',
+    cancel: '取消',
+    edit_tip: '保持在10字符内',
+    allSelect: '全选',
+    save: '保存',
+    auto_setting_title: '智能',
+    all: '所有设备',
+    modify_name: '编辑名称',
+    view_error: '服务器开小差中',
+    view_noData: '',
+    hour: 'hours',
+    min: 'minutes',
+  },
+
+  zh: {
+    home_tip: '点击进入智能化',
+    back: 'back',
+    edit: '修改名称',
+    cancel: '取消',
+    editTip: '保持在10字符内',
+    allSelect: '全选',
+    save: '保存',
+    auto_setting_title: '智能',
+    all: '所有设备',
+    modify_name: '编辑名称',
+    view_error: '服务器开小差中',
+    view_noData: '',
+    hour: '小时',
+    min: '分钟',
+  },
+};
