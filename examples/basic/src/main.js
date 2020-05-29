@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { TYSdk, NavigatorLayout } from 'tuya-panel-kit';
 import composeLayout from './composeLayout';
 import configureStore from './redux/configureStore';
@@ -17,10 +18,10 @@ class MainLayout extends NavigatorLayout {
   }
 
   /**
-   * 
+   *
    * @desc
    * hookRoute 可以在这里针对特定路由做一些控制处理
-   * 
+   *
    * @param {Object} route
    * @return {Object} - 提供给当前页面组件父容器布局的一些控制值
    * {
@@ -47,15 +48,16 @@ class MainLayout extends NavigatorLayout {
     //     break;
     // }
 
-    return {};
+    return {
+      renderStatusBar: () => <StatusBar barStyle="default" />,
+    };
   }
-
 
   /**
    * @desc
    * 在此可以通过route中的id来判断使用哪个页面组件，
    * 此外如果有额外的props需要传递给页面组件的，可以在此进行传递。
-   * 
+   *
    * @param {Object} route - route对象
    * @param {object} navigator - Navigator对象，具体使用方法可参考https://facebook.github.io/react-native/docs/0.43/navigator.html
    */
@@ -72,13 +74,14 @@ class MainLayout extends NavigatorLayout {
 
     switch (route.id) {
       case 'main':
-        component =
+        component = (
           <Home
             dpData={{ state: dpState, schema, uiConfig }}
             dispatch={dispatch}
             navigator={navigator}
             logs={logs}
-          />;
+          />
+        );
         break;
 
       default:
