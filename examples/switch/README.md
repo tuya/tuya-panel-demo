@@ -23,7 +23,7 @@ The template project is applicable to Tuya switch products, supporting the follo
 3. DP point rename function
 4. DP point timing function
 
-You can scan the following QR code through the graffiti app to preview.
+You can scan the following QR code through the Tuya app to preview.
 
 ![Switch](https://images.tuyacn.com/rms-static/5a7867d0-a199-11ea-9acd-135316db2bdb-1590749060813.png?tyName=switch.png)
 
