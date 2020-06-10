@@ -31,12 +31,21 @@ export class ConfigFactory {
     this.schema = {};
   }
 
+  parseSchema = schema => {
+    if (typeof schema === 'string') {
+      return JSON.parse(schema);
+    } else if (typeof schema === 'object') {
+      return Object.entries(schema).reduce((prev, [__, val]) => [...prev, val], []);
+    }
+    return [];
+  };
+
   buildConfig = (s = '') => {
-    let schema = JSON.parse(s) || [];
+    let schema = this.parseSchema(s);
     schema = schema.reduce(
       (pre, { code, property = {}, ...rest }) => ({
         ...pre,
-        [code]: { ...rest, ...property },
+        [code]: { ...rest, ...(typeof property === 'string' ? JSON.parse(property) : property) },
       }),
       {}
     );
