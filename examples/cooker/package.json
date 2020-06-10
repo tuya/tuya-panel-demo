@@ -6,7 +6,7 @@
   "templateName": "Cooker Template (厨电模板 2.0)",
   "pid": [],
   "uiid": "",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "echo \"Error: no test specified\" && exit 1",
