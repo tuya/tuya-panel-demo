@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import { View } from 'react-native';
-import { NavigatorLayout, TYSdk } from 'tuya-panel-kit';
+import { NavigatorLayout } from 'tuya-panel-kit';
 import composeLayout from './composeLayout';
 import configureStore from './redux/configureStore';
-import Config from './config';
 import Home from './containers/home';
 import { RecipeDetail, RecipeList, RecipeSetting, RecipeMutiStep } from './components/recipe';
 
@@ -37,12 +36,6 @@ const Router = {
 };
 
 class MainLayout extends NavigatorLayout {
-  constructor() {
-    super();
-
-    console.log('TYSdk', TYSdk, Config);
-  }
-
   /**
    *
    * @desc
