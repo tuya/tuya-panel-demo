@@ -1,0 +1,50 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+
+# SublimeText project files
+*.sublime-workspace
+
+
+# vscode project files
+.vscode
+
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+
+# Folder config file
+Desktop.ini
+
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+
+.*.s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+*/dump.rdb
+
+
+*.iml
+.idea/
+
+# js
+node_modules/
+package-lock.json
+yarn.lock
+build
