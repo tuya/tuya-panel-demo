@@ -7,7 +7,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { showSelfModal as showSelfModalAction } from '../../redux/modules/ipcCommon';
 import Config from '../../config';
-import { operatMute, isRecordingNow, isRecordingChangeMute } from '../../config/click';
+import {
+  operatMute,
+  isRecordingNow,
+  isRecordingChangeMute,
+  isWirlesDevice,
+} from '../../config/click';
+import BatteryCommon from '../publicComponents/batteryCommon';
 import Res from '../../res';
 import Strings from '../../i18n';
 
@@ -130,7 +136,9 @@ class FullFeatureTopRight extends React.Component {
                 onPress={this.enableMute}
               >
                 <Image
-                  source={voiceStatus === 'off' ? Res.publicImage.basicMute : Res.publicImage.basicNotMute}
+                  source={
+                    voiceStatus === 'off' ? Res.publicImage.basicMute : Res.publicImage.basicNotMute
+                  }
                   style={styles.topMuteImg}
                 />
               </TouchableOpacity>
@@ -151,6 +159,11 @@ class FullFeatureTopRight extends React.Component {
                   : Strings.getLang('resolutionHigh')}
               </TYText>
             </TouchableOpacity>
+            {isWirlesDevice() ? (
+              <View style={{ marginLeft: Math.ceil(cx(4)) }}>
+                <BatteryCommon />
+              </View>
+            ) : null}
           </View>
         )}
       </Animated.View>

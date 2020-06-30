@@ -5,8 +5,18 @@ import { View, StyleSheet, TouchableOpacity, Image, Platform } from 'react-nativ
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TYText } from 'tuya-panel-kit';
-import { popData, showPopCommon, zoomState as zoomStateAction, } from '../../redux/modules/ipcCommon';
-import { operatMute, isRecordingNow, isRecordingChangeMute } from '../../config/click';
+import {
+  popData,
+  showPopCommon,
+  zoomState as zoomStateAction,
+} from '../../redux/modules/ipcCommon';
+import {
+  operatMute,
+  isRecordingNow,
+  isRecordingChangeMute,
+  isWirlesDevice,
+} from '../../config/click';
+import BatteryCommon from '../publicComponents/batteryCommon';
 import Config from '../../config';
 import Res from '../../res';
 import Strings from '../../i18n';
@@ -39,14 +49,18 @@ class CameraTopList extends React.Component {
           show: props.isSupportedSound,
           test: props.voiceStatus === 'on' ? 'tuya_ipc_speaker_on' : 'tuya_ipc_speaker_off',
           key: 'mute',
-          imgSource: props.voiceStatus === 'off' ? Res.publicImage.basicMute : Res.publicImage.basicNotMute,
+          imgSource:
+            props.voiceStatus === 'off' ? Res.publicImage.basicMute : Res.publicImage.basicNotMute,
         },
         {
           show: true,
           test:
             props.zoomState === 1 ? 'tuya_ipc_size_adjust_height' : 'tuya_ipc_size_adjust_width',
           key: 'size',
-          imgSource: props.zoomState === 1 ? Res.publicImage.basicPlayerSizeHeight : Res.publicImage.basicPlayerSizeWidth,
+          imgSource:
+            props.zoomState === 1
+              ? Res.publicImage.basicPlayerSizeHeight
+              : Res.publicImage.basicPlayerSizeWidth,
         },
       ],
     };
@@ -113,7 +127,12 @@ class CameraTopList extends React.Component {
         dpValue: clarityStatus,
         mode: 'videoResolution',
         showData: [
-          { value: 'HD', text: Strings.getLang('resolutionHigh'), checked: clarityStatus === 'HD', test: 'tuya_ipc_resolution_choose_hd', },
+          {
+            value: 'HD',
+            text: Strings.getLang('resolutionHigh'),
+            checked: clarityStatus === 'HD',
+            test: 'tuya_ipc_resolution_choose_hd',
+          },
           {
             value: 'SD',
             text: Strings.getLang('resolutionStandard'),
@@ -166,7 +185,7 @@ class CameraTopList extends React.Component {
         <View style={styles.leftMenu}>
           <TouchableOpacity
             activeOpacity={0.7}
-            style={styles.menuItem}
+            style={[styles.menuItem, { marginRight: 10 }]}
             onPress={this.popResolution}
             accessibilityLabel={
               clarityStatus === 'SD' ? 'tuya_ipc_resolution_sd' : 'tuya_ipc_resolution_hd'
@@ -178,6 +197,7 @@ class CameraTopList extends React.Component {
                 : Strings.getLang('resolutionHigh')}
             </TYText>
           </TouchableOpacity>
+          {isWirlesDevice() ? <BatteryCommon /> : null}
         </View>
         <View style={styles.rightMenu}>
           {rightMenuData.map(item => (
@@ -259,7 +279,4 @@ const mapToDisPatch = dispatch => {
   return bindActionCreators({ popData, showPopCommon, zoomStateAction }, dispatch);
 };
 
-export default connect(
-  mapStateToProps,
-  mapToDisPatch
-)(CameraTopList);
+export default connect(mapStateToProps, mapToDisPatch)(CameraTopList);
