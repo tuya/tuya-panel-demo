@@ -20,7 +20,7 @@ The template project is the curtain template, which can start curtain and be use
 
 You can scan the following QR code through the Tuya app to preview.
 
-![Basic](https://images.tuyacn.com/rms-static/66b917b0-b9ef-11ea-96f0-cda03b175b6c-1593424845995.png?tyName=WX20200629-180007@2x.png)
+![Basic](https://images.tuyacn.com/rms-static/66b917b0-b9ef-11ea-96f0-cda03b175b6c-1593424845995.png?tyName=curtain.png)
 
 ## Running
 
