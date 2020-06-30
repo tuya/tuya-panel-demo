@@ -20,7 +20,7 @@ $ cd tuya-panel-curtain-example
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![Basic](https://images.tuyacn.com/rms-static/66b917b0-b9ef-11ea-96f0-cda03b175b6c-1593424845995.png?tyName=WX20200629-180007@2x.png)
+![Basic](https://images.tuyacn.com/rms-static/66b917b0-b9ef-11ea-96f0-cda03b175b6c-1593424845995.png?tyName=curtain.png)
 
 ## 快速运行
 
