@@ -49,6 +49,8 @@ import {
   getAuduioType,
   enableHd,
   isMobileDataNetworkType,
+  isWirlesDevice,
+  wakeupWirless,
 } from '../../config/click';
 
 import Config from '../../config';
@@ -233,15 +235,17 @@ class CustomPlayer extends React.Component {
     }
     // 判定设备上线变化,设定默认值deviceOnline 为false
     if (!_.isEqual(oldProps.deviceOnline, newProps.deviceOnline)) {
-      if (newProps.deviceOnline && isOnLivePage) {
-        this.props.showTryAgain({ showTryAgain: false });
-        this.props.videoLoadText({ videoLoadText: Strings.getLang('bridgeConnect') });
-        this.props.showVideoLoadAction({ showVideoLoad: true });
-        this.connecP2PAndStartPreview(newProps);
-      } else {
-        this.props.showTryAgain({ showTryAgain: false });
-        this.props.videoLoadText({ videoLoadText: Strings.getLang('deviceOffline') });
-        this.props.showVideoLoadAction({ showVideoLoad: true });
+      if (!isWirlesDevice()) {
+        if (newProps.deviceOnline && isOnLivePage) {
+          this.props.showTryAgain({ showTryAgain: false });
+          this.props.videoLoadText({ videoLoadText: Strings.getLang('bridgeConnect') });
+          this.props.showVideoLoadAction({ showVideoLoad: true });
+          this.connecP2PAndStartPreview(newProps);
+        } else {
+          this.props.showTryAgain({ showTryAgain: false });
+          this.props.videoLoadText({ videoLoadText: Strings.getLang('deviceOffline') });
+          this.props.showVideoLoadAction({ showVideoLoad: true });
+        }
       }
     }
     // 如果非全屏,展示
@@ -282,7 +286,7 @@ class CustomPlayer extends React.Component {
     TYEvent.off('firstChangeClarity');
   }
 
-  onChangePreview = () => { };
+  onChangePreview = () => {};
 
   backFullScreen = () => {
     this.props.isFullScreenAction({ isFullScreen: false });
@@ -391,6 +395,9 @@ class CustomPlayer extends React.Component {
   connectAndstartPreView = () => {
     this.props.videoLoadText({ videoLoadText: Strings.getLang('bridgeConnect') });
     this.props.showVideoLoadAction({ showVideoLoad: true });
+    if (isWirlesDevice()) {
+      wakeupWirless();
+    }
     CameraManager.connect(
       () => {
         // P2P建立成功
@@ -533,7 +540,7 @@ const mapStateToProps = state => {
     zoomState,
     enterPlayNativePage,
     cameraAction,
-    isOnLivePage
+    isOnLivePage,
   };
 };
 const mapToDisPatch = dispatch => {
