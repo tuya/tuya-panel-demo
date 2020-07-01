@@ -1,22 +1,16 @@
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import {
-  View,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
-import { Utils, TYSdk, TYText } from "tuya-panel-kit";
-import Strings from "../../i18n";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { View, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { Utils, TYText } from 'tuya-panel-kit';
+import Strings from '../../i18n';
 
 const { convertX: cx } = Utils.RatioUtils;
-const Res = {
-  icon: require("../../res/icon.png"),
-  box: require("../../res/box.png"),
-  setting: require("../../res/setting.png"),
-  history: require("../../res/history.png"),
+const Res: any = {
+  icon: require('../../res/icon.png'),
+  box: require('../../res/box.png'),
+  setting: require('../../res/setting.png'),
+  history: require('../../res/history.png'),
 };
 
 interface MainProps {
@@ -50,15 +44,11 @@ export default class Home extends Component<MainProps> {
   }
 
   renderBottom() {
-    const data = ["history", "setting"];
+    const data = ['history', 'setting'];
     return (
       <View style={styles.bottom}>
-        {data.map((item) => (
-          <TouchableOpacity
-            key={item}
-            style={styles.item}
-            onPress={() => this.toRoute(item)}
-          >
+        {data.map(item => (
+          <TouchableOpacity key={item} style={styles.item} onPress={() => this.toRoute(item)}>
             <Image source={Res[item]} style={styles.icon} />
             <TYText style={styles.text}>{Strings.getLang(item)}</TYText>
           </TouchableOpacity>
@@ -71,12 +61,10 @@ export default class Home extends Component<MainProps> {
     const {
       dpData: { schema, state },
     } = this.props;
-    const dpFirst = Object.values(schema).filter(
-      (d) => parseInt(d.id, 10) === 1
-    );
+    const dpFirst: any[] = Object.values(schema).filter((d: any) => parseInt(d.id, 10) === 1);
     if (dpFirst.length === 0) return <View />;
     const desc =
-      dpFirst[0].type === "value"
+      dpFirst[0].type === 'value'
         ? state[dpFirst[0].code]
         : Strings.getDpLang(dpFirst[0].code, state[dpFirst[0].code]);
     return (
@@ -102,20 +90,20 @@ export default class Home extends Component<MainProps> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   main: {
     paddingHorizontal: cx(8),
   },
   top: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bg: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: cx(300),
     height: cx(300),
   },
@@ -125,13 +113,13 @@ const styles = StyleSheet.create({
   },
   bottom: {
     paddingBottom: cx(10),
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   item: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   icon: {
     width: cx(48),
@@ -139,26 +127,26 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 10,
-    color: "#FFF",
+    color: '#FFF',
     opacity: 0.8,
     lineHeight: cx(24),
-    textAlign: "center",
+    textAlign: 'center',
   },
   status: {
-    position: "absolute",
+    position: 'absolute',
     top: cx(20),
     paddingHorizontal: cx(20),
     paddingVertical: cx(10),
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.4)",
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.4)',
     borderWidth: 1,
-    borderColor: "#FFF",
+    borderColor: '#FFF',
     borderRadius: cx(20),
   },
   title: {
     fontSize: 14,
-    color: "#FFF",
+    color: '#FFF',
   },
 });

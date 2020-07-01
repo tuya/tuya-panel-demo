@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import { Utils, TYText, SwitchButton, Divider } from "tuya-panel-kit";
-import _ from "lodash";
-import TYSdk from "../../api";
-import Strings from "../../i18n";
+import React, { Component } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { Utils, TYText, SwitchButton, Divider } from 'tuya-panel-kit';
+import _ from 'lodash';
+import TYSdk from '../../api';
+import Strings from '../../i18n';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -11,6 +11,14 @@ interface AlarmProps {
   themeColor: string;
   style?: any;
   devInfo: any;
+}
+
+interface AlarmItemProps {
+  id: string;
+  enabled: boolean;
+  name: string;
+  i18nData: any;
+  auditStatus: 1;
 }
 
 interface AlarmState {
@@ -21,7 +29,7 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
   constructor(props: AlarmProps) {
     super(props);
     this.state = {
-      alarmList: []
+      alarmList: [],
     };
   }
   componentDidMount() {
@@ -32,23 +40,22 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
     TYSdk.getDevAlarmList(devInfo.devId).then(
       (d: any) => {
         const alarmList = d
-          .filter(data => data.auditStatus === 1)
-          .map((item, i) => ({
+          .filter((data: AlarmItemProps) => data.auditStatus === 1)
+          .map((item: AlarmItemProps, i: number) => ({
             key: item.id,
             value: item.enabled,
-            title:
-              item.i18nData.name[Strings.language] || item.i18nData.name.en,
+            title: item.i18nData.name[Strings.language] || item.i18nData.name.en,
             // onTintColor: themeColor,
             size: { width: cx(40), height: cx(24), activeSize: cx(20) },
-            onValueChange: v => this.changeSwitch(parseInt(i, 10), v),
-            ...item
+            onValueChange: (v: boolean) => this.changeSwitch(i, v),
+            ...item,
           }));
         this.setState({
-          alarmList
+          alarmList,
         });
         TYSdk.native.hideLoading();
       },
-      e => {
+      () => {
         TYSdk.native.hideLoading();
       }
     );
@@ -62,30 +69,22 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
     const disAlarmIds = alarmList
       .filter(({ enabled }) => !enabled)
       .map(({ id }) => id)
-      .join(",");
+      .join(',');
     // 当全部开启时， id传空， disabled传false
-    TYSdk.setAlarmSwitch(
-      devInfo.devId,
-      disAlarmIds,
-      disAlarmIds.length > 0
-    ).then(
+    TYSdk.setAlarmSwitch(devInfo.devId, disAlarmIds, disAlarmIds.length > 0).then(
       () => this.getAlarmData(),
-      () =>
-        TYSdk.native.simpleTipDialog(
-          Strings.getLang("operationFailed"),
-          () => {}
-        )
+      () => TYSdk.native.simpleTipDialog(Strings.getLang('operationFailed'), () => {})
     );
   }
 
-  _renderItem = ({ item, index }) => {
+  _renderItem = ({ item, index }: any) => {
     return (
       <View style={[styles.item, styles.row]}>
         <TYText style={styles.title}>{item.title}</TYText>
         <SwitchButton
           value={item.enabled}
           onTintColor={this.props.themeColor}
-          onValueChange={enabled => this.changeSwitch(index, enabled)}
+          onValueChange={(enabled: boolean) => this.changeSwitch(index, enabled)}
         />
       </View>
     );
@@ -96,15 +95,11 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
     return (
       <View style={this.props.style}>
         <View style={styles.header}>
-          <TYText style={styles.text}>{Strings.getLang("alarmSet")}</TYText>
+          <TYText style={styles.text}>{Strings.getLang('alarmSet')}</TYText>
           <Divider color="#979797" style={{ opacity: 0.2 }} />
         </View>
         <View>
-          <FlatList
-            data={alarmList}
-            renderItem={this._renderItem}
-            keyExtractor={d => d.key}
-          />
+          <FlatList data={alarmList} renderItem={this._renderItem} keyExtractor={d => d.key} />
         </View>
       </View>
     );
@@ -113,25 +108,25 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
 
 const styles = StyleSheet.create({
   header: {
-    opacity: 0.5
+    opacity: 0.5,
   },
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   item: {
-    height: cx(60)
+    height: cx(60),
   },
   title: {
     fontSize: 14,
     lineHeight: 24,
-    color: "#3D3D3D",
-    textAlign: "center"
+    color: '#3D3D3D',
+    textAlign: 'center',
   },
   text: {
     paddingVertical: cx(12),
     fontSize: 12,
-    color: "#505050"
-  }
+    color: '#505050',
+  },
 });

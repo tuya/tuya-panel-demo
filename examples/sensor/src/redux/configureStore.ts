@@ -1,8 +1,8 @@
-import { createStore, applyMiddleware, compose, Middleware } from "redux";
-import thunk from "redux-thunk";
-import { createLogger } from "redux-logger";
-import { createEpicMiddleware } from "redux-observable";
-import { rootEpics, rootReducers } from "./combine";
+import { createStore, applyMiddleware, compose, Middleware } from 'redux';
+import thunk from 'redux-thunk';
+import { createLogger } from 'redux-logger';
+import { createEpicMiddleware } from 'redux-observable';
+import { rootEpics, rootReducers } from './combine';
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -11,7 +11,7 @@ const logger = createLogger({
   // eslint-disable-next-line no-unused-vars
   predicate: () => isDebuggingInChrome,
   collapsed: true,
-  duration: true
+  duration: true,
 });
 
 const middlewares: Middleware[] = [thunk, epicMiddleware];
@@ -29,9 +29,7 @@ export default function configureStore(initialState: any) {
     compose(
       applyedMiddleware,
       // @ts-ignore
-      isDebuggingInChrome && window.devToolsExtension
-        ? window.devToolsExtension()
-        : (f: any) => f
+      isDebuggingInChrome && window.devToolsExtension ? window.devToolsExtension() : (f: any) => f
     )
   );
 

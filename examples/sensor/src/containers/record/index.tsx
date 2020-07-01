@@ -1,16 +1,10 @@
-import React, { Component } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity
-} from "react-native";
-import _ from "lodash";
-import { TYText, Divider, Utils } from "tuya-panel-kit";
-import Strings from "../../i18n";
-import TYSdk from "../../api";
-import { analysisDate, checkIsToday } from "../../utils";
+import React, { Component } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import _ from 'lodash';
+import { TYText, Divider, Utils } from 'tuya-panel-kit';
+import Strings from '../../i18n';
+import TYSdk from '../../api';
+import { analysisDate, checkIsToday } from '../../utils';
 
 const { convertX: cx } = Utils.RatioUtils;
 const pageSize = 10;
@@ -23,19 +17,21 @@ interface HistoryCode {
 
 interface HistoryProps {
   logsConfig: HistoryCode[];
+  devInfo: any;
 }
-
 interface HistoryState {
   list: any[];
   isRefreshing: boolean;
 }
+interface HistoryRowProps {
+  text: string;
+  time: string;
+  timeStamp?: number;
+}
 
-export default class HistoryScene extends Component<
-  HistoryProps,
-  HistoryState
-> {
+export default class HistoryScene extends Component<HistoryProps, HistoryState> {
   static defaultProps = {
-    logsConfig: []
+    logsConfig: [],
   };
   public offset: number = 0;
   public hasNextPage: boolean = false;
@@ -45,7 +41,7 @@ export default class HistoryScene extends Component<
     super(props);
     this.state = {
       list: [],
-      isRefreshing: false
+      isRefreshing: false,
     };
   }
   componentDidMount() {
@@ -59,7 +55,7 @@ export default class HistoryScene extends Component<
       this.setState({ isRefreshing: true });
       this.getLogs();
       this.setState({
-        isRefreshing: false
+        isRefreshing: false,
       });
     }
   };
@@ -71,12 +67,12 @@ export default class HistoryScene extends Component<
     if (logsCodes.length === 0) return TYSdk.native.hideLoading();
     TYSdk.getLogs(devInfo.devId, logsCodes, offsetPage, pageSize).then(
       (d: any) => {
-        if (typeof d.dps === "undefined" || d.dps.length === 0) {
+        if (typeof d.dps === 'undefined' || d.dps.length === 0) {
           TYSdk.native.hideLoading();
           return;
         }
         const cloudValueCheck = d.dps.some(
-          item => this._inspectLegalValue(item.dpId, item.value).isLegal
+          (item: any) => this._inspectLegalValue(item.dpId, item.value).isLegal
         );
         if (!cloudValueCheck) {
           TYSdk.native.hideLoading();
@@ -84,52 +80,42 @@ export default class HistoryScene extends Component<
         }
 
         _.forEach(d.dps, v => {
-          const times = v.timeStr.split(" ");
+          const times = v.timeStr.split(' ');
           const date = times[0];
           const time = times[1];
 
-          if (typeof this.logs[date] === "undefined") {
+          if (typeof this.logs[date] === 'undefined') {
             this.logs[date] = [];
           }
-          const { isLegal, dpValue, code, type } = this._inspectLegalValue(
-            v.dpId,
-            v.value
-          );
-          if (
-            isLegal &&
-            ((type === "bitmap" && dpValue !== "0") || type !== "bitmap")
-          ) {
-            const data = {};
+          const { isLegal, dpValue, code, type } = this._inspectLegalValue(v.dpId, v.value);
+          if (isLegal && ((type === 'bitmap' && dpValue !== '0') || type !== 'bitmap')) {
+            let data: HistoryRowProps = {
+              time: '',
+              text: '',
+            };
             data.time = time;
             data.text =
-              type !== "bitmap"
+              type !== 'bitmap'
                 ? Strings.getDpLang(code, dpValue)
                 : Strings.getFaultStrings(code, parseInt(dpValue, 10), false);
             data.timeStamp = v.timeStamp;
             !this.logs[date].some(
-              log => log.time === data.time && log.text === data.text
+              (log: HistoryRowProps) => log.time === data.time && log.text === data.text
               // && log.text === data.text
             ) && this.logs[date].push(data);
-            this.logs[date] = _.sortBy(
-              this.logs[date],
-              d => d.timeStamp
-            ).reverse();
+            this.logs[date] = _.sortBy(this.logs[date], d => d.timeStamp).reverse();
           }
         });
-        const keys = Object.keys(this.logs).map(date =>
-          checkIsToday(date, true)
-        );
+        const keys = Object.keys(this.logs).map(date => checkIsToday(date, true));
 
-        const values = Object.values(this.logs).map(data =>
-          analysisDate(data, false)
-        );
+        const values = Object.values(this.logs).map(data => analysisDate(data, false));
         const datas = values.map((data, index) => ({
           title: keys[index],
-          data
+          data,
         }));
         this.setState(
           {
-            list: datas
+            list: datas,
           },
           () => {
             this.hasNextPage = d.hasNext;
@@ -145,28 +131,26 @@ export default class HistoryScene extends Component<
   };
 
   _getDpValueByType = (value: any, type: any) => {
-    const stringTypes = ["enum", "string", "raw", "bitmap"];
-    if (type === "bool") {
+    const stringTypes = ['enum', 'string', 'raw', 'bitmap'];
+    if (type === 'bool') {
       if (_.isBoolean(value)) return value;
       return eval(value.toLowerCase());
-    } else if (type === "value") {
+    } else if (type === 'value') {
       if (_.isNumber(value)) return value;
       return Number(value);
     } else if (stringTypes.includes(type)) {
-      if (typeof value === "string") return value;
+      if (typeof value === 'string') return value;
       return `${value}`;
     }
   };
 
-  _inspectLegalValue = (id: string, value: any) => {
+  _inspectLegalValue = (id: number, value: any) => {
     const code = TYSdk.device.getDpCodeById(id);
     const { type } = TYSdk.device.getDpSchema(code);
     const dpValue = this._getDpValueByType(value, type);
-    const isRaw = type === "raw";
+    const isRaw = type === 'raw';
     const isLegal = this.props.logsConfig.some(
-      log =>
-        Number(log.id) === id &&
-        (!log.values || (log.values && log.values.includes(dpValue)))
+      log => Number(log.id) === id && (!log.values || (log.values && log.values.includes(dpValue)))
     );
     return { isLegal, dpValue, code, isRaw, type };
   };
@@ -179,13 +163,13 @@ export default class HistoryScene extends Component<
     const { item } = datas;
     const { title, data } = item;
     return (
-      <TouchableOpacity style={styles.rowBox} activeOpacity={1}>
-        <View style={styles.rowBox}>
+      <TouchableOpacity activeOpacity={1}>
+        <View>
           <Text style={styles.title}>{title}</Text>
           <Divider color="rgba(151,151,151, 0.1)" height={cx(1)} />
           <View style={styles.rowWrap}>
-            {data.map((d, i) => (
-              <View style={styles.rowBox} key={`${d.time} ${d.text}`}>
+            {data.map((d: HistoryRowProps) => (
+              <View key={`${d.time} ${d.text}`}>
                 <View style={styles.row}>
                   <Text style={styles.text}>{d.time}</Text>
                   <Text style={styles.text}>{d.text}</Text>
@@ -199,13 +183,9 @@ export default class HistoryScene extends Component<
   };
 
   renderEmpty = () => (
-    <View
-      style={{ height: 200, justifyContent: "center", alignItems: "center" }}
-    >
-      <TYText
-        style={{ fontSize: 16, color: "#999", backgroundColor: "transparent" }}
-      >
-        {Strings.getLang("noHistory")}
+    <View style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>
+      <TYText style={{ fontSize: 16, color: '#999', backgroundColor: 'transparent' }}>
+        {Strings.getLang('noHistory')}
       </TYText>
     </View>
   );
@@ -236,46 +216,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: cx(361),
-    alignSelf: "center",
-    backgroundColor: "transparent",
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
     borderTopLeftRadius: cx(14),
     borderTopRightRadius: cx(14),
-    overflow: "hidden"
+    overflow: 'hidden',
   },
   content: {
     flex: 1,
     paddingBottom: cx(100),
     paddingHorizontal: cx(8),
-    backgroundColor: "#FFF"
+    backgroundColor: '#FFF',
   },
   list: {
     paddingTop: cx(15),
     paddingHorizontal: cx(20),
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent',
   },
   title: {
     paddingVertical: cx(15),
     lineHeight: cx(20),
-    color: "#3D3D3D",
-    backgroundColor: "transparent",
+    color: '#3D3D3D',
+    backgroundColor: 'transparent',
     fontSize: 14,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   rowWrap: {
     paddingHorizontal: cx(17),
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   row: {
     height: cx(52),
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   text: {
     marginRight: cx(15),
     lineHeight: cx(20),
-    color: "#000",
+    color: '#000',
     fontSize: 15,
-    backgroundColor: "transparent"
-  }
+    backgroundColor: 'transparent',
+  },
 });

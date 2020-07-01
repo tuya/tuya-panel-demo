@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
-import { Utils } from "tuya-panel-kit";
-import AlarmList from "./alarmList";
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Utils } from 'tuya-panel-kit';
+import AlarmList from './alarmList';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -29,19 +29,19 @@ export default class Setting extends Component<SettingProps> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   main: {
     flex: 1,
     width: cx(361),
-    alignSelf: "center",
+    alignSelf: 'center',
     borderTopLeftRadius: cx(14),
     borderTopRightRadius: cx(14),
-    overflow: "hidden"
+    overflow: 'hidden',
   },
   content: {
     flex: 1,
     paddingHorizontal: cx(20),
-    backgroundColor: "#FFF"
-  }
+    backgroundColor: '#FFF',
+  },
 });

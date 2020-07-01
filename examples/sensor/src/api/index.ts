@@ -1,29 +1,24 @@
-import { TYSdk } from "tuya-panel-kit";
+import { TYSdk } from 'tuya-panel-kit';
 
 const TYDevice = TYSdk.device;
 
-const sucStyle = "background: green; color: #fff;";
-const errStyle = "background: red; color: #fff;";
+const sucStyle = 'background: green; color: #fff;';
+const errStyle = 'background: red; color: #fff;';
 
-const api = (a: string, postData: any, v = "1.0") => {
+const api = (a: string, postData: any, v = '1.0') => {
   return TYSdk.apiRequest({
     a,
     postData,
-    v
+    v,
   })
     .then((d: any) => {
-      const data = typeof d === "string" ? JSON.parse(d) : d;
+      const data = typeof d === 'string' ? JSON.parse(d) : d;
       console.log(`API Success: %c${a}%o`, sucStyle, data);
       return data;
     })
     .catch((err: any) => {
-      const e = typeof err === "string" ? JSON.parse(err) : err;
-      console.log(
-        `API Failed: %c${a}%o`,
-        errStyle,
-        e.message || e.errorMsg || e,
-        postData
-      );
+      const e = typeof err === 'string' ? JSON.parse(err) : err;
+      console.log(`API Failed: %c${a}%o`, errStyle, e.message || e.errorMsg || e, postData);
       return err;
     });
 };
@@ -37,28 +32,28 @@ const api = (a: string, postData: any, v = "1.0") => {
 TYSdk.getLogs = (devId: string, dpCode: any, offset: number, limit: number) => {
   const dpIds = dpCode.map((d: string) => TYDevice.getDpIdByCode(d));
   return api(
-    "m.smart.operate.log",
+    'm.smart.operate.log',
     {
       devId,
-      dpIds: dpIds.join(","),
+      dpIds: dpIds.join(','),
       offset,
-      limit
+      limit,
     },
-    "2.0"
+    '2.0'
   );
 };
 
 TYSdk.getDevAlarmList = (devId: string) => {
-  return api("tuya.m.linkage.rule.product.query", {
-    devId
+  return api('tuya.m.linkage.rule.product.query', {
+    devId,
   });
 };
 
 TYSdk.setAlarmSwitch = (devId: string, ruleIds: any, disabled: boolean) => {
-  return api("tuya.m.linkage.dev.warn.set", {
+  return api('tuya.m.linkage.dev.warn.set', {
     devId,
     ruleIds,
-    disabled
+    disabled,
   });
 };
 export default TYSdk;

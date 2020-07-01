@@ -1,5 +1,5 @@
-import { AppRegistry } from "react-native";
+import { AppRegistry } from 'react-native';
 
-import MainLayout from "./src/main";
+import MainLayout from './src/main';
 
-AppRegistry.registerComponent("TYRCTApp", () => MainLayout);
+AppRegistry.registerComponent('TYRCTApp', () => MainLayout);
