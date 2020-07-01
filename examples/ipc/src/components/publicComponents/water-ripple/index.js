@@ -70,7 +70,7 @@ class WaterRipple extends PureComponent {
     duration: 6000,
     circleNums: 3,
     animated: true,
-    onClose() { },
+    onClose() {},
   };
 
   constructor(props) {

@@ -1,7 +1,7 @@
 /*
-* Object.defineProperty(obj, prop, desc)
-* 1.obj 需要定义属性的当前对象 2.prop当前需要定义的属性名 3.desc 属性描述符
-*/
+ * Object.defineProperty(obj, prop, desc)
+ * 1.obj 需要定义属性的当前对象 2.prop当前需要定义的属性名 3.desc 属性描述符
+ */
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.default = {
   en: {

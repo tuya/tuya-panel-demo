@@ -20,7 +20,9 @@ class NotifyTitle extends React.Component {
   render() {
     return (
       <View style={styles.notifyTitlePage}>
-        <TYText numberOfLines={1} style={styles.titleText}>{Strings.getLang('ipc_message_recent')}</TYText>
+        <TYText numberOfLines={1} style={styles.titleText}>
+          {Strings.getLang('ipc_message_recent')}
+        </TYText>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={this.enterNativeMessage}

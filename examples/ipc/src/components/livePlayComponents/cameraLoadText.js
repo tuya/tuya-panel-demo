@@ -125,7 +125,9 @@ class CameraLoadText extends React.Component {
       right: 0,
     };
     return (
-      <View style={[styles.cameraLoadTextPage, isFullScreen ? fullLoadContainer : normalLoadContainer]}>
+      <View
+        style={[styles.cameraLoadTextPage, isFullScreen ? fullLoadContainer : normalLoadContainer]}
+      >
         {isFullScreen && (
           <TouchableOpacity
             style={styles.backIconBox}
@@ -158,7 +160,9 @@ class CameraLoadText extends React.Component {
               />
             </View>
           )}
-          <TYText numberOfLines={1} style={styles.loadingText}>{videoLoadText}</TYText>
+          <TYText numberOfLines={1} style={styles.loadingText}>
+            {videoLoadText}
+          </TYText>
         </View>
         <TouchableOpacity
           onPress={this.reConnectVideo}
@@ -166,11 +170,15 @@ class CameraLoadText extends React.Component {
           accessibilityLabel="tuya_ipc_retry"
         >
           {showTryAgain && !basic_private && (
-            <TYText numberOfLines={1} style={styles.retryText}>{Strings.getLang('tryAgain')}</TYText>
+            <TYText numberOfLines={1} style={styles.retryText}>
+              {Strings.getLang('tryAgain')}
+            </TYText>
           )}
           {/* 这边还需判断私人模式 */}
           {showTryAgain && basic_private && !isShare && (
-            <TYText numberOfLines={1} style={styles.retryText}>{Strings.getLang('reWakeCamera')}</TYText>
+            <TYText numberOfLines={1} style={styles.retryText}>
+              {Strings.getLang('reWakeCamera')}
+            </TYText>
           )}
         </TouchableOpacity>
       </View>

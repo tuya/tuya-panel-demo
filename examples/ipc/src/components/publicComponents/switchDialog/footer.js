@@ -21,7 +21,9 @@ class Footer extends React.Component {
     return (
       <View style={styles.footPage}>
         <TouchableOpacity onPress={onConfirm} style={styles.textBox} activeOpacity={0.7}>
-          <TYText numberOfLines={1} style={styles.footText}>{text}</TYText>
+          <TYText numberOfLines={1} style={styles.footText}>
+            {text}
+          </TYText>
         </TouchableOpacity>
       </View>
     );

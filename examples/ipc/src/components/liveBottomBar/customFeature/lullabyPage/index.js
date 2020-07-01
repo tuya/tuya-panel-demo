@@ -108,7 +108,9 @@ class Lullaby extends React.Component {
         <DialogTitle title={currentTitle} />
         <View style={styles.lullabyContainer}>
           <View style={styles.musicNameBox}>
-            <TYText numberOfLines={1} style={styles.musicName}>{currentSongName}</TYText>
+            <TYText numberOfLines={1} style={styles.musicName}>
+              {currentSongName}
+            </TYText>
           </View>
           <View style={styles.barContainer}>
             {showDeviceVolumn !== undefined && (
@@ -169,7 +171,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(Lullaby);
+export default connect(mapStateToProps, null)(Lullaby);

@@ -91,8 +91,8 @@ exports.getFormatTime = (time, is12Hours) => {
     if (is12Hours) {
       showTomrrow
         ? (str = `${getTimeStr(hourStart, minuteStart)} ~ ${i18n_1.default.getLang(
-          'tomorrow'
-        )} ${getTimeStr(hourEnd, minuteEnd)}`)
+            'tomorrow'
+          )} ${getTimeStr(hourEnd, minuteEnd)}`)
         : (str = `${getTimeStr(hourStart, minuteStart)} ~ ${getTimeStr(hourEnd, minuteEnd)}`);
     }
   } else {
@@ -110,8 +110,8 @@ const getTimeStr = (hour, minute) => {
   const timerString =
     hour > 12
       ? `${i18n_1.default.getLang('pm')} ${addBeforetimeZero(hour - 12)}:${addBeforetimeZero(
-        minute
-      )}`
+          minute
+        )}`
       : `${i18n_1.default.getLang('am')} ${addBeforetimeZero(hour)}:${addBeforetimeZero(minute)}`;
   return timerString;
 };

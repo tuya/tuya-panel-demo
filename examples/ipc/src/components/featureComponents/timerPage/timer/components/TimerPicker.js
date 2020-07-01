@@ -15,7 +15,9 @@ const __importStar =
   function(mod) {
     if (mod && mod.__esModule) return mod;
     const result = {};
-    if (mod != null) { for (const k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k]; }
+    if (mod != null) {
+      for (const k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    }
     result.default = mod;
     return result;
   };
@@ -73,13 +75,13 @@ class TimerPicker extends React.Component {
     const { is12Hours } = props;
     this.hours = is12Hours
       ? times_1.default(12, n => ({
-        value: n,
-        label: toFixed(n === 0 ? 12 : n, 2),
-      }))
+          value: n,
+          label: toFixed(n === 0 ? 12 : n, 2),
+        }))
       : times_1.default(24, n => ({
-        value: n,
-        label: toFixed(n, 2),
-      }));
+          value: n,
+          label: toFixed(n, 2),
+        }));
     const hour = +props.hour;
     this.state = {
       prefix: hour >= 12 ? 'PM' : 'AM',

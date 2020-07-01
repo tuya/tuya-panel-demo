@@ -21,7 +21,9 @@ class PointTitle extends React.Component {
   render() {
     return (
       <View style={styles.pointTitlePage}>
-        <TYText numberOfLines={1} style={styles.titleText}>{Strings.getLang('ipc_panel_button_memory_point')}</TYText>
+        <TYText numberOfLines={1} style={styles.titleText}>
+          {Strings.getLang('ipc_panel_button_memory_point')}
+        </TYText>
         <TouchableOpacity
           disabled={!getPanelOpacity()}
           activeOpacity={0.7}

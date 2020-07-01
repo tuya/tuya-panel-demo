@@ -80,8 +80,8 @@ class LullabyMusicList extends React.Component {
             <Image source={Res.lullaby.lullabyPlayVoice} style={styles.iconImg} />
           </View>
         ) : (
-            <TYText style={styles.listSerial} numberOfLines={1}>{`${index + 1}`}</TYText>
-          )}
+          <TYText style={styles.listSerial} numberOfLines={1}>{`${index + 1}`}</TYText>
+        )}
         <View style={styles.songBox}>
           <TYText
             numberOfLines={1}
@@ -169,7 +169,4 @@ const mapStateToProps = state => {
     ipc_lullaby_list,
   };
 };
-export default connect(
-  mapStateToProps,
-  null
-)(LullabyMusicList);
+export default connect(mapStateToProps, null)(LullabyMusicList);

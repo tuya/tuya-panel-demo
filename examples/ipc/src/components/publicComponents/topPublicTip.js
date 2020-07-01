@@ -24,7 +24,9 @@ class TopPublicTip extends React.Component {
         style={[isFullScreen ? styles.topFullPage : styles.topNormalPage, { width: playerWidth }]}
       >
         <View style={styles.tipBox}>
-          <TYText numberOfLines={1} style={styles.textTip}>{tipText}</TYText>
+          <TYText numberOfLines={1} style={styles.textTip}>
+            {tipText}
+          </TYText>
         </View>
       </View>
     );

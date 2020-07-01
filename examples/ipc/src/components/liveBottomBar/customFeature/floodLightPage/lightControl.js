@@ -13,7 +13,6 @@ const TYDevice = TYSdk.device;
 const TYEvent = TYSdk.event;
 const TYMobile = TYSdk.mobile;
 
-
 const is24Hour = TYMobile.is24Hour();
 let is12Hour = true;
 is24Hour.then(d => {
@@ -131,7 +130,9 @@ class LightControl extends React.Component {
           >
             <View style={styles.itemBtnBox}>
               <Image source={item.iconImage} style={styles.itemImg} />
-              <TYText numberOfLines={1} style={styles.itemText}>{item.imgageTitle}</TYText>
+              <TYText numberOfLines={1} style={styles.itemText}>
+                {item.imgageTitle}
+              </TYText>
             </View>
           </TouchableOpacity>
         ))}

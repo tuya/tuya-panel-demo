@@ -117,7 +117,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(FloodLight);
+export default connect(mapStateToProps, null)(FloodLight);
