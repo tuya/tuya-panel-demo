@@ -165,7 +165,4 @@ const mapStateToProps = state => {
 const mapToDisPatch = dispatch => {
   return bindActionCreators({ showCustomDialog }, dispatch);
 };
-export default connect(
-  mapStateToProps,
-  mapToDisPatch
-)(MusicControl);
+export default connect(mapStateToProps, mapToDisPatch)(MusicControl);

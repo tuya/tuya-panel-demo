@@ -3,7 +3,7 @@ import { requireNativeComponent, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 const Player = requireNativeComponent('TYRCTCameraPlayer', CameraPlayer, {
-  nativeOnly: { onChange: true }
+  nativeOnly: { onChange: true },
 });
 class CameraPlayer extends React.Component {
   constructor(props) {

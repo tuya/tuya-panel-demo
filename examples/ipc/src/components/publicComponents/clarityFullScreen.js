@@ -61,7 +61,9 @@ class ClarityFullScreen extends React.Component {
                 this.replaceClarity(item.type);
               }}
             >
-              <TYText numberOfLines={1} style={styles.clarityText}>{item.typeName}</TYText>
+              <TYText numberOfLines={1} style={styles.clarityText}>
+                {item.typeName}
+              </TYText>
             </TouchableOpacity>
           ))}
         </TouchableOpacity>

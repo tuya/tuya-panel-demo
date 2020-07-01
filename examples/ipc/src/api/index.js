@@ -8,7 +8,6 @@ const JSONUtils = Utils.JsonUtils;
 const sucStyle = 'background: green; color: #fff;';
 const errStyle = 'background: red; color: #fff;';
 
-
 const api = (a, postData, v = '1.0') => {
   return TYSdk.apiRequest({
     a,

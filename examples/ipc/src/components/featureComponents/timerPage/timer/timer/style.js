@@ -71,9 +71,7 @@ exports.StyledButton = native_1
   background-color: ${theme_get_1.timer.btnBg};
   border-color: ${theme_get_1.timer.btnBorder};
 `;
-exports.StyledButtonText = native_1
-  .default(tuya_panel_kit_1.TYText)
-  .attrs({ numberOfLines: 1 })`
+exports.StyledButtonText = native_1.default(tuya_panel_kit_1.TYText).attrs({ numberOfLines: 1 })`
   font-size: ${props => (props.isEmpty ? cx(14) : cx(16))}px;
   color: ${theme_get_1.timer.btnFontColor};
 `;

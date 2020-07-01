@@ -164,9 +164,9 @@ class LoadingCirle extends Component {
       const backgroundColor =
         !!this.animatedValue[a] && this.animatedValue.length > 0
           ? this.animatedValue[a].interpolate({
-            inputRange,
-            outputRange: [...colors],
-          })
+              inputRange,
+              outputRange: [...colors],
+            })
           : 'transparent';
       return (
         <Animated.View

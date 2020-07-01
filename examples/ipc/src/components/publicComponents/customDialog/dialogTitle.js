@@ -22,7 +22,9 @@ class DialogTitle extends React.Component {
     const { title } = this.props;
     return (
       <View style={styles.dialogTitlePage}>
-        <TYText numberOfLines={1} style={styles.title}>{title}</TYText>
+        <TYText numberOfLines={1} style={styles.title}>
+          {title}
+        </TYText>
       </View>
     );
   }

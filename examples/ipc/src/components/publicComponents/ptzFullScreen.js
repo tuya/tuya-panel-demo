@@ -120,7 +120,9 @@ class PtzFullScreen extends React.Component {
       <View style={styles.container}>
         {ptz_control !== undefined && (
           <ImageBackground source={Res.ptzZoomFull.ptzBgcImg} style={[styles.bgcBox]}>
-            {this.state.upState && <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickTop} />}
+            {this.state.upState && (
+              <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickTop} />
+            )}
             {this.state.showUp && (
               <TouchableOpacity
                 activeOpacity={1}
@@ -132,7 +134,9 @@ class PtzFullScreen extends React.Component {
                 <Image source={Res.ptzZoomFull.ptzDot} style={styles.ptzDot} />
               </TouchableOpacity>
             )}
-            {this.state.downState && <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickBottom} />}
+            {this.state.downState && (
+              <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickBottom} />
+            )}
             {this.state.showDown && (
               <TouchableOpacity
                 activeOpacity={1}
@@ -144,7 +148,9 @@ class PtzFullScreen extends React.Component {
                 <Image source={Res.ptzZoomFull.ptzDot} style={styles.ptzDot} />
               </TouchableOpacity>
             )}
-            {this.state.leftState && <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickLeft} />}
+            {this.state.leftState && (
+              <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickLeft} />
+            )}
             {this.state.showLeft && (
               <TouchableOpacity
                 activeOpacity={1}
@@ -157,7 +163,9 @@ class PtzFullScreen extends React.Component {
               </TouchableOpacity>
             )}
 
-            {this.state.rightState && <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickRight} />}
+            {this.state.rightState && (
+              <Image style={styles.shadowImg} source={Res.ptzZoomFull.ptzClickRight} />
+            )}
             {this.state.showRight && (
               <TouchableOpacity
                 activeOpacity={1}

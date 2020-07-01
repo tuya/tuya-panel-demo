@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import _ from 'lodash';
 import React from 'react';
@@ -99,19 +100,15 @@ class MainLayout extends NavigatorLayout {
 
     switch (route.id) {
       case 'main':
-        // 不需要的 props 尽量不要传递下去，否则容易造成页面不必要的渲染
         component = <LivePage dpData={{ uiConfig }} {...route} />;
         break;
       case 'pointDetail':
-        // 不需要的 props 尽量不要传递下去，否则容易造成页面不必要的渲染
         component = <PointDetail {...route} />;
         break;
       case 'cruisePage':
-        // 不需要的 props 尽量不要传递下去，否则容易造成页面不必要的渲染
         component = <CruisePage {...route} />;
         break;
       case 'lullabyMusicList':
-        // 不需要的 props 尽量不要传递下去，否则容易造成页面不必要的渲染
         component = <LullabyMusiclist {...route} />;
         break;
       case 'timer':

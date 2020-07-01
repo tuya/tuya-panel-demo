@@ -135,7 +135,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(ColorLight);
+export default connect(mapStateToProps, null)(ColorLight);

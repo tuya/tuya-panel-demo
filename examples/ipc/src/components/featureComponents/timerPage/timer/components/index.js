@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 
-
 Object.defineProperty(exports, '__esModule', { value: true });
 const TopBar_1 = require('./TopBar');
 

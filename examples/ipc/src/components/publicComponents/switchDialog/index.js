@@ -69,11 +69,7 @@ class switchDialog extends React.Component {
     const { changData } = this.state;
     Popup.custom(
       {
-        content: <SelectValue
-          showData={changData}
-          mode={mode}
-          onConfirm={this.onConfirm}
-        />,
+        content: <SelectValue showData={changData} mode={mode} onConfirm={this.onConfirm} />,
         title: title !== '' ? title : <View style={{ height: 0 }} />,
         footer: <View style={{ height: 0 }} />,
       },

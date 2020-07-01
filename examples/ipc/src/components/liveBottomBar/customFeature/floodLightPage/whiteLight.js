@@ -106,7 +106,4 @@ const mapStateToProps = state => {
     floodlight_switch,
   };
 };
-export default connect(
-  mapStateToProps,
-  null
-)(WhiteLight);
+export default connect(mapStateToProps, null)(WhiteLight);

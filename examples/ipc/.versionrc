@@ -1,0 +1,5 @@
+{
+  "commitUrlFormat": "https://github.com/TuyaInc/tuya-panel-kit-template/commit/{{hash}}",
+  "releaseCommitMessageFormat": "chore(release): @template/ipc {{currentTag}}",
+  "path": "."
+}
