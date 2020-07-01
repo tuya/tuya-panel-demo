@@ -16,7 +16,7 @@ $ cd tuya-panel-ipc-example
 
 ## Introduction
 
-本模板项目适用以下Ipc摄像头品类:
+本模板项目适用以下 Ipc 摄像头品类:
 
 1. 卡片机
 2. 云台机
@@ -35,6 +35,7 @@ $ npm install && npm run start
 # or
 $ yarn && yarn start
 ```
+
 ## 注意
 
 - 请使用涂鸦智能 3.18 及以上开发的 App, 调试版进行调试开发
