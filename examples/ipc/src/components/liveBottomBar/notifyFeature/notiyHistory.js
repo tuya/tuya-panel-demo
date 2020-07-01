@@ -32,6 +32,7 @@ class NotiyHistory extends React.Component {
     ...SectionList.propTypes,
     isSupportCloudStorage: PropTypes.bool.isRequired,
     cloudStorageStateAction: PropTypes.func.isRequired,
+    tabContentHeight: PropTypes.number.isRequired,
   };
   constructor(props) {
     super(props);
@@ -287,7 +288,7 @@ class NotiyHistory extends React.Component {
   render() {
     const { msgDataSource, refreshFlag } = this.state;
     const msgLength = msgDataSource.length;
-
+    const { tabContentHeight } = this.props;
     return (
       <SectionList
         showsVerticalScrollIndicator={false}
@@ -299,7 +300,7 @@ class NotiyHistory extends React.Component {
         initialNumToRender={5}
         windowSize={3}
         onRefresh={this.refreshHistorySection}
-        ListEmptyComponent={NoMessage}
+        ListEmptyComponent={<NoMessage tabContentHeight={tabContentHeight} />}
         ListFooterComponent={this.renderListFooter}
         contentContainerStyle={msgLength === 0 ? styles.historyContainer : styles.noFlex}
         renderItem={this.renderNotifyItem}
