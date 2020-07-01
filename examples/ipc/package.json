@@ -2,7 +2,7 @@
   "rnVersion": "5.27",
   "license": "MIT",
   "author": "",
-  "name": "tuyaPanelExampleIpc",
+  "name": "tuyapanelexampleipc",
   "pid": [],
   "uiid": "",
   "version": "1.0.0",
@@ -34,7 +34,7 @@
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
-    "tuya-panel-kit": "^2.0.0-rc.3"
+    "tuya-panel-kit": "^2.0.0-rc.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

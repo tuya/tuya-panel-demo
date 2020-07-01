@@ -77,7 +77,7 @@ class DeviceVolume extends React.Component {
     const changedp = data.payload;
     if (changedp.basic_device_volume !== undefined) {
       this.setState({
-        basic_device_volume: data.basic_device_volume,
+        basic_device_volume: changedp.basic_device_volume,
       });
     }
   }, 300);
@@ -139,9 +139,8 @@ const styles = StyleSheet.create({
     height: cx(150),
     paddingHorizontal: cx(20),
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
     paddingBottom: isIphoneX ? 20 : 0,
+    justifyContent: 'center',
   },
   sliderBox: {
     width: '100%',

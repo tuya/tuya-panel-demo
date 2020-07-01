@@ -145,7 +145,7 @@ class CloudStorage extends React.Component {
         });
       }
     } catch (err) {
-      CameraManager.showTip(`${Strings.getLang('cloudRequestError')}sdhsuhduihsuhduhs+++++++`);
+      CameraManager.showTip(`${Strings.getLang('cloudRequestError')}`);
     }
   };
   // 取消显示续订弹出框

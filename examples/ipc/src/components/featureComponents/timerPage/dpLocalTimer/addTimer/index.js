@@ -277,7 +277,6 @@ class DpAddTimer extends React.Component {
     initDataSource.code = 0;
     const sendString = JSON.stringify(initDataSource);
     TYNative.showLoading({ title: '' });
-    console.log(sendString, 'sendString');
     // Raw型需要转为16进制
     TYDevice.putDeviceData({
       [dpTimeCode]: sToHex(sendString),

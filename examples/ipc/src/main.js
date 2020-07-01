@@ -18,7 +18,6 @@ import DpAddTimer from './components/featureComponents/timerPage/dpLocalTimer/ad
 import Statistics from './components/featureComponents/statisticPage';
 import { formatUiConfig } from './utils';
 
-console.log(TYSdk, 'TYSdk');
 console.disableYellowBox = true;
 console.reportErrorsAsExceptions = false;
 
