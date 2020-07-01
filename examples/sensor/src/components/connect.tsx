@@ -17,4 +17,3 @@ export default connect(
     return {};
   }
 )(Connect);
-

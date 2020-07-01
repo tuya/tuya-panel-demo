@@ -1,12 +1,12 @@
-import _ from "lodash";
-import React from "react";
-import { StatusBar } from "react-native";
-import { NavigatorLayout } from "tuya-panel-kit";
-import composeLayout from "./composeLayout";
-import configureStore from "./redux/configureStore";
-import Home from "./containers/home";
-import Setting from "./containers/setting";
-import History from "./containers/record";
+import _ from 'lodash';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { NavigatorLayout } from 'tuya-panel-kit';
+import composeLayout from './composeLayout';
+import configureStore from './redux/configureStore';
+import Home from './containers/home';
+import Setting from './containers/setting';
+import History from './containers/record';
 
 console.disableYellowBox = true;
 
@@ -52,15 +52,13 @@ class MainLayout extends NavigatorLayout {
     return {
       // showOfflineView: false,
       ...route,
-      topbarStyle: { backgroundColor: "transparent" },
-      topbarTextStyle: { color: "#FFF" },
+      topbarStyle: { backgroundColor: 'transparent' },
+      topbarTextStyle: { color: '#FFF' },
       style: { backgroundColor: theme.global.brand },
       background: theme.global.background,
       renderStatusBar: () => (
-        <StatusBar
-          barStyle={theme.type === "light" ? "default" : "light-content"}
-        />
-      )
+        <StatusBar barStyle={theme.type === 'light' ? 'default' : 'light-content'} />
+      ),
     };
   }
 
@@ -78,7 +76,7 @@ class MainLayout extends NavigatorLayout {
     }
 
     switch (route.id) {
-      case "main":
+      case 'main':
         // 不需要的 props 尽量不要传递下去，否则容易造成页面不必要的渲染
         component = (
           <Home
@@ -90,13 +88,11 @@ class MainLayout extends NavigatorLayout {
           />
         );
         break;
-      case "setting":
+      case 'setting':
         component = <Setting {...route} devInfo={devInfo} theme={theme} />;
         break;
-      case "history":
-        component = (
-          <History theme={theme} {...route} devInfo={devInfo} logsConfig={[]} />
-        );
+      case 'history':
+        component = <History theme={theme} {...route} devInfo={devInfo} logsConfig={[]} />;
         break;
       default:
         break;

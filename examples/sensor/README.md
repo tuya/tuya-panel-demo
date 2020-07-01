@@ -24,7 +24,7 @@ This template is suitable for sensing products and supports the following functi
 
 You can scan the following QR code through the Tuya app to preview.
 
-![sensor](https://images.tuyacn.com/fe-static/docs/img/68a3f0db-5185-4de6-be4b-34a8a4b7cf4e.png)
+![sensor](https://images.tuyacn.com/fe-static/docs/img/25a44526-44c0-4e75-b9e4-168de4b5ae61.png)
 
 ## Running
 
