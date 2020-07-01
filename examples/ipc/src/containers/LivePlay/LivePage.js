@@ -101,7 +101,6 @@ class LivePage extends React.Component {
     } else if (nextAppState === 'active') {
       // 清除定时
       isIOS && cancelEnterBackTimeOut();
-      console.log('安卓是否到这里');
       // 进入前台，判定是否处于预览页面,如果处于预览页面，不做处理, 如果不处于预览页面,判定P2P是否连接，如若未连接，进行连接P2P,如若已连接，则忽略，目的是返回预览界面,可以快速出流
       if (!isOnLivePage && isIOS) {
         judgeP2pISConnectedOperate();
