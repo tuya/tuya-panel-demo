@@ -26,6 +26,7 @@ $ yarn && yarn start
 
 ## 示例模板
 
+- [airPurifier](./examples/airPurifier)
 - [basic](./examples/basic)
 - [cooker](./examples/cooker)
 - [electricHeatingTable](./examples/electricHeatingTable)
