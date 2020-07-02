@@ -11,9 +11,10 @@ interface SettingProps {
 }
 
 export default class Setting extends Component<SettingProps> {
+  componentDidMount() {}
   render() {
     const { theme } = this.props;
-    const themeColor = theme.global.themeColor;
+    const { themeColor } = theme.global;
     return (
       <View style={styles.container}>
         <View style={styles.main}>

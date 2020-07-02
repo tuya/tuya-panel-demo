@@ -33,8 +33,8 @@ export default class HistoryScene extends Component<HistoryProps, HistoryState> 
   static defaultProps = {
     logsConfig: [],
   };
-  public offset: number = 0;
-  public hasNextPage: boolean = false;
+  public offset = 0;
+  public hasNextPage = false;
   public timer: any = null;
   public logs: any = {};
   constructor(props: HistoryProps) {
@@ -89,7 +89,7 @@ export default class HistoryScene extends Component<HistoryProps, HistoryState> 
           }
           const { isLegal, dpValue, code, type } = this._inspectLegalValue(v.dpId, v.value);
           if (isLegal && ((type === 'bitmap' && dpValue !== '0') || type !== 'bitmap')) {
-            let data: HistoryRowProps = {
+            const data: HistoryRowProps = {
               time: '',
               text: '',
             };
