@@ -37,8 +37,8 @@ $ yarn && yarn start
 ## 使用接口
 
 * [m.smart.operate.log](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/data-statistics-related-interface/data-statistics-related-interface?id=K9m1dlf41ex5f)
-* [tuya.m.linkage.dev.warn.set](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/alarm-related-interface?id=K9pmp0vleqezd)
-* [tuya.m.linkage.rule.product.query](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/alarm-related-interface?id=K9pmp0vleqezd)
+* [tuya.m.linkage.dev.warn.set](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/alarm-related-interface/alarm-related-interface?id=K9pouo57yi0b2)
+* [tuya.m.linkage.rule.product.query](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/alarm-related-interface/alarm-related-interface?id=K9pouo57yi0b2)
 
 ## 许可证
 
