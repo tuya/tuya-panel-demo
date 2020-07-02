@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { Utils, TYText } from 'tuya-panel-kit';
 import Strings from '../../i18n';
+import Res from '../../res';
 
 const { convertX: cx } = Utils.RatioUtils;
-const Res: any = {
-  icon: require('../../res/icon.png'),
-  box: require('../../res/box.png'),
-  setting: require('../../res/setting.png'),
-  history: require('../../res/history.png'),
-};
+// const Res: any = {
+//   icon: require('../../res/icon.png'),
+//   box: require('../../res/box.png'),
+//   setting: require('../../res/setting.png'),
+//   history: require('../../res/history.png'),
+// };
 
 interface MainProps {
   dpData: any;
@@ -92,9 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  main: {
-    paddingHorizontal: cx(8),
   },
   top: {
     flex: 1,

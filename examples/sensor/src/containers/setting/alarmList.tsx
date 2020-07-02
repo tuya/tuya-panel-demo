@@ -38,7 +38,7 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
   getAlarmData = () => {
     const { devInfo } = this.props;
     TYSdk.getDevAlarmList(devInfo.devId).then(
-      (d: any) => {
+      (d: AlarmItemProps) => {
         const alarmList = d
           .filter((data: AlarmItemProps) => data.auditStatus === 1)
           .map((item: AlarmItemProps, i: number) => ({
@@ -72,7 +72,7 @@ export default class AlarmList extends Component<AlarmProps, AlarmState> {
       .join(',');
     // 当全部开启时， id传空， disabled传false
     TYSdk.setAlarmSwitch(devInfo.devId, disAlarmIds, disAlarmIds.length > 0).then(
-      () => this.getAlarmData(),
+      res => this.getAlarmData(),
       () => TYSdk.native.simpleTipDialog(Strings.getLang('operationFailed'), () => {})
     );
   }
