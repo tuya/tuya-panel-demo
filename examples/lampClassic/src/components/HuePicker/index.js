@@ -111,7 +111,6 @@ export default class HuePicker extends Component {
       this.locked = true;
       return true;
     }
-    console.log(length, innerRadius, radius, innerRadius - touchOffset, radius + touchOffset);
     return length >= innerRadius - touchOffset && length <= radius + touchOffset;
   };
 
