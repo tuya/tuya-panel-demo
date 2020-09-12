@@ -73,9 +73,9 @@ class HomeBottomView extends Component {
         ...commonProps,
         ...data,
         text: Strings.getDpLang(data.key),
-        imageStyle: { tintColor: active ? activeFontColor : fontColor },
+        // imageStyle: { tintColor: active ? activeFontColor : fontColor },
         textStyle: { fontSize: cx(10), color: active ? activeFontColor : fontColor },
-        // style: { opacity: active ? 1 : 0.6 },
+        style: { opacity: active ? 1 : 0.6 },
         onPress: () => this.handlePress(data.key),
       };
     });

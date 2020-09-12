@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { Provider, connect } from 'react-redux';
 import _get from 'lodash/get';
 import camelCase from 'camelcase';
@@ -29,12 +30,16 @@ const composeLayout = (store, component) => {
     static propTypes = {
       devInfo: PropTypes.any.isRequired,
     };
+    state = { initFinish: false };
     constructor(props) {
       super(props);
       if (props && props.devInfo && props.devInfo.devId) {
         TYDevice.setDeviceInfo(props.devInfo);
         this.initData(props.devInfo);
-        TYDevice.getDeviceInfo().then(data => dispatch(devInfoChange(data)));
+        TYDevice.getDeviceInfo().then(data => {
+          dispatch(devInfoChange(data));
+          this.setState({ initFinish: true });
+        });
         // eslint-disable-next-line
       } else if (props.preload) {
         // do something
@@ -42,6 +47,7 @@ const composeLayout = (store, component) => {
         TYDevice.getDeviceInfo().then(data => {
           this.initData(data);
           dispatch(devInfoChange(data));
+          this.setState({ initFinish: true });
         });
       }
       this.subscribe();
@@ -61,12 +67,15 @@ const composeLayout = (store, component) => {
 
     initData(devInfo) {
       const { schema } = devInfo;
-      const schemaValues = Utils.JsonUtils.parseJSON(schema);
-      const codes = arrayToObject(
-        schemaValues.map(({ code }) => ({
-          [camelCase(code)]: code,
-        }))
-      );
+      const schemaData = Utils.JsonUtils.parseJSON(schema);
+      const codes = {};
+      const schemaValues = [];
+      // eslint-disable-next-line
+      for (let p in schemaData) {
+        const { code } = schemaData[p];
+        codes[camelCase(code)] = code;
+        schemaValues.push(schemaData[p]);
+      }
 
       const {
         switchLed: switchLedCode,
@@ -147,8 +156,6 @@ const composeLayout = (store, component) => {
 
       // 更新 Config 数据
       Object.assign(Config, { defalutScenes, dpFun, capabilityFun });
-
-      console.log('========', Config);
     }
 
     subscribe() {
@@ -185,6 +192,9 @@ const composeLayout = (store, component) => {
       dispatch(deviceChange(data));
     };
     render() {
+      if (!this.state.initFinish) {
+        return <View style={{ flex: 1 }} />;
+      }
       const { theme } = Config;
       return (
         <Provider store={store}>
