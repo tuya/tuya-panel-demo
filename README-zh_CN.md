@@ -4,7 +4,7 @@
 
 `Tuya Panel Templates` 提供了一些常见品类的开发模板。
 
-您可以阅读[涂鸦官方文档](https://docs.tuya.com/en/iot/panel-development/panel-sdk-development/5-min/panel-sdk-development-quick-start/panel-sdk-development-quick-start?id=K97rjqafxx0y7)以了解更多信息。
+您可以阅读[涂鸦官方文档](https://developer.tuya.com/cn/docs/iot)以了解更多信息。
 
 ## 前置条件
 

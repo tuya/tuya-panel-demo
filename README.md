@@ -4,7 +4,7 @@ English | [简体中文](./README-zh_CN.md)
 
 `Tuya Panel Templates` provides a series of common template codes.
 
-You can read the [official documents](https://docs.tuya.com/en/iot/panel-development/panel-sdk-development/5-min/panel-sdk-development-quick-start/panel-sdk-development-quick-start?id=K97rjqafxx0y7) for more information.
+You can read the [official documents](https://developer.tuya.com/en/docs/iot) for more information.
 
 ## Prerequisites
 
