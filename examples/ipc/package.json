@@ -24,7 +24,7 @@
   "dependencies": {
     "events": "^1.1.1",
     "immer": "^6.0.9",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.19",
     "moment": "^2.20.1",
     "prop-types": "^15.6.1",
     "react": "16.0.0",
