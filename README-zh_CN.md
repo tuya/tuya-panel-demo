@@ -30,7 +30,7 @@ $ yarn && yarn start
 - [basic](./examples/basic)
 - [cooker](./examples/cooker)
 - [electricHeatingTable](./examples/electricHeatingTable)
-- [lampV3](./examples/lampV3)
+- [lampClassic](./examples/lampClassic)
 - [platoonSocket](./examples/platoonSocket)
 - [switch](./examples/switch)
 
