@@ -27,7 +27,7 @@ $ cd tuya-panel-lampClassic-example
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![LampClassic](https://images.tuyacn.com/rms-static/2cc2ade0-a190-11ea-9acd-135316db2bdb-1590745118654.png?tyName=lampClassic.png)
+![LampClassic](https://images.tuyacn.com/rms-static/5c2c6430-0c67-11eb-897d-85bb9e60451e-1602492363251.png?tyName=lampClassic.png)
 
 ## 快速运行
 

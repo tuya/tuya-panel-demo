@@ -28,7 +28,7 @@ The template project can be used to quickly create lighting 1-5-way bulb lamp pr
 
 You can scan the following QR code through the Tuya app to preview.
 
-![LampClassic](https://images.tuyacn.com/rms-static/2cc2ade0-a190-11ea-9acd-135316db2bdb-1590745118654.png?tyName=lampClassic.png)
+![LampClassic](https://images.tuyacn.com/rms-static/5c2c6430-0c67-11eb-897d-85bb9e60451e-1602492363251.png?tyName=lampClassic.png)
 
 
 
