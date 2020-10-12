@@ -27,7 +27,7 @@ $ cd tuya-panel-lampDimmer-example
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![LampClassic](https://images.tuyacn.com/rms-static/20ba64e0-bb47-11ea-96f0-cda03b175b6c-1593572475438.png?tyName=lampDimmer.png)
+![LampClassic](https://images.tuyacn.com/rms-static/249dac90-0c67-11eb-897d-85bb9e60451e-1602492270041.png?tyName=lampDimmer.png)
 
 ## 快速运行
 
