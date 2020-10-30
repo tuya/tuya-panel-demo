@@ -29,6 +29,7 @@
     "react": "16.0.0",
     "react-addons-shallow-compare": "^15.6.2",
     "react-native": "0.51.0",
+    "react-native-deprecated-custom-components": "git+https://github.com/facebookarchive/react-native-custom-components.git#83c4fa19ccc9b6cd48ff80e457c493332819b486",
     "react-native-svg": "5.5.1",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
