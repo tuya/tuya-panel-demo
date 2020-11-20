@@ -43,8 +43,5 @@ Session.vim
 *.iml
 .idea/
 
-build
-
 # js
 node_modules/
-yarn.lock

@@ -1,7 +1,9 @@
 {
   "rnVersion": "5.1",
   "license": "MIT",
-  "author": "",
+  "author": "tuya-panel-example",
+  "name": "tuyaLampClassicExample",
+  "templateName": "Lamp Classic Template (古典版灯模板)",
   "pid": [],
   "uiid": "",
   "version": "1.0.0",

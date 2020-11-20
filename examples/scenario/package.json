@@ -1,7 +1,9 @@
 {
-  "rnVersion": ["5.1"],
-  "license": "ISC",
-  "author": "",
+  "rnVersion": "5.1",
+  "license": "MIT",
+  "author": "tuya-panel-example",
+  "name": "tuyaPanelExample",
+  "templateName": "Scenario Template (场景模板)",
   "pid": [],
   "uiid": "",
   "version": "0.0.7",
