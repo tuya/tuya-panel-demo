@@ -1,7 +1,9 @@
 {
   "rnVersion": "5.1",
-  "license": "ISC",
-  "author": "",
+  "license": "MIT",
+  "author": "tuya-panel-example",
+  "name": "tuyaSensorExample",
+  "templateName": "Sensor Template (传感器模板)",
   "pid": [],
   "uiid": "",
   "version": "0.0.1",
@@ -20,7 +22,6 @@
   "main": "index.ios.js",
   "description": "",
   "dependencies": {
-    "tuya-panel-kit": "~2.0.0-rc.1",
     "events": "^1.1.1",
     "lodash": "^4.17.19",
     "moment": "^2.20.1",
@@ -38,7 +39,7 @@
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
-    "style-equal": "^1.0.0"
+    "tuya-panel-kit": "~2.0.0-rc.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.137",

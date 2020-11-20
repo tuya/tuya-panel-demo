@@ -1,8 +1,8 @@
 {
   "rnVersion": "5.27",
   "license": "MIT",
-  "author": "tuya-panel-ipc",
-  "name": "tuyapanelexampleipc",
+  "author": "tuya-panel-example",
+  "name": "tuyaIpcExample",
   "templateName": "Ipc Template",
   "pid": [],
   "uiid": "",

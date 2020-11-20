@@ -1,7 +1,9 @@
 {
   "rnVersion": "5.1",
   "license": "MIT",
-  "author": "",
+  "author": "tuya-panel-example",
+  "name": "tuyaLampDimmerExample",
+  "templateName": "Lamp Dimmer Template (调光器模板)",
   "pid": [],
   "version": "1.0.0",
   "scripts": {

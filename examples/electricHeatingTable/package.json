@@ -1,7 +1,9 @@
 {
   "rnVersion": "5.1",
-  "license": "ISC",
-  "author": "",
+  "license": "MIT",
+  "author": "tuya-panel-example",
+  "name": "tuyaElectricHeatingTableExample",
+  "templateName": "ElectricHeatingTable Template (电暖桌模板)",
   "pid": [],
   "uiid": "",
   "version": "0.0.1",
