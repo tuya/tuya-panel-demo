@@ -1,9 +1,9 @@
 {
   "rnVersion": "5.1",
   "license": "MIT",
-  "author": "huangyj",
+  "author": "tuya-panel-example",
   "name": "tuyaSmartLockExample",
-  "templateName": "SmartLock Template (WiFi模板)",
+  "templateName": "SmartLock Template (WiFi 门锁模板)",
   "pid": [],
   "uiid": "",
   "version": "1.0.1",

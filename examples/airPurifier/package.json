@@ -41,8 +41,7 @@
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
     "tuya-panel-kit": "~2.0.0-rc.3",
-    "camelcase": "^5.0.0",
-    "expr-parser": "1.0.0"
+    "camelcase": "^5.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

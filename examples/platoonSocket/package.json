@@ -1,7 +1,7 @@
 {
   "rnVersion": "5.1",
   "license": "MIT",
-  "author": "",
+  "author": "tuya-panel-example",
   "name": "tuyaPlatoonSocketExample",
   "templateName": "PlatoonSocket Template (排插模板)",
   "pid": [],
