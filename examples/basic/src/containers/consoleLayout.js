@@ -1,20 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ViewPropTypes,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ViewPropTypes } from 'react-native';
 
-import {
-  Button,
-} from 'tuya-panel-kit';
-import {
-  clearConsole
-} from '../redux/modules/common';
-
+import { Button } from 'tuya-panel-kit';
+import { clearConsole } from '../redux/modules/common';
 
 export default class ConsoleLayout extends Component {
   static propTypes = {
@@ -48,20 +37,24 @@ export default class ConsoleLayout extends Component {
     const content = this.state.code ? v.strCodes : v.strIds;
     return (
       <Text key={k} style={[styles.item, { color }]}>
-        {v.time}{strFlag}{content}
+        {v.time}
+        {strFlag}
+        {content}
       </Text>
     );
   }
 
   doClear = () => {
     this.props.dispatch(clearConsole());
-  }
+  };
 
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
         <ScrollView
-          ref={scrollView => { this._scrollView = scrollView; }}
+          ref={scrollView => {
+            this._scrollView = scrollView;
+          }}
           style={[styles.list]}
         >
           {this.props.logs.map((v, k) => this._renderRow(v, k))}
@@ -77,13 +70,11 @@ export default class ConsoleLayout extends Component {
 
         <Button
           wrapperStyle={{ alignSelf: 'flex-end' }}
-          style={[styles.format, this.state.code ?
-            { backgroundColor: '#F5A623' } : null]}
+          style={[styles.format, this.state.code ? { backgroundColor: '#F5A623' } : null]}
           onPress={this.tapCodeBtn}
         >
           <Text style={styles.clearText}>CODE</Text>
         </Button>
-
       </View>
     );
   }
@@ -132,5 +123,5 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginHorizontal: 2,
     marginTop: 5,
-  }
+  },
 });

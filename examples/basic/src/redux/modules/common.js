@@ -22,31 +22,35 @@ export const consoleChange = createAction('CONSOLECHNAGE');
 export const clearConsole = createAction('CLEARCONSOLE');
 
 // reducer
-const dpState = handleActions({
-  [devInfoChange.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload.state,
-  }),
+const dpState = handleActions(
+  {
+    [devInfoChange.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload.state,
+    }),
 
-  [responseUpdateDp.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload,
-  }),
+    [responseUpdateDp.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
+  },
+  {}
+);
 
-}, {});
+const devInfo = handleActions(
+  {
+    [devInfoChange.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
 
-const devInfo = handleActions({
-  [devInfoChange.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload,
-  }),
-
-  [deviceChange.toString()]: (state, action) => ({
-    ...state,
-    ...action.payload,
-  }),
-
-}, {});
+    [deviceChange.toString()]: (state, action) => ({
+      ...state,
+      ...action.payload,
+    }),
+  },
+  {}
+);
 
 let isSend = false;
 
@@ -68,29 +72,32 @@ const formatLogs = (state, action, send) => {
   return s.slice(0, 30);
 };
 
-const logs = handleActions({
-  [consoleChange.toString()]: state => {
-    isSend = true;
-    return state;
-  },
+const logs = handleActions(
+  {
+    [consoleChange.toString()]: state => {
+      isSend = true;
+      return state;
+    },
 
-  [updateDp.toString()]: (state, action) => {
-    isSend = true;
-    return formatLogs(state, action, isSend);
-  },
+    [updateDp.toString()]: (state, action) => {
+      isSend = true;
+      return formatLogs(state, action, isSend);
+    },
 
-  [devInfoChange.toString()]: (state, action) => {
-    const formatAction = { payload: action.payload.state };
-    return formatLogs(state, formatAction, isSend);
-  },
+    [devInfoChange.toString()]: (state, action) => {
+      const formatAction = { payload: action.payload.state };
+      return formatLogs(state, formatAction, isSend);
+    },
 
-  [responseUpdateDp.toString()]: (state, action) => {
-    isSend = false;
-    return formatLogs(state, action, isSend);
-  },
+    [responseUpdateDp.toString()]: (state, action) => {
+      isSend = false;
+      return formatLogs(state, action, isSend);
+    },
 
-  [clearConsole.toString()]: () => [],
-}, []);
+    [clearConsole.toString()]: () => [],
+  },
+  []
+);
 
 export const reducers = {
   dpState,
@@ -99,8 +106,8 @@ export const reducers = {
 };
 
 // epics
-const dpUpdateEpic$ = action$ => action$.ofType(updateDp)
-  .mergeMap(action => {
+const dpUpdateEpic$ = action$ =>
+  action$.ofType(updateDp).mergeMap(action => {
     const { payload } = action;
     const [success, error] = Observable.fromPromise(putDeviceData(payload))
       .catch(() => Observable.of(responseUpdateDp({})))
@@ -112,7 +119,4 @@ const dpUpdateEpic$ = action$ => action$.ofType(updateDp)
     );
   });
 
-
-export const epics = [
-  dpUpdateEpic$,
-];
+export const epics = [dpUpdateEpic$];

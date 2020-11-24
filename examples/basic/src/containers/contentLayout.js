@@ -1,11 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ListView,
-  ViewPropTypes,
-  StyleSheet,
-} from 'react-native';
+import { ListView, ViewPropTypes, StyleSheet } from 'react-native';
 import { store } from '../main';
 import DpItemView from '../components/dpItemView';
 
@@ -14,10 +10,7 @@ const camelize = str => {
     return `${str}`;
   }
 
-  const ret = str.replace(
-    /[-_\s]+(.)?/g,
-    (match, chr) => (chr ? chr.toUpperCase() : ''),
-  );
+  const ret = str.replace(/[-_\s]+(.)?/g, (match, chr) => (chr ? chr.toUpperCase() : ''));
   // Ensure 1st char is always lowercase
   return ret.substr(0, 1).toLowerCase() + ret.substr(1);
 };

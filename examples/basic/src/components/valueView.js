@@ -1,13 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  ViewPropTypes,
-} from 'react-native';
+import { Image, Text, TouchableOpacity, StyleSheet, View, ViewPropTypes } from 'react-native';
 
 const Res = {
   decrease: require('../res/tuya_decrease.png'),
@@ -63,14 +56,12 @@ export default class ValueView extends Component {
   render() {
     const { style, value, readonly } = this.props;
     return (
-      <View style={[
-        styles.container,
-        style,
-        readonly ? { opacity: 0.5 } : null]} >
+      <View style={[styles.container, style, readonly ? { opacity: 0.5 } : null]}>
         <TouchableOpacity
           onPress={this.decrement}
           activeOpacity={0.8}
-          style={[styles.iconStyle, { paddingRight: 20 }]}>
+          style={[styles.iconStyle, { paddingRight: 20 }]}
+        >
           <Image source={Res.decrease} />
         </TouchableOpacity>
         <View style={styles.line} />
@@ -79,7 +70,8 @@ export default class ValueView extends Component {
         <TouchableOpacity
           onPress={this.increment}
           activeOpacity={0.8}
-          style={[styles.iconStyle, { paddingLeft: 20 }]}>
+          style={[styles.iconStyle, { paddingLeft: 20 }]}
+        >
           <Image source={Res.increase} />
         </TouchableOpacity>
       </View>
@@ -98,7 +90,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     width: 1,
     height: 36,
-
   },
 
   iconStyle: {
@@ -114,6 +105,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-
   },
 });
