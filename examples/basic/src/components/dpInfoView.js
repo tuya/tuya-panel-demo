@@ -1,14 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
-import {
-  CircleView,
-} from 'tuya-panel-kit';
+import { CircleView } from 'tuya-panel-kit';
 
 const Strings = require('../i18n');
 
@@ -20,26 +14,16 @@ export default class DpInfoView extends Component {
       code: PropTypes.string,
       mode: PropTypes.oneOf(['rw', 'wr', 'ro']),
       name: PropTypes.string,
-      type: PropTypes.oneOf([
-        'value',
-        'enum',
-        'bool',
-        'string',
-        'raw',
-        'fault',
-        'bitmap'
-      ]),
+      type: PropTypes.oneOf(['value', 'enum', 'bool', 'string', 'raw', 'fault', 'bitmap']),
     }).isRequired,
   };
 
-  static defaultProps = {
-  };
+  static defaultProps = {};
 
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   getModeLang(d) {

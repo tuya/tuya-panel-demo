@@ -71,22 +71,15 @@ export default class BitView extends Component {
     const strText = this.props.value > 0 ? this.state.text : 'No error!';
     const height = this.props.value > 0 || !this.props.readonly ? null : 35;
     return (
-      <View style={[
-        styles.container,
-        this.props.style,
-        { flexDirection: 'column', height },
-      ]}
-      >
-        <Text
-          style={[styles.textInput]}
-        >
-          {strText}
-        </Text>
-        {!this.props.readonly && <StringView
-          readonly={false}
-          value={`${this.props.value}`}
-          onChange={this.onChangeHandle}
-        />}
+      <View style={[styles.container, this.props.style, { flexDirection: 'column', height }]}>
+        <Text style={[styles.textInput]}>{strText}</Text>
+        {!this.props.readonly && (
+          <StringView
+            readonly={false}
+            value={`${this.props.value}`}
+            onChange={this.onChangeHandle}
+          />
+        )}
       </View>
     );
   }

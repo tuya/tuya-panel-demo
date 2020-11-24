@@ -27,8 +27,7 @@ export default class DpItemView extends Component {
     super(props);
     this.onChangeHandle = this.onChangeHandle.bind(this);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   shouldComponentUpdate(nextProps) {
@@ -51,15 +50,15 @@ export default class DpItemView extends Component {
     return (
       <View style={[styles.container, this.props.style]}>
         <DpInfoView dpSchema={dpSchema} />
-        {dpSchema.type === 'bool' &&
+        {dpSchema.type === 'bool' && (
           <BoolView
             style={styles.itemView}
             readonly={this.readonly(dpSchema.mode)}
             value={dpState}
             onValueChange={this.onChangeHandle}
           />
-        }
-        {dpSchema.type === 'value' &&
+        )}
+        {dpSchema.type === 'value' && (
           <ValueView
             style={styles.itemView}
             readonly={this.readonly(dpSchema.mode)}
@@ -69,8 +68,8 @@ export default class DpItemView extends Component {
             value={dpState}
             onChange={this.onChangeHandle}
           />
-        }
-        {dpSchema.type === 'enum' &&
+        )}
+        {dpSchema.type === 'enum' && (
           <EnumView
             style={styles.itemView}
             readonly={this.readonly(dpSchema.mode)}
@@ -78,24 +77,24 @@ export default class DpItemView extends Component {
             selected={dpState}
             onChange={this.onChangeHandle}
           />
-        }
-        {dpSchema.type === 'string' &&
+        )}
+        {dpSchema.type === 'string' && (
           <StringView
             style={styles.itemView}
             readonly={this.readonly(dpSchema.mode)}
             value={dpState}
             onChange={this.onChangeHandle}
           />
-        }
-        {dpSchema.type === 'raw' &&
+        )}
+        {dpSchema.type === 'raw' && (
           <RawView
             style={styles.itemView}
             readonly={this.readonly(dpSchema.mode)}
             value={dpState}
             onChange={this.onChangeHandle}
           />
-        }
-        {dpSchema.type === 'bitmap' &&
+        )}
+        {dpSchema.type === 'bitmap' && (
           <BitView
             style={styles.itemView}
             readonly={this.readonly(dpSchema.mode)}
@@ -104,7 +103,7 @@ export default class DpItemView extends Component {
             label={dpSchema.label}
             onChange={this.onChangeHandle}
           />
-        }
+        )}
       </View>
     );
   }
@@ -121,6 +120,5 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
 
-  itemView: {
-  },
+  itemView: {},
 });

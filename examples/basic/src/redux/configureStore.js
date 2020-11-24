@@ -5,7 +5,6 @@ import { rootEpics, rootReducers } from './combine';
 
 const epicMiddleware = createEpicMiddleware();
 
-
 const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
 const logger = createLogger({
   // eslint-disable-next-line no-unused-vars
@@ -14,9 +13,7 @@ const logger = createLogger({
   duration: true,
 });
 
-const middlewares = [
-  epicMiddleware,
-];
+const middlewares = [epicMiddleware];
 
 if (isDebuggingInChrome) {
   middlewares.push(logger);
@@ -30,8 +27,7 @@ export default function configureStore(initialState) {
     initialState,
     compose(
       applyedMiddleware,
-      isDebuggingInChrome && window.devToolsExtension
-        ? window.devToolsExtension() : f => f
+      isDebuggingInChrome && window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   );
 
