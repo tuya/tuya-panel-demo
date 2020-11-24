@@ -1,13 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  View,
-  ViewPropTypes,
-} from 'react-native';
+import { TextInput, StyleSheet, TouchableOpacity, Image, View, ViewPropTypes } from 'react-native';
 
 const Strings = require('../i18n');
 
@@ -53,17 +46,12 @@ export default class StringView extends Component {
   render() {
     const { readonly } = this.props;
     return (
-      <View style={[
-        styles.container,
-        readonly ? { opacity: 0.5 } : null,
-        this.props.style,
-      ]}
-      >
-        <View style={[
-          styles.textBorder,
-          readonly ? { borderRadius: 4, borderRightWidth: 1 }
-            : { borderRightWidth: 0 },
-        ]}
+      <View style={[styles.container, readonly ? { opacity: 0.5 } : null, this.props.style]}>
+        <View
+          style={[
+            styles.textBorder,
+            readonly ? { borderRadius: 4, borderRightWidth: 1 } : { borderRightWidth: 0 },
+          ]}
         >
           <TextInput
             style={styles.textInput}
@@ -75,15 +63,11 @@ export default class StringView extends Component {
             onSubmitEditing={this.onPressHandle}
           />
         </View>
-        {!readonly &&
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.button}
-            onPress={this.onPressHandle}
-          >
+        {!readonly && (
+          <TouchableOpacity activeOpacity={0.8} style={styles.button} onPress={this.onPressHandle}>
             <Image source={Res.goto} />
           </TouchableOpacity>
-        }
+        )}
       </View>
     );
   }

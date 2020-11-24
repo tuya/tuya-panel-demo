@@ -26,10 +26,7 @@ export const camelize = str => {
   if (typeof str === 'number') {
     return `${str}`;
   }
-  const ret = str.replace(
-    /[-_\s]+(.)?/g,
-    (match, chr) => (chr ? chr.toUpperCase() : ''),
-  );
+  const ret = str.replace(/[-_\s]+(.)?/g, (match, chr) => (chr ? chr.toUpperCase() : ''));
   // Ensure 1st char is always lowercase
   return ret.substr(0, 1).toLowerCase() + ret.substr(1);
 };

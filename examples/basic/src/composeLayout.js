@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
 import { TYSdk, Theme } from 'tuya-panel-kit';
-import {
-  devInfoChange,
-  deviceChange,
-  responseUpdateDp,
-} from './redux/modules/common';
+import { devInfoChange, deviceChange, responseUpdateDp } from './redux/modules/common';
 import theme from './config/theme';
 
 const TYEvent = TYSdk.event;
@@ -37,14 +33,14 @@ const composeLayout = (store, component) => {
     static propTypes = {
       // eslint-disable-next-line
       devInfo: PropTypes.object.isRequired,
-    }
+    };
 
     constructor(props) {
       super(props);
       if (props && props.devInfo && props.devInfo.devId) {
         TYDevice.setDeviceInfo(props.devInfo);
         TYDevice.getDeviceInfo().then(data => dispatch(devInfoChange(data)));
-      // eslint-disable-next-line
+        // eslint-disable-next-line
       } else if (props.preload) {
         // do something
       } else {

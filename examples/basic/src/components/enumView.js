@@ -1,13 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  Text,
-  Image,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  ViewPropTypes,
-} from 'react-native';
+import { Text, Image, TouchableOpacity, View, StyleSheet, ViewPropTypes } from 'react-native';
 import _ from 'lodash';
 import { TYSdk } from 'tuya-panel-kit';
 
@@ -23,10 +16,7 @@ export default class EnumView extends Component {
   static propTypes = {
     style: ViewPropTypes.style,
     values: PropTypes.object.isRequired,
-    selected: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]).isRequired,
+    selected: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     readonly: PropTypes.bool,
     onChange: PropTypes.func,
   };
@@ -54,8 +44,7 @@ export default class EnumView extends Component {
     });
   }
 
-  componentWillUpdate() {
-  }
+  componentWillUpdate() {}
 
   parseStrValues(values) {
     const strValues = {};
@@ -68,17 +57,13 @@ export default class EnumView extends Component {
   _onPressHandle() {
     if (this.props.readonly) return;
     const { selected, strValues } = this.state;
-    TYNative.bottomListDialog(
-      Object.values(strValues),
-      strValues[selected],
-      value => {
-        const p = _.findKey(strValues, o => o === value);
-        if (p) {
-          this.setState({ selected: p });
-          if (this.props.onChange) this.props.onChange(p);
-        }
+    TYNative.bottomListDialog(Object.values(strValues), strValues[selected], value => {
+      const p = _.findKey(strValues, o => o === value);
+      if (p) {
+        this.setState({ selected: p });
+        if (this.props.onChange) this.props.onChange(p);
       }
-    );
+    });
   }
 
   render() {
@@ -86,11 +71,7 @@ export default class EnumView extends Component {
     const { selected, strValues } = this.state;
 
     return (
-      <TouchableOpacity
-        style={this.props.style}
-        activeOpacity={0.8}
-        onPress={this.onPressHandle}
-      >
+      <TouchableOpacity style={this.props.style} activeOpacity={0.8} onPress={this.onPressHandle}>
         <View style={[styles.container, readonly ? { opacity: 0.5 } : null]}>
           <Text style={styles.text}>{strValues[selected]}</Text>
           {!readonly && <Image style={styles.icon} source={Res.selectIcon} />}
