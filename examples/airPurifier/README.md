@@ -9,7 +9,7 @@ for users outside Chinese mainland, please remove `.npmrc` file.
 ## Download manually
 
 ```bash
-$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/airPurifier
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/airPurifier
 $ mv airPurifier tuya-panel-airPurifier-example
 $ cd tuya-panel-airPurifier-example
 ```

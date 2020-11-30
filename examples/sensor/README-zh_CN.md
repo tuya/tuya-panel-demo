@@ -9,7 +9,7 @@ English | [简体中文](./README-zh_CN.md)
 ## 手动下载
 
 ```bash
-$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/sensor
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/sensor
 $ mv sensor tuya-panel-sensor-example
 $ cd tuya-panel-sensor-example
 ```
