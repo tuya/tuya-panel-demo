@@ -17,7 +17,7 @@
 ## 手动下载
 
 ```bash
-$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/lampClassic
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/lampClassic
 $ mv lampClassic tuya-panel-lampClassic-example
 $ cd tuya-panel-lampClassic-example
 ```

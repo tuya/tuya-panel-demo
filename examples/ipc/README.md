@@ -9,7 +9,7 @@ For users outside of mainland China, please delete the `.npmrc` file.
 ## Download manually
 
 ```
-$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/ipc
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/ipc
 $ mv ipc tuya-panel-ipc-example
 $ cd tuya-panel-ipc-example
 ```
