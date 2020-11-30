@@ -9,7 +9,7 @@
 ## 手动下载
 
 ```bash
-$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/cooker
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/cooker
 $ mv cooker tuya-panel-cooker-example
 $ cd tuya-panel-cooker-example
 ```
