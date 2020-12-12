@@ -9,9 +9,9 @@
 ## 手动下载
 
 ```bash
-$ curl https://codeload.github.com/TuyaInc/tuya-panel-kit-template/tar.gz/develop | tar -xz --strip=2 tuya-panel-kit-template-develop/examples/basic-0.59
-$ mv basic tuya-panel-basic-0.59-example
-$ cd tuya-panel-basic-0.59-example
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/basic-ts-0.59
+$ mv basic tuya-panel-basic-ts-0.59-example
+$ cd tuya-panel-basic-ts-0.59-example
 ```
 
 ## 介绍
