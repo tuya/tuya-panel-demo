@@ -7,4 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **scenario:** 场景模版 ([9ee1998](https://github.com/TuyaInc/tuya-panel-kit-template/commit/9ee19984f2a17505eae75bbf5b20582ffb22216a))
+* **scenario:** 场景模版 ([9ee1998](https://github.com/tuya/tuya-panel-demo/commit/9ee19984f2a17505eae75bbf5b20582ffb22216a))
