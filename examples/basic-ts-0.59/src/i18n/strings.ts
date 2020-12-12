@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 export default {
   en: {
     hit_empty: 'Empty Value!',
