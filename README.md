@@ -28,6 +28,7 @@ And open your tuya app for debugging :)
 
 - [airPurifier](./examples/airPurifier)
 - [basic](./examples/basic)
+- [basic-ts-0.59](./examples/basic-ts-0.59)
 - [cooker](./examples/cooker)
 - [electricHeatingTable](./examples/electricHeatingTable)
 - [lampClassic](./examples/lampClassic)
