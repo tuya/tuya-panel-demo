@@ -1,5 +1,5 @@
 {
-  "commitUrlFormat": "https://github.com/TuyaInc/tuya-panel-kit-template/commit/{{hash}}",
+  "commitUrlFormat": "https://github.com/tuya/tuya-panel-demo/commit/{{hash}}",
   "releaseCommitMessageFormat": "chore(release): @template/lampV3 {{currentTag}}",
   "path": "."
 }

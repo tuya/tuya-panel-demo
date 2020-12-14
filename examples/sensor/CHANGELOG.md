@@ -7,4 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* 传感模板 ([669f1d1](https://github.com/TuyaInc/tuya-panel-kit-template/commit/669f1d1c3c7803d8dc4ce42d04dfc2424ee31c88))
+* 传感模板 ([669f1d1](https://github.com/tuya/tuya-panel-demo/commit/669f1d1c3c7803d8dc4ce42d04dfc2424ee31c88))
