@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
@@ -20,6 +19,7 @@ import { getOpenListInfo } from '../dataHandle/recordHandle';
 import HeadTop from '../components/headBar';
 import Loading from '../components/loading';
 import Res from '../res';
+
 const { convertX } = Utils.RatioUtils;
 const { width } = Dimensions.get('window');
 
@@ -33,50 +33,58 @@ type openListType = {
 interface OpenListProps {
   getOpenListOne: any;
   getOpenList: any;
-  user: userType;
+  user: UserType;
   openList: openListType;
 }
-interface OpenListState {}
-const pageSize = 50;
-class OpenList extends Component<OpenListProps, OpenListState> {
-  static propTypes = {
-    getOpenList: PropTypes.func.isRequired,
-    openList: PropTypes.object,
-  };
 
+const pageSize = 50;
+class OpenList extends Component<OpenListProps, any> {
   static defaultProps = {
     openList: {
-      list: [],
+      list: [{ title: '', data: [] }],
+      totalCount: 0,
+      hasNext: false,
+      response: true,
     },
   };
+
   offset: number;
+
   isShowLoading: boolean;
+
   listen: any;
+
   time: any;
+
   constructor(props: any) {
     super(props);
     this.offset = 0;
     this.isShowLoading = true;
   }
+
   getData() {
     const { userId } = this.props.user;
     getOpenListInfo(this.props.getOpenListOne, pageSize, 0, userId);
   }
+
   componentDidMount() {
     this.getData();
     this.listen = DeviceEventEmitter.addListener('openListChange', () => this.getData());
   }
+
   componentWillUnmount() {
     this.listen.remove();
   }
+
   loadMore() {
     const { userId } = this.props.user;
     this.isShowLoading = false;
-    this.offset = this.offset + pageSize;
+    this.offset += pageSize;
     if (this.props.openList.hasNext) {
       getOpenListInfo(this.props.getOpenList, pageSize, this.offset, userId);
     }
   }
+
   renderItem = (data: any) => {
     const { item } = data;
     return (
@@ -94,14 +102,14 @@ class OpenList extends Component<OpenListProps, OpenListState> {
         </View>
         {item.unbindUser && (
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
               TYSdk.Navigator.push({
                 id: 'userList',
                 isClickList: true,
                 isClickValue: [item.unlockId],
                 type: 'open',
-              })
-            }
+              });
+            }}
           >
             <View style={styles.unbindView}>
               <Text style={styles.unbindText} numberOfLines={1}>
@@ -113,6 +121,7 @@ class OpenList extends Component<OpenListProps, OpenListState> {
       </View>
     );
   };
+
   render() {
     const { openList } = this.props;
     return (
@@ -137,10 +146,7 @@ class OpenList extends Component<OpenListProps, OpenListState> {
             renderSectionHeader={({ section: { title } }) => (
               <View style={styles.headTop}>
                 <Text style={styles.headTopText}>
-                  {title ===
-                  moment()
-                    .format('YYYY-MM-DD')
-                    .toString()
+                  {title === moment().format('YYYY-MM-DD').toString()
                     ? Strings.getLang('today')
                     : title}
                 </Text>
@@ -235,7 +241,7 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-  ({ openList, user }: { openList: openListType; user: userType }) => ({
+  ({ openList, user }: { openList: openListType; user: UserType }) => ({
     openList,
     user,
   }),

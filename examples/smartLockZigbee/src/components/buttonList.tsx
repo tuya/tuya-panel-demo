@@ -17,7 +17,7 @@ const { width } = Dimensions.get('window');
 const { convertY } = Utils.RatioUtils;
 
 interface BottomButtonProps {
-  data: buttonListType[];
+  data: ButtonListType[];
   bgColor?: string;
   textColor?: string;
   imageColor: StyleProp<ImageStyle>;
@@ -121,6 +121,7 @@ export default class BottomButton extends Component<BottomButtonProps, any> {
       </View>
     ));
   }
+
   render() {
     const { bgColor } = this.props;
     return (

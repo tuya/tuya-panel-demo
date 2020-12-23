@@ -35,5 +35,5 @@ export default {
   unlockMethodCreate: 'unlock_method_create',
   unlockMethodDelete: 'unlock_method_delete',
   singleUsePassword: 'single_use_password',
-  unlockVoiceRemote: 'unlock_voice_remote', //远程语音解锁
+  unlockVoiceRemote: 'unlock_voice_remote', // 远程语音解锁
 };
