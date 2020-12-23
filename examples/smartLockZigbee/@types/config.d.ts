@@ -1,4 +1,4 @@
-type configKey =
+type ConfigKey =
   | 'unlockFingerprint'
   | 'unlockPassword'
   | 'unlockTemp'
@@ -37,12 +37,12 @@ type configKey =
   | 'singleUsePassword'
   | 'unlockVoiceRemote';
 
-declare type userType = { userId: string; [key: string]: any };
-declare type configType = {
-  [k in configKey]: string;
+declare type UserType = { userId: string; [key: string]: any };
+declare type ConfigType = {
+  [k in ConfigKey]: string;
 };
 
-declare type buttonListType = {
+declare type ButtonListType = {
   key: string;
   text: string;
   background: any;

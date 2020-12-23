@@ -48,7 +48,7 @@ class MainLayout extends NavigatorLayout<Props> {
 
     return {
       ...routeProps,
-      hideTopbar: route.id === 'main' ? false : true,
+      hideTopbar: route.id !== 'main',
       renderStatusBar: () => <StatusBar barStyle="default" />,
     };
   }

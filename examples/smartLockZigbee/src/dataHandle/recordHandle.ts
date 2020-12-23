@@ -1,9 +1,10 @@
-import apiRequestHandle from '../api';
 import moment from 'moment';
+import { TYSdk } from 'tuya-panel-kit';
+import apiRequestHandle from '../api';
 import Strings from '../i18n';
 import dpCodeConfig from '../config/dpCodes';
-import { TYSdk } from 'tuya-panel-kit';
 import { getOpenListNeedDpId } from '../utils/configParamHandle';
+
 interface OpenItem {
   avatar: string;
   time: number;
@@ -20,15 +21,8 @@ export const getWarnListInfo = async (action: any, limit: number, offset: number
     const historyList: any | undefined = [];
     if (handleData) {
       handleData.forEach((item: any) => {
-        const time = moment(item.gmtCreate)
-          .format('YYYY-MM-DD')
-          .toString();
-        if (
-          time ===
-          moment()
-            .format('YYYY-MM-DD')
-            .toString()
-        ) {
+        const time = moment(item.gmtCreate).format('YYYY-MM-DD').toString();
+        if (time === moment().format('YYYY-MM-DD').toString()) {
           currentDateList.push(item);
         } else {
           historyList.push(item);
@@ -65,22 +59,20 @@ export const getOpenListInfo = async (action: any, limit: number, offset: number
     const handleData = data.datas ? data.datas : [];
     const needData: any[] = [];
     handleData.forEach((item: any) => {
-      const time = moment(item.gmtCreate)
-        .format('YYYY-MM-DD')
-        .toString();
+      const time = moment(item.gmtCreate).format('YYYY-MM-DD').toString();
       let textInfo = '';
 
       const dp = Object.keys(item.dps[0])[0];
 
       const name =
-        userId === item.userId ? Strings.getLang('my') : item.userName ? item.userName + ' ' : '';
-      textInfo = name + item.unlockName + ' ' + Strings.getDpLang(TYSdk.native.getDpCodeById(dp));
+        userId === item.userId ? Strings.getLang('my') : item.userName ? `${item.userName} ` : '';
+      textInfo = `${name + item.unlockName} ${Strings.getDpLang(TYSdk.native.getDpCodeById(dp))}`;
 
       const openItem: OpenItem = {
         avatar: item.avatar,
         time: item.gmtCreate,
         textInfo,
-        unlockId: dp + '-' + Object.values(item.dps[0])[0],
+        unlockId: `${dp}-${Object.values(item.dps[0])[0]}`,
       };
       const flag = needData.findIndex(element => {
         return element.title === time;
@@ -88,11 +80,9 @@ export const getOpenListInfo = async (action: any, limit: number, offset: number
       if (flag !== -1) {
         needData[flag].data.push(openItem);
       } else {
-        const data: OpenItem[] = [];
-        data.push(openItem);
         needData.push({
           title: time,
-          data,
+          data: [openItem],
         });
       }
     });
