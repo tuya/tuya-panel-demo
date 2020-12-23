@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { TYSdk, DevInfo, Popup, Dialog, Utils, Toast } from 'tuya-panel-kit';
@@ -13,6 +12,7 @@ import dpCodeConfig from '../config/dpCodes';
 import { settingListItem } from '../config/constant';
 import Loading from '../components/loading';
 import apiRequestHandle from '../api';
+
 const { convertX } = Utils.RatioUtils;
 const { width } = Dimensions.get('window');
 
@@ -20,25 +20,15 @@ interface SettingState {
   showLoading: boolean;
   status: string;
   data: any;
-  automaticLock: boolean;
-  autoLockTime: number;
-  startTime: number;
-  endTime: number;
-  remoteOpen: boolean;
 }
 interface SettingProps {
   automaticLock: boolean;
   autoLockTime: number;
-  setUserOpen: (item: any) => {};
-  userOpenJurisdiction: userOpenJurisdiction;
+  setUserOpen: (item: any) => any;
+  userOpenJurisdiction: UserOpenJurisdiction;
   devInfo: any;
 }
 class Setting extends Component<SettingProps, SettingState> {
-  static propType = {
-    automaticLock: PropTypes.bool,
-    autoLockTime: PropTypes.number,
-  };
-
   static defaultProps = {
     automaticLock: false,
     autoLockTime: 0,
@@ -50,26 +40,30 @@ class Setting extends Component<SettingProps, SettingState> {
       remoteOpen: false,
     },
   };
+
   time: any;
+
   unlockVoiceRemote: any;
+
   timerId: string;
+
   offset: number;
+
   unlockKeyWarn: any;
+
   listen: any;
+
   listenError: any;
 
   needList: string[][];
+
   flag: string;
+
   constructor(props: any) {
     super(props);
 
     this.state = {
-      automaticLock: this.props.automaticLock,
-      autoLockTime: this.props.autoLockTime,
-      startTime: 0,
-      endTime: 0,
       data: [],
-      remoteOpen: false,
       status: 'none',
       showLoading: false,
     };
@@ -78,6 +72,7 @@ class Setting extends Component<SettingProps, SettingState> {
     this.offset = 0;
     this.needList = [];
   }
+
   async componentDidMount() {
     TYSdk.event.on('dpDataChange', this.handleDataChange);
     this.needList = settingListItem.map((element: string[]) =>
@@ -87,9 +82,8 @@ class Setting extends Component<SettingProps, SettingState> {
             !!TYSdk.device.getDpSchema(item) ||
             !!TYSdk.device.getDpSchema(dpCodeConfig.remoteHasPsw)
           );
-        } else {
-          return TYSdk.device.getDpSchema(item);
         }
+        return TYSdk.device.getDpSchema(item);
       })
     );
     this.getData(this.props);
@@ -104,6 +98,7 @@ class Setting extends Component<SettingProps, SettingState> {
   componentWillUnmount() {
     TYSdk.event.off('dpDataChange', this.handleDataChange);
   }
+
   handleDataChange = () => {
     if (typeof this.time !== 'undefined' && this.time !== null) {
       clearTimeout(this.time);
@@ -112,6 +107,7 @@ class Setting extends Component<SettingProps, SettingState> {
       });
     }
   };
+
   handlePutDpData = (key: any, value: any) => {
     TYSdk.device.putDeviceData({
       [key]: value,
@@ -131,7 +127,7 @@ class Setting extends Component<SettingProps, SettingState> {
   choiceList = (item: string, value: any) => {
     const isLocalOnline = this.props.devInfo.deviceOnline;
     if (!isLocalOnline) {
-      //离线 不进行 提示自行添加对应提示方式
+      // 离线 不进行 提示自行添加对应提示方式
       return;
     }
 
@@ -139,13 +135,13 @@ class Setting extends Component<SettingProps, SettingState> {
     if (range) {
       const data = range.map((element: any) => {
         return {
-          label: Strings.getLang(item + '_' + element),
+          label: Strings.getLang(`${item}_${element}`),
           value: element,
         };
       });
       Popup.picker({
         dataSource: data,
-        title: Strings.getLang(item + '_title'),
+        title: Strings.getLang(`${item}_title`),
         cancelText: Strings.getLang('cancel'),
         confirmText: Strings.getLang('confirm'),
         value,
@@ -156,10 +152,11 @@ class Setting extends Component<SettingProps, SettingState> {
       });
     }
   };
+
   automaticLock = (item: string, value: string) => {
     const { max } = TYSdk.device.getDpSchema(item);
     Popup.countdown({
-      title: Strings.getLang(item + '_title'),
+      title: Strings.getLang(`${item}_title`),
       max,
       cancelText: Strings.getLang('cancel'),
       confirmText: Strings.getLang('confirm'),
@@ -172,17 +169,20 @@ class Setting extends Component<SettingProps, SettingState> {
       },
     });
   };
+
   handle = (value: boolean, handleObj: any) => {
     if (value) {
-      //开启手势密码
+      // 开启手势密码
       handleObj.createOrOpen();
     } else {
       handleObj.close('needCheck');
     }
   };
+
   edit = (handleObj: any) => {
     handleObj.edit();
   };
+
   getData = (props: any) => {
     const { autoLockTime, motorTorque, userOpenJurisdiction, automaticLock, devInfo } = props;
 
@@ -194,12 +194,12 @@ class Setting extends Component<SettingProps, SettingState> {
       [dpCodeConfig.beepVolume]: 'beepVolume',
       [dpCodeConfig.language]: 'language',
     };
-    let data = this.needList.map((item: string[]) => {
+    const data = this.needList.map((item: string[]) => {
       const dataItem = item.map(element => {
         if (element === dpCodeConfig.remoteNoPswSet || element === dpCodeConfig.remoteHasPsw) {
           return {
             key: 'remoteOpen',
-            title: Strings.getLang('remoteOpen' + 'Title'),
+            title: Strings.getLang('remoteOpenTitle'),
             type: 'switch',
             switchValue: userOpenJurisdiction.remoteOpen,
             onSwitch: async (value: any) => {
@@ -239,7 +239,7 @@ class Setting extends Component<SettingProps, SettingState> {
                       remoteOpenState: {
                         way: '',
                         user: 'all',
-                      }, //remoteOpenState 值目前固定 因为没有涉及到开门方式的选择 或者是权限选择 ，使用者可以根据情况使用具体字段 ，目前user是权限 为全体用户
+                      }, // remoteOpenState 值目前固定 因为没有涉及到开门方式的选择 或者是权限选择 ，使用者可以根据情况使用具体字段 ，目前user是权限 为全体用户
                       remoteOpen: result.isRemoteOpen.toString() === 'true',
                     });
                   }
@@ -259,15 +259,16 @@ class Setting extends Component<SettingProps, SettingState> {
             tip: Strings.getLang('automaticLockTip'),
             clickTitle: Strings.getLang('automaticLockTriggerTitle'),
             type: 'switchAndClick',
-            choiceValue:
-              _.padStart(Math.floor(autoLockTime / 60).toString(), 2, '0') +
-              ':' +
-              _.padStart((autoLockTime % 60).toString(), 2, '0'),
+            choiceValue: `${_.padStart(
+              Math.floor(autoLockTime / 60).toString(),
+              2,
+              '0'
+            )}:${_.padStart((autoLockTime % 60).toString(), 2, '0')}`,
             switchValue: automaticLock,
             onClick: () => this.automaticLock(dpCodeConfig.autoLockTime, 'autoLockTime'),
             onSwitch: (value: any) => {
               if (!isLocalOnline) {
-                //离线 不进行 提示自行添加对应提示方式
+                // 离线 不进行 提示自行添加对应提示方式
                 return;
               }
               this.handlePutDpData(dpCodeConfig.automaticLock, value);
@@ -282,8 +283,8 @@ class Setting extends Component<SettingProps, SettingState> {
           return {
             key: dpPropList[element],
             type: 'click',
-            title: Strings.getLang(dpPropList[element] + 'Title'),
-            choiceValue: Strings.getLang(element + '_' + props[dpPropList[element]]),
+            title: Strings.getLang(`${dpPropList[element]}Title`),
+            choiceValue: Strings.getLang(`${element}_${props[dpPropList[element]]}`),
             onClick: () => this.choiceList(element, props[dpPropList[element]]),
           };
         }
@@ -294,7 +295,7 @@ class Setting extends Component<SettingProps, SettingState> {
             type: 'click',
             title: Strings.getLang('motorTorqueTitle'),
             tip: Strings.getLang('motorTorqueTip'),
-            choiceValue: Strings.getLang(dpCodeConfig.motorTorque + '_' + motorTorque),
+            choiceValue: Strings.getLang(`${dpCodeConfig.motorTorque}_${motorTorque}`),
             onClick: () => this.choiceList(dpCodeConfig.motorTorque, motorTorque),
           };
         }
@@ -330,20 +331,19 @@ class Setting extends Component<SettingProps, SettingState> {
                       })}
                     </View>
                   );
-                } else {
-                  return null;
                 }
+                return null;
               })}
           </View>
         </ScrollView>
         <Toast.Success
           show={status !== 'none'}
           text={Strings.getLang('successSetting')}
-          onFinish={() =>
+          onFinish={() => {
             this.setState({
               status: 'none',
-            })
-          }
+            });
+          }}
         />
         {showLoading && <Loading loadingShow={true} />}
       </View>
@@ -352,27 +352,6 @@ class Setting extends Component<SettingProps, SettingState> {
 }
 
 const styles = StyleSheet.create({
-  userTip: {
-    color: '#333',
-    fontSize: convertX(16),
-  },
-  timeView: {
-    flexDirection: 'row',
-    width: convertX(343),
-    height: convertX(50),
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: convertX(16),
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#eee',
-  },
-  timeTouch: {
-    width: convertX(343),
-    height: convertX(50),
-    backgroundColor: 'transparent',
-    position: 'absolute',
-  },
   listView: {
     alignItems: 'center',
     width,
@@ -380,25 +359,6 @@ const styles = StyleSheet.create({
   },
   space: {
     marginTop: convertX(10),
-  },
-  spaceView: {
-    backgroundColor: '#fff',
-    width,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tip: {
-    color: '#999999',
-    fontSize: convertX(12),
-    marginTop: convertX(6),
-    width: convertX(260),
-  },
-  arrow: {
-    marginLeft: 10,
-  },
-  onclickView: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });
 
@@ -409,7 +369,7 @@ export default connect(
     devInfo,
   }: {
     dpState: any;
-    userOpenJurisdiction: userOpenJurisdiction;
+    userOpenJurisdiction: UserOpenJurisdiction;
     devInfo: DevInfo;
   }) => ({
     automaticLock: dpState[dpCodeConfig.automaticLock],

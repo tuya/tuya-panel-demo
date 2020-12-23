@@ -7,6 +7,7 @@ module.exports = {
     'one-var': 0,
     '@typescript-eslint/no-unused-vars': 0,
     'react/jsx-props-no-spreading': 0,
+    'react/destructuring-assignment': 0,
   },
   settings: {
     'import/resolver': {

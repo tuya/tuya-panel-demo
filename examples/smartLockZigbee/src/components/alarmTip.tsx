@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { TYSdk, Utils } from 'tuya-panel-kit';
+import moment from 'moment';
 import apiRequestHandle from '../api';
 import Res from '../res';
 import Strings from '../i18n';
-import moment from 'moment';
 import dpConfig from '../config/dpCodes';
+
 const { convertX } = Utils.RatioUtils;
 interface AlarmTipProps {
   onClick: () => void;
@@ -25,6 +26,7 @@ export default class AlarmTip extends PureComponent<AlarmTipProps, AlarmTipState
       time: '',
     };
   }
+
   componentDidMount() {
     TYSdk.event.on('dpDataChange', this.getNumber);
     this.alarm();
@@ -40,9 +42,18 @@ export default class AlarmTip extends PureComponent<AlarmTipProps, AlarmTipState
         console.log(err);
       });
   }
+
   componentWillUnmount() {
     TYSdk.event.off('dpDataChange', this.getNumber);
   }
+
+  onClick = () => {
+    this.setState({
+      number: 0,
+    });
+    this.props.onClick();
+  };
+
   getNumber = (data: any) => {
     if (JSON.stringify(data).length > 50) {
       return;
@@ -65,6 +76,7 @@ export default class AlarmTip extends PureComponent<AlarmTipProps, AlarmTipState
       }
     }, 1000);
   };
+
   alarm = () => {
     apiRequestHandle
       .getAlarmList(0, 1)
@@ -72,15 +84,14 @@ export default class AlarmTip extends PureComponent<AlarmTipProps, AlarmTipState
         let alarm = '';
         if (d.datas.length > 0) {
           Object.keys(d.datas[0].dps[0]).forEach(element => {
-            //具体值获取文本生成逻辑可自行编写
+            // 具体值获取文本生成逻辑可自行编写
             alarm += Strings.getDpLang(`alarm_lock_${d.datas[0].dps[0][element]}`);
           });
           this.setState({
             alarm,
             time:
-              moment()
-                .format('YYYY-MM-DD')
-                .toString() === moment(d.datas[0].gmtCreate).format('YYYY-MM-DD')
+              moment().format('YYYY-MM-DD').toString() ===
+              moment(d.datas[0].gmtCreate).format('YYYY-MM-DD')
                 ? moment(d.datas[0].gmtCreate).format('HH:mm')
                 : moment(d.datas[0].gmtCreate).format('MM-DD HH:mm'),
           });
@@ -95,12 +106,7 @@ export default class AlarmTip extends PureComponent<AlarmTipProps, AlarmTipState
         console.log(err);
       });
   };
-  onClick = () => {
-    this.setState({
-      number: 0,
-    });
-    this.props.onClick();
-  };
+
   render() {
     const { alarm, time, number } = this.state;
     const { iconColor } = this.props;
@@ -145,11 +151,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  txt: {
-    backgroundColor: 'transparent',
-    textAlign: 'center',
-    fontSize: 20,
-  },
   time: {
     color: '#878787',
     fontSize: 14,
@@ -181,9 +182,5 @@ const styles = StyleSheet.create({
   alarmNumText: {
     fontSize: convertX(12),
     color: '#fff',
-  },
-  alarmNoneView: {
-    width: 40,
-    height: 20,
   },
 });
