@@ -4,7 +4,6 @@ import dpCode from '../config/dpCodes';
 // let apiRequestHandle: { [key: string]: (...args: any[]) => Promise<any> } = {};
 export const getAlarmList = (offset: number, limit: number) => {
   const data = [TYSdk.device.getDpIdByCode(dpCode.alarmLock)];
-  console.log(data);
   return TYSdk.apiRequest<any>(
     'tuya.m.device.lock.alarm.list',
     {

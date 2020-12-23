@@ -13,4 +13,19 @@ const showBg = require('./showBg.png');
 const unChild = require('./unChild.png');
 const unReverseLock = require('./unReverseLock.png');
 
-export default { alarm, arrow, child, door, none, opening, outLine, records, reverseLock, setting, show, showBg, unChild, unReverseLock };
+export default {
+  alarm,
+  arrow,
+  child,
+  door,
+  none,
+  opening,
+  outLine,
+  records,
+  reverseLock,
+  setting,
+  show,
+  showBg,
+  unChild,
+  unReverseLock,
+};

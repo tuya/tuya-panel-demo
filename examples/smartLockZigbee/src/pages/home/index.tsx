@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, View, StyleSheet, TouchableWithoutFeedback, Image, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { TYSdk, Dialog, Utils, Toast, RotationView, DevInfo, GlobalTheme } from 'tuya-panel-kit';
@@ -11,13 +11,14 @@ import { getUser, setUserOpen } from '../../models/modules/userInfo';
 import { getUserInfo } from '../../dataHandle/userInfoHandle';
 import dpCodesConfig from '../../config/dpCodes';
 import apiRequestHandle from '../../api';
+
 const { convertX, isIphoneX } = Utils.RatioUtils;
-const { width } = Dimensions.get('window');
 const { withTheme } = Utils.ThemeUtils;
+
 // const themeColor = Config.getUiValue('themeColor');
 interface HomeConnectType {
   devInfo: DevInfo;
-  user: userType;
+  user: UserType;
   dpState: any;
   userOpenJurisdiction: UserOpenJurisdiction;
 }
@@ -25,9 +26,9 @@ interface HomeProps {
   reverseLock: boolean;
   childLock: boolean;
   userOpenJurisdiction: UserOpenJurisdiction;
-  getUser: any;
-  setUserOpen: any;
-  user: userType;
+  getUserAction: any;
+  setUserOpenAction: any;
+  user: UserType;
   devInfo: DevInfo;
   theme: GlobalTheme;
 }
@@ -36,6 +37,8 @@ interface HomeState {
   status: string;
 }
 class Home extends PureComponent<HomeProps, HomeState> {
+  time: any;
+
   static defaultProps = {
     user: {},
     reverseLock: false,
@@ -47,7 +50,7 @@ class Home extends PureComponent<HomeProps, HomeState> {
       remoteOpen: false,
     },
   };
-  time: any;
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -55,15 +58,17 @@ class Home extends PureComponent<HomeProps, HomeState> {
       status: 'none',
     };
   }
+
   async componentDidMount() {
-    getUserInfo(this.props.getUser);
+    const { getUserAction, setUserOpenAction } = this.props;
+    getUserInfo(getUserAction);
     const result = await apiRequestHandle.fetchDp('isRemoteOpen');
     if (typeof result === 'object') {
-      this.props.setUserOpen({
+      setUserOpenAction({
         remoteOpenState: {
           way: '',
           user: 'all',
-        }, //remoteOpenState 值目前固定 因为没有涉及到开门方式的选择 或者是权限选择 ，使用者可以根据情况使用具体字段 ，目前user是权限 为全体用户
+        }, // remoteOpenState 值目前固定 因为没有涉及到开门方式的选择 或者是权限选择 ，使用者可以根据情况使用具体字段 ，目前user是权限 为全体用户
         remoteOpen: result.isRemoteOpen.toString() === 'true',
       });
     }
@@ -75,11 +80,11 @@ class Home extends PureComponent<HomeProps, HomeState> {
   }
 
   dpDataChangeHandle = (data: any) => {
-    const { remote_result } = data;
+    const remoteResultDp = data.remote_result;
     if (JSON.stringify(data).length > 50) {
       return;
     }
-    if (typeof remote_result !== 'undefined' && remote_result) {
+    if (typeof remoteResultDp !== 'undefined' && remoteResultDp) {
       this.setState({
         load: false,
         status: 'success',
@@ -87,11 +92,13 @@ class Home extends PureComponent<HomeProps, HomeState> {
       this.clearTime();
     }
   };
+
   clearTime = () => {
     if (typeof this.time !== 'undefined' && this.time !== null) {
       clearTimeout(this.time);
     }
   };
+
   toAlarm = () => {
     TYSdk.Navigator.push({
       id: 'alarmList',
@@ -126,6 +133,7 @@ class Home extends PureComponent<HomeProps, HomeState> {
       });
     }
   };
+
   getButtonList = () => {
     const { user } = this.props;
 
@@ -158,9 +166,10 @@ class Home extends PureComponent<HomeProps, HomeState> {
     }
     return data;
   };
+
   getShowList = () => {
     const { childLock, reverseLock } = this.props;
-    const data: buttonListType[] = [
+    const data: ButtonListType[] = [
       {
         key: 'reverseLock',
         text: reverseLock ? Strings.getLang('reverseLock') : Strings.getLang('noReverseLock'),
@@ -182,19 +191,16 @@ class Home extends PureComponent<HomeProps, HomeState> {
   renderButton() {
     console.log(this.props);
     const { load } = this.state;
-    const { userOpenJurisdiction, user } = this.props;
-    const isLocalOnline = this.props.devInfo.deviceOnline;
+    const { userOpenJurisdiction, user, devInfo, theme } = this.props;
+    const isLocalOnline = devInfo.deviceOnline;
+    const normalTextChoice =
+      user.userType === 10 || user.userType === 50 ? Strings.getLang('longPressOpen') : '';
+
     const image = {
       normal: {
         bg: Res.show,
         iconBg: Res.door,
-        text: userOpenJurisdiction.remoteOpen
-          ? userOpenJurisdiction.remoteOpenState.user === 'all'
-            ? Strings.getLang('longPressOpen')
-            : user.userType === 10 || user.userType === 50
-            ? Strings.getLang('longPressOpen')
-            : ''
-          : '',
+        text: userOpenJurisdiction.remoteOpen ? normalTextChoice : '',
         color: '#fff',
       },
       outLine: {
@@ -206,7 +212,7 @@ class Home extends PureComponent<HomeProps, HomeState> {
       load: {
         bg: Res.showBg,
         iconBg: Res.opening,
-        text: Strings.getLang('locking') + '...',
+        text: `${Strings.getLang('locking')}...`,
         color: '#fff',
       },
     };
@@ -220,18 +226,16 @@ class Home extends PureComponent<HomeProps, HomeState> {
             <RotationView active={load} duration={3000}>
               <Image
                 source={image[flag].bg}
-                style={[styles.bgShow, { tintColor: this.props.theme.global.brand }]}
+                style={[styles.bgShow, { tintColor: theme.global.brand }]}
               />
             </RotationView>
 
             <View style={styles.bgShowView}>
               <TouchableWithoutFeedback
-                style={[styles.buttonView, { backgroundColor: this.props.theme.global.brand }]}
+                style={[styles.buttonView, { backgroundColor: theme.global.brand }]}
                 onLongPress={() => this.open()}
               >
-                <View
-                  style={[styles.buttonView, { backgroundColor: this.props.theme.global.brand }]}
-                >
+                <View style={[styles.buttonView, { backgroundColor: theme.global.brand }]}>
                   <Image
                     source={image[flag].iconBg}
                     style={!image[flag].text ? { opacity: 0.5 } : {}}
@@ -264,13 +268,19 @@ class Home extends PureComponent<HomeProps, HomeState> {
       </View>
     );
   }
+
   render() {
     const buttonList = this.getButtonList();
     const showList = this.getShowList();
-    const { user } = this.props;
+    const { user, theme } = this.props;
     const { status } = this.state;
     const ToastView =
       status === 'success' ? Toast.Success : status === 'error' ? Toast.Error : Toast;
+
+    const buttonStyleIsIphoneX = {
+      paddingTop: convertX(13),
+      paddingBottom: convertX(10),
+    };
     return (
       <View style={styles.root}>
         <View style={styles.centerView}>
@@ -280,36 +290,31 @@ class Home extends PureComponent<HomeProps, HomeState> {
             bgColor="transparent"
             imageColor={{}}
             textStyle={{ marginTop: 0, fontSize: 12 }}
-            textColor={'#666'}
+            textColor="#666"
             style={{ paddingHorizontal: 0 }}
           />
-          <AlarmTip onClick={this.toAlarm} iconColor={this.props.theme.global.brand} />
+          <AlarmTip onClick={this.toAlarm} iconColor={theme.global.brand} />
         </View>
         <ButtonList
           data={buttonList}
           bgColor="#fff"
           imageColor={{}}
           textStyle={{ marginTop: 0, fontSize: 12 }}
-          textColor={'#878787'}
+          textColor="#878787"
           style={[
             styles.buttonStyle,
             user.userType === 10 || user.userType === 50 ? {} : { justifyContent: 'center' },
-            isIphoneX
-              ? {}
-              : {
-                  paddingTop: convertX(13),
-                  paddingBottom: convertX(10),
-                },
+            isIphoneX ? {} : buttonStyleIsIphoneX,
           ]}
         />
         <ToastView
           show={status !== 'none'}
-          text={Strings.getLang(status + 'Open')}
-          onFinish={() =>
+          text={Strings.getLang(`${status}Open`)}
+          onFinish={() => {
             this.setState({
               status: 'none',
-            })
-          }
+            });
+          }}
         />
       </View>
     );
@@ -322,12 +327,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
   },
-  topView: {
-    width,
-    marginTop: convertX(19),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   center: {
     flex: 1,
     alignItems: 'center',
@@ -338,11 +337,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: convertX(12),
   },
-  txt: {
-    backgroundColor: 'transparent',
-    textAlign: 'center',
-    fontSize: 20,
-  },
+
   bgShowView: {
     width: convertX(210),
     height: convertX(210),
@@ -369,40 +364,6 @@ const styles = StyleSheet.create({
     marginTop: convertX(7),
     textAlign: 'center',
   },
-  eleView: {
-    width: 28,
-    height: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  eleText: {
-    color: '#666666',
-    fontSize: 12,
-  },
-  battery: {
-    transform: [{ rotate: '90deg' }],
-    width: 24,
-    height: 20,
-  },
-  batteryView: {
-    position: 'absolute',
-    // top: 0,
-    left: 28,
-  },
-  textInput: {
-    height: 50,
-    width: 283,
-    alignSelf: 'stretch',
-    marginTop: 10,
-    fontSize: 20,
-    color: '#333',
-    textAlign: 'left',
-    backgroundColor: '#F8F8F8',
-    paddingLeft: convertX(20),
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: '#E5E5E5',
-  },
   outLineText: {
     color: '#5B5B5B',
     fontSize: 14,
@@ -421,23 +382,6 @@ const styles = StyleSheet.create({
     paddingTop: convertX(5),
     paddingBottom: convertX(20),
   },
-  imageView: {
-    width: 170,
-    height: 170,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imagePic: {
-    width: 168,
-    height: 168,
-    borderRadius: 84,
-  },
-  gatherText: {
-    color: '#666666',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 25,
-  },
 });
 export default connect(
   ({ devInfo, user, dpState, userOpenJurisdiction }: HomeConnectType) => {
@@ -450,5 +394,6 @@ export default connect(
       // :dpState,
     };
   },
-  dispatch => bindActionCreators({ getUser, setUserOpen }, dispatch)
+  dispatch =>
+    bindActionCreators({ getUserAction: getUser, setUserOpenAction: setUserOpen }, dispatch)
 )(withTheme(Home));
