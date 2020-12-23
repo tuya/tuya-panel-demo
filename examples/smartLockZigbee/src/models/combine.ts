@@ -3,6 +3,7 @@ import { combineEpics } from 'redux-observable';
 import { reducers as commonReducers, epics as commonEpics } from './modules/common';
 import { reducers as recordReducers } from './modules/recordList';
 import { reducers as userReducers } from './modules/userInfo';
+
 export const reducers = {
   ...commonReducers,
   ...recordReducers,

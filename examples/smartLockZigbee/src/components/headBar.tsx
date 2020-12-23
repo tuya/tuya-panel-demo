@@ -1,6 +1,4 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { TopBar, TYSdk } from 'tuya-panel-kit';
 
 const backIcon = 'backIos';
@@ -10,25 +8,12 @@ interface HeadBarProps {
   pan: boolean;
 }
 export default class HeadBar extends Component<HeadBarProps, any> {
-  static propTypes = {
-    page: PropTypes.string,
-    title: PropTypes.string,
-    onClick: PropTypes.func,
-    pan: PropTypes.bool,
-    onLeftClick: PropTypes.func,
-    bgColor: PropTypes.string,
-  };
   static defaultProps = {
     page: '',
     title: '',
-    bgColor: '#fff',
     pan: false,
-    onClick: () => {},
   };
-  constructor(props: any) {
-    super(props);
-  }
-  componentDidMount() {}
+
   getActionInfo() {
     let topBarConfig = [
       {
@@ -41,8 +26,9 @@ export default class HeadBar extends Component<HeadBarProps, any> {
     topBarConfig = !this.props.pan ? topBarConfig : [];
     return topBarConfig;
   }
+
   getActionLeftInfo() {
-    let topBarConfig = [
+    const topBarConfig = [
       {
         name: backIcon,
         onPress: () => TYSdk.Navigator.pop(),
@@ -50,6 +36,7 @@ export default class HeadBar extends Component<HeadBarProps, any> {
     ];
     return topBarConfig;
   }
+
   back = () => {
     if (this.props.page === 'home') {
       TYSdk.native.back();

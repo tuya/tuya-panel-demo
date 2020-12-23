@@ -1,5 +1,6 @@
 import { TYSdk } from 'tuya-panel-kit';
-export const getOpenListNeedDpId = (config: configType): string[] => {
+
+export const getOpenListNeedDpId = (config: ConfigType): string[] => {
   const {
     unlockFingerprint,
     unlockPassword,
