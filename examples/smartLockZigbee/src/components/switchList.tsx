@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Utils, SwitchButton } from 'tuya-panel-kit';
 import Res from '../res';
+
 const { convertX } = Utils.RatioUtils;
 const { width } = Dimensions.get('window');
 interface SwitchListProps {
@@ -41,6 +42,7 @@ export default class SwitchList extends Component<SwitchListProps, SwitchListSta
     choiceValue: '',
     innerStyle: {},
   };
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -48,6 +50,7 @@ export default class SwitchList extends Component<SwitchListProps, SwitchListSta
       choiceValue: this.props.choiceValue,
     };
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       this.setState({
@@ -64,7 +67,7 @@ export default class SwitchList extends Component<SwitchListProps, SwitchListSta
         style={[
           styles.inputView,
           { borderBottomWidth: 0 },
-          !!tip ? { height: convertX(70) } : {},
+          tip ? { height: convertX(70) } : {},
           innerStyle,
         ]}
       >
@@ -104,7 +107,7 @@ export default class SwitchList extends Component<SwitchListProps, SwitchListSta
       <View
         style={[
           styles.inputView,
-          !!tip ? styleListA.view : type === 'switchAndClick' ? styleListB.view : {},
+          tip ? styleListA.view : type === 'switchAndClick' ? styleListB.view : {},
           innerStyle,
         ]}
       >
@@ -139,6 +142,7 @@ export default class SwitchList extends Component<SwitchListProps, SwitchListSta
       </View>
     );
   }
+
   render() {
     const { type, tip, title, clickTitle, style } = this.props;
     const { switchValue } = this.state;
@@ -161,23 +165,12 @@ export default class SwitchList extends Component<SwitchListProps, SwitchListSta
 }
 
 const styles = StyleSheet.create({
-  textInput: {
-    width: 300,
-    height: convertX(40),
-    backgroundColor: '#fff',
-    textAlign: 'left',
-    color: '#000',
-    fontSize: convertX(16),
-    marginRight: convertX(16),
-  },
   userTip: {
     color: '#333',
     fontSize: convertX(16),
     maxWidth: 200,
   },
-  space: {
-    marginTop: convertX(10),
-  },
+
   spaceView: {
     backgroundColor: '#fff',
     width,
@@ -203,12 +196,7 @@ const styles = StyleSheet.create({
     marginTop: convertX(6),
     maxWidth: convertX(270),
   },
-  info: {
-    height: 240,
-    width,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
+
   onclickView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -221,8 +209,5 @@ const styles = StyleSheet.create({
     height: convertX(50),
     backgroundColor: 'transparent',
     position: 'absolute',
-  },
-  question: {
-    flexDirection: 'row',
   },
 });

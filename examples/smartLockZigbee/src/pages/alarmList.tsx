@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, Image, SectionList, Dimensions } from 'react-native';
 import { TYSdk, Utils, IconFont } from 'tuya-panel-kit';
 import { bindActionCreators } from 'redux';
-import icons from '../icons/index';
 import moment from 'moment';
+import icons from '../icons/index';
 import Strings from '../i18n';
 import { getWarnList, getWarnListOne } from '../models/modules/recordList';
 import { getWarnListInfo } from '../dataHandle/recordHandle';
 import Loading from '../components/loading';
 import HeadTop from '../components/headBar';
 import Res from '../res';
+
 const { convertX } = Utils.RatioUtils;
 const { width } = Dimensions.get('window');
 
@@ -28,24 +28,23 @@ interface AlarmListProps {
   warnList: warnListType;
 }
 class AlarmList extends Component<AlarmListProps, any> {
-  static propTypes = {
-    warnList: PropTypes.object,
-    getWarnList: PropTypes.func.isRequired,
-  };
-
   static defaultProps = {
     warnList: {
-      list: [],
+      list: [{ title: '', data: [] }],
+      totalCount: 0,
+      hasNext: false,
+      response: true,
     },
   };
+
   isShowLoading: boolean;
+
   timerId: string;
+
   offset: number;
+
   constructor(props: any) {
     super(props);
-    this.state = {
-      data: [],
-    };
     this.timerId = '';
     this.offset = 0;
     this.isShowLoading = true;
@@ -56,13 +55,15 @@ class AlarmList extends Component<AlarmListProps, any> {
   }
 
   componentWillUnmount() {
-    //setAlarmNum(this.props.dispatch);
+    // setAlarmNum(this.props.dispatch);
   }
+
   loadMore() {
-    this.offset = this.offset + pageSize;
+    this.offset += pageSize;
     this.isShowLoading = false;
     if (this.props.warnList.hasNext) getWarnListInfo(this.props.getWarnList, pageSize, this.offset);
   }
+
   renderItem = (data: any) => {
     const { item, section } = data;
     let alarm = '';
@@ -79,7 +80,7 @@ class AlarmList extends Component<AlarmListProps, any> {
         alarm = Strings.getLang('hijack');
         image = icons.hijack;
       } else {
-        alarm += Strings.getDpLang('alarm_lock_' + item.dps[0][element]);
+        alarm += Strings.getDpLang(`alarm_lock_${item.dps[0][element]}`);
         image = icons[item.dps[0][element]];
       }
     });
@@ -97,6 +98,7 @@ class AlarmList extends Component<AlarmListProps, any> {
       </View>
     );
   };
+
   render() {
     const { warnList } = this.props;
     return (
@@ -125,7 +127,7 @@ class AlarmList extends Component<AlarmListProps, any> {
             )}
             sections={this.props.warnList.list}
             onEndReached={() => this.loadMore()}
-            keyExtractor={(item, index) => item + index}
+            keyExtractor={(item: any, index) => item + index}
             stickySectionHeadersEnabled={true}
             onEndReachedThreshold={0.1}
             showsVerticalScrollIndicator={false}
