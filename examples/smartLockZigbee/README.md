@@ -23,7 +23,7 @@ The template project is the basic typescript template of react native version 0.
 
 You can scan the following QR code through the Tuya app to preview.
 
-![Basic-0.59](https://images.tuyacn.com/rms-static/91fab3d0-392d-11eb-8584-77b31b3e78b8-1607415345037.png?tyName=basic-0.59.png)
+![Basic-0.59](https://images.tuyacn.com/rms-static/2bc54690-45dd-11eb-a066-2bc8444523c6-1608810178937.png?tyName=smartLockZigbee.png)
 
 ## Running
 
