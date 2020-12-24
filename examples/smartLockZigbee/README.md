@@ -9,14 +9,14 @@ for users outside Chinese mainland, please remove `.npmrc` file.
 ## Download manually
 
 ```bash
-$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/basic-ts-0.59
-$ mv basic tuya-panel-basic-ts-0.59-example
-$ cd tuya-panel-basic-ts-0.59-example
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/smartLockZigbee
+$ mv basic smartLockZigbee
+$ cd smartLockZigbee
 ```
 
 ## Introduction
 
-The template project is the basic typescript template of react native version 0.59, which can start all Tuya products and be used to debug the DP points of the current product, in addition, it supports the following functions:
+This template project is the TS basic template React Native version 0.59, which can launch all ZigBee lock graffiti products for debugging the function points of the current product. In addition, the following functions are supported:
 
 1. Path Alias;
 2. React、Redux Hooks;

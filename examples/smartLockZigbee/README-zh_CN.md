@@ -9,14 +9,14 @@
 ## 手动下载
 
 ```bash
-$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/basic-ts-0.59
-$ mv basic tuya-panel-basic-ts-0.59-example
-$ cd tuya-panel-basic-ts-0.59-example
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/smartLockZigbee
+$ mv basic smartLockZigbee
+$ cd smartLockZigbee
 ```
 
 ## 介绍
 
-该模板工程为 React Native 0.59 版本的 TS 基础模板，可启动所有涂鸦产品，用于调试当前产品的功能点，此外支持以下功能：
+该模板工程为 React Native 0.59 版本的 TS 基础模板，可启动所有 ZigBee 门锁涂鸦产品，用于调试当前产品的功能点，此外支持以下功能：
 
 1. Path Alias;
 2. React、Redux Hooks;
