@@ -23,7 +23,7 @@ $ cd tuya-panel-basic-ts-0.59-example
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![Basic-0.59](https://images.tuyacn.com/rms-static/91fab3d0-392d-11eb-8584-77b31b3e78b8-1607415345037.png?tyName=basic-0.59.png)
+![Basic-0.59](https://images.tuyacn.com/rms-static/2bc54690-45dd-11eb-a066-2bc8444523c6-1608810178937.png?tyName=smartLockZigbee.png)
 
 ## 快速运行
 
