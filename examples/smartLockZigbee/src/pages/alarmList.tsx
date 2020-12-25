@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, Image, SectionList, Dimensions } from 'react-na
 import { TYSdk, Utils, IconFont } from 'tuya-panel-kit';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import icons from '../icons/index';
+import icons from '../res/icons';
 import Strings from '../i18n';
 import { getWarnList, getWarnListOne } from '../models/modules/recordList';
 import { getWarnListInfo } from '../dataHandle/recordHandle';
