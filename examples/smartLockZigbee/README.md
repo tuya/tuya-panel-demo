@@ -1,4 +1,4 @@
-# Tuya Panel Basic Template（React Native 0.59）
+# Tuya Panel Smart Lock ZigBee Template（React Native 0.59）
 
 English | [简体中文](./README-zh_CN.md)
 
@@ -10,8 +10,6 @@ for users outside Chinese mainland, please remove `.npmrc` file.
 
 ```bash
 $ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/smartLockZigbee
-$ mv basic smartLockZigbee
-$ cd smartLockZigbee
 ```
 
 ## Introduction
