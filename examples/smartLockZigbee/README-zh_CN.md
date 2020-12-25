@@ -1,4 +1,4 @@
-# Tuya Panel Basic Template（React Native 0.59）
+# Tuya Panel Smart Lock ZigBee Template（React Native 0.59）
 
 [English](./README.md) | 简体中文
 
@@ -10,8 +10,6 @@
 
 ```bash
 $ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/smartLockZigbee
-$ mv basic smartLockZigbee
-$ cd smartLockZigbee
 ```
 
 ## 介绍
