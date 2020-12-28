@@ -1,8 +1,7 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Dispatch } from 'redux';
 import {
-  TYSdk,
   NavigatorLayout,
   NavigationOptions,
   DeprecatedNavigator,
@@ -11,6 +10,7 @@ import {
 import composeLayout from './composeLayout';
 import { store, ReduxState } from './models';
 import LivePage from './pages/livePlay/LivePage';
+import CustomPage from './pages/customPage';
 
 console.disableYellowBox = true;
 
@@ -39,6 +39,7 @@ class MainLayout extends NavigatorLayout<Props> {
     return {
       showOfflineView: false,
       hideTopbar: true,
+      style: styles.fullView,
       ...routeProps,
     };
   }
@@ -61,6 +62,9 @@ class MainLayout extends NavigatorLayout<Props> {
       case 'main':
         component = <LivePage />;
         break;
+      case 'customPage':
+        component = <CustomPage />;
+        break;
       default:
         break;
     }
@@ -68,5 +72,11 @@ class MainLayout extends NavigatorLayout<Props> {
     return component;
   }
 }
+
+const styles = StyleSheet.create({
+  fullView: {
+    backgroundColor: '#181818',
+  },
+});
 
 export default composeLayout(store, MainLayout);

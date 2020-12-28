@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
 import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
 import _ from 'lodash';
-import color from 'color';
+// import color from 'color';
 import { actions } from '@models';
 import { useSelector, useDispatch } from 'react-redux';
 import { commonConfig, commonClick } from '@config';
@@ -69,7 +69,7 @@ const FullFeatureBottomRight: React.FC<FullFeatureBottomRightProps> = (
 
   useEffect(() => {
     if (!ipcCommonState.stopFullAnim) {
-      animatePlayerFeature(hideFullMenu);
+      animatePlayerFeature(props.hideFullMenu);
     }
   }, [hideFullMenu]);
 

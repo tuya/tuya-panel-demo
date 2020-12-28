@@ -17,7 +17,6 @@ const NormalFeatureTopLeft: React.FC<NormalFeatureTopLeftProps> = (
   const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
 
   const popResolution = () => {
-    console.log('sdsd');
     if (commonClick.isRecordingNow() || commonClick.isMicTalking()) {
       return false;
     }

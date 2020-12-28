@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { HeaderView, SwitchDialog } from '@components';
+import { HeaderView, SwitchDialog, CustomDialog, PagePreLoading } from '@components';
 import { commonConfig, commonClick } from '@config';
 import { actions } from '@models';
 import LivePlayerView from './Live-player-view';
@@ -18,7 +18,6 @@ const LivePage: React.FC<LivePageProps> = (props: LivePageProps) => {
   const dispatch = useDispatch();
   const devInfo = useSelector((state: any) => state.devInfo);
   const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
-  const theme = useSelector((state: any) => state.theme);
 
   let firstLoadpage = true;
 
@@ -69,7 +68,8 @@ const LivePage: React.FC<LivePageProps> = (props: LivePageProps) => {
       />
       <LiveControlView isFullScreen={ipcCommonState.isFullScreen} />
       {ipcCommonState.showPopCommon && <SwitchDialog dataSource={ipcCommonState.popData} />}
-      {/* {ipcCommonState.showCustomDialog && <CustomDialog dataSource={ipcCommonState.popData} />} */}
+      {ipcCommonState.showCustomDialog && <CustomDialog dataSource={ipcCommonState.popData} />}
+      {ipcCommonState.showPagePreLoading && <PagePreLoading />}
     </View>
   );
 };
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LivePage;
+export default React.memo(LivePage);

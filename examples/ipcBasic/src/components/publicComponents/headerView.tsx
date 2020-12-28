@@ -6,9 +6,7 @@ import { commonConfig } from '@config';
 import Res from '@res';
 
 const { isIOS, statusBarHeight } = commonConfig;
-
 interface HeaderViewProps {
-  showLoadingToast?: boolean;
   isFullScreen?: boolean;
   hasRight?: boolean;
   rightPress?: () => void;
@@ -17,26 +15,28 @@ interface HeaderViewProps {
 }
 
 const HeaderView: React.FC<HeaderViewProps> = (props: HeaderViewProps) => {
+  const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
   const theme = useSelector((state: any) => state.theme);
   const { type, customTheme } = theme;
   const themeTextColor = customTheme[type].textColor;
   const themeBgc = customTheme[type].background;
   const themeBarStyleBg = customTheme[type].barStyleBg;
+  const themeStatusBackground = customTheme[type].statusBackground;
 
-  const { showLoadingToast, isFullScreen, hasRight, rightPress, contentTitle, leftPress } = props;
+  const { isFullScreen, hasRight, rightPress, contentTitle, leftPress } = props;
   return (
     <View>
       <StatusBar
         barStyle={themeBarStyleBg}
         translucent={true}
-        backgroundColor={showLoadingToast && !isIOS ? '#000000' : 'transparent'}
+        backgroundColor={ipcCommonState.showPagePreLoading && !isIOS ? '#000000' : 'transparent'}
         hidden={isFullScreen}
       />
       {!isFullScreen && (
         <View
           style={{
             paddingTop: isIOS ? 0 : statusBarHeight,
-            backgroundColor: '#000000',
+            backgroundColor: themeStatusBackground,
           }}
         >
           <TYIpcTopBar
@@ -57,7 +57,6 @@ const HeaderView: React.FC<HeaderViewProps> = (props: HeaderViewProps) => {
 };
 
 HeaderView.defaultProps = {
-  showLoadingToast: true,
   hasRight: true,
   isFullScreen: false,
   contentTitle: 'Title',
