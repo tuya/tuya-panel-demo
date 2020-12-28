@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
-import { useSelector } from 'react-redux';
+import { StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { commonConfig, commonClick } from '@config';
+import { actions } from '@models';
 import Res from '@res';
 
 const { cx } = commonConfig;
@@ -13,6 +14,7 @@ interface FullFeatureTopLeftProps {
 
 const FullFeatureTopLeft: React.FC<FullFeatureTopLeftProps> = (props: FullFeatureTopLeftProps) => {
   const timeoutHandle: any = useRef();
+  const dispatch = useDispatch();
   const [btnAnim] = useState(new Animated.Value(10));
   const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
   const { hideFullMenu } = props;
@@ -28,6 +30,12 @@ const FullFeatureTopLeft: React.FC<FullFeatureTopLeftProps> = (props: FullFeatur
       animatePlayerFeature(props.hideFullMenu);
     }
   }, [hideFullMenu]);
+
+  useEffect(() => {
+    if (ipcCommonState.stopFullAnim) {
+      stopAnimateFullScreen();
+    }
+  }, [ipcCommonState.stopFullAnim]);
 
   const stopAnimateFullScreen = () => {
     clearTimeout(timeoutHandle.current);
@@ -69,6 +77,11 @@ const FullFeatureTopLeft: React.FC<FullFeatureTopLeftProps> = (props: FullFeatur
 
   const backFullScreen = () => {
     commonClick.setScreenOrientation(0);
+    dispatch(
+      actions.ipcCommonActions.stopFullAnim({
+        stopFullAnim: true,
+      })
+    );
   };
   return (
     <Animated.View

@@ -80,14 +80,16 @@ const composeLayout = (store: Store, component: React.ComponentType) => {
     render() {
       return (
         <Provider store={store}>
-          <Theme theme={theme}>
-            <Connect mapStateToProps={_.identity}>
-              {({ mapStateToProps, ...props }: { mapStateToProps: any; [prop: string]: any }) => {
-                const hasInit = Object.keys(props.dpState).length > 0;
-                return hasInit ? <NavigatorLayout {...props} /> : null;
-              }}
-            </Connect>
-          </Theme>
+          <Connect mapStateToProps={_.identity}>
+            {({ mapStateToProps, ...props }) => {
+              const hasInit = Object.keys(props.dpState).length > 0;
+              return hasInit ? (
+                <Theme theme={_.merge({}, theme, props.theme)}>
+                  <NavigatorLayout dispatch={dispatch} {...props} />
+                </Theme>
+              ) : null;
+            }}
+          </Connect>
         </Provider>
       );
     }

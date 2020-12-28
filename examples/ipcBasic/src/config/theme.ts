@@ -34,6 +34,22 @@ const switchButton = {
   },
 };
 
+const popup = {
+  basic: {
+    titleFontColor: '#9B9B9B',
+    titleBg: '#ffffff',
+  },
+  dark: {
+    lineColor: '#404040',
+    titleFontColor: '#999999',
+    titleBg: '#262626',
+  },
+  light: {
+    titleFontColor: '#9B9B9B',
+    titleBg: '#ffffff',
+  },
+};
+
 const customTheme = {
   dark: {
     barStyleBg: isIOS ? 'light-content' : 'light-content',
@@ -50,6 +66,9 @@ const customTheme = {
     dialogBgc: '#262626',
     dialogDivideLine: '#404040',
     dialogTitleColor: '#999999',
+    // 非预览界面背景色
+    notLiveBackground: '#181818',
+    statusBackground: '#181818',
   },
   light: {
     barStyleBg: isIOS ? 'dark-content' : 'light-content',
@@ -65,12 +84,16 @@ const customTheme = {
     dialogBgc: '#ffffff',
     dialogDivideLine: '#eeeeee',
     dialogTitleColor: '#9B9B9B',
+    // 非预览界面背景色
+    notLiveBackground: '#f5f5f5',
+    statusBackground: '#000000',
   },
 };
 
 export default {
-  type: 'light',
+  type: 'dark',
   list,
   switchButton,
+  popup,
   customTheme,
 };

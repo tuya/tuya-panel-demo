@@ -1,75 +1,41 @@
-// import React, { useEffect } from 'react';
-// import { View, StyleSheet } from 'react-native';
-// import { actions } from '@models';
-// import { Popup, TYSdk } from 'tuya-panel-kit';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { requestTimeout, cancelRequestTimeOut } from '@utils';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { actions } from '@models';
+import { Popup, TYSdk } from 'tuya-panel-kit';
+import { useDispatch } from 'react-redux';
 
-// const TYNative = TYSdk.native;
+interface CustomDialogProps {
+  dataSource: any;
+}
 
-// interface CustomDialogProps {}
+const CustomDialog: React.FC<CustomDialogProps> = (props: CustomDialogProps) => {
+  const { dataSource } = props;
+  const [title] = useState(dataSource.title);
+  const dispatch = useDispatch();
 
-// const CustomDialog: React.FC<SwitchDialogProps> = (props: SwitchDialogProps) => {
-//   const dispatch = useDispatch();
-//   const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
-//   const theme = useSelector((state: any) => state.theme);
-//   const { type, customTheme } = theme;
-//   const themeContentBgc = customTheme[type].contentBgc;
-//   useEffect(() => {
-//     openDialog();
-//   }, []);
+  useEffect(() => {
+    openDialog();
+  }, []);
 
-//   const onConfirm = value => {
-//     const { dataSource } = ipcCommonState;
-//     const { mode } = dataSource;
-//     if (mode === 'videoResolution') {
-//       dispatch(
-//         actions.ipcCommonActions.showPopCommon({
-//           showPopCommon: false,
-//         })
-//       );
-//       Popup.close();
-//       // changeClarityAndAudio(value);
-//     } else if (mode === 'generalTheme') {
-//       // if (nativeThemeValue === value) {
-//       //   return false;
-//       // }
-//       // changeThemeState(value);
-//       // this.props.showPopCommon({
-//       //   showPopCommon: false,
-//       // });
-//       Popup.close();
-//     } else {
-//       TYNative.showLoading();
-//       TYNative.putDpData({
-//         [mode]: value,
-//       });
-//       requestTimeout();
-//     }
-//   };
-
-//   const openDialog = () => {
-//     const { dataSource } = this.props;
-//     const { title, mode } = dataSource;
-//     const { changData } = this.state;
-//     Popup.custom(
-//       {
-//         content: <SelectValue showData={changData} mode={mode} onConfirm={onConfirm} />,
-//         title: title !== '' ? title : <View style={{ height: 0 }} />,
-//         footer: <View style={{ height: 0 }} />,
-//       },
-//       {
-//         onMaskPress: () => {
-//           dispatch(
-//             actions.ipcCommonActions.showPopCommon({
-//               showPopCommon: false,
-//             })
-//           );
-//           Popup.close();
-//         },
-//       }
-//     );
-//   };
-//   return null;
-// };
-// export default CustomDialog;
+  const openDialog = () => {
+    Popup.custom(
+      {
+        content: dataSource.component,
+        title: title !== '' ? title : <View style={{ height: 0 }} />,
+        footer: <View />,
+      },
+      {
+        onMaskPress: () => {
+          dispatch(
+            actions.ipcCommonActions.showCustomDialog({
+              showCustomDialog: false,
+            })
+          );
+          Popup.close();
+        },
+      }
+    );
+  };
+  return null;
+};
+export default CustomDialog;

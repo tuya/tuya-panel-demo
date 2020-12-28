@@ -29,17 +29,27 @@ const Res = {
     themeSelected: require('./publicImage/themeSelected.png'),
     editIcon: require('./publicImage/editIcon.png'),
   },
+  ptzZoomFull: {
+    // 全屏ptz和zoom
+    ptzBgcImg: require('./ptzZoomFull/ptzBgcImg.png'),
+    ptzClickLeft: require('./ptzZoomFull/ptzClickLeft.png'),
+    ptzClickRight: require('./ptzZoomFull/ptzClickRight.png'),
+    ptzClickTop: require('./ptzZoomFull/ptzClickTop.png'),
+    ptzClickBottom: require('./ptzZoomFull/ptzClickBottom.png'),
+    ptzDot: require('./ptzZoomFull/ptzDot.png'),
+    zoomAdd: require('./ptzZoomFull/zoomAdd.png'),
+    zoomCut: require('./ptzZoomFull/zoomCut.png'),
+  },
   customFeature: {
     // 自定义功能模块
     dpSdStatus: require('./customFeature/dp_sdStatus.png'),
     dpPrivate: require('./customFeature/dp_private.png'),
     serveCloudStorage: require('./customFeature/server_cloudStorage.png'),
     dpGeneralAlbum: require('./customFeature/dp_generalAlbum.png'),
-    dpPir: require('./customFeature/dp_pir.png'),
-    dpLullaby: require('./customFeature/dp_lullaby.png'),
     dpTelephoneAlarm: require('./customFeature/dp_telephoneAlarm.png'),
     ipcThemeIcon: require('./customFeature/ipc_theme_icon.png'),
-    dpNightVision: require('./customFeature/dp_nightVision.png')
+    dpNightVision: require('./customFeature/dp_nightVision.png'),
+    ipcCustomPage: require('./customFeature/ipc_custom_page.png')
   },
 }
 

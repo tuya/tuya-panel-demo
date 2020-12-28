@@ -52,7 +52,6 @@ const SwitchDialog: React.FC<SwitchDialogProps> = (props: SwitchDialogProps) => 
       Popup.close();
       commonClick.changeClarityAndAudio(value);
     } else if (mode === 'generalTheme') {
-      console.log('sdjsdhhs', value);
       commonClick.changeThemeState(value);
       dispatch(
         actions.ipcCommonActions.showPopCommon({

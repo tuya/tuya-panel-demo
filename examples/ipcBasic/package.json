@@ -1,11 +1,11 @@
 {
-  "rnVersion": "5.28",
+  "rnVersion": "5.31",
   "license": "MIT",
-  "author": "tuya-panel-example",
-  "name": "tuyaPanelExample",
+  "author": "tuya-panel-ipc-basix-example",
+  "name": "tuyaPanelIpcBasicExample",
   "pid": [],
   "uiid": "",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "lint": "prettier --write '**/*.{js,jsx,ts,tsx}'",
@@ -20,7 +20,7 @@
     "release:patch": "standard-version --release-as patch -t @template/basic-ts-0.59@"
   },
   "main": "index.ios.js",
-  "description": "Basic Template (基础模板 React Native 0.59 TS 版本)",
+  "description": "Basic Ipc Template (基础模板 React Native 0.59 TS 版本)",
   "dependencies": {
     "@tuya-smart/tuya-panel-ipc-sdk": "^1.0.0",
     "events": "^1.1.1",

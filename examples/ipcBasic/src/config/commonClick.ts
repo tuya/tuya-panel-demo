@@ -1,5 +1,6 @@
+import { Linking } from 'react-native';
 import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
-import { TYSdk } from 'tuya-panel-kit';
+import { TYSdk, Popup } from 'tuya-panel-kit';
 import Strings from '@i18n';
 import _ from 'lodash';
 import { store, actions } from '@models';
@@ -219,6 +220,21 @@ const savePopDataToRedux = (key: string, dpValue: any) => {
   );
 };
 
+const saveCustomDialogDataToRedux = (key: string) => {
+  const originDialogData = popDataSchema[key];
+  const sendPopData = originDialogData;
+  store.dispatch(
+    actions.ipcCommonActions.popData({
+      popData: sendPopData,
+    })
+  );
+  store.dispatch(
+    actions.ipcCommonActions.showCustomDialog({
+      showCustomDialog: true,
+    })
+  );
+};
+
 const filterDpRange = key => {
   const originDpSchema = popDataSchema[key];
   const { showData, title } = originDpSchema;
@@ -274,6 +290,73 @@ const resoultionData = clarityType => {
   };
   return sendData;
 };
+
+const closeGlobalLoading = () => {
+  setTimeout(() => {
+    store.dispatch(actions.ipcCommonActions.showPagePreLoading({ showPagePreLoading: false }));
+  }, 500);
+};
+
+const callTelephoneAlarm = () => {
+  const tel = '911';
+  Linking.openURL(`tel:${tel}`);
+};
+
+const enterFirstRnPage = (id: string, data?: any) => {
+  if (isRecordingNow() || isMicTalking()) {
+    return false;
+  }
+  Popup.close();
+  store.dispatch(actions.ipcCommonActions.showCustomDialog({ showCustomDialog: false }));
+  store.dispatch(actions.ipcCommonActions.showPopCommon({ showPopCommon: false }));
+  TYIpcNative.enterRnPage(id, data);
+};
+
+const getPanelTintColor = (key, type) => {
+  const state = store.getState();
+  const { dpState } = state;
+  if (type === 'switch') {
+    return dpState[key];
+  }
+  if (type === 'switchDialog') {
+    if (popDataSchema[key]) {
+      const { showData } = popDataSchema[key];
+      for (let i = 0; i < showData.length; i++) {
+        if (showData[i].value === dpState[key]) {
+          return showData[i].actived;
+        }
+      }
+      // 防止配置数据出错，添加return false;
+      return false;
+    }
+    return false;
+  }
+  return false;
+};
+
+const getPanelOpacity = key => {
+  // 永不禁用的 回放，云存储, 相册
+  const neverDisabledPanel = [
+    'cloudStorage',
+    'generalAlbum',
+    'generalTheme',
+    'telephone_alarm',
+    'customDialogFeat1',
+    'rnCustomPage',
+  ];
+
+  const state = store.getState();
+  const { ipcCommonState } = state;
+  const { videoStatus } = ipcCommonState;
+  if (neverDisabledPanel.indexOf(key) > -1) {
+    return true;
+  }
+  if (videoStatus !== 6 && videoStatus !== 7) {
+    return false;
+  }
+  return true;
+};
+
 export default {
   // 退出设备预览
   backDeviceToList,
@@ -299,8 +382,10 @@ export default {
   isSuppportedCloudStorage,
   // 切换视频流或音频
   changeClarityAndAudio,
-  // 保存公共pop数据到热度下
+  // 保存公共pop数据到redux下
   savePopDataToRedux,
+  // 自定义Dialog类型
+  saveCustomDialogDataToRedux,
   // 切换主题按钮
   changePanelTheme,
   // 切换主题
@@ -309,4 +394,14 @@ export default {
   getInitLiveConig,
   // 视频流清晰度类型
   resoultionData,
+  // 关闭预置全局Loading
+  closeGlobalLoading,
+  // 电话报警功能
+  callTelephoneAlarm,
+  // 从预览跳转一级Rn页面
+  enterFirstRnPage,
+  // 获取grid菜单图片tintColor值
+  getPanelTintColor,
+  // 获取grid菜单图片透明度值
+  getPanelOpacity,
 };

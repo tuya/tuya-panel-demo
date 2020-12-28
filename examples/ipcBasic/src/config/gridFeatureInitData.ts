@@ -45,7 +45,6 @@ const getGridMenu = (schema, isSupportCloudStorage) => [
   },
   {
     show: true,
-    test: 'tuya_ipc_more_telephone_alarm',
     key: 'telephone_alarm',
     imgSource: Res.customFeature.dpTelephoneAlarm,
     imgTitle: Strings.getLang('ipc_panel_button_telephone_alarm'),
@@ -59,6 +58,22 @@ const getGridMenu = (schema, isSupportCloudStorage) => [
     imgTitle: Strings.getLang('ipc_nightvision_button'),
     type: 'switchDialog',
     shareOpen: false,
+  },
+  {
+    show: true,
+    key: 'customDialogFeat1',
+    imgSource: Res.customFeature.ipcCustomPage,
+    imgTitle: Strings.getLang('ipc_panel_button_custom_dialog'),
+    type: 'customDialog',
+    shareOpen: true,
+  },
+  {
+    show: true,
+    key: 'rnCustomPage',
+    imgSource: Res.customFeature.ipcCustomPage,
+    imgTitle: Strings.getLang('ipc_panel_button_custom_page'),
+    type: 'switchPage',
+    shareOpen: true,
   },
 ];
 
