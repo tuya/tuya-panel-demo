@@ -53,10 +53,9 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
           break;
         case 'cloudStorage':
           commonClick.toggleNativePage('paramCloudBack');
-          // PanelClick.enterCloudStorage();
           break;
         case 'telephone_alarm':
-          // PanelClick.callTelephoneAlarm();
+          commonClick.callTelephoneAlarm();
           break;
         case 'generalTheme':
           commonClick.changePanelTheme(key);
@@ -77,9 +76,9 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
     } else if (fatureType === 'switchDialog') {
       commonClick.savePopDataToRedux(key, dpState[key]);
     } else if (fatureType === 'customDialog') {
-      console.log('dsjdj');
+      commonClick.saveCustomDialogDataToRedux(key);
     } else if (fatureType === 'switchPage') {
-      console.log('dsjdj');
+      key === 'rnCustomPage' && commonClick.enterFirstRnPage('customPage');
     }
   };
 
@@ -104,7 +103,7 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
             onPress={_.throttle(() => panelFeature(item.key, item.type), 500)}
             onPressIn={() => pressInPanel(item.key)}
             onPressOut={pressOutPanel}
-            //  disabled={!getPanelOpacity(item.key)}
+            disabled={!commonClick.getPanelOpacity(item.key)}
           >
             <View
               style={[
@@ -112,7 +111,7 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
                 {
                   paddingVertical: panelPadding,
                   backgroundColor: hoverMenu === item.key ? themeFeatureHoverBgc : 'transparent',
-                  // opacity: getPanelOpacity(item.key) ? 1 : 0.2,
+                  opacity: commonClick.getPanelOpacity(item.key) ? 1 : 0.2,
                 },
               ]}
             >
@@ -120,11 +119,11 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
                 source={item.imgSource}
                 style={[
                   styles.panelImg,
-                  // {
-                  //   tintColor: getPanelTintColor(item.key, item.type)
-                  //     ? ipcCommonState.panelItemActiveColor
-                  //     : themeFeatureNormalTintColor,
-                  // },
+                  {
+                    tintColor: commonClick.getPanelTintColor(item.key, item.type)
+                      ? ipcCommonState.panelItemActiveColor
+                      : themeFeatureNormalTintColor,
+                  },
                 ]}
               />
               <View style={styles.panelTextBox}>

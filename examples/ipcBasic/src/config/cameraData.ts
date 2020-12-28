@@ -5,6 +5,7 @@ import FullFeatureTopLeft from '../components/livePlayComponents/fullFeatureTopL
 import FullFeatureTopRight from '../components/livePlayComponents/fullFeatureTopRight';
 import FullFeatureBottomLeft from '../components/livePlayComponents/fullFeatureBottomLeft';
 import FullFeatureBottomRight from '../components/livePlayComponents/fullFeatureBottomRight';
+import FullClarityChange from '../components/livePlayComponents/fullClarityChange';
 
 const normalArr = [{ component: NormalFeatureTopLeft }, { component: NormalFeatureTopRight }];
 
@@ -26,10 +27,25 @@ const fullComArr = [
   {
     component: FullFeatureBottomRight,
   },
+  {
+    component: FullClarityChange,
+  },
+];
+
+const fullClarityType: any = [
+  {
+    typeName: Strings.getLang('resolutionHigh'),
+    type: 'HD',
+  },
+  {
+    typeName: Strings.getLang('resolutionStandard'),
+    type: 'SD',
+  },
 ];
 
 export default {
   decodeClarityStatusString,
   normalArr,
   fullComArr,
+  fullClarityType,
 };

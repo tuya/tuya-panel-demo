@@ -1,5 +1,6 @@
-// import React from 'react';
+import React from 'react';
 import Strings from '@i18n';
+import DialogCustomExample from '../components/liveBottomBar/customFeature/dialogCustomExample';
 
 export const popDataSchema = {
   // actived 表示用来dp点值与Value值相同时，展示激活的tintColor
@@ -20,5 +21,10 @@ export const popDataSchema = {
       { value: '1', text: Strings.getLang('dp_basic_nightvision_off'), actived: false },
       { value: '2', text: Strings.getLang('dp_basic_nightvision_on'), actived: true },
     ],
+  },
+  // 自定义弹框
+  customDialogFeat1: {
+    title: Strings.getLang('ipc_panel_button_custom_dialog'),
+    component: <DialogCustomExample />,
   },
 };

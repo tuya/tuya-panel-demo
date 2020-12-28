@@ -23,6 +23,7 @@ const LivePlayerView: React.FC<LivePlayerViewProps> = (props: LivePlayerViewProp
 
   const devInfo = useSelector((state: any) => state.devInfo);
   const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
+  const dpState = useSelector((state: any) => state.dpState);
   const theme = useSelector((state: any) => state.theme);
   const { type, customTheme } = theme;
   const themeBackground = customTheme[type].background;
@@ -128,6 +129,7 @@ const LivePlayerView: React.FC<LivePlayerViewProps> = (props: LivePlayerViewProp
         fullPlayerWidth={fullPlayerWidth}
         fullPlayerHeight={fullPlayerHeight}
         deviceOnline={devInfo.deviceOnline}
+        privateMode={dpState.basic_private}
         onChangeStreamStatus={onChangeStreamStatus}
         onChangeSupportedMicWay={onChangeSupportedMicWay}
         onListenTalkingChangeMute={onListenTalkingChangeMute}

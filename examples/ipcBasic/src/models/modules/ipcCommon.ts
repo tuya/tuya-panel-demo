@@ -1,10 +1,12 @@
 import { handleActions, createAction } from 'redux-actions';
-import { commonConfig } from '@config';
+import { commonConfig, commonClick } from '@config';
 import { getDeviceCloudData, saveDeviceCloudData } from '@utils';
 import { updateTheme } from './theme';
 
 const { cx } = commonConfig;
 
+// 首页加载loading控制
+const showPagePreLoading = createAction('SHOW_PAGE_PRE_LOADING');
 // 是否支持对讲
 const isSupportMic = createAction('IS_SUPPORT_MIC');
 // 对讲方式, 默认为单向对讲
@@ -70,12 +72,16 @@ export const getThemeColor = () => async dispatch => {
     dispatch(updateTheme({ type: themeColors }));
     dispatch(updateTheme({ popup: { type: themeColors } }));
     dispatch(updateTheme({ dialog: { type: themeColors } }));
+    commonClick.closeGlobalLoading();
   } catch (e) {
     console.warn(e);
   }
 };
+// 展示全屏自定义清晰度变换模态框
+const showSelfFullClarityModal = createAction('SHOW_SELF_FULL_CLARITY_MODAL');
 
 export const actions = {
+  showPagePreLoading,
   isSupportMic,
   isTwoWayTalk,
   isTalking,
@@ -100,10 +106,17 @@ export const actions = {
   showCustomVideoText,
   getThemeColor,
   saveThemeColor,
+  showSelfFullClarityModal,
 };
 
 const ipcCommonState = handleActions(
   {
+    [showPagePreLoading.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
     [isSupportMic.toString()]: (state, action) => {
       return {
         ...state,
@@ -236,9 +249,15 @@ const ipcCommonState = handleActions(
         ...action.payload,
       };
     },
+    [showSelfFullClarityModal.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   },
   {
-    showLoadingToast: true,
+    showPagePreLoading: true,
     isSupportMic: false,
     isTwoWayTalk: false,
     isTalking: false,
@@ -267,6 +286,7 @@ const ipcCommonState = handleActions(
     showCustomDialog: false,
     showCustomVideoLoad: false,
     showCustomVideoText: '',
+    showSelfFullClarityModal: false,
   }
 );
 

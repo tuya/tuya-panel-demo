@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { StatusBar, View, StyleSheet, LayoutAnimation, UIManager } from 'react-native';
-import { connect } from 'react-redux';
+import { View, StyleSheet, LayoutAnimation, UIManager } from 'react-native';
 import { commonConfig } from '@config';
 import { LiveControlBasic, LiveGrid } from '@components';
 
@@ -19,19 +18,11 @@ if (!isIOS && UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 interface LiveControlViewProps {
-  isFullScreen?: boolean;
-  // showLoadingToast?: boolean;
-  // hasRight?: boolean;
-  // rightPress?: () => void;
-  // contentTitle?: string;
-  // leftPress?: () => void;
-  // themeBarStyleBg?: any;
-  // themeTextColor?: string;
-  // themeBgc?: string;
+  isFullScreen: boolean;
 }
 
 const LiveControlView: React.FC<LiveControlViewProps> = (props: LiveControlViewProps) => {
-  const [baseHeight, setBaseHeight] = useState(defaultBaseHeight);
+  const [baseHeight] = useState(defaultBaseHeight);
   const [animScrollBoxHeight, setAnimScrollBoxHeight] = useState(initAnimScrollBoxHeight);
 
   const showMoreFeature = (isNeedOpen: boolean) => {
@@ -62,32 +53,8 @@ const LiveControlView: React.FC<LiveControlViewProps> = (props: LiveControlViewP
   );
 };
 
-// LiveControlView.defaultProps = {
-//   showLoadingToast: true,
-//   hasRight: true,
-//   isFullScreen: false,
-//   contentTitle: 'Title',
-//   rightPress: () => false,
-//   leftPress: () => false,
-//   themeBarStyleBg: 'light-content',
-//   themeTextColor: '#000000',
-//   themeBgc: '#ffffff',
-// };
-
 const styles = StyleSheet.create({
   liveControlViewPage: {},
 });
 
-const mapStateToProps = (state: any) => {
-  const { type, customTheme } = state.theme;
-  const themeTextColor = customTheme[type].textColor;
-  const themeBgc = customTheme[type].background;
-  const themeBarStyleBg = customTheme[type].barStyleBg;
-  return {
-    themeTextColor,
-    themeBgc,
-    themeBarStyleBg,
-  };
-};
-
-export default connect(mapStateToProps, null)(LiveControlView);
+export default LiveControlView;

@@ -34,7 +34,7 @@ const FullFeatureTopRight: React.FC<FullFeatureTopRightProps> = (props: FullFeat
 
   useEffect(() => {
     if (!ipcCommonState.stopFullAnim) {
-      animatePlayerFeature(hideFullMenu);
+      animatePlayerFeature(props.hideFullMenu);
     }
   }, [hideFullMenu]);
 
@@ -114,10 +114,17 @@ const FullFeatureTopRight: React.FC<FullFeatureTopRightProps> = (props: FullFeat
     if (commonClick.isRecordingNow() || commonClick.isMicTalking()) {
       return false;
     }
-    // props.showSelfModalAction({
-    //   showSelfModal: true,
-    // });
-    // props.resetFullScreenBtn(true);
+    dispatch(
+      actions.ipcCommonActions.stopFullAnim({
+        stopFullAnim: true,
+      })
+    );
+    dispatch(
+      actions.ipcCommonActions.showSelfFullClarityModal({
+        showSelfFullClarityModal: true,
+      })
+    );
+    props.resetFullScreenBtn(true);
   };
 
   return (
