@@ -16,6 +16,8 @@ interface Props {
   style?: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class RowButton extends PureComponent<Props> {
   handlePress = () => {
@@ -24,6 +26,7 @@ export default class RowButton extends PureComponent<Props> {
       onPress();
     }
   };
+
   handleChangeSwitch = (v: boolean) => {
     const { onSwitchChange } = this.props;
     if (typeof onSwitchChange === 'function') {

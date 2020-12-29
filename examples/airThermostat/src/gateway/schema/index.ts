@@ -62,7 +62,7 @@ export const isDpExist = (code: string) => {
   return hasProp(dpSchemas, code);
 };
 
-export const getSchema = (code: string): DpSchema => {
+export const getSchema = (code: string): DpSchema | null => {
   if (isDpExist(code)) {
     return dpSchemas[code];
   }

@@ -21,6 +21,8 @@ interface Props {
   hideOk?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class PopMain extends PureComponent<Props> {
   handleCancel = () => {
@@ -31,6 +33,7 @@ export default class PopMain extends PureComponent<Props> {
       Popup.close();
     }
   };
+
   handleOk = () => {
     const { onOk } = this.props;
     if (typeof onOk === 'function') {

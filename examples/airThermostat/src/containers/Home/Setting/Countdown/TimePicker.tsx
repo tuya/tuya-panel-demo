@@ -20,31 +20,38 @@ interface IState {
   time: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 @withTheme
 export default class TimePicker extends React.Component<Props, IState> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     countdown: 0, // 24 小时
+    // eslint-disable-next-line
     onOk() {},
   };
+
   constructor(props: Props) {
     super(props);
 
     const schema = TYSdk.device.getDpSchema(countdownSetCode);
-    this.state = { time: schema.type === 'enum' ? schema.range[0] : 1 };
+    this.state = { time: schema.type === 'enum' ? schema?.range[0] : 1 };
   }
+
   handleChange = (time: any) => {
     this.setState({ time });
   };
+
   handleOk = () => {
+    const { time } = this.state;
     GlobalToast.show({ text: Strings.getLang('countdownSuccess') });
-    gateway.putDpData({ [countdownSetCode]: this.state.time }, { checkCurrent: false });
+    gateway.putDpData({ [countdownSetCode]: time }, { checkCurrent: false });
     Popup.close();
   };
+
   render() {
     const { countdown, theme } = this.props;
     const schema = TYSdk.device.getDpSchema(countdownSetCode);
-    const setDisabled = this.state.time === 0;
     const { brand: themeColor, fontColor } = theme.global;
     return (
       <PopMain
@@ -72,12 +79,12 @@ export default class TimePicker extends React.Component<Props, IState> {
               itemStyle={[styles.pickerItem, { color: fontColor }]}
               itemTextColor={fontColor}
               selectedItemTextColor={fontColor}
-              selectedValue={schema.range}
+              selectedValue={schema?.range}
               visibleItemCount={7}
               onValueChange={this.handleChange}
               theme={{ fontSize: 40 }}
             >
-              {schema.range.map((code: string) => (
+              {(schema.range || []).map((code: string) => (
                 <Picker.Item
                   key={code}
                   value={code}
@@ -103,9 +110,6 @@ const styles = StyleSheet.create({
   picker: {
     height: 312,
     fontSize: 20,
-  },
-  pickerMiddle: {
-    width: 80,
   },
   pickerRight: {
     width: 80,

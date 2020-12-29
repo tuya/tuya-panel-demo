@@ -13,7 +13,7 @@ interface IProp {
   speed: string;
   theme?: any;
   label?: string;
-  onChange: (speed: string) => void;
+  onChange: (speed: string | undefined) => void;
 }
 
 interface State {
@@ -26,11 +26,12 @@ class SpeedSlider extends PureComponent<IProp, State> {
     super(props);
     let max = 0;
     let speed = 0;
-    const schema = TYSdk.device.getDpSchema(this.props.code);
+    const { code, speed: sp } = this.props;
+    const schema: any = TYSdk.device.getDpSchema(code);
     if (schema) {
       max = schema.range.length;
       schema.range.some((key: string, i: number) => {
-        if (key === this.props.speed) {
+        if (key === sp) {
           speed = i;
           return true;
         }
@@ -42,21 +43,26 @@ class SpeedSlider extends PureComponent<IProp, State> {
       max,
     };
   }
+
   getEnumValue() {
-    const schema = TYSdk.device.getDpSchema(this.props.code);
+    const { code } = this.props;
+    const { speed } = this.state;
+    const schema: any = TYSdk.device.getDpSchema(code);
     if (schema) {
-      return schema?.range[this.state.speed];
+      return schema?.range[speed];
     }
     return '';
   }
+
   handleChange = (v: number) => {
     this.setState({ speed: v - 1 });
-    const { code } = this.props;
+    const { code, onChange } = this.props;
     const schema = TYSdk.device.getDpSchema(code);
     if (schema) {
-      this.props.onChange(schema?.range[v - 1]);
+      onChange(schema?.range[v - 1]);
     }
   };
+
   render() {
     const { theme, code, label } = this.props;
     const { speed, max } = this.state;

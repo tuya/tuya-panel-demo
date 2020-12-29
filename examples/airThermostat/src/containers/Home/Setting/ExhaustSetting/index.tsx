@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { Utils, Popup } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
 import dpCodes from 'config/default/dpCodes';
-import gateway from '../../../../gateway';
 import Strings from 'i18n/index';
 import PopMain from 'components/PopMain';
 import SpeedSlider from 'components/SpeedSlider';
 import ValueSlider from 'components/ValueSlider';
 import icons from 'icons/index';
+import gateway from '../../../../gateway';
 
 const { withTheme } = Utils.ThemeUtils;
 
@@ -32,9 +32,11 @@ class ExhaustSetting extends PureComponent<IProp, State> {
       speed,
     };
   }
+
   handleChangeSpeed = (v: string) => {
     this.setState({ speed: v });
   };
+
   handleSave = () => {
     const { speed } = this.state;
 
@@ -43,6 +45,7 @@ class ExhaustSetting extends PureComponent<IProp, State> {
     });
     Popup.close();
   };
+
   render() {
     const { volume, temp } = this.props;
     const { speed } = this.state;

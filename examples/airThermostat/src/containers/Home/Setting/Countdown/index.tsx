@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Popup } from 'tuya-panel-kit';
+import dpCodes from 'config/default/dpCodes';
 import Clock from './Clock';
 import TimePicker from './TimePicker';
-import dpCodes from 'config/default/dpCodes';
 import gateway from '../../../../gateway';
-import { Popup } from 'tuya-panel-kit';
 
 interface Props {
   countdown: number;
@@ -19,23 +19,26 @@ interface State {
 class Countdown extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    this.state = { countdown: this.props.countdown };
+    const { countdown } = this.props;
+    this.state = { countdown };
   }
+
   handleCancel = () => {
     gateway.putDpData({ [countdownSetCode]: 0 });
     Popup.close();
   };
+
   hanldeReset = () => {
     this.setState({ countdown: 0 });
   };
+
   render() {
-    const { totalCountdown } = this.props;
+    const { totalCountdown, countdown: total } = this.props;
     const { countdown } = this.state;
     return countdown > 0 ? (
       <Clock
         totalCountdown={totalCountdown}
-        countdown={this.props.countdown}
+        countdown={total}
         onCancel={this.handleCancel}
         onReset={this.hanldeReset}
       />
@@ -45,7 +48,7 @@ class Countdown extends Component<Props, State> {
   }
 }
 
-export default connect(({ dpState }: StoreState) => ({
+export default connect(({ dpState }: any) => ({
   countdown: dpState[countdownLeftCode],
   totalCountdown: dpState[countdownSetCode],
 }))(Countdown);

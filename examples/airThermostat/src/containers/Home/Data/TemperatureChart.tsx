@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { View, StyleSheet } from 'react-native';
-import F2Chart  from 'components/F2Chart';
+import F2Chart from 'components/F2Chart';
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import dpCodes from 'config/default/dpCodes';
@@ -17,17 +17,17 @@ interface Props {
 const tooltipHeight = 44;
 const GAP = 8;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class TemperatureChart extends PureComponent<Props> {
   getRandomData() {
     return _.times(_.random(10, 99), n => ({
       value: _.random(30, 50),
-      date: moment()
-        .subtract(6, 'months')
-        .add(n, 'days')
-        .format('YYYY-MM-DD'),
+      date: moment().subtract(6, 'months').add(n, 'days').format('YYYY-MM-DD'),
     }));
   }
+
   registerInsertCss = () => {
     return `
     (function(){
@@ -36,6 +36,7 @@ export default class TemperatureChart extends PureComponent<Props> {
     })();
     `;
   };
+
   renderBasicLineChart = (data: any) => {
     const { theme } = this.props;
     const {
@@ -141,6 +142,7 @@ export default class TemperatureChart extends PureComponent<Props> {
       chart.render();
     `;
   };
+
   render() {
     return (
       <View style={styles.box}>

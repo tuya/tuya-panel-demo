@@ -1,7 +1,7 @@
 import React, { SFC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Utils, TYText, IconFont } from 'tuya-panel-kit';
-import Color from 'color';
+import createColor from 'color';
 
 const { convertX: cx } = Utils.RatioUtils;
 const { withTheme } = Utils.ThemeUtils;
@@ -23,9 +23,7 @@ const Block: SFC<IProp> = ({ value, unit, label, icon, theme }) => {
       style={[
         styles.box,
         {
-          borderColor: Color(themeColor)
-            .alpha(0.5)
-            .rgbaString(),
+          borderColor: createColor(themeColor).alpha(0.5).rgbaString(),
         },
       ]}
     >

@@ -1,18 +1,18 @@
 import React, { PureComponent } from 'react';
 import { Utils, Popup, TYSdk } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
-import gateway from '../../../../gateway';
 import Strings from 'i18n/index';
 import PopMain from 'components/PopMain';
 import ValueSlider from 'components/ValueSlider';
 import DpEnum from 'components/DpEnum';
+import gateway from '../../../../gateway';
 
 const { withTheme } = Utils.ThemeUtils;
 
 interface IProp {
   code: string;
   value: any;
-  icon: string;
+  icon?: string;
   theme?: any;
 }
 
@@ -28,9 +28,11 @@ class DpSetting extends PureComponent<IProp, State> {
       value,
     };
   }
+
   handleChange = (v: any) => {
     this.setState({ value: v });
   };
+
   handleSave = () => {
     const { code } = this.props;
     const { value } = this.state;
@@ -40,10 +42,11 @@ class DpSetting extends PureComponent<IProp, State> {
     });
     Popup.close();
   };
+
   renderDp() {
     const { code, icon } = this.props;
     const { value } = this.state;
-    const { range, type } = TYSdk.device.getDpSchema(code);
+    const { range = [], type } = TYSdk.device.getDpSchema(code);
 
     switch (type) {
       case 'enum':
@@ -68,8 +71,11 @@ class DpSetting extends PureComponent<IProp, State> {
             onChange={this.handleChange}
           />
         );
+      default:
+        return null;
     }
   }
+
   render() {
     const { code } = this.props;
     return (
@@ -80,6 +86,6 @@ class DpSetting extends PureComponent<IProp, State> {
   }
 }
 
-export default connect(({ dpState, devInfo }: any, { code }) => ({
+export default connect(({ dpState, devInfo }: any, { code }: IProp) => ({
   value: dpState[code],
 }))(withTheme(DpSetting));
