@@ -7,4 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* fix StatusBar invisible ([b4200e1](https://github.com/TuyaInc/tuya-panel-kit-template/commit/b4200e1f6bd0947a647e4d14392d2ca07df9c7d6))
+* fix StatusBar invisible ([b4200e1](https://github.com/tuya/tuya-panel-demo/commit/b4200e1f6bd0947a647e4d14392d2ca07df9c7d6))
