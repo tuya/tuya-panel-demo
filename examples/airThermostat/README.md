@@ -1,4 +1,4 @@
-# Tuya Panel Dimmer Template
+# Tuya Panel Air Thermostat Template
 
 English | [简体中文](./README-zh_CN.md)
 
@@ -20,7 +20,7 @@ The template project can be used to quickly create lighting dimmer projects, sup
 
 You can scan the following QR code through the Tuya app to preview.
 
-![LampClassic](https://images.tuyacn.com/rms-static/249dac90-0c67-11eb-897d-85bb9e60451e-1602492270041.png?tyName=airThermostat.png)
+![LampClassic](https://images.tuyacn.com/rms-static/a82b5140-3c30-11eb-81e6-f92b2df79afd-1607746524244.png?tyName=airThermostat.png)
 
 
 
