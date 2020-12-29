@@ -1,4 +1,4 @@
-# 涂鸦调光器面板模板
+# 涂鸦新风温控器面板模板
 
 
 
@@ -23,11 +23,12 @@ $ cd tuya-panel-airThermostat-example
 ```
 
 ## 介绍
-该模板工程可用于快速创建照明调光器项目，支持以下功能: 1路调光 / 2路调光 / 调光灯类型配置 / 设置灯亮度可调节范围 / 云端定时 / 使用设备存储接口
+该模板工程可用于快速创建新风温控器项目，支持以下功能: 调速、调温、排风系统、送风系统、各类指标展示、数据展示、动态配置项功能等能力
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![LampClassic](https://images.tuyacn.com/rms-static/249dac90-0c67-11eb-897d-85bb9e60451e-1602492270041.png?tyName=airThermostat.png)
+![LampClassic](https://images.tuyacn.com/rms-static/a82b5140-3c30-11eb-81e6-f92b2df79afd-1607746524244.png?tyName=airThermostat.png)
+
 
 ## 快速运行
 

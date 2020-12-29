@@ -23,11 +23,16 @@ interface Props {
   theme?: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class Button extends PureComponent<Props> {
   panResponder: PanResponderInstance;
-  startTime: number = 0;
-  animation: Animated.Value = new Animated.Value(1);
+
+  startTime = 0;
+
+  animation = new Animated.Value(1);
+
   constructor(props: Props) {
     super(props);
 
@@ -41,10 +46,12 @@ export default class Button extends PureComponent<Props> {
   handleGrant = () => {
     this.startTime = +new Date();
   };
+
   handleRelease = (e: GestureResponderEvent, { dx, dy }: PanResponderGestureState) => {
     const now = +new Date();
     if (now - this.startTime < 300 && Math.abs(dx) < 4 && Math.abs(dy) < 4) {
-      this.props.onPress();
+      const { onPress } = this.props;
+      onPress();
     }
   };
 

@@ -12,6 +12,7 @@ const defaultProps = {
   lineNum: 72,
   lineHeight: cx(10),
   countdown: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onReset() {},
   resetText: 'Reset',
   totalCountDown: 0,
@@ -32,23 +33,31 @@ type IProps = {
 } & Readonly<typeof defaultProps>;
 
 export default class Countdown extends Component<IProps> {
+  // eslint-disable-next-line
   static defaultProps = defaultProps;
-  private angle: number = 0;
+
+  private angle = 0;
+
   private lines: number[] = [];
+
   constructor(props: IProps) {
     super(props);
     const { lineNum } = this.props;
     this.angle = (Math.PI * 2) / lineNum;
     this.lines = new Array(lineNum).fill(1);
   }
+
   shouldComponentUpdate(nextProps: IProps) {
-    return nextProps.countdown !== this.props.countdown;
+    const { countdown } = this.props;
+    return nextProps.countdown !== countdown;
   }
+
   getPoint(angle: number, radius: number) {
     const x = radius * Math.sin(angle);
     const y = -radius * Math.cos(angle);
     return { x, y };
   }
+
   getPath(angle: number) {
     const { size, lineHeight } = this.props;
     const radius = size / 2;
@@ -57,6 +66,7 @@ export default class Countdown extends Component<IProps> {
 
     return `M${p1.x} ${p1.y} L${p2.x} ${p2.y}`;
   }
+
   getCircle() {
     const { size, lineHeight } = this.props;
     const innerRadius = size / 2 - lineHeight - 5;
@@ -67,6 +77,7 @@ export default class Countdown extends Component<IProps> {
       })
       .join('');
   }
+
   render() {
     const {
       size,
@@ -116,6 +127,7 @@ export default class Countdown extends Component<IProps> {
               const color = (i + 1) / lineNum <= percent ? activeColor : lineColor;
               return (
                 <Path
+                  // eslint-disable-next-line react/no-array-index-key
                   key={i}
                   d={this.getPath(this.angle * i)}
                   fill="transparent"

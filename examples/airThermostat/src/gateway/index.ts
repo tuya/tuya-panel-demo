@@ -5,7 +5,7 @@ import * as gateway from './gateway/index';
 import { DpData, SendOption, DpCallback, Config } from './interface';
 
 /**
- * 下发 dp 点
+ * 下发 dp 点
  * @param data dp 数据
  * @param option 下发配置
  */

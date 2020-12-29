@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 
 const defaultProps = {
   total: 2,
-  current: 0,  
+  current: 0,
 };
 
 type IProps = {

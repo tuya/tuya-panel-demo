@@ -17,8 +17,8 @@ const callbacks: DpCallback[] = [];
 const beforeCallbacks: DpCallback[] = [];
 
 let lastSendTime = +new Date();
-let lastWorker: IDpWorker = null;
-let cancelSendHandle: Function = null;
+let lastWorker: IDpWorker | null = null;
+let cancelSendHandle: null | (() => void) = null;
 
 const cancelThrottle = () => {
   if (lastWorker) {
@@ -41,7 +41,7 @@ export const sendDp = async (data: DpData, option: SendOption) => {
   }
   const worker: IDpWorker = new DpWorker(data, config);
 
-  const { openThrottle, throttleWaitTime, compareType } = config;
+  const { openThrottle, throttleWaitTime = 300, compareType } = config;
 
   // 是否可以发送
   if (!worker.sendEnabled()) {
@@ -72,7 +72,7 @@ export const sendDp = async (data: DpData, option: SendOption) => {
           clearTimeout(timer);
         };
       }).then((res: any) => {
-        if (res.code === 'SENDED') {
+        if (lastWorker && res.code === 'SENDED') {
           if (compareType === 'double') {
             workers.push(lastWorker);
           }

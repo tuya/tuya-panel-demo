@@ -4,10 +4,10 @@ import { View } from 'react-native';
 import ScrollView from 'components/ScrollView';
 import { connect } from 'react-redux';
 import dpCodes from 'config/default/dpCodes';
-import Item from './Item';
 import { isSupportDp } from 'utils/index';
 import Strings from 'i18n/index';
 import gateway from '../../gateway';
+import Item from './Item';
 
 const { convertX: cx } = Utils.RatioUtils;
 const { withTheme } = Utils.ThemeUtils;
@@ -42,11 +42,10 @@ class Params extends Component<Props> {
   handleChangeDp = (code: string) => (v: number) => {
     gateway.putDpData({ [code]: v });
   };
+
   render() {
     const { theme, dpState } = this.props;
-    const {
-      global: { brand: themeColor, fontColor },
-    } = theme;
+    const { global } = theme;
     return (
       <View style={{ flex: 1 }}>
         <TopBar
@@ -67,11 +66,11 @@ class Params extends Component<Props> {
                     style={{ marginBottom: 12 }}
                     key={code}
                     label={Strings.getDpLang(code)}
-                    min={schema.min}
-                    max={schema.max}
+                    min={schema?.min || 0}
+                    max={schema?.max || 10000}
                     step={schema.step || 1}
                     value={dpState[code]}
-                    unit={schema.unit}
+                    unit={schema?.unit}
                     onChange={this.handleChangeDp(code)}
                   />
                 );
@@ -85,4 +84,4 @@ class Params extends Component<Props> {
   }
 }
 
-export default connect(({ dpState }: StoreState) => ({ dpState }))(withTheme(Params));
+export default connect(({ dpState }: any) => ({ dpState }))(withTheme(Params));
