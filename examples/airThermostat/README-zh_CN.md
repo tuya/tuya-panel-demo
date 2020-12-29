@@ -1,4 +1,4 @@
-# 涂鸦调光器面板模板
+# 涂鸦新风温控器面板模板
 
 
 
@@ -27,7 +27,8 @@ $ cd tuya-panel-airThermostat-example
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![LampClassic](https://images.tuyacn.com/rms-static/249dac90-0c67-11eb-897d-85bb9e60451e-1602492270041.png?tyName=airThermostat.png)
+![LampClassic](https://images.tuyacn.com/rms-static/a82b5140-3c30-11eb-81e6-f92b2df79afd-1607746524244.png?tyName=airThermostat.png)
+
 
 ## 快速运行
 
