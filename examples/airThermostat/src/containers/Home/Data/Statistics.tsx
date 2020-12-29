@@ -45,10 +45,15 @@ interface State {
 }
 
 class Statistics extends PureComponent<IProp, State> {
-  state = { tab: TabType.Temperature };
   tabs = this.getTabs();
+
+  constructor(props: IProp) {
+    super(props);
+    this.state = { tab: TabType.Temperature };
+  }
+
   getTabs() {
-    const result = [];
+    const result: { value: TabType; label: string }[] = [];
     if (isSupportDp(tempIndoorCode)) {
       result.push({ value: TabType.Temperature, label: Strings.getLang('temperature_label') });
     }
@@ -162,8 +167,6 @@ export default connect(({ dpState, devInfo }: any) => ({
 }))(Statistics);
 
 const styles = StyleSheet.create({
-  box: { flex: 1 },
-  title: { width: '100%', marginTop: 32, fontSize: cx(28), marginLeft: cx(24) },
   tabs: {
     marginTop: 24,
     width: cx(327),

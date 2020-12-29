@@ -11,6 +11,7 @@ const defaultProps = {
   max: 1440, // 最大支持分钟
   min: 0, // 最小支持分钟
   time: 0, // 当前时间
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onChange(time: number) {},
   hourLabel: '',
   minuteLabel: '',
@@ -29,7 +30,9 @@ interface IState {
   minMinute: number;
 }
 export default class TimePicker extends React.Component<Props, IState> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps: Props = defaultProps;
+
   constructor(props: Props) {
     super(props);
     const { time, max, min } = this.props;
@@ -44,8 +47,8 @@ export default class TimePicker extends React.Component<Props, IState> {
     } else if (time > max) {
       currentTime = max;
     }
-    let hour = formatValue(Math.floor(currentTime / 60));
-    let minute = formatValue(currentTime % 60);
+    const hour = formatValue(Math.floor(currentTime / 60));
+    const minute = formatValue(currentTime % 60);
 
     this.state = {
       hour,
@@ -57,19 +60,24 @@ export default class TimePicker extends React.Component<Props, IState> {
       minMinute,
     };
   }
-  componentWillReceiveProps(nextProps: Props) {
+
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { time } = nextProps;
-    if (time !== this.props.time) {
+    const { time: oldTime } = this.props;
+    if (time !== oldTime) {
       this.setState({
         hour: formatValue(Math.floor(time / 60)),
         minute: formatValue(time % 60),
       });
     }
   }
+
   handleChange = () => {
+    const { onChange } = this.props;
     const { hour, minute } = this.state;
-    this.props.onChange(Number(hour) * 60 + Number(minute));
+    onChange(Number(hour) * 60 + Number(minute));
   };
+
   handleHour = (value: number) => {
     const { maxHour, minHour, maxMinute, minMinute, minute } = this.state;
     const state: any = { hour: formatValue(value) };
@@ -84,9 +92,11 @@ export default class TimePicker extends React.Component<Props, IState> {
     }
     this.setState(state, this.handleChange);
   };
+
   handleMinute = (value: number) => {
     this.setState({ minute: formatValue(value) }, this.handleChange);
   };
+
   render() {
     const { hourLabel, minuteLabel, fontColor } = this.props;
     const { hours, maxHour, minHour, maxMinute, minMinute, minute, hour } = this.state;

@@ -1,26 +1,21 @@
 import _get from 'lodash/get';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
   View,
   Text,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   WebView,
   ActivityIndicator,
   StyleSheet,
   Dimensions,
   Platform,
   PixelRatio,
-  ViewPropTypes,
-  ColorPropType,
 } from 'react-native';
-import { TYSdk } from 'tuya-panel-kit';
 import throttle from './throttle';
 import { getOssUrl } from './api';
-import { compareVersion } from './utils';
 
 const window = Dimensions.get('window');
-
-const source = require('./index.html');
 
 const SOURCE_URL = '/smart/connect-scheme/d2e758ad-5e12-51d5-9ee5-57992d5e654c.html';
 
@@ -34,15 +29,17 @@ const defaultProps = {
   loadingColor: null,
   updateThreshold: 375, // 图标数据刷新阈值
   loadingTimeout: 275, // 渲染图表超过多少毫秒后开始显示loading
-  chartConfig: null,
-  onMessage: null,
-  onError: null,
+  chartConfig: null as any,
   placeholder: '暂无数据',
   placeHolderTextStyle: null,
-  renderPlaceHolder: null,
-  renderLoading: null,
 };
-type Props = Readonly<typeof defaultProps>;
+type Props = Readonly<typeof defaultProps> & {
+  renderer?: (data: any) => React.ReactNode;
+  renderLoading?: (data: any) => React.ReactNode;
+  renderPlaceHolder?: () => React.ReactNode;
+  onError?: (data: any) => void;
+  onMessage?: (data: any) => void;
+};
 
 interface State {
   initializing: boolean;
@@ -50,19 +47,27 @@ interface State {
 }
 
 export default class F2Chart extends Component<Props, State> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = defaultProps;
+
+  _shouldUseRemoteUri = true;
+
+  _hasInitChart = false;
+
+  _loadingTimerId = null as number | null;
+
+  throttledUpdateChart: (...rest) => any;
+
+  chart: any;
+
+  _time = 0;
+
   constructor(props: Props) {
     super(props);
-    console.log('=====mobile:', TYSdk.mobile);
-    const osSystem = _get(TYSdk.mobile, 'mobileInfo.osSystem', '13.0');
-    const isLtIos13 = compareVersion(osSystem, '13.0') === -1;
-    // ios 在特定版本下无法载入本地 html，只能特殊兼容下
-    this._shouldUseRemoteUri = Platform.OS === 'ios' && isLtIos13;
-    this._hasInitChart = false;
-    this._loadingTimerId = null;
     this.throttledUpdateChart = throttle(this._updateChart, props.updateThreshold);
     this.state = {
       initializing: true, // 图表是否正在初始化中
+      remoteUri: '',
     };
   }
 
@@ -74,21 +79,24 @@ export default class F2Chart extends Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.data !== nextProps.data) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { data } = this.props;
+    if (data !== nextProps.data) {
       this.throttledUpdateChart(nextProps.data);
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    const { loading, width, height, style } = this.props;
+    const { initializing, remoteUri } = this.state;
     return (
-      this.props.loading !== nextProps.loading ||
-      this.state.initializing !== nextState.initializing ||
-      this.state.remoteUri !== nextState.remoteUri ||
+      loading !== nextProps.loading ||
+      initializing !== nextState.initializing ||
+      remoteUri !== nextState.remoteUri ||
       this.shouldUpdateWebView(nextProps) ||
-      this.props.width !== nextProps.width ||
-      this.props.height !== nextProps.height ||
-      this.props.style !== nextProps.style
+      width !== nextProps.width ||
+      height !== nextProps.height ||
+      style !== nextProps.style
     );
   }
 
@@ -97,19 +105,20 @@ export default class F2Chart extends Component<Props, State> {
   }
 
   get isLoading() {
-    return this.props.loading || this.state.initializing;
+    const { loading } = this.props;
+    const { initializing } = this.state;
+    return loading || initializing;
   }
 
   get color() {
-    return this.props.type === 'dark' ? '#000' : '#fff';
+    const { type } = this.props;
+    return type === 'dark' ? '#000' : '#fff';
   }
 
   // 数据从无变有或者从有变化时需要重新渲染
   shouldUpdateWebView(nextProps) {
-    return (
-      (!this.props.data.length && nextProps.data.length) ||
-      (this.props.data.length && !nextProps.data.length)
-    );
+    const { data } = this.props;
+    return (!data.length && nextProps.data.length) || (data.length && !nextProps.data.length);
   }
 
   _clearLoadingTimeout() {
@@ -123,14 +132,14 @@ export default class F2Chart extends Component<Props, State> {
   }
 
   _renderChart() {
-    const { data, renderer } = this.props;
+    const { data, renderer, chartConfig: config } = this.props;
     if (typeof renderer !== 'function') {
       return;
     }
     const pixelRatio = PixelRatio.get();
     const chartConfig = {
       pixelRatio,
-      ...this.props.chartConfig,
+      ...config,
       id: 'main',
     };
     return `
@@ -152,13 +161,14 @@ export default class F2Chart extends Component<Props, State> {
   }
 
   _handleMessage = event => {
+    const { onError, onMessage } = this.props;
     const { data } = event.nativeEvent;
     const parsedData = JSON.parse(data);
     if (parsedData.type === 'error') {
       console.warn('F2Chart renderer Error: ', parsedData.message, parsedData.error);
-      this.props.onError && this.props.onError(parsedData.error);
+      onError && onError(parsedData.error);
     }
-    this.props.onMessage && this.props.onMessage(parsedData);
+    onMessage && onMessage(parsedData);
   };
 
   _handleLoadStart = () => {
@@ -174,7 +184,7 @@ export default class F2Chart extends Component<Props, State> {
     if (this._hasInitChart) return;
     this.setState({ initializing: false });
     this._hasInitChart = true;
-    this._time = null;
+    this._time = 0;
     this._clearLoadingTimeout();
   };
 
@@ -221,10 +231,11 @@ export default class F2Chart extends Component<Props, State> {
   }
 
   render() {
-    if (this._shouldUseRemoteUri && !this.state.remoteUri) {
+    const { remoteUri } = this.state;
+    if (this._shouldUseRemoteUri && !remoteUri) {
       return null;
     }
-    const { style, width, height, loading, data } = this.props;
+    const { style, width, height, loading, data, onError } = this.props;
     const containerStyle = [
       style,
       {
@@ -244,14 +255,16 @@ export default class F2Chart extends Component<Props, State> {
           ref={ref => {
             this.chart = ref;
           }}
+          allowUniversalAccessFromFileURLs={true}
+          onShouldStartLoadWithRequest={() => true}
           scrollEnabled={false}
           injectedJavaScript={this._renderChart()}
           scalesPageToFit={Platform.OS !== 'ios'}
-          source={this._shouldUseRemoteUri ? { uri: this.state.remoteUri } : source}
+          source={{ uri: remoteUri }}
           onMessage={this._handleMessage}
           onLoadStart={this._handleLoadStart}
           onLoadEnd={this._handleLoadEnd}
-          onError={this.props.onError}
+          onError={onError}
         />
       </View>
     );

@@ -19,9 +19,13 @@ interface Props {
 
 class ValueSlider extends PureComponent<Props> {
   percentRef: TYText;
+
   handleChange = (v: number) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.percentRef && this.percentRef.setText(v);
   };
+
   render() {
     const { icon, theme, style, code, value, onChange, editDisabled } = this.props;
     const {
@@ -86,11 +90,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  dot: {
-    width: cx(7),
-    height: cx(7),
-    borderRadius: cx(4),
   },
   label: {
     fontSize: 16,

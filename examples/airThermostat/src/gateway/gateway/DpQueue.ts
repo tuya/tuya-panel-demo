@@ -11,6 +11,7 @@ import { IDpQueue, IDpQueueData, IDpQueueDataItem, Config, DpData } from '../int
  */
 class DpQueueManager implements IDpQueue {
   data: IDpQueueData = {};
+
   getDpQueque(code: string): IDpQueueDataItem[] {
     if (hasProp(this.data, code)) {
       return getValue(this.data, code);
@@ -18,6 +19,7 @@ class DpQueueManager implements IDpQueue {
     this.data[code] = [];
     return this.data[code];
   }
+
   /**
    * 记录下发数据
    * @param data 下发dp数据
@@ -30,7 +32,7 @@ class DpQueueManager implements IDpQueue {
       if (excludeDp.includes(code)) {
         return;
       }
-      let queue = this.getDpQueque(code);
+      const queue = this.getDpQueque(code);
       queue.push({
         value: data[code],
         time: now,
@@ -49,7 +51,7 @@ class DpQueueManager implements IDpQueue {
     const now = +new Date();
     const { timeOut } = getConfig();
     Object.keys(this.data).forEach(code => {
-      let queue = this.getDpQueque(code);
+      const queue = this.getDpQueque(code);
       for (let i = queue.length - 1; i >= 0; i--) {
         const { time } = queue[i];
         if (now - time >= timeOut) {
@@ -59,6 +61,7 @@ class DpQueueManager implements IDpQueue {
       }
     });
   }
+
   /**
    * 根据下发数据队列过滤上发数据
    * @param data 上报的标准协议数据
@@ -76,6 +79,7 @@ class DpQueueManager implements IDpQueue {
       for (let i = queue.length - 1; i >= 0; i--) {
         const { value, time, isReply } = queue[i];
         if (isReply) {
+          // eslint-disable-next-line no-continue
           continue;
         }
         // 是否超时
@@ -83,18 +87,7 @@ class DpQueueManager implements IDpQueue {
           queue.splice(0, i + 1);
           break;
         }
-        // let isEqual = false;
-        // if (hasMap) {
-
-        // } else if (formater) {
-        //   if (formater.equal(value, target)) {
-        //     isEqual = true;
-        //   }
-        // } else
-        // if (value === target) {
-        //   isEqual = true;
-        // }
-        let isEqual = value === target;
+        const isEqual = value === target;
         if (isEqual) {
           queue[i].isReply = true;
           // 不是最后一个下发的值，则为无效上报数据

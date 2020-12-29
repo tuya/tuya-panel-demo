@@ -28,9 +28,13 @@ const defaultProps = {
   effect: 'scrollx',
   direction: 'left',
   accessibilityLabel: 'Carousel',
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onGrant() {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onMove() {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onRelease() {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onChange(index: number) {},
 };
 
@@ -51,42 +55,59 @@ const duration = 300;
 
 export default class Carousel extends React.Component<IProps, IState> {
   static Dots = Dots;
+
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps: IProps = defaultProps;
+
   _panResponder: PanResponderInstance;
+
   percentRef: NativeComponent;
-  locked: boolean = false;
+
+  locked = false;
+
   animation: Animated.CompositeAnimation;
+
   timer: number;
+
   animateValue: Animated.Value = new Animated.Value(0);
-  viewWidth: number = 0;
-  viewHeight: number = 0;
-  pageWidth: number = 0;
-  showPanel: boolean = false;
-  scrollOffset: number = 0;
-  movePrevValue: number = 0;
-  terminationRequest: boolean = true; // 是否可以抢权
-  isMove: boolean = false; // 是否在移动
+
+  viewWidth = 0;
+
+  viewHeight = 0;
+
+  pageWidth = 0;
+
+  showPanel = false;
+
+  scrollOffset = 0;
+
+  movePrevValue = 0;
+
+  terminationRequest = true; // 是否可以抢权
+
+  isMove = false; // 是否在移动
+
   constructor(props: IProps) {
     super(props);
 
     this._panResponder = PanResponder.create({
       // 要求成为响应者：
       onMoveShouldSetPanResponder: this.handleSetPanResponder,
-      onPanResponderMove: this.onMove,
-      onPanResponderRelease: this.onRelease,
+      onPanResponderMove: this.handleMove,
+      onPanResponderRelease: this.handleRelease,
       onPanResponderTerminationRequest: () => {
         // 是否允许抢权
         return this.terminationRequest;
       },
-      //当前有其他的东西成为响应器并且没有释放它。
+      // 当前有其他的东西成为响应器并且没有释放它。
       onPanResponderReject: this.handleTerminate,
       onPanResponderTerminate: this.handleTerminate,
     });
     const { selectIndex, width, height, children, loop, space } = this.props;
     const total = Children.toArray(children).length; // 使用toArray 将无效子节点去除
-
+    const currentIndex = this.getRealIndex(selectIndex, total, total, loop);
     this.state = {
-      selectIndex: this.getRealIndex(selectIndex, total, total, loop),
+      selectIndex: currentIndex,
       total,
     };
     // 有设置高宽
@@ -94,7 +115,7 @@ export default class Carousel extends React.Component<IProps, IState> {
       this.viewHeight = height;
       this.viewWidth = width;
       this.pageWidth = width + space;
-      this.animateValue.setValue(this.state.selectIndex * -this.pageWidth);
+      this.animateValue.setValue(currentIndex * -this.pageWidth);
       this.showPanel = true;
     }
 
@@ -102,18 +123,34 @@ export default class Carousel extends React.Component<IProps, IState> {
     this.animateValue.addListener(({ value }) => (this.scrollOffset = value));
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
+  componentDidMount() {
+    const { autoPlay } = this.props;
+    autoPlay && this.autoPlay();
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps: IProps) {
     if (!this.locked) {
+      // eslint-disable-next-line
       // @ts-ignore
       const { selectIndex, children, loop, width, height, space } = nextProps;
+      const {
+        selectIndex: oldSelectIndex,
+        // eslint-disable-next-line
+        // @ts-ignore
+        children: oldChildren,
+        loop: oldLoop,
+        width: oldWidth,
+        height: oldHeight,
+        space: oldSpace,
+      } = nextProps;
       const total = Children.toArray(children).length; // 使用toArray 将无效子节点去除
       if (
-        selectIndex !== this.props.selectIndex ||
-        total !== Children.toArray(this.props.children).length ||
-        loop !== this.props.loop ||
-        width !== this.props.width ||
-        height !== this.props.height ||
-        space !== this.props.space
+        selectIndex !== oldSelectIndex ||
+        total !== Children.toArray(oldChildren).length ||
+        loop !== oldLoop ||
+        width !== oldWidth ||
+        height !== oldHeight ||
+        space !== oldSpace
       ) {
         // 有设置高宽
         if (width && height) {
@@ -126,7 +163,7 @@ export default class Carousel extends React.Component<IProps, IState> {
         let nextIndex = currentIndex;
         if (
           total !== currentTotal ||
-          (selectIndex !== this.props.selectIndex && selectIndex !== currentIndex)
+          (selectIndex !== oldSelectIndex && selectIndex !== currentIndex)
         ) {
           nextIndex = this.getRealIndex(selectIndex, currentIndex, total, loop);
         }
@@ -153,39 +190,40 @@ export default class Carousel extends React.Component<IProps, IState> {
     return !this.locked;
   }
 
-  componentDidMount() {
-    this.props.autoPlay && this.autoPlay();
-  }
-
   componentWillUnmount() {
     this.stopAnimation();
     clearInterval(this.timer);
   }
 
   getRealIndex(index: number, current: number, total: number, loop: boolean) {
+    let currentIndex = index;
     if (total <= 1) {
-      index = 0;
+      currentIndex = 0;
     } else if (loop) {
       // 取得与当前最近的那个点
       if (Math.abs(current - index) > Math.abs(current - total - index)) {
-        index += total;
+        currentIndex += total;
       }
     }
-    return index;
+    return currentIndex;
   }
 
   autoPlay() {
-    this.timer = setInterval(this.handleAutoPlay, this.props.autoplayInterval);
+    const { autoplayInterval } = this.props;
+    this.timer = setInterval(this.handleAutoPlay, autoplayInterval);
   }
+
   handleAutoPlay = () => {
     const { selectIndex } = this.state;
-    let nextIndex: number = selectIndex + (this.props.direction === 'left' ? 1 : -1);
+    const { direction } = this.props;
+    const nextIndex: number = selectIndex + (direction === 'left' ? 1 : -1);
     this.scrollTo(nextIndex);
   };
 
   handleSetPanResponder = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
+    const { swipeEnabled } = this.props;
     const { total } = this.state;
-    if (total < 2 || !this.props.swipeEnabled) {
+    if (total < 2 || !swipeEnabled) {
       return false;
     }
 
@@ -205,24 +243,26 @@ export default class Carousel extends React.Component<IProps, IState> {
     this.terminationRequest = true;
     this.locked = false;
   };
-  onMove = (e: GestureResponderEvent) => {
+
+  handleMove = (e: GestureResponderEvent) => {
+    const { onGrant, onMove } = this.props;
     if (!this.locked) {
       // 开始移动
       this.movePrevValue = e.nativeEvent.pageX;
       this.locked = true;
       this.isMove = true;
-      this.props.onGrant();
+      onGrant();
       this.stopAnimation();
       clearInterval(this.timer);
     }
-    this.handleMove(e);
-    this.props.onMove();
+    this.handleUpdateMove(e);
+    onMove();
   };
 
-  onRelease = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
+  handleRelease = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
     this.locked = false;
     const { vx, dx } = gesture;
-    const currentValue = this.handleMove(e);
+    this.handleUpdateMove(e);
     const { loop } = this.props;
     const { total, selectIndex } = this.state;
     // 是否要滑到新的块
@@ -243,19 +283,22 @@ export default class Carousel extends React.Component<IProps, IState> {
 
     this.terminationRequest = true;
 
+    const { onRelease, autoPlay } = this.props;
     this.scrollTo(willIndex);
-    this.props.onRelease();
+    onRelease();
 
     // 重新开启滚动
-    this.props.autoPlay && this.autoPlay();
+    autoPlay && this.autoPlay();
   };
-  handleMove(e: GestureResponderEvent) {
+
+  handleUpdateMove(e: GestureResponderEvent) {
     const currentX = e.nativeEvent.pageX;
     const dx = currentX - this.movePrevValue;
     this.movePrevValue = currentX;
     const { total } = this.state;
     let newX: number = this.scrollOffset + dx;
-    if (!this.props.loop) {
+    const { loop } = this.props;
+    if (!loop) {
       if (newX > 0) {
         newX = 0;
       } else if (newX < -this.pageWidth * (total - 1)) {
@@ -267,17 +310,20 @@ export default class Carousel extends React.Component<IProps, IState> {
   }
 
   handleLayout = (e: LayoutChangeEvent) => {
+    const { space } = this.props;
+    const { selectIndex } = this.state;
     const { width, height } = e.nativeEvent.layout;
     this.viewWidth = width;
     this.viewHeight = height;
-    this.pageWidth = width + this.props.space;
+    this.pageWidth = width + space;
     this.showPanel = true;
 
     if (!this.isMove) {
-      this.animateValue.setValue(this.state.selectIndex * -this.pageWidth);
+      this.animateValue.setValue(selectIndex * -this.pageWidth);
       this.forceUpdate();
     }
   };
+
   getContainerStyle() {
     const { style, width, height } = this.props;
     const containerStyle: any = {};
@@ -297,23 +343,26 @@ export default class Carousel extends React.Component<IProps, IState> {
     }
     return [styles.container, containerStyle, style];
   }
+
   stopAnimation() {
     this.animateValue.stopAnimation();
   }
+
   /**
    *
    * @param index 移动到第几个
    * @param isOutControl 是否非组件内部发起的滑动
    */
-  scrollTo(index: number, isOutControl: boolean = false) {
-    const { loop } = this.props;
+  scrollTo(index: number, isOutControl = false) {
+    const { loop, onChange } = this.props;
     const { total, selectIndex } = this.state;
+    let willIndex = index;
     if (!loop) {
       // 边界判断处理
-      if (index < 0) {
-        index = 0;
-      } else if (index >= total) {
-        index = total - 1;
+      if (willIndex < 0) {
+        willIndex = 0;
+      } else if (willIndex >= total) {
+        willIndex = total - 1;
       }
     }
     // 如果组件初始渲染未完成，则不做处理
@@ -321,7 +370,7 @@ export default class Carousel extends React.Component<IProps, IState> {
       this.isMove = true;
       this.stopAnimation();
       Animated.timing(this.animateValue, {
-        toValue: -index * this.pageWidth,
+        toValue: -willIndex * this.pageWidth,
         duration,
         easing: Easing.out(Easing.cubic),
       }).start(({ finished }) => {
@@ -330,30 +379,31 @@ export default class Carousel extends React.Component<IProps, IState> {
         }
         this.isMove = false;
         if (loop) {
-          if (index === 0) {
-            index = total;
-            this.animateValue.setValue(index * -this.pageWidth);
-          } else if (index === total * 2 - 1) {
-            index = total - 1;
-            this.animateValue.setValue(index * -this.pageWidth);
+          if (willIndex === 0) {
+            willIndex = total;
+            this.animateValue.setValue(willIndex * -this.pageWidth);
+          } else if (willIndex === total * 2 - 1) {
+            willIndex = total - 1;
+            this.animateValue.setValue(willIndex * -this.pageWidth);
           }
         }
-        if (!isOutControl && selectIndex % total !== index % total) {
-          this.props.onChange(index % total);
+        if (!isOutControl && selectIndex % total !== willIndex % total) {
+          onChange(willIndex % total);
         }
-        this.setState({ selectIndex: index });
+        this.setState({ selectIndex: willIndex });
       });
     } else {
       if (loop) {
-        if (index === 0) {
-          index = total;
-        } else if (index === total * 2 - 1) {
-          index = total - 1;
+        if (willIndex === 0) {
+          willIndex = total;
+        } else if (willIndex === total * 2 - 1) {
+          willIndex = total - 1;
         }
       }
-      this.setState({ selectIndex: index });
+      this.setState({ selectIndex: willIndex });
     }
   }
+
   renderDots() {
     const { showDots, dotStyle, dotWrapperStyle, dotActiveStyle } = this.props;
     const { total, selectIndex } = this.state;
@@ -370,17 +420,18 @@ export default class Carousel extends React.Component<IProps, IState> {
       />
     );
   }
+
   renderPages() {
     const { children, loop, space } = this.props;
-    const { viewWidth, viewHeight } = this;
+    const { viewWidth } = this;
     let panels = Children.toArray(children);
     if (loop) {
-      // @ts-ignore
-      panels = panels.concat(panels.map((x: React.ReactNode) => cloneElement(x)));
+      panels = panels.concat(panels.map((x: any) => cloneElement(x)));
     }
 
     return panels.map((child, index) => (
       <View
+        // eslint-disable-next-line react/no-array-index-key
         key={index}
         style={{
           width: viewWidth,
@@ -393,6 +444,7 @@ export default class Carousel extends React.Component<IProps, IState> {
       </View>
     ));
   }
+
   render() {
     const { accessibilityLabel } = this.props;
     return (
@@ -423,21 +475,5 @@ const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
     opacity: 1, // 确保安卓下 overflow: 'hidden'
-  },
-  dotContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#313131',
-    marginHorizontal: 4,
-    marginTop: 8,
-  },
-  dotActive: {
-    backgroundColor: '#fff',
   },
 });
