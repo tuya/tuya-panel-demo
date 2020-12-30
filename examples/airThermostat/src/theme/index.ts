@@ -7,12 +7,8 @@ export default {
   global: {
     brand: themeColor,
     fontColor,
-    iconBgColor: color(fontColor)
-      .alpha(0.15)
-      .rgbString(),
-    tabBgColor: color(fontColor)
-      .alpha(0.04)
-      .rgbString(),
+    iconBgColor: color(fontColor).alpha(0.15).rgbString(),
+    tabBgColor: color(fontColor).alpha(0.04).rgbString(),
     iconColor: '#3D3D3D',
     background,
     text: {

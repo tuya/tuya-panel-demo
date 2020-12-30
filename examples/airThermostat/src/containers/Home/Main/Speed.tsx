@@ -49,9 +49,7 @@ class Speed extends PureComponent<IProp> {
             styles.btn,
             {
               borderColor: themeColor,
-              backgroundColor: Color(themeColor)
-                .alpha(0.1)
-                .rgbaString(),
+              backgroundColor: Color(themeColor).alpha(0.1).rgbaString(),
             },
           ]}
           disabled={!power}

@@ -145,9 +145,7 @@ class Main extends PureComponent<IProp, State> {
             style={[
               styles.countdown,
               {
-                backgroundColor: Color(themeColor)
-                  .alpha(0.2)
-                  .rgbaString(),
+                backgroundColor: Color(themeColor).alpha(0.2).rgbaString(),
               },
             ]}
           >

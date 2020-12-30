@@ -2,7 +2,7 @@
 import { fetch } from 'api';
 import { TYSdk } from 'tuya-panel-kit';
 
-const getOssUrl = function() {
+const getOssUrl = function () {
   // return fetch('tuya.m.app.panel.url.get', {});
   console.log(`API post: `, 'tuya.m.app.panel.url.get');
 

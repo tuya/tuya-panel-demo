@@ -45,7 +45,12 @@ class SpeedSetting extends PureComponent<IProp, State> {
     const { theme, speed } = this.props;
     return (
       <PopMain title={Strings.getLang('speed_setting')} onOk={this.handleSave}>
-        <SpeedSlider label={Strings.getLang('speed_setting')} speed={speed} code={fanSpeedCode} onChange={this.handleChange} />
+        <SpeedSlider
+          label={Strings.getLang('speed_setting')}
+          speed={speed}
+          code={fanSpeedCode}
+          onChange={this.handleChange}
+        />
       </PopMain>
     );
   }

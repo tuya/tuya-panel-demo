@@ -53,11 +53,7 @@ export default class F2Chart extends Component<Props, State> {
   static defaultProps = defaultProps;
   constructor(props: Props) {
     super(props);
-    console.log('=====mobile:', TYSdk.mobile);
-    const osSystem = _get(TYSdk.mobile, 'mobileInfo.osSystem', '13.0');
-    const isLtIos13 = compareVersion(osSystem, '13.0') === -1;
-    // ios 在特定版本下无法载入本地 html，只能特殊兼容下
-    this._shouldUseRemoteUri = Platform.OS === 'ios' && isLtIos13;
+    this._shouldUseRemoteUri = true;
     this._hasInitChart = false;
     this._loadingTimerId = null;
     this.throttledUpdateChart = throttle(this._updateChart, props.updateThreshold);
@@ -244,6 +240,8 @@ export default class F2Chart extends Component<Props, State> {
           ref={ref => {
             this.chart = ref;
           }}
+          allowUniversalAccessFromFileURLs={true}
+          onShouldStartLoadWithRequest={() => true}
           scrollEnabled={false}
           injectedJavaScript={this._renderChart()}
           scalesPageToFit={Platform.OS !== 'ios'}
