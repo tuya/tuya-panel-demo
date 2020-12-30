@@ -3,7 +3,7 @@ import { TYSdk } from 'tuya-panel-kit';
 const sucStyle = 'background: green; color: #fff;';
 const errStyle = 'background: red; color: #fff;';
 
-export const fetch = function(a: string, postData: any, v: string = '1.0') {
+export const fetch = function (a: string, postData: any, v: string = '1.0') {
   console.log(`API Post: %c${a}%o`, sucStyle, postData);
 
   return new Promise((resolve, reject) => {

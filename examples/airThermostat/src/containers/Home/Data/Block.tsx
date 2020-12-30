@@ -23,9 +23,7 @@ const Block: SFC<IProp> = ({ value, unit, label, icon, theme }) => {
       style={[
         styles.box,
         {
-          borderColor: Color(themeColor)
-            .alpha(0.5)
-            .rgbaString(),
+          borderColor: Color(themeColor).alpha(0.5).rgbaString(),
         },
       ]}
     >
