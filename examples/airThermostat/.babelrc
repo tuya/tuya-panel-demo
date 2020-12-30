@@ -13,13 +13,13 @@
         ".json"
       ],
       "alias": {
-        "@api": "./src/api",
-        "@components": "./src/components",
-        "@config": "./src/config",
-        "@i18n": "./src/i18n",
-        "@models": "./src/models",
-        "@res": "./src/res",
-        "@utils": "./src/utils"
+        "api": "./src/api",
+        "components": "./src/components",
+        "config": "./src/config",
+        "i18n": "./src/i18n",
+        "models": "./src/models",
+        "res": "./src/res",
+        "utils": "./src/utils"
       }
     }]
   ],
