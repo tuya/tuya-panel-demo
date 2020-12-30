@@ -29,7 +29,12 @@ const DpEnum: SFC<Props> = ({ value: current, list, onChange, theme }) => {
       {list.map(({ value, label }) => {
         const isSelected = current === value;
         return (
-          <TouchableOpacity key={value} activeOpacity={0.7} onPress={() => onChange(value)} style={styles.item}>
+          <TouchableOpacity
+            key={value}
+            activeOpacity={0.7}
+            onPress={() => onChange(value)}
+            style={styles.item}
+          >
             <TYText style={styles.label}>{label}</TYText>
             {isSelected && <IconFont d={icons.right} size={22} color={themeColor} />}
           </TouchableOpacity>
