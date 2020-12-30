@@ -2,7 +2,7 @@
   "rnVersion": "5.28",
   "license": "MIT",
   "author": "tuya",
-  "name": "airThermostat",
+  "name": "tuya-air-thermostat-panel-example",
   "pid": [],
   "uiid": "",
   "version": "1.0.1",
