@@ -16,7 +16,7 @@ $ cd tuya-panel-airThermostat-example
 
 ## Introduction
 
-The template project can be used to quickly create lighting dimmer projects, supporting the following functions: 1 channel dimming / 2 channel dimming / dimming lamp type configuration / setting lamp brightness adjustable range / cloud timing / using device storage interface
+This template project can be used to quickly create a new air thermostat project, and supports the following functions: speed control, temperature control, exhaust system, air supply system, various indicators display, data display, dynamic configuration item functions, etc.
 
 You can scan the following QR code through the Tuya app to preview.
 
