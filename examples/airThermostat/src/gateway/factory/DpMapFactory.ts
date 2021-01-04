@@ -1,10 +1,10 @@
-import { hasProp } from '../utils';
 import _ from 'lodash';
+import { hasProp } from '../utils';
 import { DpMap, DpMapItem } from '../interface';
 
 function* sliceValue(value: string): Generator<string, string, number> {
   let start = 0;
-  let result: string = '';
+  let result = '';
   let length;
   for (; true; ) {
     length = yield result;
@@ -41,9 +41,8 @@ export default {
       return (dpMap as Array<Array<DpMapItem>>).some((item: DpMapItem[]) =>
         this._valiateData(item as DpMapItem[], value)
       );
-    } else {
-      return this._valiateData(dpMap, value);
     }
+    return this._valiateData(dpMap, value);
   },
   _valiateData(dpMap: DpMapItem[], value: string): boolean {
     // 边界处理
@@ -51,7 +50,8 @@ export default {
       return false;
     }
     const { sl: staticLength, dl: dynamicLength } = dpMap.reduce(
-      ({ sl, dl }: any, item: DpMapItem) => {
+      (res: any, item: DpMapItem) => {
+        let { sl, dl } = res;
         if (item.loop) {
           dl += item.length;
         } else {
@@ -83,12 +83,11 @@ export default {
         return this._formatParseData(exist[0], this._parseData(exist, value));
       }
       return this._formatParseData(dpMap[0][0], this._returnDefault(dpMap[0]));
-    } else {
-      if (this._valiateData(dpMap, value)) {
-        return this._formatParseData(dpMap[0], this._parseData(dpMap, value));
-      }
-      return this._formatParseData(dpMap[0], this._returnDefault(dpMap));
     }
+    if (this._valiateData(dpMap, value)) {
+      return this._formatParseData(dpMap[0], this._parseData(dpMap, value));
+    }
+    return this._formatParseData(dpMap[0], this._returnDefault(dpMap));
   },
   /**
    * 处理解板的数据
@@ -100,17 +99,17 @@ export default {
     // 如果第一个解析规则为多数据情况时，则直接返回数组，不返回对象（会忽略规则的属性名）
     if (firstMap.loop) {
       return data[firstMap.name];
-    } else {
-      return data;
     }
+    return data;
   },
+
   _parseData(dpMap: DpMapItem[], value: string) {
     // 是否存在有循环解板的配置
     const generator = sliceValue(value);
     generator.next();
     const result: any = {};
     dpMap.forEach((item: DpMapItem) => {
-      const { name, length, type, decimal, loop, childMap, limit } = item;
+      const { name, length, type, decimal, loop, childMap, limit = -1 } = item;
       if (loop) {
         result[name] = [];
         let listLength = limit;

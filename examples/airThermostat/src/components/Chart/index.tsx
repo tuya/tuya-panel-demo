@@ -87,19 +87,23 @@ interface State {
 
 @withTheme
 export default class Chart extends PureComponent<Props, State> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = defaultProps;
+
   constructor(props: Props) {
     super(props);
     this.state = { data: [], loading: true, chartCodeTpl: this.getChartCode(this.props) };
   }
-  componentWillReceiveProps(nextProps: Props) {
+
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { dpCode, params, timeType } = nextProps;
     const { dpCode: oldDpCode, params: oldParams, timeType: oldTimeType } = this.props;
     if (this.isChangeChartStyle(nextProps)) {
       this.setState({ chartCodeTpl: this.getChartCode(nextProps) });
     }
     if (dpCode !== oldDpCode || timeType !== oldTimeType || !_.isEqual(oldParams, params)) {
-      !this.state.loading && this.fetchData({ dpCode, timeType, params });
+      const { loading } = this.state;
+      !loading && this.fetchData({ dpCode, timeType, params });
     }
   }
 
@@ -148,6 +152,7 @@ export default class Chart extends PureComponent<Props, State> {
         this.setState({ loading: false, data: [] });
       });
   }
+
   registerInsertCss = () => {
     return `
     (function(){
@@ -156,24 +161,30 @@ export default class Chart extends PureComponent<Props, State> {
     })();
     `;
   };
+
   getTimeRange(timeType: TimeType, params: Params) {
     switch (timeType) {
       case 'minute':
         return { min: 0, max: 60 };
       case 'hour':
         return { min: 0, max: 24 };
-      case 'day':
+      case 'day': {
         const { startDay, endDay } = params;
         return {
           min: moment(startDay, TimeFormater.day).date(),
           max: moment(endDay, TimeFormater.day).date(),
         };
+      }
       case 'month':
         return { min: 1, max: 12 };
       case 'week':
         return { min: 0, max: 6 };
+      default: {
+        return { min: 0, max: 60 };
+      }
     }
   }
+
   getChartCode = (props: Props) => {
     const {
       theme,
@@ -288,11 +299,13 @@ export default class Chart extends PureComponent<Props, State> {
       chart.render();
     `;
   };
+
   renderBasicLineChart = (data: any) => {
     const { chartCodeTpl } = this.state;
     const dataJSON = JSON.stringify(data);
     return chartCodeTpl.replace('#{data}', dataJSON);
   };
+
   render() {
     const { theme, tooltipGap, tooltipHeight } = this.props;
     const { data } = this.state;

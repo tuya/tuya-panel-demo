@@ -13,9 +13,10 @@ const Group: SFC<Props> = ({ theme, style, children }) => {
   const list = Children.toArray(children) || [];
   return (
     <View style={[styles.group, style]}>
-      {list.map((child, index) => {
+      {list.map((child: any, index) => {
         const isMore = index > 0;
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <View key={index}>
             {isMore && <Divider />}
             {cloneElement(child, { ...child.props, style: styles.child })}

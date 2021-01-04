@@ -1,7 +1,6 @@
 import { TYSdk } from 'tuya-panel-kit';
 import { getSchema } from '../schema/index';
 import { getFormater } from '../format/index';
-import configUtils from '../configUtils';
 import { hasInDps, getDpByCode, updateDp } from '../gateway';
 import DpMapFactory from '../factory/DpMapFactory';
 import { hasProp } from '../utils';
@@ -27,18 +26,30 @@ export enum WorkerStatus {
 
 export default class DpWorker implements IDpWorker {
   originData: DpData;
+
   data: DpData;
+
   willSendData: DpData;
+
   dpCodes: string[] = [];
+
   status: WorkerStatus;
-  time: number = 0;
-  option: number = 0;
+
+  time = 0;
+
+  option = 0;
+
   dpIdResult: DpData;
-  updateValidTime: string = 'reply';
+
+  updateValidTime = 'reply';
+
   constructor(data: DpData, config: Config) {
     const { voiceOption, updateValidTime } = config;
     this.status = WorkerStatus.Waiting;
     this.originData = data;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.updateValidTime = updateValidTime;
     this.format(data, config);
     // 音效处理
@@ -64,22 +75,22 @@ export default class DpWorker implements IDpWorker {
      * 校验数据是否合法
      * 如照明dp下，只有当工作模式为彩光时，才能下发彩光
      */
-    data = this.handleRule(data, rules, dpMap);
-    this.willSendData = data;
-    Object.keys(data).forEach(key => {
-      let value: any = data[key];
+    const resultData = this.handleRule(data, rules, dpMap);
+    this.willSendData = resultData;
+    Object.keys(resultData).forEach(key => {
+      let value: any = resultData[key];
       // 数据转为标准协议数据
       if (hasProp(dpMap, key)) {
         value = DpMapFactory.format(dpMap[key], value);
       } else {
-        const formater: IFormater = getFormater(key);
+        const formater: IFormater | null = getFormater(key);
         if (formater) {
           value = formater.format(value);
         }
       }
 
       // 校验数据正确性
-      const schema: DpSchema = getSchema(key);
+      const schema: DpSchema | null = getSchema(key);
       if (schema && schema.validate(value)) {
         // 是否需要检测当前值情况
         if (checkCurrent) {
@@ -152,7 +163,7 @@ export default class DpWorker implements IDpWorker {
           }
           break;
         case 'FORBIDDEN':
-        case 'PASS':
+        case 'PASS': {
           let conditions: DpData[] = condition as DpData[];
           let condResult;
           // 判断
@@ -191,6 +202,7 @@ export default class DpWorker implements IDpWorker {
             }
           }
           break;
+        }
         default:
       }
       return codes;
@@ -227,6 +239,8 @@ export default class DpWorker implements IDpWorker {
       updateDp(this.willSendData);
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     TYDevice.putDeviceData(this.data, voiceOption);
   }
 
@@ -250,21 +264,16 @@ export default class DpWorker implements IDpWorker {
     // 比较下发的dp是否与上报的一致
     if (dpCodes.length !== codes.length) {
       return false;
-    } else {
-      const isEqeal = codes.every(key => dpCodes.indexOf(key) >= 0);
-      if (!isEqeal) {
-        return false;
-      }
+    }
+    const isEqeal = codes.every(key => dpCodes.indexOf(key) >= 0);
+    if (!isEqeal) {
+      return false;
     }
 
     // 数据值是否一致
-    dpCodes.every(key => {
-      // const formater = getFormater(key);
+    return dpCodes.every(key => {
       const originValue = requestData[key];
       const targetValue = data[key];
-      // if (formater) {
-      //   return formater.equal(originValue, targetValue);
-      // }
       return targetValue === originValue;
     });
   }

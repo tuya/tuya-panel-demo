@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Color from 'color';
+import createColor from 'color';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Utils, TYText, SwitchButton, TYSdk, IconFont } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
@@ -54,31 +54,19 @@ class Main extends PureComponent<IProp, State> {
       visibleFault: !!msg,
     };
   }
-  componentWillReceiveProps(nextProps: IProp) {
-    if (nextProps.fault !== this.props.fault) {
+
+  UNSAFE_componentWillReceiveProps(nextProps: IProp) {
+    const { fault } = this.props;
+    if (nextProps.fault !== fault) {
       const msg = getFaultStrings(faultCode, nextProps.fault);
-      if (!!msg) {
+      if (msg) {
         this.closeFault();
       } else {
         this.shosFault(msg);
       }
     }
   }
-  closeFault = () => {
-    this.setState({ visibleFault: false, faultMsg: '' });
-  };
-  shosFault = (msg: string) => {
-    this.setState({ visibleFault: true, faultMsg: msg });
-  };
-  handlePower = (power: boolean) => {
-    gateway.putDpData({ [powerCode]: power });
-  };
-  handleChangeMode = (mode: string) => {
-    gateway.putDpData({ [modeCode]: mode });
-  };
-  handleChangeLoopMode = (mode: string) => {
-    gateway.putDpData({ [loopModeCode]: mode });
-  };
+
   getColor() {
     const {
       power,
@@ -90,13 +78,32 @@ class Main extends PureComponent<IProp, State> {
 
     if (power) {
       try {
-        return Color(Strings.getLang(`airColor_${airQuality}`)).rgbaString();
+        return createColor(Strings.getLang(`airColor_${airQuality}`)).rgbaString();
       } catch (e) {
         return themeColor;
       }
     }
     return fontColor;
   }
+
+  closeFault = () => {
+    this.setState({ visibleFault: false, faultMsg: '' });
+  };
+
+  shosFault = (msg: string) => {
+    this.setState({ visibleFault: true, faultMsg: msg });
+  };
+
+  handlePower = (power: boolean) => {
+    gateway.putDpData({ [powerCode]: power });
+  };
+
+  handleChangeMode = (mode: string) => {
+    gateway.putDpData({ [modeCode]: mode });
+  };
+  handleChangeLoopMode = (mode: string) => {
+    gateway.putDpData({ [loopModeCode]: mode });
+  };
 
   render() {
     const {
@@ -145,7 +152,7 @@ class Main extends PureComponent<IProp, State> {
             style={[
               styles.countdown,
               {
-                backgroundColor: Color(themeColor).alpha(0.2).rgbaString(),
+                backgroundColor: createColor(themeColor).alpha(0.2).rgbaString(),
               },
             ]}
           >

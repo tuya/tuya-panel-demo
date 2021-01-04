@@ -6,15 +6,17 @@ export default class StringFormater extends NormalFormater {
   parse(value: string): string {
     return this.formateValue(value);
   }
+
   formateValue(value: string): string {
     if (this.schema && this.schema.type === SchemaType.Number) {
-      const { maxlen } = this.schema;
+      const { maxlen = 255 } = this.schema;
       if (value && value.length > maxlen) {
         return value.substr(0, maxlen);
       }
     }
     return value;
   }
+
   // 将数据转为标准协议数据
   format(value: string): string {
     return this.formateValue(value);

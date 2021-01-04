@@ -74,9 +74,8 @@ export const formatCoundown = (value: number) => {
       hour < 10 ? `0${hour}` : hour,
       minute < 10 ? `0${minute}` : minute
     );
-  } else {
-    return Strings.formatValue('countdownMinute', minute < 10 ? `0${minute}` : minute);
   }
+  return Strings.formatValue('countdownMinute', minute < 10 ? `0${minute}` : minute);
 };
 
 /**
@@ -142,7 +141,7 @@ const iconsMap = {
  */
 export function fetchUIData(code: string) {
   const schema = TYSdk.device.getDpSchema(code);
-  const res = schema.range.map((d: string) => {
+  const res = (schema.range || []).map((d: string) => {
     return {
       value: d,
       label: Strings.getDpLang(code, d),
@@ -170,8 +169,8 @@ export function fetchCustomDps() {
 
 export const getFaultStrings = (faultCode: string, faultValue: number, onlyPrior = true) => {
   if (!faultValue) return '';
-  const { label } = TYSdk.device.getDpSchema(faultCode);
-  const labels = [];
+  const { label = '' } = TYSdk.device.getDpSchema(faultCode);
+  const labels: string[] = [];
   for (let i = 0; i < label.length; i++) {
     const value = label[i];
     const isExist = Utils.NumberUtils.getBitValue(faultValue, i);

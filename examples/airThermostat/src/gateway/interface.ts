@@ -39,15 +39,13 @@ export interface DpSchema {
   range?: string[];
   maxlen?: number; // string type 下的最大长度
   type: SchemaType;
-  validate?: (value: SchemaDataType) => boolean;
-  format?: (value: SchemaDataType) => SchemaDataType;
+  validate: (value: SchemaDataType) => boolean;
+  format: (value: SchemaDataType) => SchemaDataType;
 }
 
 export interface DpSchemas {
   [key: string]: DpSchema;
 }
-
-export interface CloudSchema {}
 
 export interface DpData {
   [key: string]: boolean | number | string | Color | any;
@@ -75,15 +73,13 @@ export interface IDpWorker extends BaseWorker {
   send: (option: SendOption) => Promise<any>;
 }
 
-export interface ICloudWorker extends BaseWorker {}
-
 /**
  * 格式化器
  * 用于转换数据及判别数据是否相等
  */
 export interface IFormater {
   uuid: string;
-  schema: DpSchema | CloudSchema;
+  schema: DpSchema | null;
 
   /**
    * 比较两个值是否一致

@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Utils } from 'tuya-panel-kit';
-import Controllerbar from './Controllerbar';
 import { connect } from 'react-redux';
 import dpCodes from 'config/default/dpCodes';
+import { ControllBarTab } from 'utils/index';
+import Controllerbar from './Controllerbar';
 import Main from './Main';
 import Data from './Data';
 import Setting from './Setting';
-import { ControllBarTab } from 'utils/index';
 
 const { height: winHeight } = Utils.RatioUtils;
 
@@ -20,6 +20,7 @@ interface IProp {
 
 class Home extends PureComponent<IProp> {
   viewHeight: number = winHeight;
+
   render() {
     const { tab } = this.props;
     return (

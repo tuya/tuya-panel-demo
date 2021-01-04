@@ -5,7 +5,9 @@ import { IFormater, DpSchema, SchemaDataType } from '../interface';
  */
 export default class NormalFormater implements IFormater {
   uuid: string;
+
   schema: DpSchema;
+
   constructor(uuid: string) {
     this.uuid = uuid;
   }
@@ -14,10 +16,12 @@ export default class NormalFormater implements IFormater {
   equal(source: SchemaDataType, target: SchemaDataType): boolean {
     return source === target;
   }
+
   // 将标准协议数据转为项目数据
   parse(value: SchemaDataType): SchemaDataType {
     return value;
   }
+
   // 将数据转为标准协议数据
   format(value: SchemaDataType): SchemaDataType {
     return value;
