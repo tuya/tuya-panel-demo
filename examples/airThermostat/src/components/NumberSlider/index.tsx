@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React from 'react';
 import {
   View,
@@ -104,28 +105,33 @@ export const numberSliderDefaultProps = {
    * 滑动开始事件
    * @param v 当前值
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onGrant(v: number) {},
   /**
    * 滑动中事件
    * @param v 当前值
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onMove(v: number) {},
   /**
    * 滑动结束事件
    * @param v 当前值
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onRelease(v: number) {},
   /**
    * 点击事件
    * 当 clickEnabled = true时，有效
    * @param v 当前值
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onPress(v: number) {},
 
   /**
    * 用户主动交互时，如果滑动条的数据值有变化，会触发此事件
    * @param v 变化的数据值
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onChange(v: number) {},
 
   /**
@@ -133,6 +139,7 @@ export const numberSliderDefaultProps = {
    * @param offset 滑块的相对轨道最小值一端的偏移量
    * @param value 滑块位置对应的数据值
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onThumbChange(offset: number, value?: number) {},
 };
 
@@ -200,26 +207,47 @@ interface IState {
  * 此滑动条仅保证整数值情况下完整的
  */
 export default class NumberSlider extends React.Component<NumberSliderProps, IState> {
+  // eslint-disable-next-line
   static defaultProps: DefaultProps = numberSliderDefaultProps;
+
   _panResponder: PanResponderInstance;
-  locked: boolean = false;
-  trackLength: number = 0; // 轨道长度
+
+  locked = false;
+
+  trackLength = 0; // 轨道长度
+
   trackSize: number[] = [0, 0];
-  trackWidth: number = 0; // 轨道宽度
-  valueLength: number = 0; // 激活的长度
-  offsetMinLength: number = 0; // 相对最小显示位置可滑动的最小偏移距离
-  offsetMaxLength: number = 0; // 相对最大显示位置可滑动的最大偏移距离
-  maxLength: number = 0; // 可滑动的最大距离
-  thumbWidth: number = 0; // 滑块的宽
-  thumbHeight: number = 0; // 滑动的高
+
+  trackWidth = 0; // 轨道宽度
+
+  valueLength = 0; // 激活的长度
+
+  offsetMinLength = 0; // 相对最小显示位置可滑动的最小偏移距离
+
+  offsetMaxLength = 0; // 相对最大显示位置可滑动的最大偏移距离
+
+  maxLength = 0; // 可滑动的最大距离
+
+  thumbWidth = 0; // 滑块的宽
+
+  thumbHeight = 0; // 滑动的高
+
   animate: Animated.Value = new Animated.Value(0);
-  moving: boolean = false;
-  grantTime: number = 0;
-  isTouchStart: boolean = false;
-  needUpdate: boolean = false;
-  trackX: number = 0;
-  trackY: number = 0;
-  tempValue: number = 0; // 数据临时值
+
+  moving = false;
+
+  grantTime = 0;
+
+  isTouchStart = false;
+
+  needUpdate = false;
+
+  trackX = 0;
+
+  trackY = 0;
+
+  tempValue = 0; // 数据临时值
+
   constructor(props: NumberSliderProps) {
     super(props);
     this._panResponder = PanResponder.create({
@@ -227,25 +255,27 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
       onStartShouldSetPanResponder: this.handleStartPanResponder,
       onMoveShouldSetPanResponder: this.handleSetPanResponder,
       onPanResponderTerminationRequest: () => !this.moving,
-      onPanResponderMove: this.onMove,
-      onPanResponderRelease: this.onRelease,
-      //当前有其他的东西成为响应器并且没有释放它。
+      onPanResponderMove: this.handleMove,
+      onPanResponderRelease: this.handleRelease,
+      // 当前有其他的东西成为响应器并且没有释放它。
       onPanResponderReject: this.handleTerminate,
       onPanResponderTerminate: this.handleTerminate,
     });
     this.animate.addListener(this.fireThumbChange);
-
-    this.state = { value: this.props.value, showTint: false };
-    this.tempValue = this.props.value;
+    const { value } = this.props;
+    this.state = { value, showTint: false };
+    this.tempValue = value;
   }
-  componentDidMount() {}
+
   componentWillUnmount() {
     this.animate.removeAllListeners();
   }
-  componentWillReceiveProps(nextProps: NumberSliderProps) {
+
+  UNSAFE_componentWillReceiveProps(nextProps: NumberSliderProps) {
     if (!this.locked) {
+      const { value, direction } = this.props;
       this.handleLength(nextProps);
-      if (nextProps.value !== this.props.value || nextProps.direction !== this.props.direction) {
+      if (nextProps.value !== value || nextProps.direction !== direction) {
         const valueLength = this.valueToCoor(nextProps.value);
         this.setAnimationValue(valueLength);
         this.valueLength = valueLength;
@@ -254,11 +284,14 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
       }
     }
   }
+
   shouldComponentUpdate() {
     return !this.locked;
   }
-  setAnimationValue(value: number, isSliding: boolean = false, noAnimation: boolean = false) {
-    if (!noAnimation && this.props.showAnimation) {
+
+  setAnimationValue(value: number, isSliding = false, noAnimation = false) {
+    const { showAnimation } = this.props;
+    if (!noAnimation && showAnimation) {
       this.animate.stopAnimation();
       Animated.timing(this.animate, {
         toValue: value,
@@ -271,6 +304,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
       this.animate.setValue(value);
     }
   }
+
   /**
    * 返回滑动位置
    */
@@ -301,16 +335,21 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
 
     return { x: x - width / 2, y: y - height / 2, width, height, centerX: x, centerY: y };
   }
+
   fireThumbChange = ({ value }: { value: number }) => {
-    this.props.onThumbChange(value + this.offsetMinLength, this.coorToValue(value));
+    const { onThumbChange } = this.props;
+    onThumbChange(value + this.offsetMinLength, this.coorToValue(value));
   };
+
   handleStartPanResponder = (e: GestureResponderEvent) => {
-    if (this.props.disabled) {
+    const { clickEnabled, disabled } = this.props;
+    if (disabled) {
       return false;
     }
     this.grantTime = +new Date();
-    return this.props.clickEnabled;
+    return clickEnabled;
   };
+
   handleSetPanResponder = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
     const { direction, invalidSwipeDistance, onGrant, disabled, trackSlideEnabled } = this.props;
     if (disabled) {
@@ -338,7 +377,8 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
         }
       }
       // 开始手势
-      onGrant(this.state.value);
+      const { value } = this.state;
+      onGrant(value);
       this.moving = true;
       this.locked = true;
     }
@@ -352,19 +392,21 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     this.isTouchStart = false;
   };
 
-  onMove = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
+  handleMove = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
+    const { onMove } = this.props;
     if (this.moving || this.handleSetPanResponder(e, gesture)) {
-      this.handleMove(gesture, this.props.onMove, false);
+      this.handleUpdateMove(gesture, onMove, false);
     }
   };
 
-  onRelease = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
+  handleRelease = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
     this.isTouchStart = false;
+    const { onRelease, clickEnabled, onPress } = this.props;
     if (this.moving) {
       this.moving = false;
       this.locked = false;
-      this.handleMove(gesture, this.props.onRelease, true);
-    } else if (this.props.clickEnabled) {
+      this.handleUpdateMove(gesture, onRelease, true);
+    } else if (clickEnabled) {
       const { direction } = this.props;
       const { centerX, centerY } = this.getThumbBound();
       const now = +new Date();
@@ -377,18 +419,15 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
           diff = locationY - centerY;
         }
 
-        this.handleMove(
-          { dx: diff, dy: diff } as PanResponderGestureState,
-          this.props.onPress,
-          true
-        );
+        this.handleUpdateMove({ dx: diff, dy: diff } as PanResponderGestureState, onPress, true);
       }
     }
   };
-  handleMove(
+
+  handleUpdateMove(
     gesture: PanResponderGestureState,
     callback: (value: number) => void,
-    isEnd: boolean = false
+    isEnd = false
   ) {
     const { valueLength, maxLength } = this;
     const { direction, reverse, onChange } = this.props;
@@ -424,6 +463,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     }
     callback(value);
   }
+
   handleLength(props: NumberSliderProps) {
     const { showMax, showMin, min, max, thumbStyle, thumbLimitType, direction } = props;
     const { trackSize } = this;
@@ -431,7 +471,6 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     this.trackLength = trackLength;
     this.trackWidth = direction === 'horizontal' ? trackSize[1] : trackSize[0];
     const thumbStyles = [styles.thumb, thumbStyle];
-    // @ts-ignore
     const { height: thumbHeight = 24, width: thumbWidth = 24 } = StyleSheet.flatten(thumbStyles);
     this.thumbWidth = thumbWidth as number;
     this.thumbHeight = thumbHeight as number;
@@ -442,12 +481,13 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
       offset = isHorizontal ? this.thumbWidth / 2 : this.thumbHeight / 2;
     }
 
-    let realMax = showMax === undefined ? max : showMax;
-    let realMin = showMin === undefined ? min : showMin;
+    const realMax = showMax === undefined ? max : showMax;
+    const realMin = showMin === undefined ? min : showMin;
     this.offsetMinLength = (trackLength * (min - realMin)) / (realMax - realMin) + offset;
     this.offsetMaxLength = (trackLength * (realMax - max)) / (realMax - realMin) + offset;
     this.maxLength = Math.max(1, trackLength - this.offsetMaxLength - this.offsetMinLength);
   }
+
   handleLayout = (e: LayoutChangeEvent) => {
     const { width, height, x, y } = e.nativeEvent.layout;
     const { trackLength, trackWidth } = this;
@@ -455,23 +495,26 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     this.trackX = x;
     this.trackY = y;
     this.handleLength(this.props);
+    const { value, showTint } = this.state;
     if (!this.locked && (trackLength !== this.trackLength || trackWidth !== this.trackWidth)) {
-      const valueLength = this.valueToCoor(this.state.value);
+      const valueLength = this.valueToCoor(value);
       this.setAnimationValue(valueLength);
       this.valueLength = valueLength;
     }
 
-    if (!this.state.showTint) {
+    if (!showTint) {
       this.setState({ showTint: true });
     }
-
-    this.props.onTrackLayout && this.props.onTrackLayout(e);
+    const { onTrackLayout } = this.props;
+    onTrackLayout && onTrackLayout(e);
   };
+
   valueToCoor(value: number) {
     const { min, max } = this.props;
     const percent = (Math.min(max, Math.max(min, value)) - min) / (max - min);
     return percent * this.maxLength;
   }
+
   coorToValue(length: number) {
     const { min, max, step } = this.props;
     let value = (length / this.maxLength) * (max - min) + min;
@@ -480,6 +523,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     }
     return Math.min(max, Math.max(min, value));
   }
+
   render() {
     const {
       trackColor,
@@ -505,11 +549,9 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     const thumbStyles = [styles.thumb, thumbStyle];
     const isThumbInner = thumbLimitType === 'inner';
     const trackStyles = [isHorizontal ? styles.track : styles.trackVertical, trackStyle];
-    // @ts-ignore
     const { height: thumbHeight = 24, width: thumbWidth = 24 } = StyleSheet.flatten(thumbStyles);
     const halfThumbWidth = (thumbWidth as number) / 2;
     const halfThumbHeight = (thumbHeight as number) / 2;
-    // @ts-ignore
     const { height: trackHeight = 6, width: trackWidth = 6 } = StyleSheet.flatten(trackStyles);
     return (
       <View style={containerStyle} accessibilityLabel={accessibilityLabel} onLayout={onLayout}>
@@ -541,10 +583,8 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                   isHorizontal
                     ? {
                         backgroundColor: tintColor,
-                        // @ts-ignore
                         height: trackHeight,
-                        // @ts-ignore
-                        borderRadius: trackHeight / 2,
+                        borderRadius: (trackHeight as number) / 2,
                         width: Animated.add(
                           this.offsetMinLength,
                           isThumbInner
@@ -559,7 +599,6 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                                   0,
                                   thumbWidth as number,
                                   this.maxLength,
-                                  // @ts-ignore
                                   this.maxLength + (thumbWidth as number),
                                 ],
                               })
@@ -570,8 +609,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                     : {
                         backgroundColor: tintColor,
                         width: trackWidth,
-                        // @ts-ignore
-                        borderRadius: trackWidth / 2,
+                        borderRadius: (trackWidth as number) / 2,
                         height: Animated.add(
                           this.offsetMinLength,
                           isThumbInner
@@ -586,7 +624,6 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                                   0,
                                   thumbHeight as number,
                                   this.maxLength,
-                                  // @ts-ignore
                                   this.maxLength + (thumbHeight as number),
                                 ],
                               })
@@ -607,6 +644,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
           {/* 滑块 */}
           {showTint && (
             <Animated.View
+              // eslint-disable-next-line no-sparse-arrays
               style={[
                 thumbStyles,
                 isHorizontal
@@ -622,7 +660,6 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                         this.offsetMinLength - halfThumbHeight
                       ),
                     },
-                ,
               ]}
             >
               {!!renderThumb && renderThumb()}

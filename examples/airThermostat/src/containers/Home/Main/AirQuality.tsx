@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Animated, Easing } from 'react-native';
-import Color from 'color';
+import ceateColor from 'color';
 import { LinearGradient, TYText, UnitText, Utils } from 'tuya-panel-kit';
 import { Circle } from 'react-native-svg';
 import Strings from 'i18n/index';
@@ -20,12 +20,25 @@ interface IProps {
   theme?: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class AirQuality extends Component<IProps> {
   animation: Animated.Value = new Animated.Value(0);
-  loop: boolean = false;
-  componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.power !== this.props.power) {
+
+  loop = false;
+
+  componentDidMount() {
+    const { power } = this.props;
+    if (power) {
+      this.loop = true;
+      this.runAnimation();
+    }
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps: IProps) {
+    const { power } = this.props;
+    if (nextProps.power !== power) {
       if (nextProps.power) {
         this.loop = true;
         this.runAnimation();
@@ -34,21 +47,31 @@ export default class AirQuality extends Component<IProps> {
       }
     }
   }
-  componentDidMount() {
-    if (this.props.power) {
-      this.loop = true;
-      this.runAnimation();
-    }
-  }
+
   shouldComponentUpdate(nextProps: IProps) {
     const { power, pm25, airQuality } = nextProps;
-    return (
-      power !== this.props.power || pm25 !== this.props.pm25 || airQuality !== this.props.airQuality
-    );
+    const { power: oldPower, pm25: oldPm25, airQuality: oldairQuality } = this.props;
+    return power !== oldPower || pm25 !== oldPm25 || airQuality !== oldairQuality;
   }
+
   componentWillUnmount() {
     this.animation.stopAnimation();
   }
+
+  getColor() {
+    const {
+      airQuality,
+      theme: {
+        global: { brand: themeColor },
+      },
+    } = this.props;
+    try {
+      return ceateColor(Strings.getLang(`airColor_${airQuality}`)).rgbaString();
+    } catch (e) {
+      return themeColor;
+    }
+  }
+
   runAnimation = () => {
     this.animation.stopAnimation();
     Animated.timing(this.animation, {
@@ -62,6 +85,7 @@ export default class AirQuality extends Component<IProps> {
       }
     });
   };
+
   renderAnimation() {
     const color = this.getColor();
     return [0, 1, 2].map(i => {
@@ -87,19 +111,7 @@ export default class AirQuality extends Component<IProps> {
       );
     });
   }
-  getColor() {
-    const {
-      airQuality,
-      theme: {
-        global: { brand: themeColor },
-      },
-    } = this.props;
-    try {
-      return Color(Strings.getLang(`airColor_${airQuality}`)).rgbaString();
-    } catch (e) {
-      return themeColor;
-    }
-  }
+
   render() {
     const { pm25 } = this.props;
     const color = this.getColor();
@@ -123,7 +135,10 @@ export default class AirQuality extends Component<IProps> {
             ]}
           >
             <LinearGradient
-              stops={{ '0%': Color(color).mix(Color('rgba(255,255,255, 0.4)')), '100%': color }}
+              stops={{
+                '0%': ceateColor(color).mix(ceateColor('rgba(255,255,255, 0.4)')),
+                '100%': color,
+              }}
               style={{ width: circleSize, height: circleSize }}
             >
               <Circle cx={circleSize / 2} cy={circleSize / 2} r={circleSize / 2} />

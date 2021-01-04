@@ -1,21 +1,20 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { TYSdk, Theme, Utils } from 'tuya-panel-kit';
-import gateway from './gateway';
+import { TYSdk, Theme, Utils, DevInfo } from 'tuya-panel-kit';
 import { Store } from 'redux';
-
+import { setDevInfo } from 'utils/index';
+import gateway from './gateway';
 import { devInfoChange, deviceChange, updateDp } from './redux/modules/common';
 import theme from './theme';
 import gatewayConfig from './config/dragon';
-import { setDevInfo } from 'utils/index';
 
 const TYDevice = TYSdk.device;
 const TYNative = TYSdk.native;
 const TYEvent = TYSdk.event;
 
 interface PanelProps {
-  devInfo: object;
+  devInfo: DevInfo;
 }
 
 const {
@@ -46,6 +45,7 @@ const composeLayout = (store: Store, component: any) => {
       }
       this.subscribe();
     }
+
     componentDidMount() {
       // 更新在进入面板未接收到dp的数据
       if (TYDevice.__unInitializeDps) {
@@ -55,6 +55,7 @@ const composeLayout = (store: Store, component: any) => {
         }
       }
     }
+
     componentWillUnmount() {
       this.unsubscribe();
     }
@@ -83,6 +84,7 @@ const composeLayout = (store: Store, component: any) => {
       TYEvent.remove('deviceDataChange', this.handleDeviceChange);
       TYEvent.remove('networkStateChange', this._handleAppOnlineChange);
     }
+
     handleDeviceChange = ({ type, payload }: any) => {
       switch (type) {
         case 'dpData':
@@ -96,6 +98,7 @@ const composeLayout = (store: Store, component: any) => {
     _handleDeviceChanged = (data: any) => {
       dispatch(deviceChange(data));
     };
+
     _handleDpDataChange = (data: any) => {
       gateway.receiveDp(data);
     };
@@ -108,6 +111,7 @@ const composeLayout = (store: Store, component: any) => {
         })
       );
     };
+
     render() {
       return (
         <Provider store={store}>

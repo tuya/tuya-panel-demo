@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import Color from 'color';
+import createColor from 'color';
 import { Utils, TYText, IconFont, Popup } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
 import dpCodes from 'config/default/dpCodes';
@@ -30,6 +30,7 @@ class Speed extends PureComponent<IProp> {
       { mask: true }
     );
   };
+
   render() {
     const { speed, power, theme } = this.props;
     const {
@@ -49,7 +50,7 @@ class Speed extends PureComponent<IProp> {
             styles.btn,
             {
               borderColor: themeColor,
-              backgroundColor: Color(themeColor).alpha(0.1).rgbaString(),
+              backgroundColor: createColor(themeColor).alpha(0.1).rgbaString(),
             },
           ]}
           disabled={!power}
@@ -58,7 +59,7 @@ class Speed extends PureComponent<IProp> {
         >
           <TYText style={styles.label}>{Strings.getDpLang(fanSpeedCode)}</TYText>
           <TYText style={[styles.value, { color: themeColor }]}>
-            ·{Strings.getDpLang(fanSpeedCode, speed)}
+            {`·${Strings.getDpLang(fanSpeedCode, speed)}`}
           </TYText>
           <IconFont d={icons.arrow} size={14} color={themeColor} />
         </TouchableOpacity>

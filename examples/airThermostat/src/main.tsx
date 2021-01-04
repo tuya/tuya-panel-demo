@@ -7,7 +7,9 @@ import composeLayout from './composeLayout';
 import { getRoute } from './config/router';
 
 if (!__DEV__) {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   console.log = () => {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   console.warn = () => {};
 }
 
@@ -76,6 +78,8 @@ class MainLayout extends NavigatorLayout {
         return (
           <TopBar
             title={routeProps.title || ''}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             actions={actions}
             onBack={() => this._handleTabChange('left')}
           />

@@ -1,7 +1,3 @@
-/* eslint-disable */
-// https://github.com/component/throttle/blob/master/index.js
-module.exports = throttle;
-
 /**
  * Returns a new function that, when invoked, invokes `func` at most once per `wait` milliseconds.
  *
@@ -10,22 +6,12 @@ module.exports = throttle;
  * @return {Function} A new function that wraps the `func` function passed in.
  */
 
-function throttle(func: Function, wait: number) {
+export default function throttle(func: (...rest) => any, wait: number) {
   let ctx;
   let args;
   let rtn;
   let timeoutID; // caching
   let last = 0;
-
-  return function throttled() {
-    ctx = this;
-    args = arguments;
-    const delta = new Date() - last;
-    if (!timeoutID)
-      if (delta >= wait) call();
-      else timeoutID = setTimeout(call, wait - delta);
-    return rtn;
-  };
 
   function call() {
     timeoutID = 0;
@@ -34,4 +20,14 @@ function throttle(func: Function, wait: number) {
     ctx = null;
     args = null;
   }
+
+  return function throttled(...rest) {
+    ctx = this;
+    args = rest;
+    const delta = +new Date() - last;
+    if (!timeoutID)
+      if (delta >= wait) call();
+      else timeoutID = setTimeout(call, wait - delta);
+    return rtn;
+  };
 }

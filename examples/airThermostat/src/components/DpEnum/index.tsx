@@ -1,7 +1,7 @@
 import React, { SFC } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { TYText, IconFont, Utils } from 'tuya-panel-kit';
-import icons from 'icons/index';
+import icons from 'icons';
 
 const {
   ThemeUtils: { withTheme },

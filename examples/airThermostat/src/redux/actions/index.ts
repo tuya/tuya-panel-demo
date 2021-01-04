@@ -1,6 +1,6 @@
+import { Dispatch } from 'react';
 import { updateCloud as updateCloudAction } from '../modules/cloud';
 import { updateUI as updateUIAction } from '../modules/common';
-import { Dispatch } from 'react';
 
 let dispatch: Dispatch<any>;
 

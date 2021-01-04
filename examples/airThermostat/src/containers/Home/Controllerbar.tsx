@@ -20,12 +20,15 @@ class Bar extends Component<IProps> {
   handleToHome = () => {
     updateUI({ controllBar: ControllBarTab.Home });
   };
+
   handleToData = () => {
     updateUI({ controllBar: ControllBarTab.Data });
   };
+
   handleToSetting = () => {
     updateUI({ controllBar: ControllBarTab.Setting });
   };
+
   handleSchedule = () => {
     TYSdk.Navigator.push({
       id: 'timer',
@@ -48,6 +51,7 @@ class Bar extends Component<IProps> {
       },
     });
   };
+
   render() {
     const { tab } = this.props;
     return (
