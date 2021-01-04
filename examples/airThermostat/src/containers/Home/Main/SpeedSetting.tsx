@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import { Utils, Popup, TYSdk } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
 import dpCodes from 'config/default/dpCodes';
-import gateway from '../../../gateway';
 import Strings from 'i18n/index';
 import PopMain from 'components/PopMain';
 import SpeedSlider from 'components/SpeedSlider';
+import gateway from '../../../gateway';
 
 const { withTheme } = Utils.ThemeUtils;
 
@@ -23,24 +23,31 @@ interface State {
 class SpeedSetting extends PureComponent<IProp, State> {
   constructor(props: IProp) {
     super(props);
+    const { speed } = this.props;
     this.state = {
-      speed: this.props.speed,
+      speed,
     };
   }
+
   getEnumValue() {
     const schema = TYSdk.device.getDpSchema(fanSpeedCode);
+    const { speed } = this.state;
     if (schema) {
-      return schema?.range[this.state.speed];
+      return schema?.range[speed];
     }
     return '';
   }
+
   handleChange = (v: string) => {
     this.setState({ speed: v });
   };
+
   handleSave = () => {
-    gateway.putDpData({ [fanSpeedCode]: this.state.speed });
+    const { speed } = this.state;
+    gateway.putDpData({ [fanSpeedCode]: speed });
     Popup.close();
   };
+
   render() {
     const { theme, speed } = this.props;
     return (

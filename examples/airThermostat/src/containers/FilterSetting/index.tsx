@@ -5,8 +5,8 @@ import ScrollView from 'components/ScrollView';
 import { connect } from 'react-redux';
 import { isSupportDp } from 'utils/index';
 import Strings from 'i18n/index';
-import gateway from '../../gateway';
 import dpCodes from 'config/default/dpCodes';
+import gateway from '../../gateway';
 
 const {
   ThemeUtils: { withTheme },
@@ -40,6 +40,7 @@ class FilterSetting extends PureComponent<Props> {
   handleToBuy = (code: string) => () => {
     TYSdk.native.jumpTo(Strings.getLang(`${code}Url`));
   };
+
   handleReset = (code: string) => () => {
     Dialog.confirm({
       title: Strings.getLang(`${code}Title`),
@@ -52,6 +53,7 @@ class FilterSetting extends PureComponent<Props> {
       },
     });
   };
+
   render() {
     const { dpState, theme } = this.props;
     const {
@@ -108,7 +110,7 @@ class FilterSetting extends PureComponent<Props> {
   }
 }
 
-export default connect(({ dpState }: StoreState) => ({ dpState }))(withTheme(FilterSetting));
+export default connect(({ dpState }: any) => ({ dpState }))(withTheme(FilterSetting));
 
 const styles = StyleSheet.create({
   info: {

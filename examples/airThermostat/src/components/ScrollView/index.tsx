@@ -23,19 +23,26 @@ interface State {
  * 加入内容未超出可视区时是否滚动能力
  */
 class MyScrollView extends React.Component<Props, State> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps: DefaultProps = defaultProps;
+
   private scrollHeight: number;
-  private contenetHeight: Number;
+
+  private contenetHeight: number;
+
   private scrollRef: ScrollView;
-  state = { scrollEnabled: false };
+
   constructor(props: Props) {
     super(props);
+    const { scrollType } = this.props;
     this.state = {
-      scrollEnabled: this.props.scrollType === 'scroll',
+      scrollEnabled: scrollType === 'scroll',
     };
   }
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.scrollType !== this.props.scrollType) {
+
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    const { scrollType } = this.props;
+    if (nextProps.scrollType !== scrollType) {
       if (nextProps.scrollType === 'auto') {
         this.updateScrollEnabled(nextProps.scrollType);
       } else {
@@ -43,48 +50,59 @@ class MyScrollView extends React.Component<Props, State> {
       }
     }
   }
+
   getRef() {
     return this.scrollRef;
   }
-  fireEvent(cb: Function, ...args: any[]) {
+
+  fireEvent(cb?: (...rest: any[]) => void, ...args: any[]) {
     if (typeof cb === 'function') {
       cb(...args);
     }
   }
+
   updateScrollEnabled = (scrollType: string) => {
+    const { scrollEnabled } = this.state;
     if (this.scrollHeight && this.contenetHeight && scrollType === 'auto') {
       this.setState({ scrollEnabled: this.scrollHeight < this.contenetHeight }, () => {
-        if (!this.state.scrollEnabled) {
+        if (!scrollEnabled) {
           this.scrollRef.scrollTo({ y: 0, x: 0 });
         }
       });
     }
   };
+
   handleScrollLayout = (e: LayoutChangeEvent) => {
     const { height } = e.nativeEvent.layout;
     this.scrollHeight = height;
-    this.updateScrollEnabled(this.props.scrollType);
-    this.fireEvent(this.props.onLayout, e);
+    const { scrollType, onLayout } = this.props;
+    this.updateScrollEnabled(scrollType);
+    this.fireEvent(onLayout, e);
   };
+
   handleContentSize = (...args: any[]) => {
     const [width, height] = args;
     this.contenetHeight = height;
-    this.updateScrollEnabled(this.props.scrollType);
-    this.fireEvent(this.props.onContentSizeChange, ...args);
+    const { onContentSizeChange, scrollType } = this.props;
+    this.updateScrollEnabled(scrollType);
+    this.fireEvent(onContentSizeChange, ...args);
   };
+
   handleRef = (ref: ScrollView) => {
     this.scrollRef = ref;
   };
+
   render() {
     const { children, scrollType, ...other } = this.props;
+    const { scrollEnabled } = this.state;
     if (scrollType === 'auto') {
-      other.scrollEnabled = this.state.scrollEnabled;
+      other.scrollEnabled = scrollEnabled;
     }
     return (
       <ScrollView
         {...other}
         ref={this.handleRef}
-        scrollEnabled={this.state.scrollEnabled}
+        scrollEnabled={scrollEnabled}
         onContentSizeChange={this.handleContentSize}
         onLayout={this.handleScrollLayout}
       >

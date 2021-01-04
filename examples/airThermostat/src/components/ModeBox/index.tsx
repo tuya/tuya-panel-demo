@@ -16,9 +16,11 @@ interface IProp {
   onChange: (value: string) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class ModeBox extends PureComponent<IProp> {
-  handleShow = (hsv: IColour) => {
+  handleShow = () => {
     const { value, title, dataSource, theme, onChange } = this.props;
     const {
       global: { brand: themeColor },
@@ -26,7 +28,7 @@ export default class ModeBox extends PureComponent<IProp> {
     Dialog.custom(
       {
         style: { width: cx(310), backgroundColor: 'transparent' },
-        title: title,
+        title,
         titleStyle: { color: '#fff', fontSize: 24 },
         headerStyle: { marginBottom: 30, borderBottomWidth: 0 },
         footer: () => null,
@@ -48,6 +50,7 @@ export default class ModeBox extends PureComponent<IProp> {
       }
     );
   };
+
   render() {
     const { title, value, dataSource, theme, disabled, style } = this.props;
     const {

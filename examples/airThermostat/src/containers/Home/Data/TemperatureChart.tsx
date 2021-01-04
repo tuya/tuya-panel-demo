@@ -17,6 +17,8 @@ interface Props {
 const tooltipHeight = 44;
 const GAP = 8;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class TemperatureChart extends PureComponent<Props> {
   getRandomData() {
@@ -25,6 +27,7 @@ export default class TemperatureChart extends PureComponent<Props> {
       date: moment().subtract(6, 'months').add(n, 'days').format('YYYY-MM-DD'),
     }));
   }
+
   registerInsertCss = () => {
     return `
     (function(){
@@ -33,6 +36,7 @@ export default class TemperatureChart extends PureComponent<Props> {
     })();
     `;
   };
+
   renderBasicLineChart = (data: any) => {
     const { theme } = this.props;
     const {
@@ -138,6 +142,7 @@ export default class TemperatureChart extends PureComponent<Props> {
       chart.render();
     `;
   };
+
   render() {
     return (
       <View style={styles.box}>

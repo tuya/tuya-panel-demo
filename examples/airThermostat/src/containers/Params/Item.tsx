@@ -12,7 +12,7 @@ interface Props {
   min: number;
   max: number;
   step: number;
-  unit: string;
+  unit?: string;
   theme?: any;
   style?: any;
   onChange: (v: number) => void;
@@ -20,9 +20,13 @@ interface Props {
 
 class Item extends PureComponent<Props> {
   percentRef: TYText;
+
   handleChange = (v: number) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.percentRef && this.percentRef.setText(v);
   };
+
   render() {
     const { theme, style, label, value, unit, min, max, onChange, step } = this.props;
     const {

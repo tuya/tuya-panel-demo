@@ -17,12 +17,12 @@ import {
   isSupportDp,
   fetchCustomDps,
 } from 'utils/index';
+import icons from 'icons/index';
 import gateway from '../../../gateway';
 import Countdown from './Countdown';
 import SupplySetting from './SupplySetting';
 import ExhaustSetting from './ExhaustSetting';
 import DpSetting from './DpSetting';
-import icons from 'icons/index';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -82,7 +82,13 @@ class SettingPage extends PureComponent<IProp, State> {
     { value: TabType.Param, label: Strings.getLang('settingParam') },
     { value: TabType.Switch, label: Strings.getLang('settingSwitch') },
   ];
-  state = { tab: TabType.Param };
+
+  constructor(props: IProp) {
+    super(props);
+
+    this.state = { tab: TabType.Param };
+  }
+
   getButtons() {
     const { dpState } = this.props;
     const result: ButtonData[][] = [];
@@ -113,7 +119,7 @@ class SettingPage extends PureComponent<IProp, State> {
     const hasExhaust = isSupportExhaust();
     const hasSupply = isSupportSupply();
     if (hasExhaust || hasSupply) {
-      const data = [];
+      const data: { label: string; value: any; onPress: (...rest) => void }[] = [];
       if (hasExhaust) {
         data.push({
           label: Strings.getLang('exhaustLabel'),
@@ -208,11 +214,13 @@ class SettingPage extends PureComponent<IProp, State> {
             },
           ]);
           break;
+        default:
       }
     });
 
     return [...result, ...customData];
   }
+
   getPowerButtons = () => {
     const codes: string[][] = [
       [airConditioningCode, anionCode],
@@ -235,11 +243,13 @@ class SettingPage extends PureComponent<IProp, State> {
 
     return [...codes, ...cusCodes];
   };
+
   handleParams = () => {
     TYSdk.Navigator.push({
       id: 'params',
     });
   };
+
   handleCountdown = () => {
     Popup.custom(
       {
@@ -250,6 +260,7 @@ class SettingPage extends PureComponent<IProp, State> {
       { mask: true }
     );
   };
+
   handleExhaust = () => {
     Popup.custom(
       {
@@ -260,6 +271,7 @@ class SettingPage extends PureComponent<IProp, State> {
       { mask: true }
     );
   };
+
   handleSupply = () => {
     Popup.custom(
       {
@@ -270,6 +282,7 @@ class SettingPage extends PureComponent<IProp, State> {
       { mask: true }
     );
   };
+
   handleValueBySchema = (code: string, icon?: string) => () => {
     Popup.custom(
       {
@@ -280,12 +293,14 @@ class SettingPage extends PureComponent<IProp, State> {
       { mask: true }
     );
   };
+
   handleFilter = () => {
     TYSdk.Navigator.push({
       id: 'filter',
       title: Strings.getLang('filterInfo'),
     });
   };
+
   handleFactoryReset = () => {
     Dialog.confirm({
       title: Strings.getLang('resetFactoryTitle'),
@@ -297,12 +312,15 @@ class SettingPage extends PureComponent<IProp, State> {
       },
     });
   };
+
   handlePower = (code: string) => (v: boolean) => {
     gateway.putDpData({ [code]: v });
   };
+
   handleTab = (tab: TabType) => () => {
     this.setState({ tab });
   };
+
   render() {
     const { dpState } = this.props;
     const power = dpState[powerCode];
@@ -330,8 +348,10 @@ class SettingPage extends PureComponent<IProp, State> {
             <ScrollView>
               {buttons.map((buttons, i) => {
                 return (
+                  // eslint-disable-next-line react/no-array-index-key
                   <Group key={i} style={{ marginBottom: 12 }}>
                     {buttons.map((btn, index) => {
+                      // eslint-disable-next-line react/no-array-index-key
                       return <RowButton key={index} disabled={!power} {...btn} />;
                     })}
                   </Group>
@@ -345,6 +365,7 @@ class SettingPage extends PureComponent<IProp, State> {
                 const isSupport = codes.some((x: string) => isSupportDp(x));
                 if (isSupport) {
                   return (
+                    // eslint-disable-next-line react/no-array-index-key
                     <Group key={i} style={{ marginBottom: 12 }}>
                       {codes.map(code => {
                         const has = isSupportDp(code);

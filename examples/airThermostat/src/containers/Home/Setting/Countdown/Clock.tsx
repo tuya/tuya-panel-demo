@@ -16,24 +16,20 @@ interface Props {
   onCancel: () => void;
   onReset: () => void;
 }
-interface IState {
-  time: number;
-}
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 @withTheme
-export default class ClockView extends React.Component<Props, IState> {
+export default class ClockView extends React.Component<Props> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     countdown: 0, // 24 小时
     totalCountdown: 0,
+    // eslint-disable-next-line
     onCancel() {},
+    // eslint-disable-next-line
     onReset() {},
   };
-  constructor(props: Props) {
-    super(props);
-
-    this.state = { time: this.props.countdown };
-  }
 
   render() {
     const { countdown, totalCountdown, theme, onReset, onCancel } = this.props;
@@ -83,13 +79,6 @@ export default class ClockView extends React.Component<Props, IState> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: isIphoneX ? 20 : 0,
-  },
   btn: {
     height: 62,
     width: cx(327),

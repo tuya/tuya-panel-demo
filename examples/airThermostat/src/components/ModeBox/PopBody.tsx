@@ -14,12 +14,14 @@ interface IProp {
   onChange: (value: string) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 @withTheme
 export default class PopBody extends PureComponent<IProp> {
   renderButtons() {
     const { onChange, value: current, dataSource, theme } = this.props;
-    const exist = dataSource.find(({ value: x }) => x === current) || { icon: '', label: '' };
-    const childrens = [];
+    const exist: any = dataSource.find(({ value: x }) => x === current) || { icon: '', label: '' };
+    const childrens: React.ReactNode[] = [];
     for (let i = 0; i < dataSource.length / 3; i++) {
       const data = dataSource.slice(i * 3, i * 3 + 3);
       childrens.push(
@@ -40,6 +42,7 @@ export default class PopBody extends PureComponent<IProp> {
     }
     return childrens;
   }
+
   render() {
     const { onChange, value, dataSource, theme } = this.props;
     const {
@@ -139,5 +142,4 @@ const styles = StyleSheet.create({
     height: 4,
     marginBottom: cx(16),
   },
-  activeDot: { backgroundColor: '#fff' },
 });
