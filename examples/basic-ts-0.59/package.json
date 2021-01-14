@@ -1,8 +1,7 @@
 {
   "rnVersion": "5.28",
   "license": "MIT",
-  "author": "tuya-panel-example",
-  "name": "tuyaPanelExample",
+  "name": "basic-ts-0.59",
   "pid": [],
   "uiid": "",
   "version": "1.0.1",
@@ -10,6 +9,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "lint": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "readResource": "node scripts/read.js",
     "postinstall": "patch-package --patch-dir node_modules/@tuya-smart/tuya-panel-patches/patches",
     "release:init": "standard-version --first-release -t @template/basic-ts-0.59@",
     "release:major:pre": "standard-version --release-as major --prerelease rc --skip.tag=true",
@@ -39,7 +39,7 @@
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
-    "tuya-panel-kit": "~4.0.0-rc.1"
+    "tuya-panel-kit": "^4.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.1",
