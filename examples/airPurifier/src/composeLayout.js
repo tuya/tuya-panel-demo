@@ -24,14 +24,12 @@ const composeLayout = (store, component) => {
     }
   });
 
-  // eslint-disable-next-line
   TYEvent.on('networkStateChange', data => {
     dispatch(deviceChange(data));
   });
 
   class PanelComponent extends Component {
     static propTypes = {
-      // eslint-disable-next-line
       devInfo: PropTypes.object.isRequired,
     };
 

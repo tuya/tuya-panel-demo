@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Utils } from 'tuya-panel-kit';
-import TYSdk from '../../api';
 import Strings from '../../i18n';
 import dpCodes from '../../config/dpCodes';
-import { store } from '../../main';
+import { store } from '../../redux/configureStore';
 
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
 

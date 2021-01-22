@@ -1,8 +1,3 @@
-/**
- * copy from tuya-native-components 2.0.2
- * SwitchButton 可控组件，1.x为费可控组件;
- */
-/* eslint-disable react/require-default-props */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated, TouchableOpacity, View, ViewPropTypes } from 'react-native';
@@ -22,15 +17,22 @@ class SwitchButton extends React.PureComponent {
     onThumbTintColor: PropTypes.string,
     borderColor: PropTypes.string,
   };
+
   static defaultProps = {
     accessibilityLabel: 'SwitchButtonX',
+    style: null,
     defaultValue: true,
+    value: true,
     disabled: false,
     onTintColor: '#44DB5E',
     thumbTintColor: '#fff',
+    onThumbTintColor: '#fff',
     tintColor: '#E5E5E5E5',
     borderColor: '#E5E5E5',
+    onValueChange: () => {},
+    size: {},
   };
+
   constructor(props) {
     super(props);
     this.value = 'value' in props ? props.value : props.defaultValue;
@@ -40,7 +42,8 @@ class SwitchButton extends React.PureComponent {
       thumbLeft: new Animated.Value(left),
     };
   }
-  componentWillReceiveProps(nextProps) {
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!('value' in nextProps) || this.value === nextProps.value) return;
     this.valueChange(nextProps.value);
   }
@@ -74,6 +77,7 @@ class SwitchButton extends React.PureComponent {
   };
 
   valueChange = value => {
+    const { thumbLeft } = this.state;
     const color = this.calcColor(value);
     const borderColor = this.calcColor(value, 'border');
     const thumbColor = this.calcColor(value, 'thumb');
@@ -85,12 +89,13 @@ class SwitchButton extends React.PureComponent {
     });
     this.value = value;
     const left = this.calcLeft(value);
-    this.state.thumbLeft.stopAnimation();
-    Animated.spring(this.state.thumbLeft, { toValue: left, duration: 200 }).start();
+    thumbLeft.stopAnimation();
+    Animated.spring(thumbLeft, { toValue: left, duration: 200 }).start();
   };
 
   render() {
     const { style, disabled, accessibilityLabel } = this.props;
+    const { thumbLeft } = this.state;
     const thumbColor = this.calcColor(this.value, 'thumb');
     const backgroundColor = this.calcColor(this.value);
     const borderColor = this.calcColor(this.value, 'border');
@@ -109,7 +114,7 @@ class SwitchButton extends React.PureComponent {
       height: this.CGSize.activeSize,
       borderRadius: this.CGSize.activeSize / 2,
       position: 'absolute',
-      left: this.state.thumbLeft,
+      left: thumbLeft,
       backgroundColor: thumbColor,
     };
     return (

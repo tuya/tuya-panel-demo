@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import camelCase from 'camelcase';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -12,9 +11,9 @@ import GridLayout from '../../components/GridLayout';
 import dpCodes from '../../config/dpCodes';
 import Strings from '../../i18n';
 import icons from '../../res/iconfont.json';
-import { store } from '../../main';
+import { store } from '../../redux/configureStore';
 
-const { isIphoneX, convertX: cx, convertY: cy } = Utils.RatioUtils;
+const { isIphoneX, convertX: cx, convertY: cy, viewWidth } = Utils.RatioUtils;
 
 const TYDevice = TYSdk.device;
 const TYNative = TYSdk.native;
@@ -54,7 +53,7 @@ class HomeBottomView extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       dps: nextProps.dps,
     });
@@ -128,6 +127,7 @@ class HomeBottomView extends Component {
         cancelText: Strings.getLang('cancel'),
         value,
         dataSource: rangeStrings,
+        styles: { title: { width: viewWidth - 28 } },
         onSelect: v => {
           TYDevice.putDeviceData({
             [code]: v,

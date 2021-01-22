@@ -8,7 +8,7 @@ import { Utils } from 'tuya-panel-kit';
 import dpCodes from '../../config/dpCodes';
 import TYSdk from '../../api';
 import Strings from '../../i18n';
-import { store } from '../../main';
+import { store } from '../../redux/configureStore';
 
 const {
   width: DEVICE_WIDTH,
@@ -95,17 +95,10 @@ class HomeCurveView extends Component {
   }
 
   renderDatesView() {
-    /* eslint-disable indent */
     const dates = [
-      moment()
-        .subtract(4, 'days')
-        .format('MM.DD'),
-      moment()
-        .subtract(3, 'days')
-        .format('MM.DD'),
-      moment()
-        .subtract(2, 'days')
-        .format('MM.DD'),
+      moment().subtract(4, 'days').format('MM.DD'),
+      moment().subtract(3, 'days').format('MM.DD'),
+      moment().subtract(2, 'days').format('MM.DD'),
       Strings.getLang('yesterday'),
       Strings.getLang('today'),
     ];
@@ -124,7 +117,7 @@ class HomeCurveView extends Component {
   render() {
     const { hideOutdoorPM25 } = this.props;
     const { outdoorPM25 } = this.props;
-    const { outers, inners, realInner } = this.state;
+    const { outers, inners, realInner, loaded } = this.state;
     const disOuter = [60.5, 60.5, 60.5, 60.5, 60.5];
     // 当接口拉取不到室外PM25数据的时候，会显示[-1,-1,-1,-1,-1];此时状态里的outers经处理后为[60.5, 60.5, 60.5, 60.5, 60.5]
     const showOuterPM25 = JSON.stringify(outers.sort()) !== JSON.stringify(disOuter.sort());
@@ -145,7 +138,7 @@ class HomeCurveView extends Component {
                 strokeDasharray="4, 2"
               />
               <Circle cx={x} cy={outerY} r="3" fill="rgba(255,255,255,.5)" />
-              {this.state.loaded && (
+              {loaded && (
                 <SvgText
                   fill="#fff"
                   stroke="none"
@@ -163,7 +156,7 @@ class HomeCurveView extends Component {
           <G>
             <Path d={innerPath} fill="none" stroke="rgba(255,255,255,.5)" />
             <Circle cx={x} cy={innerY} r="3" fill="rgba(255,255,255,.5)" />
-            {this.state.loaded && (
+            {loaded && (
               <SvgText
                 fill="#fff"
                 stroke="none"

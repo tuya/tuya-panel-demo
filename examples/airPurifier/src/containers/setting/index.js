@@ -12,13 +12,14 @@ import TYSdk from '../../api';
 import dpCodes from '../../config/dpCodes';
 import { arrayToObject } from '../../utils';
 import Strings from '../../i18n';
-import { store } from '../../main';
+import { store } from '../../redux/configureStore';
 
-const { convertY: cy } = Utils.RatioUtils;
+const { convertY: cy, viewWidth } = Utils.RatioUtils;
 
 const TYEvent = TYSdk.event;
 const TYDevice = TYSdk.device;
 const TYNative = TYSdk.native;
+const TYMobile = TYSdk.mobile;
 
 const {
   power: powerCode,
@@ -51,8 +52,16 @@ class SettingScene extends Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
-    nextProps.dps.map(({ code }) => {
+  componentDidMount() {
+    TYEvent.on('deviceDataChange', data => {
+      if (data.type === 'dpData') {
+        this._handleDpDataChange(data.payload);
+      }
+    });
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    nextProps.dps.forEach(({ code }) => {
       this.setState({
         [code]: store.getState().dpState[code],
       });
@@ -64,7 +73,11 @@ class SettingScene extends Component {
   }
 
   componentWillUnmount() {
-    TYEvent.off('dpDataChange', this._handleDpDataChange);
+    TYEvent.off('dpDataChange', data => {
+      if (data.type === 'dpData') {
+        this._handleDpDataChange(data.payload);
+      }
+    });
   }
 
   getDpFunData() {
@@ -111,7 +124,8 @@ class SettingScene extends Component {
     const codes = Object.keys(data);
 
     codes.forEach(code => {
-      if (typeof this.state[code] !== 'undefined') {
+      const { [code]: something } = this.state;
+      if (typeof something !== 'undefined') {
         cmd[code] = data[code];
       }
     });
@@ -139,6 +153,7 @@ class SettingScene extends Component {
         cancelText: Strings.getLang('cancel'),
         value,
         dataSource: rangeStrings,
+        styles: { title: { width: viewWidth - 28 } },
         onSelect: v => {
           TYDevice.putDeviceData({
             [code]: v,
@@ -150,7 +165,7 @@ class SettingScene extends Component {
   }
 
   _handleResetFilter = () => {
-    TYNative.simpleConfirmDialog(
+    TYMobile.simpleConfirmDialog(
       Strings.getDpLang(filterResetCode),
       Strings.getLang('filterResetTip'),
       () => {

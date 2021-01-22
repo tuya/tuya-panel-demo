@@ -13,7 +13,7 @@ export const arrayToObject = arr => {
 
 export const getFaultString = (faultCode, faultValue, onlyPrior = true) => {
   if (!faultValue) return '';
-  const { label } = TYSdk.getDpSchema(faultCode);
+  const { label } = TYSdk.device.getDpSchema(faultCode);
   const labels = [];
   for (let i = 0; i < label.length; i++) {
     const value = label[i];

@@ -9,7 +9,7 @@ import HomeCurveView from './home-curve-view';
 import HomeStatView from './home-stat-view';
 import HomeBottomView from './home-bottom-view';
 import TYSdk from '../../api';
-import { store } from '../../main';
+import { store } from '../../redux/configureStore';
 import dpCodes from '../../config/dpCodes';
 
 const {
@@ -26,7 +26,7 @@ const {
 
 class HomeScene extends PureComponent {
   render() {
-    const countryCode = _get(TYSdk, 'mobileInfo.countryCode', 'CN');
+    const countryCode = _get(TYSdk, 'mobile.mobileInfo.countryCode', 'CN');
     const hideOutdoorPM25 = countryCode !== 'CN';
     const { devInfo = {} } = store.getState();
     const bottomDps = [];
@@ -42,12 +42,12 @@ class HomeScene extends PureComponent {
         totalPmCode,
       ];
       const originBottom = [modeCode, speedCode];
-      originDps.map(item => {
+      originDps.forEach(item => {
         if (devInfo.schema[item] !== undefined) {
           dps.push(devInfo.schema[item]);
         }
       });
-      originBottom.map(item => {
+      originBottom.forEach(item => {
         if (devInfo.schema[item] !== undefined) {
           bottomDps.push(devInfo.schema[item]);
         }

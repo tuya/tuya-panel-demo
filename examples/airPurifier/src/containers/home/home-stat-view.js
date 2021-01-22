@@ -10,7 +10,7 @@ import TYSdk from '../../api';
 import dpCodes from '../../config/dpCodes';
 import { arrayToObject } from '../../utils';
 import Strings from '../../i18n';
-import { store } from '../../main';
+import { store } from '../../redux/configureStore';
 
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
 
@@ -29,7 +29,8 @@ class HomeStatView extends Component {
 
   constructor(props) {
     super(props);
-    this._dps = this.props.dps || [];
+    const { dps } = this.props;
+    this._dps = dps || [];
     this.state = {
       dps: props.dps,
       codeState: arrayToObject(
@@ -46,10 +47,14 @@ class HomeStatView extends Component {
   }
 
   componentDidMount() {
-    TYSdk.event.on('dpDataChange', this._handleDpDataChange);
+    TYSdk.event.on('deviceDataChange', data => {
+      if (data.type === 'dpData') {
+        this._handleDpDataChange(data.payload);
+      }
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       dps: nextProps.dps,
       codeState: arrayToObject(
@@ -65,10 +70,15 @@ class HomeStatView extends Component {
   }
 
   componentWillUnmount() {
-    TYSdk.event.off('dpDataChange', this._handleDpDataChange);
+    TYSdk.event.off('deviceDataChange', data => {
+      if (data.type === 'dpData') {
+        this._handleDpDataChange(data.payload);
+      }
+    });
   }
 
   getDataList() {
+    const { codeState, dps } = this.state;
     const fnMap = {
       value: (value, schema) => scaleNumber(schema.scale, value),
       enum: (value, schema) => Strings[`dp_${schema.code.toLowerCase()}_${value}`] || value,
@@ -76,8 +86,8 @@ class HomeStatView extends Component {
         Strings.getFaultStrings(schema.code, value) || Strings.getDpLang(schema.code, 0),
     };
 
-    return this.state.dps.map(({ code, unit }) => {
-      let value = this.state.codeState[code];
+    return dps.map(({ code, unit }) => {
+      let value = codeState[code];
       /**
        * 注: 这里不用 `getLang` 是因为需要在取不到语言包的时候用 `schema` 中的 `unit`
        */
@@ -102,11 +112,12 @@ class HomeStatView extends Component {
   }
 
   _handleDpDataChange = data => {
+    const { codeState } = this.state;
     const cmd = {};
     const codes = Object.keys(data);
 
     codes.forEach(code => {
-      if (typeof this.state.codeState[code] !== 'undefined') {
+      if (typeof codeState[code] !== 'undefined') {
         cmd[code] = data[code];
       }
     });
@@ -117,7 +128,8 @@ class HomeStatView extends Component {
   };
 
   render() {
-    const rowNum = Math.ceil(this.state.dps.length / 2);
+    const { dps } = this.state;
+    const rowNum = Math.ceil(dps.length / 2);
     return (
       <GridLayout style={styles.container} rowNum={rowNum} data={this.getDataList()}>
         {({ key, title, value, unit, code }, allData) => {
