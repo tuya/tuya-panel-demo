@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { IconFont } from 'tuya-panel-kit';
 
-/* eslint-disable no-nested-ternary */
 const Button = d => {
   const {
     label,
@@ -27,9 +26,7 @@ const Button = d => {
       <Image style={[imageStyle, { tintColor: iconColor }]} source={icon} />
     ) : typeof icon === 'string' && icon ? (
       <IconFont useART={true} d={icon} {...iconProps} />
-    ) : (
-      undefined
-    );
+    ) : undefined;
 
   const second = label && (
     <Text style={labelStyle} numberOfLines={1}>

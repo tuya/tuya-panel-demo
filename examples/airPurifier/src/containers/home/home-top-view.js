@@ -59,6 +59,7 @@ class HomeTopView extends Component {
 
   render() {
     const { power, mode, fault, outdoorState } = this.props;
+    const { showFaultTip } = this.state;
     const isShowQuality = outdoorState.quality !== '--';
     return (
       <View style={styles.container}>
@@ -98,7 +99,7 @@ class HomeTopView extends Component {
             </View>
           )}
         </View>
-        {faultCode && fault && this.state.showFaultTip ? (
+        {faultCode && fault && showFaultTip ? (
           <View style={styles.section__fault}>
             <IconFont d={icons.alarm} size={cx(28)} fill="#fff" stroke="#fff" />
             <Text style={[styles.text, { flex: 1, marginLeft: 6 }]} numberOfLines={1}>

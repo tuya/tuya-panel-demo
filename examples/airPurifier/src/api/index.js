@@ -6,9 +6,9 @@ TYSdk.getWeatherQuality = () => {
   return new Promise((resolve, reject) => {
     TYSdk.device.getDeviceInfo().then(res => {
       const { devId } = res;
-      TYSdk.apiRequest({
-        a: 'tuya.m.public.weather.get',
-        postData: {
+      TYSdk.apiRequest(
+        'tuya.m.public.weather.get',
+        {
           devId,
           codes: [
             'city.id',
@@ -22,11 +22,10 @@ TYSdk.getWeatherQuality = () => {
             'weather.now.condTxt',
           ],
         },
-        v: '1.0',
-      })
+        '1.0'
+      )
         .then(d => {
           const data = Utils.JsonUtils.parseJSON(d);
-          console.log('data', data);
           resolve(data);
         })
         .catch(error => {
