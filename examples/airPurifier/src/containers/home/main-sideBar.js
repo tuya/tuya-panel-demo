@@ -1,7 +1,6 @@
 import camelCase from 'camelcase';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import color from 'color';
 import _map from 'lodash/map';
 import _pickBy from 'lodash/pickBy';
 import React, { Component } from 'react';
@@ -11,7 +10,6 @@ import { Utils } from 'tuya-panel-kit';
 import TYSdk from '../../api';
 import dpCodes from '../../config/dpCodes';
 import Button from '../../components/Button';
-import { arrayToObject } from '../../utils';
 import icons from '../../res/iconfont.json';
 
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
@@ -40,6 +38,7 @@ class SideBar extends Component {
     uv: false,
     wet: false,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -52,9 +51,14 @@ class SideBar extends Component {
   }
 
   componentDidMount() {
-    TYSdk.event.on('dpDataChange', this._handleDpDataChange);
+    TYSdk.event.on('deviceDataChange', data => {
+      if (data.type === 'dpData') {
+        this._handleDpDataChange(data.payload);
+      }
+    });
   }
-  componentWillReceiveProps(nextProps) {
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       anion: nextProps.anion,
       childLock: nextProps.childLock,
@@ -69,7 +73,11 @@ class SideBar extends Component {
   }
 
   componentWillUnmount() {
-    TYSdk.event.off('dpDataChange', this._handleDpDataChange);
+    TYSdk.event.off('deviceDataChange', data => {
+      if (data.type === 'dpData') {
+        this._handleDpDataChange(data.payload);
+      }
+    });
   }
 
   _handleDpDataChange = data => {
@@ -77,7 +85,8 @@ class SideBar extends Component {
     const codes = Object.keys(data);
 
     codes.forEach(code => {
-      if (typeof this.state[code] !== 'undefined') {
+      const { [code]: something } = this.state;
+      if (typeof something !== 'undefined') {
         cmd[code] = data[code];
       }
     });

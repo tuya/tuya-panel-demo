@@ -1,10 +1,10 @@
+/* eslint-disable import/no-cycle */
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import { createEpicMiddleware } from 'redux-observable';
 import { rootEpics, rootReducers } from './combine';
 
 const epicMiddleware = createEpicMiddleware();
-
 
 const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
 const logger = createLogger({
@@ -14,9 +14,7 @@ const logger = createLogger({
   duration: true,
 });
 
-const middlewares = [
-  epicMiddleware,
-];
+const middlewares = [epicMiddleware];
 
 if (isDebuggingInChrome) {
   middlewares.push(logger);
@@ -30,11 +28,12 @@ export default function configureStore(initialState) {
     initialState,
     compose(
       applyedMiddleware,
-      isDebuggingInChrome && window.devToolsExtension
-        ? window.devToolsExtension() : f => f
+      isDebuggingInChrome && window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   );
 
   epicMiddleware.run(rootEpics);
   return store;
 }
+
+export const store = configureStore({});

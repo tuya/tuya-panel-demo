@@ -39,7 +39,7 @@ export default class SettingsView extends Component {
       }]
     */
     data: PropTypes.array.isRequired,
-    renderItem: PropTypes.func, // eslint-disable-line
+    renderItem: PropTypes.func,
   };
 
   static defaultProps = {
@@ -47,6 +47,7 @@ export default class SettingsView extends Component {
     titleStyle: null,
     subTitleStyle: null,
     rowStyle: null,
+    renderItem: null,
   };
 
   onItemClicked(d) {
@@ -54,8 +55,9 @@ export default class SettingsView extends Component {
   }
 
   _renderBoolValue(item) {
+    const { rowStyle } = this.props;
     return (
-      <View style={[styles.row, this.props.rowStyle, item.style]}>
+      <View style={[styles.row, rowStyle, item.style]}>
         {this._renderRowInfo(item)}
         <SwitchButton
           accessibilityLabel={item.accessibilityLabel}
@@ -97,12 +99,13 @@ export default class SettingsView extends Component {
   }
 
   _renderRowInfo(item) {
+    const { titleStyle } = this.props;
     return (
       <View style={styles.info}>
         {item.icon && <Image source={item.icon} />}
         {item.iconView && item.iconView}
         <View style={styles.titleContainer}>
-          <TYText style={[styles.title, this.props.titleStyle]}>{item.title}</TYText>
+          <TYText style={[styles.title, titleStyle]}>{item.title}</TYText>
           {!!item.subTitle && <TYText style={[styles.subTitle]}>{item.subTitle}</TYText>}
         </View>
       </View>

@@ -1,20 +1,20 @@
 import _ from 'lodash';
 import React from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar } from 'react-native';
 import { TYSdk, NavigatorLayout } from 'tuya-panel-kit';
 import composeLayout from './composeLayout';
-import configureStore from './redux/configureStore';
+import { store } from './redux/configureStore';
 import Home from './containers/home';
 import Setting from './containers/setting';
 
 console.disableYellowBox = true;
 
-export const store = configureStore({});
-
 class MainLayout extends NavigatorLayout {
   constructor(props) {
     super(props);
-    console.log('TYSdk :', TYSdk);
+    if (__DEV__) {
+      console.log('TYSdk :', TYSdk);
+    }
   }
 
   /**
@@ -74,6 +74,11 @@ class MainLayout extends NavigatorLayout {
       schema = devInfo.schema || {};
     }
 
+    if (route.element) {
+      const H5WebView = route.element;
+      return <H5WebView navigator={navigator} {...route} />;
+    }
+
     switch (route.id) {
       case 'main':
         component = (
@@ -106,9 +111,4 @@ class MainLayout extends NavigatorLayout {
   }
 }
 
-const styles = StyleSheet.create({
-  fullView: {
-    backgroundColor: '#2ca335',
-  },
-});
 export default composeLayout(store, MainLayout);

@@ -1,5 +1,6 @@
+/* eslint-disable import/no-cycle */
 import { createAction, handleActions } from 'redux-actions';
-import { store } from '../main';
+import { store } from './configureStore';
 
 export const actionsType = {
   DEVINFOCHANGE: '_DEVINFOCHANGE_',

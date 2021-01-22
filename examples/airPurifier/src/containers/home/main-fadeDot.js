@@ -32,8 +32,9 @@ export default class FadeDot extends Component {
     this.startAllAnimations();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.active !== nextProps.active) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { active } = this.props;
+    if (active !== nextProps.active) {
       this.reload = true;
     }
   }
@@ -50,7 +51,8 @@ export default class FadeDot extends Component {
   }
 
   startAllAnimations() {
-    if (this.props.active) {
+    const { active } = this.props;
+    if (active) {
       this.startAnimation();
       this.startAnimation1();
     } else {
@@ -60,18 +62,19 @@ export default class FadeDot extends Component {
 
   startAnimation() {
     const { active, duration } = this.props;
+    const { fadeInOpacity, valueXY } = this.state;
     if (active) {
-      this.state.fadeInOpacity.setValue(1);
-      this.state.valueXY.setValue(0);
+      fadeInOpacity.setValue(1);
+      valueXY.setValue(0);
 
       Animated.parallel([
-        Animated.timing(this.state.valueXY, {
+        Animated.timing(valueXY, {
           toValue: 1,
           duration,
           easing: Easing.out(Easing.cubic),
           useNativeDriver: true,
         }),
-        Animated.timing(this.state.fadeInOpacity, {
+        Animated.timing(fadeInOpacity, {
           toValue: 0,
           duration,
           easing: Easing.out(Easing.cubic),
@@ -85,19 +88,20 @@ export default class FadeDot extends Component {
 
   startAnimation1() {
     const { active, duration } = this.props;
+    const { fadeInOpacity1, valueXY1 } = this.state;
     if (active) {
-      this.state.fadeInOpacity1.setValue(1);
-      this.state.valueXY1.setValue(0);
+      fadeInOpacity1.setValue(1);
+      valueXY1.setValue(0);
 
       Animated.parallel([
-        Animated.timing(this.state.valueXY1, {
+        Animated.timing(valueXY1, {
           toValue: 1,
           duration,
           easing: Easing.out(Easing.cubic),
           delay: 1370,
           useNativeDriver: true,
         }),
-        Animated.timing(this.state.fadeInOpacity1, {
+        Animated.timing(fadeInOpacity1, {
           toValue: 0,
           duration,
           easing: Easing.out(Easing.cubic),
@@ -111,30 +115,32 @@ export default class FadeDot extends Component {
   }
 
   stopAllAnimations() {
-    this.state.valueXY.stopAnimation();
-    this.state.fadeInOpacity.stopAnimation();
-    this.state.valueXY1.stopAnimation();
-    this.state.fadeInOpacity1.stopAnimation();
+    const { fadeInOpacity, fadeInOpacity1, valueXY, valueXY1 } = this.state;
+    valueXY.stopAnimation();
+    fadeInOpacity.stopAnimation();
+    valueXY1.stopAnimation();
+    fadeInOpacity1.stopAnimation();
   }
 
   render() {
     const randomSize = _random(2, 4);
     const randomSize2 = _random(4, 6);
     const randomSize3 = _random(2, 3);
+    const { fadeInOpacity, fadeInOpacity1, valueXY, valueXY1 } = this.state;
     return (
       <View style={styles.container}>
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [50, 100],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-45, 100],
                 }),
@@ -156,16 +162,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity1,
+            opacity: fadeInOpacity1,
             transform: [
               {
-                translateX: this.state.valueXY1.interpolate({
+                translateX: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-10, 100],
                 }),
               },
               {
-                translateY: this.state.valueXY1.interpolate({
+                translateY: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-10, 100],
                 }),
@@ -187,16 +193,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH / 2.0 + 50, DEVICE_WIDTH / 2.0],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-45, 100],
                 }),
@@ -218,16 +224,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH / 2.0 - 50, DEVICE_WIDTH / 2.0],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-45, 100],
                 }),
@@ -249,16 +255,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity1,
+            opacity: fadeInOpacity1,
             transform: [
               {
-                translateX: this.state.valueXY1.interpolate({
+                translateX: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH + 10, DEVICE_WIDTH - 100],
                 }),
               },
               {
-                translateY: this.state.valueXY1.interpolate({
+                translateY: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-10, 100],
                 }),
@@ -280,16 +286,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-5, 100],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [100, 150],
                 }),
@@ -311,16 +317,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity1,
+            opacity: fadeInOpacity1,
             transform: [
               {
-                translateX: this.state.valueXY1.interpolate({
+                translateX: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-10, 100],
                 }),
               },
               {
-                translateY: this.state.valueXY1.interpolate({
+                translateY: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [120, 150],
                 }),
@@ -342,16 +348,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [0, 100],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [310, 210],
                 }),
@@ -373,16 +379,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity1,
+            opacity: fadeInOpacity1,
             transform: [
               {
-                translateX: this.state.valueXY1.interpolate({
+                translateX: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [-10, 100],
                 }),
               },
               {
-                translateY: this.state.valueXY1.interpolate({
+                translateY: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [310, 210],
                 }),
@@ -404,16 +410,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [40, 140],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [310, 210],
                 }),
@@ -435,16 +441,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH / 2.0, DEVICE_WIDTH / 2.0],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [340, 240],
                 }),
@@ -466,16 +472,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH / 2.0 + 20, DEVICE_WIDTH / 2.0],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [340, 240],
                 }),
@@ -497,16 +503,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH, DEVICE_WIDTH - 100],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [280, 180],
                 }),
@@ -528,16 +534,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity1,
+            opacity: fadeInOpacity1,
             transform: [
               {
-                translateX: this.state.valueXY1.interpolate({
+                translateX: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH + 10, DEVICE_WIDTH - 100],
                 }),
               },
               {
-                translateY: this.state.valueXY1.interpolate({
+                translateY: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [310, 210],
                 }),
@@ -559,16 +565,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity,
+            opacity: fadeInOpacity,
             transform: [
               {
-                translateX: this.state.valueXY.interpolate({
+                translateX: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH, DEVICE_WIDTH - 100],
                 }),
               },
               {
-                translateY: this.state.valueXY.interpolate({
+                translateY: valueXY.interpolate({
                   inputRange: [0, 1],
                   outputRange: [90, 140],
                 }),
@@ -590,16 +596,16 @@ export default class FadeDot extends Component {
 
         <Animated.View
           style={{
-            opacity: this.state.fadeInOpacity1,
+            opacity: fadeInOpacity1,
             transform: [
               {
-                translateX: this.state.valueXY1.interpolate({
+                translateX: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [DEVICE_WIDTH + 10, DEVICE_WIDTH - 100],
                 }),
               },
               {
-                translateY: this.state.valueXY1.interpolate({
+                translateY: valueXY1.interpolate({
                   inputRange: [0, 1],
                   outputRange: [120, 150],
                 }),
