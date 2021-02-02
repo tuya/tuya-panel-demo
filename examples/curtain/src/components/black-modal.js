@@ -6,12 +6,14 @@ import { Utils } from 'tuya-panel-kit';
 const { convertX: cx } = Utils.RatioUtils;
 
 export default class BlackModal extends Component {
+  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
     style: ViewPropTypes.style,
     disable: PropTypes.bool,
     children: PropTypes.node,
   };
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     style: {},
     disable: false,
@@ -50,13 +52,13 @@ export default class BlackModal extends Component {
 
   render() {
     const { visible } = this.state;
-    const { disable } = this.props;
+    const { disable, style, children } = this.props;
 
     if (!(visible && !disable)) {
       return <View />;
     }
 
-    return <View style={[styles.container, this.props.style]}>{this.props.children}</View>;
+    return <View style={[styles.container, style]}>{children}</View>;
   }
 }
 

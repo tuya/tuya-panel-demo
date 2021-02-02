@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
   zh: {
     timerOnTip: '窗帘将在 {0} {1} {2}后开启',

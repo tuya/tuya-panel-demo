@@ -36,8 +36,8 @@ const composeLayout = (store, component) => {
   });
 
   class PanelComponent extends Component {
+    // eslint-disable-next-line react/static-property-placement
     static propTypes = {
-      // eslint-disable-next-line
       devInfo: PropTypes.object.isRequired,
     };
 
