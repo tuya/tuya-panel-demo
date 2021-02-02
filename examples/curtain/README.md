@@ -10,17 +10,21 @@ for users outside Chinese mainland, please remove `.npmrc` file.
 
 ```bash
 $ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/curtain
-$ mv curtain tuya-panel-curtain-example
+$ mv basic tuya-panel-curtain-example
 $ cd tuya-panel-curtain-example
 ```
 
 ## Introduction
 
-The template project is the curtain template, which can start curtain and be used to debug the DP points of the current product.
+The template project is a curtain template based on react native 0.59 and supports the following functions:
+- Turn on and off
+- Pause on or off
+- Change working mode
+- Countdown display
 
 You can scan the following QR code through the Tuya app to preview.
 
-![Basic](https://images.tuyacn.com/rms-static/66b917b0-b9ef-11ea-96f0-cda03b175b6c-1593424845995.png?tyName=curtain.png)
+![curtain](https://images.tuyacn.com/rms-static/66b917b0-b9ef-11ea-96f0-cda03b175b6c-1593424845995.png?tyName&#x3D;curtain.png)
 
 ## Running
 

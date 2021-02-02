@@ -10,18 +10,24 @@ import TYNative from '../../api';
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
 
 class HomeModeView extends Component {
+  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
-    dpCodes: PropTypes.object.isRequired,
+    dpCodes: PropTypes.object,
     mode: PropTypes.string,
-    schema: PropTypes.object.isRequired,
+    schema: PropTypes.object,
   };
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     mode: '',
+    schema: {},
+    dpCodes: {},
   };
 
   get dpCodes() {
-    const { mode: modeCode, control: controlCode } = this.props.dpCodes;
+    const {
+      dpCodes: { mode: modeCode, control: controlCode },
+    } = this.props;
     return {
       modeCode,
       controlCode,

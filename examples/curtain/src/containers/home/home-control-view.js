@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable global-require */
 import color from 'color';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,24 +6,23 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { Utils } from 'tuya-panel-kit';
 import Button from '../../components/Button';
 import TYNative from '../../api';
+import Res from '../../res';
 
-const Res = {
-  open: require('../../res/open.png'),
-  stop: require('../../res/stop.png'),
-  close: require('../../res/close.png'),
-};
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
-const color2Opacity = (c, alpha) =>
-  color(c)
-    .alpha(alpha)
-    .rgbString();
+const color2Opacity = (c, alpha) => color(c).alpha(alpha).rgbString();
 class HomeControlView extends Component {
+  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
     control: PropTypes.string,
+    schema: PropTypes.any,
+    dpCodes: PropTypes.any,
   };
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     control: 'stop',
+    schema: {},
+    dpCodes: {},
   };
 
   constructor(props) {
@@ -39,7 +36,8 @@ class HomeControlView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.control !== nextProps.control && this.props.control) {
+    const { control } = this.props;
+    if (control !== nextProps.control && control) {
       clearTimeout(this._timer);
       this.setState({ controlState: true });
       this._timer = setTimeout(() => {
@@ -53,7 +51,8 @@ class HomeControlView extends Component {
   }
 
   get dpCodes() {
-    const { control: controlCode, workState: workCode } = this.props.dpCodes;
+    const { dpCodes } = this.props;
+    const { control: controlCode, workState: workCode } = dpCodes;
     return {
       controlCode,
       workCode,
@@ -62,7 +61,8 @@ class HomeControlView extends Component {
 
   getData = () => {
     if (!this.dpCodes.controlCode) return [];
-    const controlSchema = this.props.schema[this.dpCodes.controlCode];
+    const { schema } = this.props;
+    const controlSchema = schema[this.dpCodes.controlCode];
     const { range } = controlSchema;
     const defaultBtn = {
       iconColor: '#6F797F',

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, ViewPropTypes } from 'react-native';
 import { Utils, IconFont } from 'tuya-panel-kit';
 import icons from '../res/iconfont.json';
@@ -24,12 +25,16 @@ const ArrowText = props => {
 };
 
 ArrowText.propTypes = {
+  text: PropTypes.string,
+  tintColor: PropTypes.string,
   style: ViewPropTypes.style,
   containerStyle: ViewPropTypes.style,
   textStyle: ViewPropTypes.style,
 };
 
 ArrowText.defaultProps = {
+  text: '',
+  tintColor: '#000',
   style: {},
   containerStyle: {},
   textStyle: {},

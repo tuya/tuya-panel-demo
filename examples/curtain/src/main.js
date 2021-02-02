@@ -12,11 +12,6 @@ console.disableYellowBox = true;
 export const store = configureStore();
 
 class MainLayout extends NavigatorLayout {
-  constructor(props) {
-    super(props);
-    console.log('TYSdk :', TYSdk);
-  }
-
   /**
    *
    * @desc

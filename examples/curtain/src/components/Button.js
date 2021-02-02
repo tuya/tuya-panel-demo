@@ -1,8 +1,33 @@
 import React from 'react';
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, Text, Image, ViewPropTypes, TouchableWithoutFeedback } from 'react-native';
 import { IconFont } from 'tuya-panel-kit';
 
 class Button extends React.PureComponent {
+  // eslint-disable-next-line react/static-property-placement
+  static propTypes = {
+    label: PropTypes.string,
+    icon: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+    style: ViewPropTypes.style,
+    iconStyle: ViewPropTypes.style,
+    labelStyle: ViewPropTypes.style,
+    iconColor: PropTypes.string,
+    touchedBackground: PropTypes.string,
+    useLocalState: PropTypes.bool,
+  };
+
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = {
+    label: '',
+    icon: '',
+    style: null,
+    iconStyle: null,
+    labelStyle: null,
+    iconColor: '#000',
+    touchedBackground: '',
+    useLocalState: false,
+  };
+
   constructor(props) {
     super(props);
 
@@ -27,6 +52,7 @@ class Button extends React.PureComponent {
       iconStyle,
       labelStyle,
       iconColor,
+      // eslint-disable-next-line react/prop-types
       children,
       touchedBackground,
       useLocalState,
@@ -44,9 +70,7 @@ class Button extends React.PureComponent {
         <Image style={{ tintColor: iconColor }} source={icon} resizeMode="cover" />
       ) : typeof icon === 'string' && icon ? (
         <IconFont d={icon} {...iconProps} />
-      ) : (
-        undefined
-      );
+      ) : undefined;
     const second = label ? <Text style={labelStyle}>{label}</Text> : undefined;
     return (
       <TouchableWithoutFeedback

@@ -19,6 +19,7 @@ const RAIL_HEIGHT = cx(250);
 const RAIL_WIDTH = cx(267);
 const POINT_DIMENSION = cx(20);
 export default class CurtainSlider extends Component {
+  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
     style: ViewPropTypes.style,
     value: PropTypes.number.isRequired,
@@ -35,13 +36,25 @@ export default class CurtainSlider extends Component {
     showPoint: PropTypes.bool,
     curtainImg: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     curtainBg: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    aimValue: PropTypes.any.isRequired,
+    animateStart: PropTypes.func,
+    curValue: PropTypes.any.isRequired,
+    moving: PropTypes.bool,
+    onEnd: PropTypes.func,
+    moveType: PropTypes.func,
+    onMove: PropTypes.func,
   };
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     style: null,
     onStart: () => {},
     onValueChange: () => {},
     onComplete: () => {},
+    animateStart() {},
+    onEnd() {},
+    moveType() {},
+    onMove() {},
     circleColor: '#fff',
     showPoint: true,
     min: 0,
@@ -50,15 +63,17 @@ export default class CurtainSlider extends Component {
     curPower: 'STOP',
     totalTime: 5000,
     lineColor: 'rgba(255,255,255,.1)',
+    moving: false,
   };
 
   constructor(props) {
     super(props);
+    const { value } = this.props;
 
-    this._curDeltaX = this.calcDeltaX(props.value);
-    this._cirDeltaX = this.calcDeltaX(props.value);
-    this._oldX = this.calcDeltaX(props.value);
-    this.from = this.props.value;
+    this._curDeltaX = this.calcDeltaX(value);
+    this._cirDeltaX = this.calcDeltaX(value);
+    this._oldX = this.calcDeltaX(value);
+    this.from = value;
     this.to = 0;
     this._leftPanResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -105,11 +120,12 @@ export default class CurtainSlider extends Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    const { min, max } = this.props;
-    const preValue = Math.round(this.state.circleValue._value);
+    const { min, max, aimValue, curValue, curPower, animateStart } = this.props;
+    const { circleValue, value } = this.state;
+    const preValue = Math.round(circleValue._value);
     const sliderEvents = ['open', 'close'];
 
-    if (this.props.aimValue !== nextProps.aimValue && !nextProps.disabled) {
+    if (aimValue !== nextProps.aimValue && !nextProps.disabled) {
       this._curDeltaX = this.calcDeltaX(nextProps.aimValue);
       this._cirDeltaX = this.calcDeltaX(nextProps.aimValue);
       await this.setState({
@@ -119,7 +135,7 @@ export default class CurtainSlider extends Component {
       this.getAnimateStartWithValue(nextProps.aimValue);
     }
 
-    if (this.props.curValue !== nextProps.curValue && !nextProps.disabled) {
+    if (curValue !== nextProps.curValue && !nextProps.disabled) {
       if (nextProps.moving) {
       } else {
         this.getAnimateStartWithValue(nextProps.curValue);
@@ -127,31 +143,33 @@ export default class CurtainSlider extends Component {
       await this.setState({ moveVal: nextProps.curValue });
     }
 
-    if (nextProps.curPower === sliderEvents[0] && this.props.curPower !== nextProps.curPower) {
+    if (nextProps.curPower === sliderEvents[0] && curPower !== nextProps.curPower) {
       this.startAnimation(min, preValue);
       this.startCircleAnimation(min, preValue);
       this.from = preValue;
       this.to = min;
-      this.props.animateStart && this.props.animateStart();
+      animateStart && animateStart();
     }
-    if (nextProps.curPower === sliderEvents[1] && this.props.curPower !== nextProps.curPower) {
+    if (nextProps.curPower === sliderEvents[1] && curPower !== nextProps.curPower) {
       this.startAnimation(max, preValue);
       this.startCircleAnimation(max, preValue);
       this.from = preValue;
       this.to = max;
-      this.props.animateStart && this.props.animateStart();
+      animateStart && animateStart();
     }
-    if (this.props.curPower !== nextProps.curPower && nextProps.curPower === 'stop') {
-      this.state.value.stopAnimation();
-      this.state.circleValue.stopAnimation();
+    if (curPower !== nextProps.curPower && nextProps.curPower === 'stop') {
+      value.stopAnimation();
+      circleValue.stopAnimation();
     }
   }
 
-  getAnimateStartWithValue = (value, next) => {
-    this.startAnimation(value, next);
-    this.startCircleAnimation(value, next);
-    if (this.state.value._value !== value) {
-      this.props.animateStart && this.props.animateStart();
+  getAnimateStartWithValue = (target, next) => {
+    this.startAnimation(target, next);
+    this.startCircleAnimation(target, next);
+    const { value } = this.state;
+    const { animateStart } = this.props;
+    if (value._value !== target) {
+      animateStart && animateStart();
     }
   };
 
@@ -174,7 +192,8 @@ export default class CurtainSlider extends Component {
 
   startAnimation = (v, next) => {
     const curtainDuration = this.getDurationPercent(v, next, 'curtainDuration');
-    Animated.timing(this.state.value, {
+    const { value } = this.state;
+    Animated.timing(value, {
       toValue: v,
       duration: curtainDuration,
       easing: Easing.linear,
@@ -184,14 +203,16 @@ export default class CurtainSlider extends Component {
   startCircleAnimation = (v, next) => {
     const _this = this;
     const circleDuration = this.getDurationPercent(v, next, 'circleDuration');
-    Animated.timing(this.state.circleValue, {
+    const { circleValue } = this.state;
+    Animated.timing(circleValue, {
       toValue: v,
       duration: circleDuration,
       easing: Easing.linear,
     }).start(async () => {
-      this.props.onEnd && this.props.onEnd(Math.round(this.state.circleValue._value));
+      const { onEnd } = this.props;
+      onEnd && onEnd(Math.round(circleValue._value));
       await _this.setState({
-        moveVal: Math.round(this.state.circleValue._value),
+        moveVal: Math.round(circleValue._value),
       });
     });
   };
@@ -206,7 +227,7 @@ export default class CurtainSlider extends Component {
   }
 
   _moveTo(dx, type) {
-    const { min, max } = this.props;
+    const { min, max, onValueChange } = this.props;
     let value = type
       ? ((this._curDeltaX - dx) / (RAIL_HEIGHT / 2)) * (max - min)
       : ((this._curDeltaX + dx) / (RAIL_HEIGHT / 2)) * (max - min);
@@ -223,11 +244,11 @@ export default class CurtainSlider extends Component {
     });
     this.startAnimation(value);
     this.startCircleAnimation(value);
-    this.props.onValueChange && this.props.onValueChange(value);
+    onValueChange && onValueChange(value);
   }
 
   _circleMoveTo(dx, type, action) {
-    const { min, max } = this.props;
+    const { min, max, moveType, onMove, onValueChange } = this.props;
     let value = type
       ? ((this._cirDeltaX - dx) / (RAIL_HEIGHT / 2)) * (max - min)
       : ((this._cirDeltaX + dx) / (RAIL_HEIGHT / 2)) * (max - min);
@@ -238,26 +259,28 @@ export default class CurtainSlider extends Component {
       value = max;
     }
 
-    this.props.moveType && this.props.moveType(this._cirDeltaX <= dx);
-    this.props.onMove && this.props.onMove(value);
+    moveType && moveType(this._cirDeltaX <= dx);
+    onMove && onMove(value);
     this.setState({
       moveVal: Math.round(value),
       newValue: value,
     });
-    this.state.circleValue.setValue(value);
+    const { circleValue } = this.state;
+    circleValue.setValue(value);
     action && action === 'release' && this.startAnimation(value);
-    this.props.onValueChange && this.props.onValueChange(value);
+    onValueChange && onValueChange(value);
   }
 
   _handleCircleResponderGrant = () => {
     clearTimeout(this.timer);
-    const { disabled } = this.props;
+    const { disabled, onStart } = this.props;
     if (disabled) {
       return;
     }
-    this.props.onStart && this.props.onStart();
+    onStart && onStart();
 
-    this.from = this.state.moveVal;
+    const { moveVal } = this.state;
+    this.from = moveVal;
     this.setState({
       isQuick: false,
     });
@@ -275,26 +298,27 @@ export default class CurtainSlider extends Component {
   };
 
   _handleCircleResponderRelease = (__, gestureState, type) => {
-    const { disabled } = this.props;
+    const { disabled, onComplete } = this.props;
     const { dy } = gestureState;
 
     if (disabled || dy === 0) {
       return;
     }
 
-    this.to = this.state.moveVal;
+    const { moveVal, newValue } = this.state;
+    this.to = moveVal;
     this._circleMoveTo(dy, type, 'release');
-    this._cirDeltaX = this.calcDeltaX(this.state.newValue);
-    this.props.onComplete && this.props.onComplete(this.state.newValue);
+    this._cirDeltaX = this.calcDeltaX(newValue);
+    onComplete && onComplete(newValue);
   };
 
   _handleResponderGrant = () => {
     clearTimeout(this.timer);
-    const { disabled } = this.props;
+    const { disabled, onStart } = this.props;
     if (disabled) {
       return;
     }
-    this.props.onStart && this.props.onStart();
+    onStart && onStart();
     this.setState({
       isQuick: false,
     });
@@ -311,16 +335,16 @@ export default class CurtainSlider extends Component {
   };
 
   _handleResponderRelease = (__, gestureState, type) => {
-    const { disabled } = this.props;
+    const { disabled, onComplete } = this.props;
     const { dy } = gestureState;
 
     if (disabled || dy === 0) {
       return;
     }
-
+    const { newValue } = this.state;
     this._moveTo(dy, type);
-    this._curDeltaX = this.calcDeltaX(this.state.newValue);
-    this.props.onComplete && this.props.onComplete(this.state.newValue);
+    this._curDeltaX = this.calcDeltaX(newValue);
+    onComplete && onComplete(newValue);
   };
 
   render() {
@@ -334,6 +358,7 @@ export default class CurtainSlider extends Component {
       showPoint,
       lineColor,
     } = this.props;
+    const { value, circleValue } = this.state;
 
     return (
       <View style={[styles.container, style]}>
@@ -354,12 +379,12 @@ export default class CurtainSlider extends Component {
               style={[
                 styles.image__curtain,
                 {
-                  top: this.state.value.interpolate({
+                  top: value.interpolate({
                     inputRange: [0, max - min],
                     outputRange: [cx(17), cx(10)],
                   }),
                   width: cx(240),
-                  height: this.state.value.interpolate({
+                  height: value.interpolate({
                     inputRange: [0, max - min],
                     outputRange: [cx(12), RAIL_HEIGHT],
                   }),
@@ -385,7 +410,7 @@ export default class CurtainSlider extends Component {
                     backgroundColor: lineColor,
                   },
                   {
-                    height: this.state.circleValue.interpolate({
+                    height: circleValue.interpolate({
                       inputRange: [0, max - min],
                       outputRange: [cx(12), cx(229)],
                     }),
@@ -403,7 +428,7 @@ export default class CurtainSlider extends Component {
                   {
                     transform: [
                       {
-                        translateY: this.state.circleValue.interpolate({
+                        translateY: circleValue.interpolate({
                           inputRange: [0, max - min],
                           outputRange: [cx(18), cx(242) - POINT_DIMENSION / 2],
                         }),
