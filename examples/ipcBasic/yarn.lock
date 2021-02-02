@@ -945,10 +945,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tuya-smart/tuya-panel-ipc-sdk@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@tuya-smart/tuya-panel-ipc-sdk/-/tuya-panel-ipc-sdk-1.0.0.tgz#1bb3968e966a170f10c00c6ca707ae462b2120cb"
-  integrity sha512-mSqWznGKYrHvF9Hu+gBiKkmvtQjYbBWDfXXGDzIzQPj7U7TWrZJuYzAFbiPRfGWMJ2lJCaseRy4e5EeKfEEi/g==
+"@tuya-smart/tuya-panel-ipc-sdk@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.npm.taobao.org/@tuya-smart/tuya-panel-ipc-sdk/download/@tuya-smart/tuya-panel-ipc-sdk-1.0.3.tgz#20429b96b760d026872ff36b705500a4f432d268"
+  integrity sha1-IEKblrdg0CaHL/NrcFUApPQy0mg=
   dependencies:
     "@types/lodash" "^4.14.149"
     "@types/react" "^16.9.17"
