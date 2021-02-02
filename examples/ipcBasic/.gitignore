@@ -45,3 +45,4 @@ Session.vim
 
 # js
 node_modules/
+yarn-error.log
