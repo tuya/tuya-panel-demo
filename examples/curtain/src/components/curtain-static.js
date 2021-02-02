@@ -7,6 +7,7 @@ const { convert, convertX: cx, convertY: cy } = Utils.RatioUtils;
 // 轨道宽度
 const RAIL_WIDTH = cx(303);
 export default class CurtainStatic extends Component {
+  // eslint-disable-next-line react/static-property-placement
   static propTypes = {
     style: ViewPropTypes.style,
     value: PropTypes.number.isRequired,
@@ -18,6 +19,7 @@ export default class CurtainStatic extends Component {
     curtainBg: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   };
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     style: null,
     min: 0,
@@ -30,27 +32,30 @@ export default class CurtainStatic extends Component {
     super(props);
     this._curDeltaX = this.calcDeltaX(props.value);
 
+    const { value } = this.props;
     this.state = {
-      value: new Animated.Value(props.value),
+      value: new Animated.Value(value),
     };
     this.timer = null;
   }
 
   componentWillReceiveProps(nextProps) {
     const sliderEvents = ['open', 'close'];
+    const { value } = this.props;
+    const { value: aniValue } = this.state;
 
-    if (this.props.value !== nextProps.value && !nextProps.disabled) {
+    if (value !== nextProps.value && !nextProps.disabled) {
       this._curDeltaX = this.calcDeltaX(nextProps.value);
-      this.state.value.setValue(nextProps.value);
+      aniValue.setValue(nextProps.value);
     }
     if (nextProps.curPower === sliderEvents[0]) {
-      this.state.value.setValue(0);
+      aniValue.setValue(0);
     }
     if (nextProps.curPower === sliderEvents[1]) {
-      this.state.value.setValue(100);
+      aniValue.setValue(100);
     }
     if (nextProps.curPower === 'stop') {
-      this.state.value.stopAnimation();
+      aniValue.stopAnimation();
     }
   }
 
@@ -65,6 +70,7 @@ export default class CurtainStatic extends Component {
 
   render() {
     const { style, min, max, curtainBg, curtainImg } = this.props;
+    const { value: aniValue } = this.state;
 
     return (
       <View style={[styles.container, style]}>
@@ -88,7 +94,7 @@ export default class CurtainStatic extends Component {
                 {
                   top: convert(9),
                   left: convert(8),
-                  width: this.state.value.interpolate({
+                  width: aniValue.interpolate({
                     inputRange: [0, max - min],
                     outputRange: [20, RAIL_WIDTH / 2 - cx(6)],
                   }),
@@ -109,7 +115,7 @@ export default class CurtainStatic extends Component {
                       rotateY: '180deg',
                     },
                   ],
-                  width: this.state.value.interpolate({
+                  width: aniValue.interpolate({
                     inputRange: [0, max - min],
                     outputRange: [20, RAIL_WIDTH / 2 - cx(10)],
                   }),

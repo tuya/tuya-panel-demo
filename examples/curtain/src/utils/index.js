@@ -102,8 +102,9 @@ export const formatUiConfig = devInfo => {
 export const parseSchema = schema => {
   if (typeof schema === 'string') {
     return JSON.parse(schema);
-  } else if (typeof schema === 'object') {
-    return Object.entries(schema).reduce((prev, [__, val]) => [...prev, val], []);
+  }
+  if (typeof schema === 'object') {
+    return Object.entries(schema).reduce((prev, [, val]) => [...prev, val], []);
   }
   return [];
 };
