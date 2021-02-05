@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Image, PanResponder, ViewPropTypes } from 'react-native';
+import { View, Image, PanResponder, ViewPropTypes } from 'react-native';
 import { Utils } from 'tuya-panel-kit';
 import resource from '../../res';
 import Color from '../../utils/color';
@@ -96,7 +96,8 @@ export default class HuePicker extends Component {
   }
 
   handleSetResponder = e => {
-    if (this.props.disabled) {
+    const { disabled } = this.props;
+    if (disabled) {
       return;
     }
     const { radius, innerRadius, thumbRadius, touchThumbRadius, touchOffset } = this.props;
@@ -115,10 +116,12 @@ export default class HuePicker extends Component {
   };
 
   handleGrant = () => {
-    this.locked && this.props.onGrant(this.hue);
+    const { onGrant } = this.props;
+    this.locked && onGrant(this.hue);
   };
 
   handleMoveThumb(dx, dy, listener) {
+    const { onChange } = this.props;
     const { middleRadius, coor } = this;
     let { x, y } = coor;
     x += dx;
@@ -145,24 +148,28 @@ export default class HuePicker extends Component {
       },
     });
 
-    this.props.onChange(angle);
+    onChange(angle);
     listener(angle);
     return { x: thumbX, y: thumbY };
   }
 
   handleMove = (e, { dx, dy }) => {
-    this.locked && this.handleMoveThumb(dx, dy, this.props.onMove);
+    const { onMove } = this.props;
+    this.locked && this.handleMoveThumb(dx, dy, onMove);
   };
+
   handleRelease = (e, { dx, dy }) => {
+    const { onRelease, onPress } = this.props;
     const { locationX, locationY } = this.getLocation(e);
     if (this.locked) {
-      this.coor = this.handleMoveThumb(dx, dy, this.props.onRelease);
+      this.coor = this.handleMoveThumb(dx, dy, onRelease);
     } else if (Math.abs(dx) < 3 && Math.abs(dy) < 3) {
       const { x, y } = this.coor;
-      this.coor = this.handleMoveThumb(locationX - x, locationY - y, this.props.onPress);
+      this.coor = this.handleMoveThumb(locationX - x, locationY - y, onPress);
     }
     this.locked = false;
   };
+
   render() {
     const { bgImg, radius, innerRadius, thumbRadius, style } = this.props;
     const size = radius * 2;
@@ -207,6 +214,7 @@ export default class HuePicker extends Component {
           }}
         >
           <View
+            // eslint-disable-next-line no-return-assign
             ref={ref => (this.thumbRef = ref)}
             style={{
               width: thumbSize,

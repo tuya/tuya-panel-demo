@@ -34,18 +34,21 @@ class WhiteSlider extends React.Component {
     updateEditStatus: PropTypes.func.isRequired,
     theme: PropTypes.any.isRequired,
   };
+
   constructor(props) {
     super(props);
+    const { brightness, kelvin } = this.props;
     this.state = {
-      brightness: this.props.brightness,
-      kelvin: this.props.kelvin,
+      brightness,
+      kelvin,
     };
     this.locked = false;
   }
-  componentWillReceiveProps(nextProps) {
-    const { brightness, kelvin } = nextProps;
 
-    if (brightness !== this.props.brightness || kelvin !== this.props.kelvin) {
+  componentWillReceiveProps(nextProps) {
+    const { brightness, kelvin } = this.props;
+
+    if (brightness !== nextProps.brightness || kelvin !== nextProps.kelvin) {
       this.setState({
         brightness,
         kelvin,
@@ -77,13 +80,16 @@ class WhiteSlider extends React.Component {
       const data = {
         [Config.dpCodes.controlData]: controlValue,
       };
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.updateDp(data);
     }
   );
+
   handleBrightnessMove = value => {
     const { kelvin } = this.state;
     this.handleMove(value, kelvin);
   };
+
   handleKelvinMove = value => {
     const { brightness } = this.state;
     this.handleMove(brightness, value);
@@ -92,32 +98,38 @@ class WhiteSlider extends React.Component {
   handleRelease = debounce((data, state) => {
     this.locked = false;
 
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateDp({ ...data, [Config.dpCodes.workModeCode]: WORKMODE.WHITE });
     this.setState(state);
   }, 300);
 
   handleBrightnessRelease = value => {
+    const { kelvin } = this.state;
     this.handleRelease(
       { [Config.dpCodes.bright]: value },
       {
         brightness: value,
-        kelvin: this.state.kelvin,
+        kelvin,
       }
     );
   };
+
   handleKelvinRelease = value => {
+    const { brightness } = this.state;
     this.handleRelease(
       { [Config.dpCodes.kelvin]: value },
       {
-        brightness: this.state.brightness,
+        brightness,
         kelvin: value,
       }
     );
   };
 
   handleBack = () => {
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateEditStatus({ isEditMode: false });
   };
+
   render() {
     const { power, theme, isEditMode, workMode } = this.props;
     const { brightness, kelvin } = this.state;
@@ -153,7 +165,7 @@ class WhiteSlider extends React.Component {
         <View style={styles.back}>
           <TouchableOpacity onPress={this.handleBack} accessibilityLabel="Light_Edit_Return">
             <IconFont
-              useART
+              useART={true}
               d={iconfont.arrowDown}
               size={convertX(40)}
               color={theme.iconBackColor}

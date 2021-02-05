@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Strings from '../../i18n';
 import resource from '../../res';
 

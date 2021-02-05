@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 });
 
 export default class ControllerBar extends React.PureComponent {
+  // eslint-disable-next-line react/sort-comp
   static defaultProps = {
     size: 'normal',
     backgroundType: 'pure',
@@ -36,6 +37,7 @@ export default class ControllerBar extends React.PureComponent {
     style: {},
     wrapperStyle: {},
   };
+
   static propTypes = {
     size: PropTypes.oneOfType([PropTypes.oneOf(['large', 'normal', 'small']), PropTypes.number]),
     backgroundType: PropTypes.oneOf(['alpha', 'pure']),
@@ -45,17 +47,20 @@ export default class ControllerBar extends React.PureComponent {
     button: PropTypes.array.isRequired,
     wrapperStyle: ViewPropTypes.style,
   };
+
   constructor(props) {
     super(props);
     this.state = {
       wrapperWidth: Dimensions.get('window').width,
     };
   }
+
   wrapperLayout = e => {
     this.setState({
       wrapperWidth: e.nativeEvent.layout.width,
     });
   };
+
   renderControllerBar = () => {
     const { button, size } = this.props;
     return (
@@ -70,8 +75,10 @@ export default class ControllerBar extends React.PureComponent {
       </View>
     );
   };
+
   render() {
     const { style, backgroundType, backgroundColor, hasBottomBorder, wrapperStyle } = this.props;
+    const { wrapperWidth } = this.state;
     const backgroundStyle = {
       backgroundColor: backgroundColor || '#fff',
     };
@@ -80,7 +87,7 @@ export default class ControllerBar extends React.PureComponent {
     }
     const containerStyle = [
       styles.container,
-      { width: this.state.wrapperWidth },
+      { width: wrapperWidth },
       backgroundStyle,
       style,
     ];

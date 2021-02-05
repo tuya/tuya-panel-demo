@@ -1,9 +1,10 @@
+/* eslint-disable no-return-assign */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, ViewPropTypes } from 'react-native';
 import { Slider as SliderBase, IconFont, TYText, Utils } from 'tuya-panel-kit';
 
-const { convertX, convertY } = Utils.RatioUtils;
+const { convertX } = Utils.RatioUtils;
 const {
   ThemeUtils: { withTheme },
 } = Utils;
@@ -22,6 +23,7 @@ class Slider extends React.Component {
     accessibilityLabel: PropTypes.string,
     theme: PropTypes.any.isRequired,
   };
+
   static defaultProps = {
     icon: '',
     min: 0,
@@ -34,9 +36,10 @@ class Slider extends React.Component {
     formatPercent: null,
     accessibilityLabel: 'Slider',
   };
+
   constructor(props) {
     super(props);
-
+    // eslint-disable-next-line react/destructuring-assignment
     const value = this.formatValue(this.props.value);
     this.state = {
       value,
@@ -45,7 +48,9 @@ class Slider extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.value !== nextProps.value) {
+    const { value } = this.props;
+    if (value !== nextProps.value) {
+      // eslint-disable-next-line no-shadow
       const value = this.formatValue(nextProps.value);
       this.setState({ value, percent: this.countPercent(value) });
     }
@@ -55,31 +60,40 @@ class Slider extends React.Component {
     const { min, max } = this.props;
     if (value < min) {
       return min;
-    } else if (value > max) {
+    }
+    if (value > max) {
       return max;
     }
     return value;
   }
+
   countPercent(value) {
+    // eslint-disable-next-line react/destructuring-assignment
     if (this.props.formatPercent) {
+      // eslint-disable-next-line react/destructuring-assignment
       return this.props.formatPercent(value);
     }
     const { min, max } = this.props;
     const rate = (value - min) / (max - min);
     return Math.floor(rate * 100);
   }
+
   handleMove = value => {
+    const { onMove } = this.props;
     const newValue = this.formatValue(value);
     const percent = this.countPercent(newValue);
     this.percentRef.setText(`${percent}%`);
-    this.props.onMove(newValue);
+    onMove(newValue);
   };
+
   handleRelease = value => {
+    const { onRelease } = this.props;
     const newValue = this.formatValue(value);
     const percent = this.countPercent(newValue);
     this.percentRef.setText(`${percent}%`);
-    this.props.onRelease(newValue);
+    onRelease(newValue);
   };
+
   render() {
     const { icon, min, max, style, onGrant, accessibilityLabel, theme } = this.props;
     const { value, percent } = this.state;
@@ -101,7 +115,7 @@ class Slider extends React.Component {
           accessibilityLabel={accessibilityLabel}
         />
         <TYText ref={ref => (this.percentRef = ref)} style={[styles.percent]}>
-          {percent}%
+          {`${percent}%`}
         </TYText>
       </View>
     );

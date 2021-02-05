@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Utils, TYText } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
 
@@ -30,6 +30,7 @@ class SceneSlider extends React.Component {
     isEditMode: PropTypes.bool.isRequired,
     isEditSceneColor: PropTypes.bool.isRequired,
     isEditScene: PropTypes.bool.isRequired,
+    // eslint-disable-next-line react/no-unused-prop-types
     scenes: PropTypes.array.isRequired,
     workMode: PropTypes.string.isRequired,
     updateDp: PropTypes.func.isRequired,
@@ -46,7 +47,8 @@ class SceneSlider extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.isEditScene !== nextProps.isEditScene) {
+    const { isEditScene } = this.props;
+    if (isEditScene !== nextProps.isEditScene) {
       this.setState(this.initData(nextProps));
     }
   }
@@ -59,6 +61,7 @@ class SceneSlider extends React.Component {
       const [id, speed, mode, ...hsvbks] = Color.decodeSceneValue(value);
       let bright = 0;
       let saturation = 0;
+      // eslint-disable-next-line no-unused-vars
       hsvbks.forEach(([h, s, v, b, k]) => {
         if (b || k) {
           bright += b;
@@ -92,6 +95,7 @@ class SceneSlider extends React.Component {
   changeShowColor(saturation, bright) {
     const { hsvbks } = this.state;
     if (hsvbks.length) {
+      // eslint-disable-next-line no-unused-vars
       const [h, s, v, b, k] = hsvbks[0];
       let color = '';
       if (b || k) {
@@ -116,6 +120,7 @@ class SceneSlider extends React.Component {
     (saturation, bright) => {
       const { hsvbks } = this.state;
       if (hsvbks.length) {
+        // eslint-disable-next-line no-unused-vars
         const [h, s, v, b, k] = hsvbks[0];
         let controlValue = '';
         if (b || k) {
@@ -126,18 +131,22 @@ class SceneSlider extends React.Component {
         const data = {
           [Config.dpCodes.controlData]: controlValue,
         };
+        // eslint-disable-next-line react/destructuring-assignment
         this.props.updateDp(data);
       }
     }
   );
+
   handleBrightnessMove = value => {
     const { saturation } = this.state;
     this.handleMove(saturation, value);
   };
+
   handleSaturationMove = value => {
     const { bright } = this.state;
     this.handleMove(value, bright);
   };
+
   handleRelease = debounce((speed, bright, saturation) => {
     this.locked = false;
     const { hsvbks, id, mode } = this.state;
@@ -150,6 +159,7 @@ class SceneSlider extends React.Component {
     // 为了与v1版本一致，如果是第5个场景，则只显示一个颜色，并根据用户选择了颜色处理成亮暗两种颜色
     const isFifth = +id === 4;
     if (isFifth) {
+      // eslint-disable-next-line no-unused-vars
       const [h, s, v, b, k] = newHsvbks[1];
       const bright2 = Math.max(10, Math.round(bright * 0.01));
       if (b || k) {
@@ -162,7 +172,9 @@ class SceneSlider extends React.Component {
       dpCodes: { workMode: workModeCode, sceneData: sceneDataCode },
     } = Config;
     const value = Color.encodeSceneValue([id, speed, mode, ...newHsvbks]);
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateDp({ [sceneDataCode]: value, [workModeCode]: WORKMODE.SCENE });
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateCloud(`scene_${id}`, { sceneId: id, value });
     this.setState({
       speed,
@@ -175,15 +187,19 @@ class SceneSlider extends React.Component {
     const { speed, saturation } = this.state;
     this.handleRelease(speed, value, saturation);
   };
+
   handleSaturationRelease = value => {
     const { speed, bright } = this.state;
     this.handleRelease(speed, bright, value);
   };
+
   handleSpeedRelease = value => {
     const { saturation, bright } = this.state;
     this.handleRelease(value, bright, saturation);
   };
+
   handleBack = () => {
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateEditStatus({
       isEditScene: false,
     });
