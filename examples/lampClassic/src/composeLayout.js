@@ -9,7 +9,7 @@ import { TYSdk, Theme, Utils, Dialog } from 'tuya-panel-kit';
 import { devInfoChange, deviceChange, updateDp } from './redux/modules/common';
 import Config from './config';
 import { initCloud } from './redux/modules/cloud';
-import { arrayToObject, isCapability } from './utils';
+import { isCapability } from './utils';
 import * as DpUtils from './utils/dpUtils';
 import Strings from './i18n';
 import { fetchSceneDefaultValue } from './config/default/scenes';
@@ -30,7 +30,9 @@ const composeLayout = (store, component) => {
     static propTypes = {
       devInfo: PropTypes.any.isRequired,
     };
+    /* eslint-disable */
     state = { initFinish: false };
+    
     constructor(props) {
       super(props);
       if (props && props.devInfo && props.devInfo.devId) {
@@ -52,6 +54,7 @@ const composeLayout = (store, component) => {
       }
       this.subscribe();
     }
+
     componentDidMount() {
       // 更新在进入面板未接收到dp的数据
       if (TYDevice.__unInitializeDps) {
@@ -61,6 +64,7 @@ const composeLayout = (store, component) => {
         }
       }
     }
+
     componentWillUnmount() {
       this.unsubscribe();
     }
@@ -128,12 +132,12 @@ const composeLayout = (store, component) => {
         isSupportCountdown,
       };
 
-      const defalutScenes = fetchSceneDefaultValue(dpFun); // 默认场景列表
+      const defaultScenes = fetchSceneDefaultValue(dpFun); // 默认场景列表
       // 去拉取场景配置
       if (isSupportScene) {
         TYNative.getDeviceCloudData()
           .then(data => {
-            const scenes = defalutScenes.map(item => {
+            const scenes = defaultScenes.map(item => {
               const key = `scene_${item.sceneId}`;
               if (Reflect.has(data, key)) {
                 const jsonData = JSON.parse(data[key]);
@@ -149,13 +153,13 @@ const composeLayout = (store, component) => {
             store.dispatch(initCloud({ ...data, scenes }));
           })
           .catch(e => {
-            store.dispatch(initCloud({ scenes: defalutScenes }));
+            store.dispatch(initCloud({ scenes: defaultScenes }));
             store.warn(new Error('fetch Cloud data failure'));
           });
       }
 
       // 更新 Config 数据
-      Object.assign(Config, { defalutScenes, dpFun, capabilityFun });
+      Object.assign(Config, { defaultScenes, dpFun, capabilityFun });
     }
 
     subscribe() {
@@ -181,6 +185,7 @@ const composeLayout = (store, component) => {
     _handleDeviceChanged = data => {
       dispatch(deviceChange(data));
     };
+
     _handleDpDataChange = data => {
       const result = DpUtils.handleFilterData(data);
       if (Object.keys(result).length) {
@@ -191,7 +196,9 @@ const composeLayout = (store, component) => {
     _handleAppOnlineChange = data => {
       dispatch(deviceChange(data));
     };
+
     render() {
+      // eslint-disable-next-line react/destructuring-assignment
       if (!this.state.initFinish) {
         return <View style={{ flex: 1 }} />;
       }

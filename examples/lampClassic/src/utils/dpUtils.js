@@ -1,3 +1,4 @@
+/* eslint-disable */
 const timeOut = 3000;
 const dpPool = {};
 

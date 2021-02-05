@@ -16,12 +16,8 @@ export default {
       y2: '0',
     },
     text: {
-      dark: color(fontColor)
-        .alpha(0.5)
-        .rgbString(),
-      light: color(fontColor)
-        .alpha(0.5)
-        .rgbString(),
+      dark: color(fontColor).alpha(0.5).rgbString(),
+      light: color(fontColor).alpha(0.5).rgbString(),
     },
   },
   topbar: {
@@ -30,28 +26,14 @@ export default {
   },
   slider: {
     minimumTrackTintColor: fontColor,
-    maximumTrackTintColor: color(fontColor)
-      .alpha(0.2)
-      .rgbString(),
+    maximumTrackTintColor: color(fontColor).alpha(0.2).rgbString(),
     thumbTintColor: fontColor,
   },
-  fontColor: color(fontColor)
-    .alpha(0.5)
-    .rgbString(),
-  iconBackColor: color(fontColor)
-    .alpha(0.2)
-    .rgbString(),
+  fontColor: color(fontColor).alpha(0.5).rgbString(),
+  iconBackColor: color(fontColor).alpha(0.2).rgbString(),
   activeFontColor: fontColor,
-  iconBgColor: color(fontColor)
-    .alpha(0.15)
-    .rgbString(),
-  tabBgColor: color(fontColor)
-    .alpha(0.04)
-    .rgbString(),
-  sceneBgColor: color(fontColor)
-    .alpha(0.1)
-    .rgbString(),
-  btnBgColor: color(fontColor)
-    .alpha(0.72)
-    .rgbString(),
+  iconBgColor: color(fontColor).alpha(0.15).rgbString(),
+  tabBgColor: color(fontColor).alpha(0.04).rgbString(),
+  sceneBgColor: color(fontColor).alpha(0.1).rgbString(),
+  btnBgColor: color(fontColor).alpha(0.72).rgbString(),
 };

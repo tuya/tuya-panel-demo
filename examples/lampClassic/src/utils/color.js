@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Utils } from 'tuya-panel-kit';
 import camelCase from 'lodash/camelCase';
 import ColorObj from 'color';
@@ -33,7 +34,7 @@ export const memorize = fn => {
     throw new TypeError('memorize: when provided, the first argument must be a function');
   }
   const cache = {};
-  return function(...args) {
+  return function (...args) {
     if (args.length < 1) {
       throw new TypeError('memorize: arguments cannot be null or undefined');
     }

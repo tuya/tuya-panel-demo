@@ -63,6 +63,7 @@ class SceneColors extends React.Component {
     }
     return Color.hsv2rgba(h, s, bright || v);
   }
+  
   initData(props) {
     const { selectSceneId, scenes } = props;
     const exist = scenes.find(item => item.sceneId === selectSceneId);

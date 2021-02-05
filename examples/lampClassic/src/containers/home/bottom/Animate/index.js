@@ -11,11 +11,13 @@ export default class AnimateView extends React.Component {
     value: PropTypes.number,
     style: ViewPropTypes.style,
   };
+
   static defaultProps = {
     hideValue: 0,
     value: 0,
     style: null,
   };
+
   constructor(props) {
     super(props);
 
@@ -27,11 +29,14 @@ export default class AnimateView extends React.Component {
       opacity: new Animated.Value(0),
     };
   }
+
   componentDidMount() {
     this.playAnimation();
   }
+
   componentWillReceiveProps(nextProps) {
-    if (Math.abs(this.props.value - nextProps.value) > 0.1) {
+    const { value } = this.props;
+    if (Math.abs(value - nextProps.value) > 0.1) {
       this.needUpdate = true;
     }
   }
@@ -39,17 +44,19 @@ export default class AnimateView extends React.Component {
   componentDidUpdate() {
     this.playAnimation();
   }
+
   playAnimation() {
+    const { y, opacity } = this.state;
     if (this.needUpdate && !this.isAnimating) {
       const { value, hideValue } = this.props;
       this.isAnimating = true;
       Animated.parallel([
-        Animated.timing(this.state.y, {
+        Animated.timing(y, {
           toValue: value,
           duration: 300,
           useNativeDriver: true,
         }),
-        Animated.timing(this.state.opacity, {
+        Animated.timing(opacity, {
           toValue: hideValue === value ? 0 : 1,
           duration: 300,
           useNativeDriver: true,
@@ -63,7 +70,9 @@ export default class AnimateView extends React.Component {
   }
 
   render() {
-    const { style, children, hideValue, value } = this.props;
+    // eslint-disable-next-line react/prop-types
+    const { style, children, value } = this.props;
+    const { y, opacity } = this.state;
     return (
       <Animated.View
         style={[
@@ -72,10 +81,10 @@ export default class AnimateView extends React.Component {
           {
             transform: [
               {
-                translateY: this.state.y,
+                translateY: y,
               },
             ],
-            opacity: this.state.opacity,
+            opacity,
           },
           {
             bottom: this.needUpdate ? 0 : -value,

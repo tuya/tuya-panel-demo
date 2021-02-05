@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Utils, Button, IconFont, TYSdk, TYText } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
 
@@ -68,10 +68,12 @@ class Scenes extends React.Component {
       [workModeCode]: WORKMODE.SCENE,
       [sceneDataCode]: Config.capabilityFun.isSignMesh ? value.slice(0, 2) : value,
     };
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateDp(data);
   });
 
   handleEditSlider = () => {
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateEditStatus({
       selectSceneId: this.selectSceneId,
       isEditScene: true,
@@ -80,13 +82,16 @@ class Scenes extends React.Component {
   };
 
   handleEditColor = () => {
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateEditStatus({
       selectSceneId: this.selectSceneId,
       isEditScene: false,
       isEditSceneColor: true,
     });
   };
+
   handleBack = () => {
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateEditStatus({
       isEditScene: false,
       isEditMode: false,
@@ -164,7 +169,12 @@ class Scenes extends React.Component {
             onPress={this.handleBack}
             accessibilityLabel="Light_Edit_Return"
           >
-            <IconFont useART d={iconfont.arrowDown} size={cx(40)} color={theme.iconBackColor} />
+            <IconFont
+              useART={true}
+              d={iconfont.arrowDown}
+              size={cx(40)}
+              color={theme.iconBackColor}
+            />
           </TouchableOpacity>
         </View>
       </AnimateView>
