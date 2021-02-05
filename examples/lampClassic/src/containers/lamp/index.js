@@ -87,6 +87,7 @@ class Lamp extends Component {
       case WORKMODE.COLOUR:
         hsv = Color.decodeColourData(colour);
         currentColor = Color.hsv2hex(hsv[0], hsv[1], 1000);
+        // eslint-disable-next-line prefer-destructuring
         currentBright = hsv[2];
         break;
       case WORKMODE.SCENE: {
@@ -133,6 +134,7 @@ class Lamp extends Component {
 
   handleChangePower = () => {
     const { power } = this.props;
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateDp({
       [Config.dpCodes.power]: !power,
     });
@@ -148,13 +150,14 @@ class Lamp extends Component {
       const { hsv } = this.state;
       const editHsv = [hue, hsv[1], hsv[2]];
       const currentColor = Color.encodeColourControlData(...editHsv);
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.updateDp({
         [Config.dpCodes.controlData]: currentColor,
       });
     }
   );
 
-  hangleHueChangeCompelete = hue => {
+  handleHueChangeComplete = hue => {
     this.handleHueChange.cancel();
     const { isEditSceneColor, selectSceneId, scenes, selectSceneColorIndex } = this.props;
     const { hsv } = this.state;
@@ -174,13 +177,16 @@ class Lamp extends Component {
           }
 
           const value = Color.encodeSceneValue([num, speed, mode, ...newHsvbks]);
+          // eslint-disable-next-line react/destructuring-assignment
           this.props.updateDp({
             [Config.dpCodes.sceneData]: value,
           });
+          // eslint-disable-next-line react/destructuring-assignment
           this.props.updateCloud(`scene_${+num}`, { sceneId: exist.sceneId, value });
         }
       }
     } else {
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.updateDp({
         [Config.dpCodes.colourData]: Color.encodeColourData(hue, hsv[1], hsv[2]),
       });
@@ -192,7 +198,7 @@ class Lamp extends Component {
 
   render() {
     const { power, isEditMode, isEditSceneColor, workMode } = this.props;
-    const { currentColor, currentBright, modeTitle } = this.state;
+    const { currentColor, currentBright, modeTitle, hsv } = this.state;
     const isShowHue = power && isEditMode && (workMode === WORKMODE.COLOUR || isEditSceneColor);
 
     const lampOnImage = resource.lightOn;
@@ -207,6 +213,7 @@ class Lamp extends Component {
         )}
         <View style={styles.box}>
           <Image
+            // eslint-disable-next-line no-return-assign
             ref={ref => (this.shadowRef = ref)}
             source={resource.lightShadow}
             style={[
@@ -214,17 +221,22 @@ class Lamp extends Component {
               { opacity: power ? this.formatOpacity(currentBright) : 0.2 },
             ]}
           />
-          <TYText style={[styles.powerTip, { opacity: power ? 0 : 1 }]}>
-            {Strings.getLang('power_tip')}
-          </TYText>
+          <TouchableWithoutFeedback
+            onPress={this.handleChangePower}
+            accessibilityLabel="Light_Btn_Open"
+          >
+            <TYText style={[styles.powerTip, { opacity: power ? 0 : 1 }]}>
+              {Strings.getLang('power_tip')}
+            </TYText>
+          </TouchableWithoutFeedback>
           <HuePicker
             style={[styles.huePicker, { opacity: isShowHue ? 1 : 0 }]}
-            hue={isShowHue ? this.state.hsv[0] : 0}
+            hue={isShowHue ? hsv[0] : 0}
             touchThumbRadius={cx(25)}
             touchOffset={cx(8)}
             onChange={this.handleHueChange}
-            onRelease={this.hangleHueChangeCompelete}
-            onPress={this.hangleHueChangeCompelete}
+            onRelease={this.handleHueChangeComplete}
+            onPress={this.handleHueChangeComplete}
             disabled={!isShowHue}
           />
           <TouchableWithoutFeedback
@@ -233,6 +245,7 @@ class Lamp extends Component {
           >
             <View style={styles.lightBtn}>
               <Image
+                // eslint-disable-next-line no-return-assign
                 ref={ref => (this.ligthRef = ref)}
                 source={power ? lampOnImage : lampOffImage}
                 style={[

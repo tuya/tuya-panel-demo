@@ -82,6 +82,8 @@ class HomeBottomView extends Component {
   }
 
   handlePress = workMode => {
+    // eslint-disable-next-line no-shadow
+    const { updateDp, updateEditStatus } = this.props;
     if (workMode === TIMER_KEY) {
       const powerCode = Config.dpCodes.power;
       TYSdk.native.gotoDpAlarm({
@@ -100,8 +102,8 @@ class HomeBottomView extends Component {
       return;
     }
 
-    this.props.updateDp({ [Config.dpCodes.workMode]: workMode });
-    this.props.updateEditStatus({ isEditMode: true });
+    updateDp({ [Config.dpCodes.workMode]: workMode });
+    updateEditStatus({ isEditMode: true });
   };
 
   render() {

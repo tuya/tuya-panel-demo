@@ -31,17 +31,19 @@ class ColourSlider extends React.Component {
     updateEditStatus: PropTypes.func.isRequired,
     theme: PropTypes.any.isRequired,
   };
+
   constructor(props) {
     super(props);
+    const { colour } = this.props;
     this.state = {
-      hsv: Color.decodeColourData(this.props.colour),
+      hsv: Color.decodeColourData(colour),
     };
     this.locked = false;
   }
-  componentWillReceiveProps(nextProps) {
-    const { colour } = nextProps;
 
-    if (colour !== this.props.colour) {
+  componentWillReceiveProps(nextProps) {
+    const { colour } = this.props;
+    if (nextProps.colour !== colour) {
       this.setState({
         hsv: Color.decodeColourData(colour),
       });
@@ -72,13 +74,16 @@ class ColourSlider extends React.Component {
       const data = {
         [Config.dpCodes.controlData]: controlValue,
       };
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.updateDp(data);
     }
   );
+
   handleBrightnessMove = value => {
     const { hsv } = this.state;
     this.handleMove([hsv[0], hsv[1], value]);
   };
+
   handleSaturationMove = value => {
     const { hsv } = this.state;
     this.handleMove([hsv[0], value, hsv[2]]);
@@ -88,6 +93,7 @@ class ColourSlider extends React.Component {
     this.locked = false;
     const value = Color.encodeColourData(...hsv);
     const { colourData: colourDataCode, workMode: workModeCode } = Config.dpCodes;
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.updateDp({
       [colourDataCode]: value,
       [workModeCode]: WORKMODE.COLOUR,
@@ -101,14 +107,17 @@ class ColourSlider extends React.Component {
     const { hsv } = this.state;
     this.handleRelease([hsv[0], hsv[1], value]);
   };
+
   handleSaturationRelease = value => {
     const { hsv } = this.state;
     this.handleRelease([hsv[0], value, hsv[2]]);
   };
 
   handleBack = () => {
-    this.props.updateEditStatus({ isEditMode: false });
+    const { updateEditStatus } = this.props;
+    updateEditStatus({ isEditMode: false });
   };
+
   render() {
     const { power, isEditMode, workMode, theme } = this.props;
     const { hsv } = this.state;
@@ -140,7 +149,7 @@ class ColourSlider extends React.Component {
         <View style={styles.back}>
           <TouchableOpacity onPress={this.handleBack} accessibilityLabel="Light_Setting_fold">
             <IconFont
-              useART
+              useART={true}
               d={iconfont.arrowDown}
               size={convertX(40)}
               color={theme.iconBackColor}
