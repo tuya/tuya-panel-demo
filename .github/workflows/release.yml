@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: COPYFILE_DISABLE=1 ls examples | xargs -I {} tar zcvfm {}.tar.gz examples/{}
+        run: cd examples && COPYFILE_DISABLE=1 ls | xargs -I {} tar zcvfm {}.tar.gz {}
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
