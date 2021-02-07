@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: cd examples && COPYFILE_DISABLE=1 ls | xargs -I {} tar zcvfm {}.tar.gz {}
       - name: Release
@@ -18,4 +23,5 @@ jobs:
         with:
           files: |
             ./examples/*.tar.gz
+          body: ${{steps.github_release.outputs.changelog}}
           draft: true
