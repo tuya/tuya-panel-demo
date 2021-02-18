@@ -2,7 +2,7 @@
 
 English | [简体中文](./README-zh_CN.md)
 
-`Tuya Panel Templates` provides a series of common template codes.
+`Tuya Panel Templates` provides development templates of common categories.
 
 You can read the [official documents](https://developer.tuya.com/en/docs/iot) for more information.
 
@@ -22,7 +22,7 @@ $ npm install && npm run start
 $ yarn && yarn start # if you use yarn
 ```
 
-And open your tuya app for debugging :)
+Then, open your Tuya Smart app for debugging.
 
 ## Examples
 
