@@ -35,7 +35,7 @@ Then, open your Tuya Smart app for debugging.
 - [platoonSocket](./examples/platoonSocket)
 - [switch](./examples/switch)
 
-### You can check the complete list of Tuya Panel examples [here](./examples).
+You can check the complete list of Tuya Panel examples [here](./examples).
 
 ## License
 
