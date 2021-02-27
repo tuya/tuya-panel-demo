@@ -2,7 +2,7 @@
 
 English | [简体中文](./README-zh_CN.md)
 
-`Tuya Panel Templates` provides development templates of common categories.
+This document provides development templates of common categories.
 
 You can read the [official documents](https://developer.tuya.com/en/docs/iot) for more information.
 
