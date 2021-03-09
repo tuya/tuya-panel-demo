@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { TYIpcTopBar } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcTopBar } from '@tuya/tuya-panel-ipc-sdk';
 import { commonConfig } from '@config';
 import Res from '@res';
 

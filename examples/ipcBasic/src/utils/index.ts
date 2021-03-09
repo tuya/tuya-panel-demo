@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { TYSdk } from 'tuya-panel-kit';
-import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { global } from '@config';
 import Strings from '../i18n';
 
