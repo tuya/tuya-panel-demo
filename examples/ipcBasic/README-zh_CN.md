@@ -1,4 +1,4 @@
-# Tuya Panel Ipc Template By `@tuya-smart/tuya-panel-ipc-sdk` （React Native 0.59）
+# Tuya Panel Ipc Template By `@tuya/tuya-panel-ipc-sdk` （React Native 0.59）
 
 [English](./README.md) | 简体中文
 
@@ -16,7 +16,7 @@ $ cd tuya-panel-ipc-basic-example
 
 ## 介绍
 
-该模板工程为 React Native 0.59 版本的 TS, 基于`@tuya-smart/tuya-panel-ipc-sdk`封装 Player 组件及功能模块, 快速开发与 Ipc 相关面板：
+该模板工程为 React Native 0.59 版本的 TS, 基于`@tuya/tuya-panel-ipc-sdk`封装 Player 组件及功能模块, 快速开发与 Ipc 相关面板：
 
 1. Path Alias;
 2. React、Redux Hooks;

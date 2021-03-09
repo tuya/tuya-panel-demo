@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
-import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { commonConfig, panBasicFeature, commonClick } from '@config';
 // import { enableRecord, snapShoot, setScreenOrientation } from '';
 import Strings from '../../i18n';

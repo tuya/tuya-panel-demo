@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { TYIpcPlayer } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcPlayer } from '@tuya/tuya-panel-ipc-sdk';
 import { actions } from '@models';
 import { cameraData, commonClick, commonConfig } from '@config';
 

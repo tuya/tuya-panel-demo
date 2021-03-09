@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import _ from 'lodash';
 import { TYText } from 'tuya-panel-kit';
-import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { useSelector } from 'react-redux';
 import { commonConfig } from '@config';
 import Strings from '@i18n';

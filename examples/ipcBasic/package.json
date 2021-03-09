@@ -10,7 +10,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "lint": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "patch-package --patch-dir node_modules/@tuya-smart/tuya-panel-patches/patches",
+    "postinstall": "patch-package --patch-dir node_modules/@tuya/tuya-panel-patches/patches",
     "release:init": "standard-version --first-release -t @template/ipcBasic@",
     "release:major:pre": "standard-version --release-as major --prerelease rc --skip.tag=true",
     "release:major": "standard-version --release-as major -t @template/ipcBasic@",
@@ -22,7 +22,7 @@
   "main": "index.ios.js",
   "description": "Basic Ipc Template (Ipc模板 React Native 0.59 TS 版本)",
   "dependencies": {
-    "@tuya-smart/tuya-panel-ipc-sdk": "^1.0.3",
+    "@tuya/tuya-panel-ipc-sdk": "^1.0.3",
     "events": "^1.1.1",
     "lodash": "^4.17.19",
     "moment": "^2.20.1",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.1",
     "@commitlint/cli": "^11.0.0",
-    "@tuya-smart/tuya-panel-patches": "^0.59.10",
+    "@tuya/tuya-panel-patches": "^0.59.10",
     "@types/lodash": "^4.14.137",
     "@types/react": "^16.0.4",
     "@types/react-native": "^0.60.0",
