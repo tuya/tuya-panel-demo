@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { HeaderView } from '@components';
-import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { TYText } from 'tuya-panel-kit';
 import Strings from '@i18n';
 

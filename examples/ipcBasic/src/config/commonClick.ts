@@ -1,5 +1,5 @@
 import { Linking } from 'react-native';
-import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { TYSdk, Popup } from 'tuya-panel-kit';
 import Strings from '@i18n';
 import _ from 'lodash';
@@ -278,12 +278,12 @@ const resoultionData = clarityType => {
     showData: [
       {
         value: 'HD',
-        text: Strings.getLang('resolutionHigh'),
+        text: Strings.getLang('video_mode_hd'),
         checked: clarityType === 'HD',
       },
       {
         value: 'SD',
-        text: Strings.getLang('resolutionStandard'),
+        text: Strings.getLang('video_mode_sd'),
         checked: clarityType === 'SD',
       },
     ],
