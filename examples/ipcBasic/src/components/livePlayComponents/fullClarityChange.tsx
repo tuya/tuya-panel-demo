@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { commonConfig, cameraData, commonClick } from '@config';
 import { actions } from '@models';
-import { TYIpcNative } from '@tuya-smart/tuya-panel-ipc-sdk';
+import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { TYText } from 'tuya-panel-kit';
 import Strings from '@i18n';
 
