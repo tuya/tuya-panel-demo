@@ -34,11 +34,11 @@ const fullComArr = [
 
 const fullClarityType: any = [
   {
-    typeName: Strings.getLang('resolutionHigh'),
+    typeName: Strings.getLang('video_mode_hd'),
     type: 'HD',
   },
   {
-    typeName: Strings.getLang('resolutionStandard'),
+    typeName: Strings.getLang('video_mode_sd'),
     type: 'SD',
   },
 ];

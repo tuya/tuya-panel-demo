@@ -1,4 +1,4 @@
-# The template project is React Native 0.59 version TS, based on `@tuya-smart/tuya-panel-ipc-sdk` to encapsulate Player components and functional modules, and quickly develop panels related to Ipc
+# The template project is React Native 0.59 version TS, based on `@tuya/tuya-panel-ipc-sdk` to encapsulate Player components and functional modules, and quickly develop panels related to Ipc
 
 English | [简体中文](./README-zh_CN.md)
 
@@ -16,7 +16,7 @@ $ cd tuya-panel-ipc-basic-example
 
 ## Introduction
 
- The template project is React Native 0.59 version TS, based on `@tuya-smart/tuya-panel-ipc-sdk` to encapsulate Player components and functional modules, and quickly develop panels related to Ipc
+ The template project is React Native 0.59 version TS, based on `@tuya/tuya-panel-ipc-sdk` to encapsulate Player components and functional modules, and quickly develop panels related to Ipc
 
 1. Path Alias;
 2. React、Redux Hooks;
