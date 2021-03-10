@@ -1,0 +1,16 @@
+export default {
+  control: 'control',
+  control2: 'control_2',
+  lightMode: 'light_mode',
+  controlBack: 'control_back',
+  controlBack2: 'control_back_2',
+  curCalibration: 'cur_calibration',
+  curCalibration2: 'cur_calibration_2',
+  percent_control: 'percent_control',
+  percentControl2: 'percent_control_2',
+  switchBacklight: 'switch_backlight',
+  trTimecon: 'tr_timecon',
+  trTimecon2: 'tr_timecon_2',
+  elecMachineryMode: 'elec_machinery_mode',
+  elecMachineryMode2: 'elec_machinery_mode_2',
+};
