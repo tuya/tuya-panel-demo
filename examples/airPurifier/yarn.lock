@@ -7635,17 +7635,6 @@ react-native-deprecated-custom-components@0.1.2:
     react-timer-mixin "^0.13.2"
     rebound "^0.0.13"
 
-"react-native-deprecated-custom-components@git+https://github.com/facebookarchive/react-native-custom-components.git#83c4fa19ccc9b6cd48ff80e457c493332819b486":
-  version "0.1.1"
-  resolved "git+https://github.com/facebookarchive/react-native-custom-components.git#83c4fa19ccc9b6cd48ff80e457c493332819b486"
-  dependencies:
-    create-react-class "15.6.0"
-    fbjs "~0.8.9"
-    immutable "~3.7.6"
-    prop-types "^15.5.10"
-    react-timer-mixin "^0.13.2"
-    rebound "^0.0.13"
-
 react-native-gesture-handler@1.8.0:
   version "1.8.0"
   resolved "https://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.8.0.tgz#18f61f51da50320f938957b0ee79bc58f47449dc"
@@ -9379,10 +9368,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-kit@^4.3.3:
-  version "4.3.3"
-  resolved "https://registry.npm.taobao.org/tuya-panel-kit/download/tuya-panel-kit-4.3.3.tgz#512c47d4b3cc0a1ed73f5a38e87b73bb00ac6272"
-  integrity sha1-USxH1LPMCh7XP1o46HtzuwCsYnI=
+tuya-panel-kit@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.npm.taobao.org/tuya-panel-kit/download/tuya-panel-kit-4.4.1.tgz#a1f4843cdcbd10411fa7155bbae5920f5092d0e5"
+  integrity sha1-ofSEPNy9EEEfpxVbuuWSD1CS0OU=
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
