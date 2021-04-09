@@ -3,16 +3,8 @@ import React, { PureComponent } from 'react';
 import _ from 'lodash';
 import { View, StyleSheet, ScrollView, FlatList, Image, DeviceEventEmitter } from 'react-native';
 import { TYSdk, Utils, TYText, Dialog } from 'tuya-panel-kit';
+import { electricianApi } from '@tuya/tuya-panel-api';
 import Res from '../../res';
-import {
-  triggerRule,
-  getBindRuleList,
-  bindRule,
-  getDeviceList,
-  enableRule,
-  disableRule,
-  removeRule,
-} from '../../api';
 import DropDown from '../../components/dropDown';
 import Tip from './tip';
 import Strings from '../../i18n';
@@ -20,6 +12,15 @@ import Icon from '../../icons';
 import RuleItem from './ruleItem';
 import { getDeviceInfo, getIconList, getLength, RequireType } from '../../utils';
 
+const {
+  getLinkageDeviceList,
+  getBindRuleList,
+  bindRule,
+  removeRule,
+  triggerRule,
+  enableRule,
+  disableRule,
+} = electricianApi.linkageApi;
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
 interface RuleListProps {
   selectCode: string;
@@ -58,8 +59,9 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
 
   getDeviceLists = _.throttle(() => {
     const { themeColor, isNewApp } = this.props;
+    const { homeId } = TYSdk.devInfo;
     this.removeLister();
-    getDeviceList()
+    getLinkageDeviceList({ gid: homeId, sourceType: 'wirelessSwitch' })
       .then((d: RequireType[]) => {
         this.setState({
           deviceData: d,
@@ -90,7 +92,11 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
   }, 2000);
 
   getData = () => {
-    getBindRuleList()
+    getBindRuleList({
+      bizDomain: 'wirelessSwitchBindScene',
+      sourceEntityId: TYSdk.devInfo.devId,
+      entityType: 2,
+    })
       .then((d: RequireType[]) => {
         if (typeof d === undefined) {
           return;
@@ -167,13 +173,13 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
   bind = (ruleId: string) => {
     const { selectValue, selectCode, themeColor } = this.props;
     const id = TYSdk.device.getDpIdByCode(selectCode);
-    const options = {
+    bindRule({
       associativeEntityId: `${id}#${selectValue}`,
       ruleId,
       entitySubIds: id,
       expr: [[`$dp${id}`, '==', selectValue]],
-    };
-    bindRule(options)
+      bizDomain: 'wirelessSwitchBindScene',
+    })
       .then(() => {
         this.getData();
       })
@@ -184,7 +190,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
           confirmTextStyle: { fontWeight: 'bold', color: themeColor },
           onConfirm: () => {
             Dialog.close();
-            triggerRule(id);
+            triggerRule({ ruleId: id });
           },
         });
       });
@@ -201,7 +207,12 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
       confirmTextStyle: { fontWeight: 'bold', color: themeColor },
       onConfirm: () => {
         Dialog.close();
-        removeRule(id, associativeEntityId)
+        removeRule({
+          bizDomain: 'wirelessSwitchBindScene',
+          sourceEntityId: TYSdk.devInfo.devId,
+          associativeEntityId,
+          associativeEntityValue: id,
+        })
           .then(() => {
             this.getData();
           })
@@ -220,7 +231,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
   _handleToToggle = (enabled: boolean, id: string) => {
     const { themeColor } = this.props;
     const fun = enabled ? enableRule : disableRule;
-    fun(id)
+    fun({ ruleId: id })
       .then(() => {
         this.getData();
       })
@@ -231,7 +242,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
           confirmTextStyle: { fontWeight: 'bold', color: themeColor },
           onConfirm: () => {
             Dialog.close();
-            triggerRule(id);
+            triggerRule({ ruleId: id });
           },
         });
       });
@@ -250,7 +261,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
         onConfirm: () => {
           Dialog.close();
           onTriggle();
-          triggerRule(id);
+          triggerRule({ ruleId: id });
         },
       });
       return;
@@ -272,7 +283,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
       onConfirm: () => {
         Dialog.close();
         onTriggle();
-        triggerRule(id);
+        triggerRule({ ruleId: id });
       },
       style: { backgroundColor: '#FFFFFF', borderRadius: 8 },
       headerStyle: {
