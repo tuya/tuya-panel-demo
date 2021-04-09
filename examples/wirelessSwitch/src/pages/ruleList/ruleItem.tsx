@@ -84,6 +84,7 @@ export default class RuleItem extends PureComponent<RuleItemProps, RuleItemState
             ]}
             onPress={onPress}
             activeOpacity={0.8}
+            disabled={!enabled}
           >
             <View style={styles.leftContent}>
               <View>
@@ -97,7 +98,7 @@ export default class RuleItem extends PureComponent<RuleItemProps, RuleItemState
               </View>
               <View style={styles.iconContent}>
                 {showIcon.map((d: any, idx: number) => (
-                  <View key={`${idx}`} style={[styles.imgContent, { opacity: isOp }]}>
+                  <View key={`icon_${idx + 1}`} style={[styles.imgContent, { opacity: isOp }]}>
                     <Image source={d} style={styles.iconImg} />
                   </View>
                 ))}
