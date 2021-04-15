@@ -37,6 +37,10 @@ $ yarn && yarn start
 
 - 请使用涂鸦智能 3.22 及以上开发的 App, 调试版进行调试开发
 
+## 更新说明
+
+2021-04-15: 优化视频区域按宽按高调节方式, 添加 onChangeActiveZoomStatus: (zoomStatus: number) => any; 回调函数, 主动触发时再更改视频倍数
+
 ## 许可证
 
 Copyright © 2020
