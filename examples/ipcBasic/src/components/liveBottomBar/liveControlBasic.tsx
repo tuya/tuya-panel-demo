@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions } from '@models';
 import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { commonConfig, panBasicFeature, commonClick } from '@config';
 // import { enableRecord, snapShoot, setScreenOrientation } from '';
@@ -18,6 +19,8 @@ const LiveControlBasic: React.FC<LiveControlBasicProps> = (props: LiveControlBas
   const [openMoreControl, setOpenMoreControl] = useState(false);
   const [menData, setMenData] = useState([]);
 
+  const dispatch = useDispatch();
+
   // redux取值
   const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
   const theme = useSelector((state: any) => state.theme);
@@ -33,6 +36,9 @@ const LiveControlBasic: React.FC<LiveControlBasicProps> = (props: LiveControlBas
 
   const controlBottomDialog = () => {
     setOpenMoreControl(isOpen => {
+      dispatch(
+        actions.ipcCommonActions.scaleStatus({ scaleStatus: ipcCommonState.currentScaleStatus })
+      );
       props.openAnimateHeight(!isOpen);
       return !isOpen;
     });
