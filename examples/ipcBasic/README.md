@@ -44,6 +44,10 @@ $ cd tuya-panel-ipc-basic-example
 
 - Please use the app developed by Tuya Smart 3.22 and above, debug version for debugging and development
 
+## Release Notes
+
+2021-04-15: Optimize the adjustment method of video area according to width and height, add onChangeActiveZoomStatus: (zoomStatus: number) => any; callback function, change the video multiple when it is triggered actively
+
 ## License
 
 Copyright © 2020

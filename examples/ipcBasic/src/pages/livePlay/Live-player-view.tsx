@@ -16,9 +16,6 @@ interface LivePlayerViewProps {
 const LivePlayerView: React.FC<LivePlayerViewProps> = (props: LivePlayerViewProps) => {
   let isRecordDisableTime: any = null;
   const [hideFullMenu, setHideFullMenu] = useState(false);
-  // 默认按宽匹配-1 -2按高匹配 1.0~6.0为自适应放大倍数
-  const [scaleStatus, setScaleStatus] = useState(-1);
-
   const dispatch = useDispatch();
 
   const devInfo = useSelector((state: any) => state.devInfo);
@@ -56,10 +53,6 @@ const LivePlayerView: React.FC<LivePlayerViewProps> = (props: LivePlayerViewProp
   useEffect(() => {
     getFullScreenAbsoulteStartValue(props);
   }, [isFullScreen, fullPlayerWidth, fullPlayerHeight]);
-
-  useEffect(() => {
-    ipcCommonState.isActiveScale && setScaleStatus(commonClick.adjustSize());
-  }, [ipcCommonState.isActiveScale]);
 
   const getFullScreenAbsoulteStartValue = (newProps: any) => {
     if (newProps.isFullScreen && newProps.fullPlayerWidth > newProps.fullPlayerHeight) {
@@ -114,11 +107,15 @@ const LivePlayerView: React.FC<LivePlayerViewProps> = (props: LivePlayerViewProp
 
   const onChangeZoomStatus = (data: any) => {
     if (typeof data !== 'number') {
-      setScaleStatus(data.scaleStatus);
-      dispatch(actions.ipcCommonActions.scaleStatus({ scaleStatus: data.scaleStatus }));
+      const { scaleStatus, currentVideoScale } = data;
+      // 视频画面变化 此处可获取当前视频的播放比例、画面大小比例
+      dispatch(actions.ipcCommonActions.currentScaleStatus({ currentScaleStatus: scaleStatus }));
     }
-    // 还原是否主动切换按宽按高适配
-    dispatch(actions.ipcCommonActions.isActiveScale({ isActiveScale: false }));
+  };
+
+  const onChangeActiveZoomStatus = (data: any) => {
+    const { zoomStatus } = data;
+    dispatch(actions.ipcCommonActions.scaleStatus({ scaleStatus: zoomStatus }));
   };
 
   return (
@@ -146,7 +143,8 @@ const LivePlayerView: React.FC<LivePlayerViewProps> = (props: LivePlayerViewProp
           commonClick.toggleNativePage('paramAlbum');
         }}
         onChangeZoomStatus={onChangeZoomStatus}
-        scaleMultiple={scaleStatus}
+        onChangeActiveZoomStatus={onChangeActiveZoomStatus}
+        scaleMultiple={ipcCommonState.scaleStatus}
         cutStyle={cutStyle}
         showCustomVideoLoad={ipcCommonState.showCustomVideoLoad}
         showCustomVideoText={ipcCommonState.showCustomVideoText}
