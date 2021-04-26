@@ -35,11 +35,11 @@ const stopFullAnim = createAction('STOP_FULL_ANIM');
 const fullAbsoluteStartValue = createAction('FULL_ABSOLUTE_START_VALUE');
 // 是否为安卓全面屏 主要针对全面屏使用Nav导航,屏幕实际使用高度变小,样式适配而用
 const isAndriodFullScreenNavMode = createAction('IS_ANDRIOD_FULL_SCREEN_NAV_MODE');
-// 默认视频按宽匹配-1 -2按高匹配 1.0~6.0为自适应放大倍数
+// 默认视频按宽匹配-1 -2按高匹配 1.0~6.0为自适应放大s倍数 用来记录App推送的视频缩放比例
 const scaleStatus = createAction('SCALE_STATUS');
-// 标记是否主动调节按宽按高
-const isActiveScale = createAction('IS_ACTIVE_SCALE');
-// 标记是否主动调节按宽按高
+// 记录仪当前视频缩放比例状态
+const currentScaleStatus = createAction('CURRENT_SCALE_STATUS');
+// 是否支持云存储
 const isSupportedCloudStorage = createAction('IS_SUPPORTED_CLOUD_STORAGE');
 // 枚举型选择共用dialog
 const showPopCommon = createAction('SHOW_POP_COMMON');
@@ -97,7 +97,7 @@ export const actions = {
   fullAbsoluteStartValue,
   isAndriodFullScreenNavMode,
   scaleStatus,
-  isActiveScale,
+  currentScaleStatus,
   isSupportedCloudStorage,
   showPopCommon,
   popData,
@@ -207,7 +207,7 @@ const ipcCommonState = handleActions(
         ...action.payload,
       };
     },
-    [isActiveScale.toString()]: (state, action) => {
+    [currentScaleStatus.toString()]: (state, action) => {
       return {
         ...state,
         ...action.payload,
@@ -271,14 +271,15 @@ const ipcCommonState = handleActions(
     isSupportCloudStorage: false,
 
     isSupportedSound: false,
-    // 停止全屏动画, 默认应为true
+    // 停止全屏动画, 默认应为trues
     stopFullAnim: true,
     // 全屏屏幕根据屏幕尺寸是否为16：9展示全屏的菜单, 左右定位起始值
     fullAbsoluteStartValue: Math.ceil(cx(5)),
     isAndriodFullScreenNavMode: true,
-    scaleStatus: -1,
     // 标记是否主动调节按宽按高
-    isActiveScale: false,
+    scaleStatus: -1,
+    // 记录当前画面视频比例状态
+    currentScaleStatus: -1,
     // 是否支持云存储
     isSupportedCloudStorage: false,
     showPopCommon: false,
