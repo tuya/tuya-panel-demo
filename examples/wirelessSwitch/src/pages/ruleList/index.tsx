@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import _ from 'lodash';
 import { View, StyleSheet, ScrollView, FlatList, Image, DeviceEventEmitter } from 'react-native';
 import { TYSdk, Utils, TYText, Dialog } from 'tuya-panel-kit';
-import { electricianApi } from '@tuya/tuya-panel-api';
+import { commonApi } from '@tuya/tuya-panel-api';
 import Res from '../../res';
 import DropDown from '../../components/dropDown';
 import Tip from './tip';
@@ -20,7 +20,7 @@ const {
   triggerRule,
   enableRule,
   disableRule,
-} = electricianApi.linkageApi;
+} = commonApi.linkageApi;
 const { convertX: cx, convertY: cy } = Utils.RatioUtils;
 interface RuleListProps {
   selectCode: string;

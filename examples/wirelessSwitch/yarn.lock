@@ -936,10 +936,10 @@
   dependencies:
     patch-package "^6.2.2"
 
-"@tuya/tuya-panel-api@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npm.taobao.org/@tuya/tuya-panel-api/download/@tuya/tuya-panel-api-1.1.0.tgz#ea9f2a3e44aeb063c26ce5f13a433936b655e96e"
-  integrity sha1-6p8qPkSusGPCbOXxOkM5NrZV6W4=
+"@tuya/tuya-panel-api@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.nlark.com/@tuya/tuya-panel-api/download/@tuya/tuya-panel-api-1.2.0.tgz#27cab39a24454b8f64c302bc8f4cdfc7db036cc2"
+  integrity sha1-J8qzmiRFS49kwwK8j0zfx9sDbMI=
 
 "@types/hammerjs@^2.0.36":
   version "2.0.36"
