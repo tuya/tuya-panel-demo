@@ -4,12 +4,12 @@ import _throttle from 'lodash/throttle';
 import React, { PureComponent } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TYSdk, Utils, TopBar } from 'tuya-panel-kit';
-import { electricianApi } from '@tuya/tuya-panel-api';
+import { commonApi } from '@tuya/tuya-panel-api';
 import RuleItem from './ruleItem';
 import { getDeviceInfo, RequireType } from '../../utils';
 import Strings from '../../i18n';
 
-const { getSceneList, bindRule } = electricianApi.linkageApi;
+const { getSceneList, bindRule } = commonApi.linkageApi;
 
 const { convertX: cx } = Utils.RatioUtils;
 interface SceneListProps {
