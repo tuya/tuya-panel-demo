@@ -936,6 +936,11 @@
   dependencies:
     patch-package "^6.2.2"
 
+"@tuya/tuya-panel-api@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.nlark.com/@tuya/tuya-panel-api/download/@tuya/tuya-panel-api-1.2.0.tgz#27cab39a24454b8f64c302bc8f4cdfc7db036cc2"
+  integrity sha1-J8qzmiRFS49kwwK8j0zfx9sDbMI=
+
 "@types/hammerjs@^2.0.36":
   version "2.0.36"
   resolved "https://registry.npm.taobao.org/@types/hammerjs/download/@types/hammerjs-2.0.36.tgz#17ce0a235e9ffbcdcdf5095646b374c2bf615a4c"

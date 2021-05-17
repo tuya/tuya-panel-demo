@@ -4,10 +4,12 @@ import _throttle from 'lodash/throttle';
 import React, { PureComponent } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TYSdk, Utils, TopBar } from 'tuya-panel-kit';
-import { getSceneList, bindRule } from '../../api';
+import { commonApi } from '@tuya/tuya-panel-api';
 import RuleItem from './ruleItem';
 import { getDeviceInfo, RequireType } from '../../utils';
 import Strings from '../../i18n';
+
+const { getSceneList, bindRule } = commonApi.linkageApi;
 
 const { convertX: cx } = Utils.RatioUtils;
 interface SceneListProps {
@@ -36,7 +38,7 @@ class SceneList extends PureComponent<SceneListProps, SceneListState> {
   }
 
   getData = () => {
-    getSceneList()
+    getSceneList({ devId: TYSdk.devInfo.devId })
       .then((d: RequireType[]) => {
         this.setState({ data: d.reverse() });
       })
@@ -57,6 +59,7 @@ class SceneList extends PureComponent<SceneListProps, SceneListState> {
       ruleId,
       entitySubIds: id,
       expr: [[`$dp${id}`, '==', selectValue]],
+      bizDomain: 'wirelessSwitchBindScene',
     };
     bindRule(options)
       .then(() => {
