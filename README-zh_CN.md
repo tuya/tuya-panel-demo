@@ -26,14 +26,31 @@ $ yarn && yarn start
 
 ## 示例模板
 
+> 建议使用模板为 `tuya-panel-kit` **4.0.0** 以上版本进行开发，2.0.0 系列已不再维护
+
 - [airPurifier](./examples/airPurifier)
-- [basic](./examples/basic)
+- [airThermostat](./examples/airThermostat)
 - [basic-ts-0.59](./examples/basic-ts-0.59)
+- [basic-ts-navigation](./examples/basic-ts-navigation)
+- [basic](./examples/basic)
 - [cooker](./examples/cooker)
+- [curtain](./examples/curtain)
+- [curtainSwitch](./examples/curtainSwitch)
 - [electricHeatingTable](./examples/electricHeatingTable)
+- [gatewayBleMesh](./examples/gatewayBleMesh)
+- [gatewayZigbee](./examples/gatewayZigbee)
+- [ipc](./examples/ipc)
+- [ipcBasic](./examples/ipcBasic)
 - [lampClassic](./examples/lampClassic)
+- [lampDimmer](./examples/lampDimmer)
+- [lampGeneric](./examples/lampGeneric)
 - [platoonSocket](./examples/platoonSocket)
+- [scenario](./examples/scenario)
+- [sensor](./examples/sensor)
+- [smartLock](./examples/smartLock)
+- [smartLockZigbee](./examples/smartLockZigbee)
 - [switch](./examples/switch)
+- [wirelessSwitch](./examples/wirelessSwitch)
 
 ### 您可以在[此处](./examples)查看完整的涂鸦品类模板
 
