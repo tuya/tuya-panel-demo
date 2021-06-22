@@ -1,5 +1,5 @@
 {
-  "rnVersion": ["5.28"],
+  "rnVersion": "5.30",
   "license": "MIT",
   "name": "wirelessSwitch",
   "pid": [],
