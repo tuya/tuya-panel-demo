@@ -124,7 +124,7 @@ const adjustSize = () => {
   } else if (scaleStatus === -2) {
     sendScaleStatus = -1;
   }
-  return sendScaleStatus;
+  store.dispatch(actions.ipcCommonActions.scaleStatus({ scaleStatus: sendScaleStatus }));
 };
 
 const isSuppportedCloudStorage = () => {
@@ -296,7 +296,6 @@ const closeGlobalLoading = () => {
     store.dispatch(actions.ipcCommonActions.showPagePreLoading({ showPagePreLoading: false }));
   }, 500);
 };
-
 const callTelephoneAlarm = () => {
   const tel = '911';
   Linking.openURL(`tel:${tel}`);
