@@ -105,13 +105,13 @@ class FeedControl extends React.Component {
       });
     }
 
-    if (typeof history_data !== 'undefined') {
-      btnData.push({
-        name: Strings.getLang('ipc_pet_record'),
-        key: 'record',
-        imgSource: Res.tabFeed.feedList,
-      });
-    }
+    // if (typeof history_data !== 'undefined') {
+    //   btnData.push({
+    //     name: Strings.getLang('ipc_pet_record'),
+    //     key: 'record',
+    //     imgSource: Res.tabFeed.feedList,
+    //   });
+    // }
     if (btnData.length > 2) {
       this.props.changeMargin({ value: cx(8) });
     }

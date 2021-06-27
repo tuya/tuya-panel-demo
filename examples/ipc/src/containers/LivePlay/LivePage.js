@@ -29,6 +29,7 @@ import SdFormatting from '../../components/featureComponents/sdFormatting';
 import LivePlayerView from './Live-player-view';
 import LiveControlView from './Live-control-view';
 import Config from '../../config';
+import Res from '../../res';
 
 const { statusBarHeight, isIOS, winWidth, winHeight } = Config;
 
@@ -51,7 +52,6 @@ class LivePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalDeviceEdit: false,
       fullPlayerWidth: winWidth,
       fullPlayerHeight: winHeight,
     };
@@ -150,7 +150,7 @@ class LivePage extends React.Component {
   };
 
   render() {
-    const { modalDeviceEdit, fullPlayerWidth, fullPlayerHeight } = this.state;
+    const { fullPlayerWidth, fullPlayerHeight } = this.state;
     const {
       isFullScreen,
       deviceName,
@@ -176,10 +176,11 @@ class LivePage extends React.Component {
             }}
           >
             <TopHeader
-              hasRight={!modalDeviceEdit}
+              hasRight={true}
               rightPress={this.openDeviceEdit}
               contentTitle={deviceName}
               leftPress={this.backConnect}
+              customImgIcon={Res.publicImage.editIcon}
               accessibilityLabelLeft="tuya_ipc_dev_back"
               accessibilityLabelRight="tuya_ipc_dev_edit"
             />
