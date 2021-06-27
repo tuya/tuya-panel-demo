@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 import React from 'react';
-import { Platform, Image, ViewPropTypes, StyleSheet, View } from 'react-native';
+import { Platform, Image, ViewPropTypes, StyleSheet, View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { TopBar } from 'tuya-panel-kit';
 import Res from '../../res';
@@ -26,6 +26,8 @@ class TopHeader extends React.Component {
     leftBackColor: '#000',
     contentTitleStyle: null,
     hasRight: true,
+    customImgIcon: undefined,
+    customImgIconStyle: {},
   };
 
   constructor(props) {
@@ -41,6 +43,8 @@ class TopHeader extends React.Component {
       leftPress,
       hasRight,
       rightPress,
+      customImgIcon,
+      customImgIconStyle,
     } = this.props;
     return (
       <View style={styles.headerPage}>
@@ -57,7 +61,12 @@ class TopHeader extends React.Component {
             title={contentTitle}
             titleStyle={[styles.cotentText, contentTitleStyle]}
           />
-          {hasRight && (
+          {hasRight && customImgIcon && (
+            <TouchableOpacity style={styles.customRight} onPress={rightPress} activeOpacity={0.7}>
+              <Image source={customImgIcon} style={customImgIconStyle} />
+            </TouchableOpacity>
+          )}
+          {hasRight && !customImgIcon && (
             // eslint-disable-next-line react/no-children-prop
             <TopBar.Action
               // eslint-disable-next-line react/no-children-prop
@@ -76,6 +85,10 @@ const styles = StyleSheet.create({
   cotentText: {
     fontWeight: '600',
     color: '#000',
+  },
+  customRight: {
+    position: 'absolute',
+    right: 10,
   },
 });
 

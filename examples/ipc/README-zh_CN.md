@@ -24,7 +24,7 @@ $ cd tuya-panel-ipc-example
 4. 低功耗
 5. 宠物喂食机
 
-您可以通过涂鸦 App 扫描以下二维码进行预览, 为虚拟机,无法加载视频流
+您可以通过涂鸦 App 扫描以下二维码进行预览
 
 ![scenario](https://images.tuyacn.com/fe-static/docs/img/c207c4f3-3dce-493a-b240-a5ef6222f2d7.png)
 
@@ -38,10 +38,10 @@ $ yarn && yarn start
 
 ## 注意
 
-- 请使用涂鸦智能 3.18 及以上开发的 App, 调试版进行调试开发
+- 请使用涂鸦智能 3.25 及以上开发的 App, 调试版进行调试开发
 
 ## 使用接口
 
 ## 许可证
 
-Copyright © 2020
+Copyright © 2021

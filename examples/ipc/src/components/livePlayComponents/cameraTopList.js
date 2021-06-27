@@ -8,13 +8,13 @@ import { TYText } from 'tuya-panel-kit';
 import {
   popData,
   showPopCommon,
-  zoomState as zoomStateAction,
+  sendScaleStatus as sendScaleStatusAction,
 } from '../../redux/modules/ipcCommon';
 import {
   operatMute,
   isRecordingNow,
   isRecordingChangeMute,
-  isWirlesDevice,
+  isNeedShowEle,
 } from '../../config/click';
 import BatteryCommon from '../publicComponents/batteryCommon';
 import Config from '../../config';
@@ -36,10 +36,8 @@ class CameraTopList extends React.Component {
     voiceStatus: PropTypes.string.isRequired,
     clarityStatus: PropTypes.string.isRequired,
     isSupportedSound: PropTypes.bool.isRequired,
-    isRecording: PropTypes.bool.isRequired,
-    zoomStateAction: PropTypes.func.isRequired,
-    zoomState: PropTypes.number.isRequired,
-    prevZoomState: PropTypes.number.isRequired,
+    newScaleStatus: PropTypes.number.isRequired,
+    sendScaleStatusAction: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -55,10 +53,12 @@ class CameraTopList extends React.Component {
         {
           show: true,
           test:
-            props.zoomState === 1 ? 'tuya_ipc_size_adjust_height' : 'tuya_ipc_size_adjust_width',
+            props.newScaleStatus === -2
+              ? 'tuya_ipc_size_adjust_height'
+              : 'tuya_ipc_size_adjust_width',
           key: 'size',
           imgSource:
-            props.zoomState === 1
+            props.newScaleStatus === -2
               ? Res.publicImage.basicPlayerSizeHeight
               : Res.publicImage.basicPlayerSizeWidth,
         },
@@ -96,10 +96,10 @@ class CameraTopList extends React.Component {
       }
     }
     // 根据点击按钮变更按宽还是按高,通过使用props来进行控制
-    if (oldProps.zoomState !== newProps.zoomState) {
+    if (oldProps.newScaleStatus !== newProps.newScaleStatus) {
       for (let i = 0; i < oldArr.length; i++) {
         if (oldArr[i].key === 'size') {
-          if (newProps.zoomState === 1) {
+          if (newProps.newScaleStatus === -2) {
             oldArr[i].imgSource = Res.publicImage.basicPlayerSizeHeight;
             oldArr[i].test = 'tuya_ipc_size_adjust_height';
           } else {
@@ -168,14 +168,16 @@ class CameraTopList extends React.Component {
     operatMute(sendMute);
   };
   adjustSize = () => {
-    const { prevZoomState } = this.props;
-    let sendZommState = 0;
-    if (prevZoomState === 1 || prevZoomState === 2) {
-      sendZommState = 0;
-    } else if (prevZoomState === 0) {
-      sendZommState = 1;
+    const { newScaleStatus } = this.props;
+    let sendScaleStatus = -1;
+    if (newScaleStatus === -1 || newScaleStatus === 1 || newScaleStatus === 1.0) {
+      sendScaleStatus = -2;
+    } else if (newScaleStatus === -2) {
+      sendScaleStatus = -1;
     }
-    this.props.zoomStateAction({ zoomState: sendZommState });
+    this.props.sendScaleStatusAction({
+      sendScaleStatus,
+    });
   };
   render() {
     const { rightMenuData } = this.state;
@@ -197,7 +199,7 @@ class CameraTopList extends React.Component {
                 : Strings.getLang('resolutionHigh')}
             </TYText>
           </TouchableOpacity>
-          {isWirlesDevice() ? <BatteryCommon /> : null}
+          {isNeedShowEle() ? <BatteryCommon /> : null}
         </View>
         <View style={styles.rightMenu}>
           {rightMenuData.map(item => (
@@ -257,26 +259,17 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = state => {
-  const {
-    voiceStatus,
-    clarityStatus,
-    isSupportedSound,
-    isRecording,
-    zoomState,
-    prevZoomState,
-  } = state.ipcCommonState;
+  const { voiceStatus, clarityStatus, isSupportedSound, newScaleStatus } = state.ipcCommonState;
   return {
     voiceStatus,
     clarityStatus,
     isSupportedSound,
-    isRecording,
-    zoomState,
-    prevZoomState,
+    newScaleStatus,
   };
 };
 
 const mapToDisPatch = dispatch => {
-  return bindActionCreators({ popData, showPopCommon, zoomStateAction }, dispatch);
+  return bindActionCreators({ popData, showPopCommon, sendScaleStatusAction }, dispatch);
 };
 
 export default connect(mapStateToProps, mapToDisPatch)(CameraTopList);
