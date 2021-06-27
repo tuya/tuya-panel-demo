@@ -34,11 +34,12 @@ import {
   isRecording as isRecordingAction,
   hideFullMenu as hideFullMenuAction,
   stopFullAnimation as stopFullAnimationAction,
-  zoomState as zoomStateAction,
-  prevZoomState as prevZoomStateAction,
   cameraAction as cameraActionAction,
   enterPlayNativePage as enterPlayNativePageAction,
   isOnLivePage as isOnLivePageAction,
+  newScaleStatus as newScaleStatusAction,
+  currentVideoScale as currentVideoScaleAction,
+  sendScaleStatus as sendScaleStatusAction,
 } from '../../redux/modules/ipcCommon';
 import { decodeClarityDic } from '../../config/cameraData';
 import Strings from '../../i18n';
@@ -51,14 +52,14 @@ import {
   isMobileDataNetworkType,
   isWirlesDevice,
   wakeupWirless,
+  resetMulScaleWithBefore,
 } from '../../config/click';
 
 import Config from '../../config';
 
-const { cx } = Config;
+const { cx, isIOS } = Config;
 
 const TYEvent = TYSdk.event;
-const TYDevice = TYSdk.device;
 
 class CustomPlayer extends React.Component {
   static propTypes = {
@@ -83,13 +84,16 @@ class CustomPlayer extends React.Component {
     showCutScreen: PropTypes.bool.isRequired,
     stopFullAnimation: PropTypes.bool.isRequired,
     showSelfModal: PropTypes.bool.isRequired,
-    zoomState: PropTypes.number.isRequired,
-    prevZoomStateAction: PropTypes.func.isRequired,
     cameraActionAction: PropTypes.func.isRequired,
     enterPlayNativePageAction: PropTypes.func.isRequired,
     cameraAction: PropTypes.number.isRequired,
     isOnLivePageAction: PropTypes.func.isRequired,
     isOnLivePage: PropTypes.bool.isRequired,
+    otherRnPage: PropTypes.bool.isRequired,
+    sendScaleStatus: PropTypes.number,
+    newScaleStatusAction: PropTypes.func.isRequired,
+    currentVideoScaleAction: PropTypes.func.isRequired,
+    sendScaleStatusAction: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -105,18 +109,19 @@ class CustomPlayer extends React.Component {
       /*
        获取对讲方式
       */
-      const { isFullScreen } = this.props;
+      const { isFullScreen, otherRnPage } = this.props;
       if (isFullScreen) {
         CameraManager.setScreenOrientation(1);
       } else {
         CameraManager.setScreenOrientation(0);
       }
+      resetMulScaleWithBefore();
       // 进入前台设备离线
       if (!this.deviceOffLine()) {
         return false;
       }
 
-      if (this.goToBack) {
+      if (this.goToBack && !otherRnPage) {
         this.props.isOnLivePageAction({ isOnLivePage: true });
         this.props.showTryAgain({ showTryAgain: false });
         this.props.videoLoadText({ videoLoadText: Strings.getLang('reConenectStream') });
@@ -193,14 +198,9 @@ class CustomPlayer extends React.Component {
     );
     // 监听全屏时屏幕点击事件
     this.zoomFreeListener = RCTDeviceEventEmitter.addListener('zoomFree', value => {
-      const { zoomStatus } = value;
-      const { isFullScreen } = this.props;
-      if (isFullScreen) {
-        return false;
-      }
-      this.props.zoomStateAction({ zoomState: zoomStatus });
-      // 记录点击完是否为自由状态
-      this.props.prevZoomStateAction({ prevZoomState: zoomStatus });
+      const { scaleStatus, currentVideoScale } = value;
+      this.props.currentVideoScaleAction({ currentVideoScale: +currentVideoScale.toFixed(1) });
+      this.props.newScaleStatusAction({ newScaleStatus: scaleStatus });
     });
   }
   componentDidMount() {
@@ -211,6 +211,7 @@ class CustomPlayer extends React.Component {
     // this.connecP2PAndStartPreview();
     TYEvent.on('deviceDataChange', this.dpChange);
     TYEvent.on('backLivePreview', () => {
+      resetMulScaleWithBefore();
       this.connecP2PAndStartPreview();
     });
     TYEvent.on('firstChangeClarity', () => {
@@ -288,9 +289,17 @@ class CustomPlayer extends React.Component {
 
   onChangePreview = () => {};
 
+  getRealPlayerScale = (isFullScreen, sendScaleStatus) => {
+    if (isFullScreen && isIOS) {
+      return -2;
+    }
+    return sendScaleStatus;
+  };
+
   backFullScreen = () => {
     this.props.isFullScreenAction({ isFullScreen: false });
     CameraManager.setScreenOrientation(0);
+    resetMulScaleWithBefore(0);
   };
   // 设备离线公用
   deviceOffLine = () => {
@@ -438,8 +447,8 @@ class CustomPlayer extends React.Component {
       hideFullMenu,
       stopFullAnimation,
       showSelfModal,
-      zoomState,
       cameraAction,
+      sendScaleStatus,
     } = this.props;
     const { absoluteValue } = this.state;
     return (
@@ -447,7 +456,7 @@ class CustomPlayer extends React.Component {
         <CameraPlayer
           onChangePreview={this.onChangePreview}
           action={cameraAction}
-          scaleMode={zoomState}
+          scaleMultiple={this.getRealPlayerScale(isFullScreen, sendScaleStatus)}
           style={{
             width: playerWidth,
             height: playerHeight,
@@ -520,10 +529,11 @@ const mapStateToProps = state => {
     stopFullAnimation,
     showCutScreen,
     showSelfModal,
-    zoomState,
     enterPlayNativePage,
     cameraAction,
     isOnLivePage,
+    otherRnPage,
+    sendScaleStatus,
   } = state.ipcCommonState;
   return {
     showVideoLoad,
@@ -537,10 +547,11 @@ const mapStateToProps = state => {
     stopFullAnimation,
     showCutScreen,
     showSelfModal,
-    zoomState,
     enterPlayNativePage,
     cameraAction,
     isOnLivePage,
+    otherRnPage,
+    sendScaleStatus,
   };
 };
 const mapToDisPatch = dispatch => {
@@ -558,11 +569,12 @@ const mapToDisPatch = dispatch => {
       hideFullMenuAction,
       stopFullAnimationAction,
       isFullScreenAction,
-      prevZoomStateAction,
-      zoomStateAction,
       enterPlayNativePageAction,
       cameraActionAction,
       isOnLivePageAction,
+      newScaleStatusAction,
+      currentVideoScaleAction,
+      sendScaleStatusAction,
     },
     dispatch
   );

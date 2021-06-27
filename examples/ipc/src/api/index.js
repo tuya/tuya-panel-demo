@@ -41,6 +41,7 @@ TYSdk.getMsgList = (devId, offset) => {
         offset,
         startTime: '946656000', // 2000年
         endTime: endDate,
+        keepOrig: true,
       },
     },
     '1.0'
@@ -138,7 +139,7 @@ TYSdk.queryCloudEventList = (startTime, endTime, offset, devId) => {
       offset,
       limit: 30,
     },
-    '1.0'
+    '2.0'
   );
 };
 

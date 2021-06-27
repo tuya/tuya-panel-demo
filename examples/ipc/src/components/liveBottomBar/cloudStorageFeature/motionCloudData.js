@@ -6,6 +6,7 @@ import { TYText, TYFlatList, UnitText } from 'tuya-panel-kit';
 // import CameraManager from '../../nativeComponents/cameraManager';
 import _ from 'lodash';
 import moment from 'moment';
+import AesImage from '../../nativeComponents/encryptedPicture';
 import PanelClick from '../../../config/panelClick';
 import LoadingCircle from '../../publicComponents/loadingCircle';
 import Res from '../../../res';
@@ -59,7 +60,7 @@ class MotionCloudData extends React.Component {
   };
   renderItem = item => {
     const { is12Hour } = this.props;
-    const { snapshotUrl, startTime } = item;
+    const { snapshotUrl, startTime, encryption, v } = item;
     const { timeHourString, timeMinutString, show12Hour, show12HourText } = this.getShowTime(
       startTime,
       is12Hour
@@ -92,10 +93,22 @@ class MotionCloudData extends React.Component {
           )}
         </View>
         <View style={[styles.cloudImgBox, { width: cloudImgBoxWidth }]}>
-          <Image
-            style={[styles.cloudImg, { width: cloudImgWidth, height: (cloudImgWidth * 9) / 16 }]}
-            source={{ uri: snapshotUrl }}
-          />
+          {v === 1 ? (
+            <Image
+              style={[styles.cloudImg, { width: cloudImgWidth, height: (cloudImgWidth * 9) / 16 }]}
+              source={{ uri: snapshotUrl }}
+            />
+          ) : (
+            <AesImage
+              style={[styles.cloudImg, { width: cloudImgWidth, height: (cloudImgWidth * 9) / 16 }]}
+              encryptPath={snapshotUrl}
+              encryptKey={encryption.key}
+              info={{
+                imagePath: snapshotUrl,
+                encryptKey: encryption.key,
+              }}
+            />
+          )}
         </View>
       </TouchableOpacity>
     );

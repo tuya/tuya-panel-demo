@@ -23,6 +23,7 @@ import {
   showTryAgain as showTryAgainAction,
 } from '../../redux/modules/ipcCommon';
 import Config from '../../config';
+import { resetMulScaleWithBefore } from '../../config/click';
 import Res from '../../res';
 import Strings from '../../i18n';
 
@@ -101,6 +102,7 @@ class CameraLoadText extends React.Component {
   exitFullScreen = () => {
     this.props.isFullScreenAction({ isFullScreen: false });
     CameraManager.setScreenOrientation(0);
+    resetMulScaleWithBefore(0);
   };
   render() {
     // loadingText,

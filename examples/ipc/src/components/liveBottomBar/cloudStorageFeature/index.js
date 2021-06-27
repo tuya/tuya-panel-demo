@@ -13,6 +13,7 @@ import NotPurCharse from './notPurCharse';
 import NoMotionCloudData from './noMotionCloudData';
 import MotionCloudData from './motionCloudData';
 import ReBuyCloudData from './reBuyCloudData';
+import PrevLoading from '../../publicComponents/prevLoading';
 import Strings from '../../../i18n';
 import TYSdk from '../../../api';
 import Config from '../../../config';
@@ -48,6 +49,9 @@ class CloudStorage extends React.Component {
       hasNextPage: false,
       showFooter: true,
       scrollHeight: 0,
+      showLoading: true,
+      showNetError: true,
+      showMask: true,
     };
     this.firstgetHeight = 0;
   }
@@ -58,6 +62,9 @@ class CloudStorage extends React.Component {
       this.setState(
         {
           cloudEventData: [],
+          showLoading: true,
+          showNetError: true,
+          showMask: true,
         },
         () => {
           const { isSupportCloudStorage, productId, uuid, devId } = this.props;
@@ -122,12 +129,21 @@ class CloudStorage extends React.Component {
               cloudEventData: uniqueArr(cloudEventData.concat(data.datas)),
               hasNextPage,
             });
+            this.setState({
+              showLoading: false,
+              showNetError: false,
+              showMask: false,
+            });
           }
         })
         .catch(error => {
-          CameraManager.showTip(
-            `${Strings.getLang('cloudRequestError')}dsadhisadhshajdhshafhhs====`
-          );
+          CameraManager.showTip(Strings.getLang('cloudRequestError'));
+          this.setState({
+            cloudEventData: [],
+            showLoading: false,
+            showNetError: true,
+            showMask: true,
+          });
         });
     }
   };
@@ -143,9 +159,20 @@ class CloudStorage extends React.Component {
         this.setState({
           hasCloudData,
         });
+      } else {
+        this.setState({
+          showLoading: false,
+          showNetError: false,
+          showMask: false,
+        });
       }
     } catch (err) {
       CameraManager.showTip(`${Strings.getLang('cloudRequestError')}`);
+      this.setState({
+        showLoading: false,
+        showNetError: true,
+        showMask: true,
+      });
     }
   };
   // 取消显示续订弹出框
@@ -183,6 +210,9 @@ class CloudStorage extends React.Component {
       showFooter,
       hasNextPage,
       scrollHeight,
+      showMask,
+      showLoading,
+      showNetError,
     } = this.state;
     const eventDataLen = cloudEventData.length;
     const { panelItemActiveColor, tabContentHeight } = this.props;
@@ -198,12 +228,12 @@ class CloudStorage extends React.Component {
           scrollEnabled
             ? styles.cloudScrollFeaturePage
             : [
-                styles.cloudFeatureNormalPage,
-                {
-                  justifyContent: eventDataLen === 0 ? 'center' : 'flex-start',
-                  alignItems: eventDataLen === 0 ? 'center' : 'flex-start',
-                },
-              ],
+              styles.cloudFeatureNormalPage,
+              {
+                justifyContent: eventDataLen === 0 ? 'center' : 'flex-start',
+                alignItems: eventDataLen === 0 ? 'center' : 'flex-start',
+              },
+            ],
         ]}
       >
         <View
@@ -218,6 +248,12 @@ class CloudStorage extends React.Component {
           {serverStatus === 'running' && (!hasCloudData || eventDataLen === 0) && (
             <NoMotionCloudData panelItemActiveColor={panelItemActiveColor} />
           )}
+          {serverStatus !== 'running' && hasCloudData && eventDataLen === 0 && (
+            <NoMotionCloudData
+              panelItemActiveColor={panelItemActiveColor}
+              content={Strings.getLang('cloud_storage_today_no_data')}
+            />
+          )}
           {/* 表示有事件云存储 */}
           {hasCloudData && eventDataLen !== 0 && (
             <MotionCloudData
@@ -231,9 +267,16 @@ class CloudStorage extends React.Component {
           )}
         </View>
         {/* 显示续订云存储 */}
-        {showCloseIcon && serverStatus !== 'running' && hasCloudData && eventDataLen !== 0 && (
+        {showCloseIcon && serverStatus !== 'running' && hasCloudData && (
           <ReBuyCloudData closeTip={this.changeClose} />
         )}
+        {showMask ? (
+          <PrevLoading
+            showLoading={showLoading}
+            showNetError={showNetError}
+            onRetry={this.getList}
+          />
+        ) : null}
       </ScrollView>
     );
   }

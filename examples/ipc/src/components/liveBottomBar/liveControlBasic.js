@@ -8,7 +8,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import DpConfigUtils from '../../utils/dpConfigUtils';
 import { liveBottomBasicMenuArr } from '../../config/panelBasicFeatureInitData';
-import { showToast, showCutScreen } from '../../redux/modules/ipcCommon';
+import {
+  showToast,
+  showCutScreen,
+  sendScaleStatus as sendScaleStatusAction,
+} from '../../redux/modules/ipcCommon';
 import CameraManager from '../../components/nativeComponents/cameraManager';
 import {
   snapShoot,
@@ -39,6 +43,8 @@ class LiveControlBasic extends React.Component {
     isRecordingDisabled: PropTypes.bool.isRequired,
     defaultShowTabs: PropTypes.bool,
     panelItemActiveColor: PropTypes.string.isRequired,
+    sendScaleStatusAction: PropTypes.func.isRequired,
+    newScaleStatus: PropTypes.number.isRequired,
   };
   static defaultProps = {
     defaultShowTabs: false,
@@ -81,6 +87,8 @@ class LiveControlBasic extends React.Component {
       ],
     };
     this.originBasicArr = basicArr;
+    this.isFirstJudgeP2p = true;
+    this.newScaleStatusValue = 1.0;
   }
   componentDidMount() {
     const { defaultShowTabs } = this.props;
@@ -112,18 +120,20 @@ class LiveControlBasic extends React.Component {
     const newBottomData = this.state.bottomData;
     // 确认P2p连接之后,获取对讲方式以及拾音器
     if (oldProps.p2pIsConnected !== newProps.p2pIsConnected && newProps.p2pIsConnected) {
-      // 获取是否有拾音器
-      getSupportedSound();
-      // 获取摄像头配置信息
-      getConfigCameraInfo();
-      const initBottomData = DpConfigUtils.publicAddFilterMenuDp(
-        this.originBasicArr,
-        needFilterDp,
-        needFilterCloudConfig
-      );
-      this.setState({
-        bottomData: initBottomData,
-      });
+      if (this.isFirstJudgeP2p) {
+        getSupportedSound();
+        // 获取摄像头配置信息
+        getConfigCameraInfo();
+        const initBottomData = DpConfigUtils.publicAddFilterMenuDp(
+          this.originBasicArr,
+          needFilterDp,
+          needFilterCloudConfig
+        );
+        this.setState({
+          bottomData: initBottomData,
+        });
+      }
+      this.isFirstJudgeP2p = false;
     }
     if (oldProps.isRecording !== newProps.isRecording) {
       for (let i = 0; i < newBottomData.length; i++) {
@@ -216,6 +226,9 @@ class LiveControlBasic extends React.Component {
   // 是否完全展现底部BottomBar
   controlBottomDialog = () => {
     const { openMoreControl } = this.state;
+    const { newScaleStatus } = this.props;
+    // 在切换之前保存最新的newScaleStatus值
+    this.newScaleStatusValue = newScaleStatus;
     this.setState(
       {
         openMoreControl: !openMoreControl,
@@ -223,6 +236,7 @@ class LiveControlBasic extends React.Component {
       () => {
         this.props.openAnimateHeight(this.state.openMoreControl);
         this.changeBottomMoreText();
+        this.props.sendScaleStatusAction({ sendScaleStatus: this.newScaleStatusValue });
       }
     );
   };
@@ -387,6 +401,7 @@ const mapStateToProps = state => {
     p2pIsConnected,
     isRecordingDisabled,
     panelItemActiveColor,
+    newScaleStatus,
   } = state.ipcCommonState;
   return {
     isRecording,
@@ -397,10 +412,11 @@ const mapStateToProps = state => {
     p2pIsConnected,
     isRecordingDisabled,
     panelItemActiveColor,
+    newScaleStatus,
   };
 };
 const mapToDisPatch = dispatch => {
-  return bindActionCreators({ showToast, showCutScreen }, dispatch);
+  return bindActionCreators({ showToast, showCutScreen, sendScaleStatusAction }, dispatch);
 };
 
 export default connect(mapStateToProps, mapToDisPatch)(LiveControlBasic);

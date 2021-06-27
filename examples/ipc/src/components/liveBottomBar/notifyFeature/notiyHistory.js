@@ -9,6 +9,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CameraManager from '../../nativeComponents/cameraManager';
+import AesImage from '../../nativeComponents/encryptedPicture';
 import TYSdk from '../../../api';
 import NoMessage from './noMessage';
 import LoadingCircle from '../../publicComponents/loadingCircle';
@@ -22,15 +23,16 @@ import {
   judgeSdAndCloud,
 } from '../../../config/click';
 import { notifyImgIcon } from '../../../config/cameraData';
-import { uniqueArr } from '../../../utils';
+import { uniqueArr, getImageInfoUrl, getImageKey } from '../../../utils';
 
 const { cx, winWidth, isIOS } = Config;
 const TYEvent = TYSdk.event;
-
+const TYNative = TYSdk.native;
 class NotiyHistory extends React.Component {
   static propTypes = {
     ...SectionList.propTypes,
     isSupportCloudStorage: PropTypes.bool.isRequired,
+    changeLoadNetStatus: PropTypes.func.isRequired,
     cloudStorageStateAction: PropTypes.func.isRequired,
     tabContentHeight: PropTypes.number.isRequired,
   };
@@ -78,6 +80,13 @@ class NotiyHistory extends React.Component {
       });
   };
 
+  getIsEncryptImg = picSource => {
+    if (picSource.indexOf('@') !== -1) {
+      return true;
+    }
+    return false;
+  };
+
   getMsgList = () => {
     const { devId } = this.props;
     const { msgDataSource } = this.state;
@@ -91,18 +100,24 @@ class NotiyHistory extends React.Component {
           } else {
             hasNextPage = false;
           }
-          this.setState(
-            {
-              msgDataSource: uniqueArr(msgDataSource.concat(datas)),
-              hasNextPage,
-            },
-            () => {
-              console.log('第一次', this.state.msgDataSource);
-            }
-          );
+          this.setState({
+            msgDataSource: uniqueArr(msgDataSource.concat(datas)),
+            hasNextPage,
+          });
+          this.props.changeLoadNetStatus({
+            showLoading: false,
+            showNetError: false,
+            showMask: false,
+          });
+          TYNative.hideLoading();
         },
         err => {
-          console.log('err', err);
+          TYNative.hideLoading();
+          this.props.changeLoadNetStatus({
+            showLoading: false,
+            showNetError: true,
+            showMask: true,
+          });
         }
       )
       .catch(err => {
@@ -130,17 +145,7 @@ class NotiyHistory extends React.Component {
     }
     return sendType;
   };
-  reanderdriveLine = data => {
-    return <View style={[styles.driveLine, { marginTop: data !== '' ? cx(10) : 0 }]} />;
-  };
-  loadMore = () => {
-    const { hasNextPage } = this.state;
-    if (!hasNextPage) {
-      return false;
-    }
-    this.offset = this.offset + 20;
-    this.getMsgList();
-  };
+
   goNativePage = item => {
     const { attachPics, attachVideos, attachAudios, msgSrcId, msgTitle, time } = item;
     const sendTime = Platform.OS === 'ios' ? moment(time * 1000).format('HH:mm:ss') : String(time);
@@ -176,6 +181,11 @@ class NotiyHistory extends React.Component {
     goToMessageDynamicGotoWithParams(time);
   };
   refreshHistorySection = () => {
+    this.props.changeLoadNetStatus({
+      showLoading: true,
+      showNetError: true,
+      showMask: true,
+    });
     this.offset = 0;
     this.setState(
       {
@@ -186,6 +196,36 @@ class NotiyHistory extends React.Component {
         this.getMsgList();
       }
     );
+  };
+
+  reanderdriveLine = data => {
+    return <View style={[styles.driveLine, { marginTop: data !== '' ? cx(10) : 0 }]} />;
+  };
+
+  loadMore = () => {
+    const { hasNextPage } = this.state;
+    if (!hasNextPage) {
+      return false;
+    }
+    this.offset = this.offset + 20;
+    this.getMsgList();
+  };
+
+  renderNotifyImg = picSource => {
+    if (this.getIsEncryptImg(picSource)) {
+      return (
+        <AesImage
+          style={styles.alarmImg}
+          encryptPath={getImageInfoUrl(picSource)}
+          encryptKey={getImageKey(picSource)}
+          info={{
+            imagePath: getImageInfoUrl(picSource),
+            encryptKey: getImageKey(picSource),
+          }}
+        />
+      );
+    }
+    return <Image style={styles.alarmImg} source={{ uri: picSource }} />;
   };
   renderNotifyItem = data => {
     const { item, index } = data;
@@ -234,14 +274,12 @@ class NotiyHistory extends React.Component {
             style={this.getMediaType(item) === '-1' ? styles.alarmRightNoBox : styles.alarmRightBox}
           >
             {this.getMediaType(item) === '2' && (
-              <View style={styles.alarmImgBox}>
-                <Image source={{ uri: item.attachPics }} style={styles.alarmImg} />
-              </View>
+              <View style={styles.alarmImgBox}>{this.renderNotifyImg(item.attachPics)}</View>
             )}
             {/* 视频 */}
             {this.getMediaType(item) === '0' && (
               <View style={styles.alarmImgBox}>
-                <Image source={{ uri: item.attachPics }} style={styles.alarmImg} />
+                {this.renderNotifyImg(item.attachPics)}
                 <Image source={Res.notify.notifyVideoIcon} style={styles.videoPlayIcon} />
               </View>
             )}
