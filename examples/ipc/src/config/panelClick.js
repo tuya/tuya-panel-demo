@@ -79,10 +79,8 @@ const gotoCruiseDetail = () => {
 
 // 保存弹出选择框数据到redux,并打开popUp
 const savePopDataToRedux = (key, dpValue) => {
-  console.log(key, dpValue);
   // 获取dpSchema的原始值
   const originDpSchema = filterDpRange(key);
-  console.log(originDpSchema, 'originDpSchema');
   const { showData, title } = originDpSchema;
   showData.forEach((item, index) => {
     if (item.value === dpValue) {
