@@ -154,7 +154,7 @@ module.exports = {
     ipc_lullaby_song_stop: 'Playback control',
     ipc_lullaby_music_list: 'Lullaby list',
     ipc_nightvision_button: 'Night vision',
-    dp_basic_nightvision_open: 'Auto',
+    dp_basic_nightvision_auto: 'Auto',
     dp_basic_nightvision_off: 'Off',
     dp_basic_nightvision_on: 'On',
     ipc_pir_button: 'PIR',
@@ -210,6 +210,8 @@ module.exports = {
     cloudRequestError: 'Request error,Please check netWork, try again later',
     cloud_storage_list_loading: 'Data is being loaded hard, please wait',
     cloud_storage_list_null: 'No more data',
+    cloud_storage_today_no_data:
+      'Your cloud storage has expired, there is no cloud storage video today, click to view past recordings',
     am: 'AM',
     pm: 'PM',
     // 宠物喂食
@@ -225,7 +227,6 @@ module.exports = {
     ipc_pet_record_page_legened_text: 'Num',
     // 公用图表统计页面
     ipc_statisics_page_default_title: 'Statistics',
-    ipc_statisics_page_default_legend: 'Legend unit',
     ipc_statisics_page_dateday: 'Day',
     ipc_statisics_page_dateWeek: 'Week',
     ipc_statisics_page_dateMonth: 'Month',
@@ -252,6 +253,11 @@ module.exports = {
     // 功能菜单自定义排序
     icon_order_config_format_err:
       'Feature custom configuration format is wrong, please modify in time',
+    // 公共loading
+    ipc_loading_list_loading: 'Loading...',
+    ipc_loading_list_request_err: 'Request error, Please check network',
+    ipc_loading_list_null: 'No data configured yet',
+    ipc_electric_power_charging: 'Charging',
   },
   zh: {
     panel_loading_txt: '加载资源中,请稍后...',
@@ -458,6 +464,7 @@ module.exports = {
     cloudRequestError: '请求出错了,请检查网络,稍后再试',
     cloud_storage_list_loading: '数据使劲加载中,请稍后',
     cloud_storage_list_null: '没有更多数据了',
+    cloud_storage_today_no_data: '您的云存储已过期,今天暂无云存储视频,点击查看过去录像',
     am: '上午',
     pm: '下午',
     // 宠物喂食
@@ -473,7 +480,6 @@ module.exports = {
     ipc_pet_record_page_legened_text: '份数',
     // 公用图表统计页面
     ipc_statisics_page_default_title: '统计',
-    ipc_pet_record_page_legened: '图例单位',
     ipc_statisics_page_dateday: '日',
     ipc_statisics_page_dateWeek: '周',
     ipc_statisics_page_dateMonth: '月',
@@ -498,5 +504,10 @@ module.exports = {
     // Tab菜单自定义排序
     tab_order_config_format_err: '底部Tab自定义功能点配置格式错误,请及时修改',
     icon_order_config_format_err: '功能自定义功能点配置格式错误,请及时修改',
+    // 公共loading
+    ipc_loading_list_loading: '正在努力加载中...',
+    ipc_loading_list_request_err: '请求出错了,请检查网络是否通畅',
+    ipc_loading_list_null: '暂未数据',
+    ipc_electric_power_charging: '充电中',
   },
 };

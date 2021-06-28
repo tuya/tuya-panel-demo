@@ -72,7 +72,7 @@ class CutScreen extends React.Component {
               <Image style={styles.playRecordIcon} source={Res.publicImage.cutScreenIcon} />
             )}
           </View>
-          <TYText numberOfLines={1} style={styles.cutTip}>
+          <TYText style={styles.cutTip}>
             {isVideoCut ? Strings.getLang('recordSave') : Strings.getLang('screenShotText')}
           </TYText>
           <TouchableOpacity

@@ -23,7 +23,9 @@ const Res = {
     fullVideo: require('./publicImage/fullVideo.png'),
     oneWayTalkIcon: require('./publicImage/oneWayTalkIcon.png'),
     listRightArrow: require('./publicImage/listRightArrow.png'),
-    prevLoading: require('./publicImage/prevLoading.gif'),
+    // prevLoading: require('./publicImage/prevLoading.gif'),
+    prevLoading: require('./publicImage/prevLoading.png'),
+    editIcon: require('./publicImage/editIcon.png'),
   },
   ptzZoomFull: {
     // 全屏ptz和zoom

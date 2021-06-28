@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { TYText } from 'tuya-panel-kit';
 import Battery from './batteryFeature';
 import Config from '../../config';
-import strings from '../../i18n';
+import Strings from '../../i18n';
 
 const { cx } = Config;
 
@@ -28,7 +28,7 @@ class BatteryCommon extends React.Component {
     this.getChangeElectricityValue(nextProps);
   }
   getInitElectricityValue = props => {
-    let eleText = strings.getLang('ipc_electric_power_charging');
+    let eleText = Strings.getLang('ipc_electric_power_charging');
     const { wireless_electricity, wireless_powermode, battery_report_cap } = props;
     // 是否为精确上报
     let reportAccurately = false;
@@ -45,8 +45,7 @@ class BatteryCommon extends React.Component {
       if (reportAccurately && wireless_electricity !== 0) {
         eleText = `${wireless_electricity}%`;
       } else if (wireless_electricity === 0) {
-        // 其他情况取电池的范围上报
-        eleText = strings.getLang('ipc_electric_power_charging');
+        eleText = '';
       } else {
         // 其他情况取电池的范围上报
         eleText = this.getRealEleValue(wireless_electricity);
@@ -65,7 +64,7 @@ class BatteryCommon extends React.Component {
   };
 
   getChangeElectricityValue = props => {
-    let eleText = strings.getLang('ipc_electric_power_charging');
+    let eleText = Strings.getLang('ipc_electric_power_charging');
     const { wireless_electricity, wireless_powermode, battery_report_cap } = props;
     // 是否为精确上报
     let reportAccurately = false;
@@ -82,8 +81,7 @@ class BatteryCommon extends React.Component {
       if (reportAccurately && wireless_electricity !== 0) {
         eleText = `${wireless_electricity}%`;
       } else if (wireless_electricity === 0) {
-        // 其他情况取电池的范围上报
-        eleText = strings.getLang('ipc_electric_power_charging');
+        eleText = '';
       } else {
         // 其他情况取电池的范围上报
         eleText = this.getRealEleValue(wireless_electricity);

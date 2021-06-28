@@ -24,7 +24,7 @@ This template project applies to the following Ipc camera categories:
 4. Low power consumption
 5. Pet feeding machine
 
-You can scan the following QR code to preview through the Tuya App. It is a virtual machine and cannot load video streams
+You can scan the following QR code to preview through the Tuya App
 
 ![scenario](https://images.tuyacn.com/fe-static/docs/img/c207c4f3-3dce-493a-b240-a5ef6222f2d7.png)
 
@@ -38,10 +38,10 @@ $ yarn && yarn start
 
 ## Note
 
-- Please use the app developed by Tuya Smart 3.18 and above, debug version for debugging and development
+- Please use the app developed by Tuya Smart 3.25 and above, debug version for debugging and development
 
 ## Api
 
 ## license
 
-Copyright © 2020
+Copyright © 2021

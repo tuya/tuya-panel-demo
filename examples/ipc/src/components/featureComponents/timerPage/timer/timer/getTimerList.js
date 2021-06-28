@@ -283,7 +283,6 @@ const TimerHoc = WrappedComponent => {
           this.getDpTimerList();
         }
         // react_native_1.InteractionManager.runAfterInteractions(() => {
-        //   console.log('sdsdsd');
         //   // ...耗时较长的同步执行的任务...
         //   if (fetchType === 'cloud') {
         //     this.getTimerList();

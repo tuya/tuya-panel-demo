@@ -11,7 +11,7 @@ import {
   operatMute,
   isRecordingNow,
   isRecordingChangeMute,
-  isWirlesDevice,
+  isNeedShowEle,
 } from '../../config/click';
 import BatteryCommon from '../publicComponents/batteryCommon';
 import Res from '../../res';
@@ -25,7 +25,6 @@ class FullFeatureTopRight extends React.Component {
     changeHideFullMenuState: PropTypes.func.isRequired,
     showSelfModalAction: PropTypes.func.isRequired,
     showSelfModal: PropTypes.bool.isRequired,
-    isRecording: PropTypes.bool.isRequired,
     voiceStatus: PropTypes.string.isRequired,
     clarityStatus: PropTypes.string.isRequired,
     isSupportedSound: PropTypes.bool.isRequired,
@@ -159,7 +158,7 @@ class FullFeatureTopRight extends React.Component {
                   : Strings.getLang('resolutionHigh')}
               </TYText>
             </TouchableOpacity>
-            {isWirlesDevice() ? (
+            {isNeedShowEle() ? (
               <View style={{ marginLeft: Math.ceil(cx(4)) }}>
                 <BatteryCommon />
               </View>
@@ -204,7 +203,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   const {
-    isRecording,
     voiceStatus,
     clarityStatus,
     hasAudio,
@@ -212,7 +210,6 @@ const mapStateToProps = state => {
     isSupportedSound,
   } = state.ipcCommonState;
   return {
-    isRecording,
     voiceStatus,
     clarityStatus,
     hasAudio,

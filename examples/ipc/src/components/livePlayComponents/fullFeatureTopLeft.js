@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isFullScreen as isFullScreenAction } from '../../redux/modules/ipcCommon';
 import CameraManager from '../nativeComponents/cameraManager';
+import { resetMulScaleWithBefore } from '../../config/click';
 import Config from '../../config';
 import Res from '../../res';
 
@@ -82,6 +83,7 @@ class FullFeatureTopLeft extends React.Component {
     // clearTimeout(this.timerId);
     this.props.isFullScreenAction({ isFullScreen: false });
     CameraManager.setScreenOrientation(0);
+    resetMulScaleWithBefore(0);
   };
   render() {
     const { btnAnim } = this.state;

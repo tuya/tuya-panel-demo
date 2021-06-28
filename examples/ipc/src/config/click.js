@@ -35,6 +35,9 @@ import {
   panelItemActiveColor,
   p2pIsConnected,
   showLoadingToast,
+  otherRnPage,
+  sendScaleStatus as sendScaleStatusAction,
+  micNeedStoped as micNeedStopedAction,
 } from '../redux/modules/ipcCommon';
 import { updateTheme } from '../redux/modules/theme';
 import { localTimeExample, cruiseScheduleTime, feedNumScheduleTime } from '../config/dpTimeData';
@@ -219,9 +222,18 @@ export const operatMute = type => {
 // 长按单向对讲开启
 
 export const enableStartTalk = () => {
+  store.dispatch(micNeedStopedAction({ micNeedStoped: false }));
   CameraManager.startTalk(
     () => {
-      store.dispatch(showMic({ showMic: true }));
+      const state = store.getState();
+      const { micNeedStoped } = state.ipcCommonState;
+      if (micNeedStoped) {
+        store.dispatch(showMic({ showMic: false }));
+        endTalkByOperator();
+      } else {
+        store.dispatch(showMic({ showMic: true }));
+        store.dispatch(micNeedStopedAction({ micNeedStoped: false }));
+      }
     },
     () => {
       CameraManager.showTip(Strings.getLang('operatorFailed'));
@@ -229,13 +241,27 @@ export const enableStartTalk = () => {
   );
 };
 
+// 主动结束
+export const endTalkByOperator = () => {
+  CameraManager.stopTalk(
+    () => {
+      store.dispatch(micNeedStopedAction({ micNeedStoped: false }));
+    },
+    () => {
+      CameraManager.showTip(Strings.getLang('operatorFailed'));
+      store.dispatch(showMic({ showMic: false }));
+    }
+  );
+};
+
 // 移除单向对讲开启
 
 export const enableStopTalk = () => {
-  const state = store.getState();
+  store.dispatch(micNeedStopedAction({ micNeedStoped: true }));
   CameraManager.stopTalk(
     () => {
       store.dispatch(showMic({ showMic: false }));
+      const state = store.getState();
       const { ipcCommonState } = state;
       if (ipcCommonState.isInterCom) {
         CameraManager.showTip(Strings.getLang('interEndTalk'));
@@ -280,6 +306,7 @@ export const enterFullScreen = () => {
   CameraManager.setScreenOrientation(1);
   // 设置屏幕方向 0: 竖屏 1: 横屏
   store.dispatch(isFullScreen({ isFullScreen: true }));
+  resetMulScaleWithBefore(1);
 };
 
 // 退出Rn面板调用的方法
@@ -319,18 +346,14 @@ export const enterBackground = () => {
         () => {}
       );
       store.dispatch(showMic({ showMic: false }));
+      store.dispatch(micNeedStopedAction({ micNeedStoped: false }));
     }
   });
-
-  CameraManager.isMuting(msg => {
-    if (!msg) {
-      CameraManager.enableMute(
-        true,
-        () => {},
-        () => {}
-      );
-    }
-  });
+  CameraManager.enableMute(
+    true,
+    () => {},
+    () => {}
+  );
 };
 
 // 分发配p2p连接后，获取对讲的方式
@@ -391,6 +414,7 @@ export const backLivePlayWillUnmount = () => {
   store.dispatch(videoLoadText({ videoLoadText: Strings.getLang('reConenectStream') }));
   store.dispatch(showVideoLoad({ showVideoLoad: true }));
   store.dispatch(isOnLivePage({ isOnLivePage: true }));
+  store.dispatch(otherRnPage({ otherRnPage: false }));
   TYEvent.emit('backLivePreview');
 };
 
@@ -505,7 +529,11 @@ export const enterRnPage = (id, data) => {
     return false;
   }
   Popup.close();
+  const state = store.getState();
+  const { newScaleStatus } = state.ipcCommonState;
+  store.dispatch(sendScaleStatusAction({ sendScaleStatus: newScaleStatus }));
   store.dispatch(isOnLivePage({ isOnLivePage: false }));
+  store.dispatch(otherRnPage({ otherRnPage: true }));
   enterBackground();
   const TYNavigator = TYSdk.Navigator;
   TYNavigator.push({
@@ -641,6 +669,16 @@ export const isWirlesDevice = () => {
   return false;
 };
 
+// 判定是否需要显示电量模块
+export const isNeedShowEle = () => {
+  const state = store.getState();
+  const { wireless_electricity } = state.dpState;
+  if (typeof wireless_electricity !== 'undefined') {
+    return true;
+  }
+  return false;
+};
+
 // 低功耗三次唤醒低功耗设备
 export const wakeupWirless = () => {
   CameraManager.wakeUpDoorBell();
@@ -661,6 +699,11 @@ export const enterPhoneBackground = () => {
 
 // 判定p2p是否连接,如未连接,进行连接，否则忽略
 export const judgeP2pISConnectedOperate = () => {
+  const state = store.getState();
+  const { deviceOnline } = state.devInfo;
+  if (!deviceOnline) {
+    return false;
+  }
   CameraManager.isConnected(msg => {
     console.log('进入非预览界面，判定P2P是否连接', msg);
     // 如果是低功耗先对其进行唤醒
@@ -744,4 +787,28 @@ export const closeGlobalLoading = () => {
   setTimeout(() => {
     store.dispatch(showLoadingToast({ showLoadingToast: false }));
   }, 500);
+};
+
+// 从后台返回及其它页面返回,保留视频大小原样
+
+export const resetMulScaleWithBefore = value => {
+  const state = store.getState();
+  const { ipcCommonState } = state;
+  const { newScaleStatus, currentVideoScale } = ipcCommonState;
+  let sendStatus = newScaleStatus;
+  // 等于0表示还原为按宽
+  // 等于1表示按高传-2
+  if (value === 0) {
+    sendStatus = -1;
+  } else if (value === 1) {
+    sendStatus = -2;
+  } else if (sendStatus === -1) {
+    sendStatus = -1;
+  } else if (sendStatus === -2) {
+    sendStatus = -2;
+  } else {
+    sendStatus = currentVideoScale + Math.random() / 100;
+  }
+
+  store.dispatch(sendScaleStatusAction({ sendScaleStatus: sendStatus }));
 };
