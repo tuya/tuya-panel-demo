@@ -85,6 +85,16 @@ export const panelItemActiveColor = createAction('PANEL_ITEM_ACTIVE_COLOR');
 export const isSupportCloudStorage = createAction('IS_SUPPORT_CLOUD_STORAGE');
 // 云存储开通状态
 export const cloudStorageState = createAction('CLOUD_STORAGE_STATE');
+// 视频比例缩放统一,zommFree监听缩放各项参数, 传入参数以scaleStatus为准
+export const newScaleStatus = createAction('NEW_SCALE_STATUS');
+// 下发触发scaleStatus的值
+export const sendScaleStatus = createAction('SEND_SCALE_STATUS');
+// 标记进入了其它自定义Rn页面,主要解决在Rn页面退到手机锁屏,返回回来触发enterForend事件,导致视频拉流
+export const otherRnPage = createAction('OTHER_PAGE');
+// 当前视频播放倍数
+export const currentVideoScale = createAction('CURRENT_VIDEO_SCALE');
+// 对讲是否结束
+export const micNeedStoped = createAction('MIC_NEED_STOPED');
 
 /**
  * 视频流状态存储
@@ -396,6 +406,36 @@ const ipcCommonState = handleActions(
         ...action.payload,
       };
     },
+    [newScaleStatus.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    [sendScaleStatus.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    [otherRnPage.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    [currentVideoScale.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    [micNeedStoped.toString()]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   },
   {
     showLoadingToast: true,
@@ -441,6 +481,16 @@ const ipcCommonState = handleActions(
     isSupportCloudStorage: false,
     // 默认未开通
     cloudStorageState: false,
+    // 默认按宽匹配
+    newScaleStatus: -1,
+    // 触发setStatus方法下发的值
+    sendScaleStatus: -1,
+    // 是否在其它RN页面
+    otherRnPage: false,
+    // 当前视频播放倍数
+    currentVideoScale: 1.0,
+    // 对讲是否需要主动结束
+    micNeedStoped: false,
   }
 );
 

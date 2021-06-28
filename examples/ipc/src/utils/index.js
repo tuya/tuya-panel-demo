@@ -1,11 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable radix */
-import { TYSdk } from 'tuya-panel-kit';
+import { TYSdk, Utils } from 'tuya-panel-kit';
 import CameraManager from '../components/nativeComponents/cameraManager';
 import Global from '../config/global';
 import Strings from '../i18n';
 import { enterPhoneBackground } from '../config/click';
 import Config from '../config';
+
+const { parseJSON } = Utils.JsonUtils;
 
 const { isIOS } = Config;
 const TYNative = TYSdk.native;
@@ -153,6 +155,16 @@ export const camelize = str => {
   return ret.substr(0, 1).toLowerCase() + ret.substr(1);
 };
 
+export const getImageInfoUrl = url => {
+  const realUrl = url.split('@');
+  return realUrl[0];
+};
+
+export const getImageKey = url => {
+  const realUrl = url.split('@');
+  return realUrl[1];
+};
+
 export const formatUiConfig = devInfo => {
   const uiConfig = devInfo.uiConfig ? { ...devInfo.uiConfig } : {};
 
@@ -211,7 +223,7 @@ export const formatUiConfig = devInfo => {
     if (Object.prototype.hasOwnProperty.call(bic, i)) {
       const key = camelize(`panel_${bic[i].code}`);
       if (bic[i].selected === true) {
-        uiConfig[key] = bic[i].value ? parseJson(bic[i].value) : true;
+        uiConfig[key] = bic[i].value ? parseJSON(bic[i].value) : true;
       } else {
         uiConfig[key] = false;
       }
