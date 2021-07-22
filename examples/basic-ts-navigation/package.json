@@ -10,7 +10,7 @@
     "lint": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "readResource": "node scripts/read.js",
-    "postinstall": "patch-package --patch-dir node_modules/@tuya-smart/tuya-panel-patches/patches",
+    "postinstall": "patch-package --patch-dir node_modules/@tuya/tuya-panel-patches/patches",
     "release:init": "standard-version --first-release -t @template/basic-ts-navigation@",
     "release:major:pre": "standard-version --release-as major --prerelease rc --skip.tag=true",
     "release:major": "standard-version --release-as major -t @template/basic-ts-navigation@",
@@ -38,12 +38,12 @@
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
-    "tuya-panel-kit": "^4.5.5"
+    "tuya-panel-kit": "^4.6.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.1",
     "@commitlint/cli": "^11.0.0",
-    "@tuya-smart/tuya-panel-patches": "^0.59.10",
+    "@tuya/tuya-panel-patches": "^0.59.10",
     "@types/lodash": "^4.14.137",
     "@types/react": "^16.0.4",
     "@types/react-native": "^0.60.0",
@@ -51,7 +51,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
     "@types/redux-logger": "^3.0.7",
-    "@types/tuya-panel-kit": "^4.0.2",
+    "@types/tuya-panel-kit": "^4.0.7",
     "babel-jest": "^22.1.0",
     "babel-plugin-import": "^1.11.0",
     "babel-plugin-module-resolver": "^4.0.0",

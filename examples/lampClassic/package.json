@@ -10,7 +10,7 @@
     "lint": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "readResource": "node scripts/read.js",
-    "postinstall": "patch-package --patch-dir node_modules/@tuya-smart/tuya-panel-patches/patches",
+    "postinstall": "patch-package --patch-dir node_modules/@tuya/tuya-panel-patches/patches",
     "release:init": "standard-version --first-release -t @template/lampClassic@",
     "release:major:pre": "standard-version --release-as major --prerelease rc --skip.tag=true",
     "release:major": "standard-version --release-as major -t @template/lampClassic@",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.1",
     "@commitlint/cli": "^11.0.0",
-    "@tuya-smart/tuya-panel-patches": "^0.59.10",
+    "@tuya/tuya-panel-patches": "^0.59.10",
     "babel-jest": "^22.1.0",
     "babel-plugin-import": "^1.11.0",
     "babel-plugin-module-resolver": "^4.0.0",
