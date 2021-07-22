@@ -929,17 +929,17 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tuya-smart/tuya-panel-patches@^0.59.10":
-  version "0.59.10"
-  resolved "https://registry.npmjs.org/@tuya-smart/tuya-panel-patches/-/tuya-panel-patches-0.59.10.tgz#d3bafdacf18a5b328c4127ce152c677ba006e65a"
-  integrity sha512-MbA6EBki9g10n+/GW8EXW33M2bgwtJTm2bAuTOQV3rUbd6NttKAPpyVwLx6jsCNDlpiiU2os/bJ5dZbAjHsOLw==
-  dependencies:
-    patch-package "^6.2.2"
-
 "@tuya/tuya-panel-api@^1.1.0":
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/@tuya/tuya-panel-api/download/@tuya/tuya-panel-api-1.1.0.tgz#ea9f2a3e44aeb063c26ce5f13a433936b655e96e"
   integrity sha1-6p8qPkSusGPCbOXxOkM5NrZV6W4=
+
+"@tuya/tuya-panel-patches@^0.59.10":
+  version "0.59.10"
+  resolved "https://registry.nlark.com/@tuya/tuya-panel-patches/download/@tuya/tuya-panel-patches-0.59.10.tgz#4c58a176b0af7c06da181d3041470ee121ee2ace"
+  integrity sha1-TFihdrCvfAbaGB0wQUcO4SHuKs4=
+  dependencies:
+    patch-package "^6.2.2"
 
 "@types/hammerjs@^2.0.36":
   version "2.0.36"
