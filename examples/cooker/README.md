@@ -14,6 +14,10 @@ $ mv cooker tuya-panel-cooker-example
 $ cd tuya-panel-cooker-example
 ```
 
+## Attention
+
+The RN version of the template is 0.51, and the template is no longer maintained. It is for reference only, and it is recommended to use [basic-ts-0.59](./basic-ts-0.59)
+
 ## Introduction
 
 This template project can be used to quickly launch the kitchen power project, supporting the following functions: **dp function point automatic adaptation/Settings page dp point automatic adaptation/recipe related component adaptation**

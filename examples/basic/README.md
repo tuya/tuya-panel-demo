@@ -14,6 +14,10 @@ $ mv basic tuya-panel-basic-example
 $ cd tuya-panel-basic-example
 ```
 
+## Attention
+
+The RN version of the template is 0.51, and the template is no longer maintained. It is for reference only, and it is recommended to use [basic-ts-0.59](./basic-ts-0.59)
+
 ## Introduction
 
 The template project is the basic template, which can start all Tuya products and be used to debug the DP points of the current product.
