@@ -929,10 +929,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tuya-smart/tuya-panel-patches@^0.59.10":
+"@tuya/tuya-panel-patches@^0.59.10":
   version "0.59.10"
-  resolved "https://registry.npmjs.org/@tuya-smart/tuya-panel-patches/-/tuya-panel-patches-0.59.10.tgz#d3bafdacf18a5b328c4127ce152c677ba006e65a"
-  integrity sha512-MbA6EBki9g10n+/GW8EXW33M2bgwtJTm2bAuTOQV3rUbd6NttKAPpyVwLx6jsCNDlpiiU2os/bJ5dZbAjHsOLw==
+  resolved "https://registry.nlark.com/@tuya/tuya-panel-patches/download/@tuya/tuya-panel-patches-0.59.10.tgz#4c58a176b0af7c06da181d3041470ee121ee2ace"
+  integrity sha1-TFihdrCvfAbaGB0wQUcO4SHuKs4=
   dependencies:
     patch-package "^6.2.2"
 
@@ -1051,15 +1051,15 @@
   dependencies:
     redux "*"
 
-"@types/tuya-panel-kit@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.npm.taobao.org/@types/tuya-panel-kit/download/@types/tuya-panel-kit-4.0.2.tgz#80e574afcc23f9d4a213adc6e85241c28e44b396"
-  integrity sha1-gOV0r8wj+dSiE63G6FJBwo5Es5Y=
+"@types/tuya-panel-kit@^4.0.7":
+  version "4.0.7"
+  resolved "https://registry.nlark.com/@types/tuya-panel-kit/download/@types/tuya-panel-kit-4.0.7.tgz#9fdb5dd89f39a6f1d3a1f517473530c905545faf"
+  integrity sha1-n9td2J85pvHTofUXRzUwyQVUX68=
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
-    react-native-gesture-handler "^1.8.0"
-    react-native-safe-area-context "^3.1.8"
+    react-native-gesture-handler "1.8.0"
+    react-native-safe-area-context "3.1.7"
     react-native-svg "5.5.1"
 
 "@types/unist@*", "@types/unist@^2.0.0", "@types/unist@^2.0.2":
@@ -2762,13 +2762,6 @@ create-react-class@^15.6.3:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-cross-fetch@^3.0.4:
-  version "3.0.6"
-  resolved "https://registry.npm.taobao.org/cross-fetch/download/cross-fetch-3.0.6.tgz?cache=0&sync_timestamp=1599789182189&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcross-fetch%2Fdownload%2Fcross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
-  integrity sha1-OkBAvIlB5lPg6c8X8p680XfTNlw=
-  dependencies:
-    node-fetch "2.6.1"
-
 cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npm.taobao.org/cross-spawn/download/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -3897,19 +3890,6 @@ fbjs@^1.0.0:
     core-js "^2.4.1"
     fbjs-css-vars "^1.0.0"
     isomorphic-fetch "^2.1.1"
-    loose-envify "^1.0.0"
-    object-assign "^4.1.0"
-    promise "^7.1.1"
-    setimmediate "^1.0.5"
-    ua-parser-js "^0.7.18"
-
-fbjs@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/fbjs/download/fbjs-3.0.0.tgz?cache=0&sync_timestamp=1602048886093&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffbjs%2Fdownload%2Ffbjs-3.0.0.tgz#0907067fb3f57a78f45d95f1eacffcacd623c165"
-  integrity sha1-CQcGf7P1enj0XZXx6s/8rNYjwWU=
-  dependencies:
-    cross-fetch "^3.0.4"
-    fbjs-css-vars "^1.0.0"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
     promise "^7.1.1"
@@ -6798,11 +6778,6 @@ nice-try@^1.0.4:
   resolved "https://registry.npm.taobao.org/nice-try/download/nice-try-1.0.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnice-try%2Fdownload%2Fnice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha1-ozeKdpbOfSI+iPybdkvX7xCJ42Y=
 
-node-fetch@2.6.1, node-fetch@^2.2.0:
-  version "2.6.1"
-  resolved "https://registry.npm.taobao.org/node-fetch/download/node-fetch-2.6.1.tgz?cache=0&sync_timestamp=1599309206591&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-fetch%2Fdownload%2Fnode-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
-  integrity sha1-BFvTI2Mfdu0uK1VXM5RBa2OaAFI=
-
 node-fetch@^1.0.1:
   version "1.7.3"
   resolved "https://registry.npm.taobao.org/node-fetch/download/node-fetch-1.7.3.tgz?cache=0&sync_timestamp=1599309206591&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-fetch%2Fdownload%2Fnode-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
@@ -6810,6 +6785,11 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@^2.2.0:
+  version "2.6.1"
+  resolved "https://registry.npm.taobao.org/node-fetch/download/node-fetch-2.6.1.tgz?cache=0&sync_timestamp=1599309206591&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-fetch%2Fdownload%2Fnode-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha1-BFvTI2Mfdu0uK1VXM5RBa2OaAFI=
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -7735,17 +7715,6 @@ react-native-gesture-handler@1.8.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-gesture-handler@^1.8.0:
-  version "1.9.0"
-  resolved "https://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.9.0.tgz#e441b1c0277c3fd4ca3e5c58fdd681e2f0ceddf0"
-  integrity sha1-5EGxwCd8P9TKPlxY/daB4vDO3fA=
-  dependencies:
-    "@egjs/hammerjs" "^2.0.17"
-    fbjs "^3.0.0"
-    hoist-non-react-statics "^3.3.0"
-    invariant "^2.2.4"
-    prop-types "^15.7.2"
-
 react-native-iphone-x-helper@^1.2.1:
   version "1.3.1"
   resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
@@ -7762,11 +7731,6 @@ react-native-safe-area-context@3.1.7:
   version "3.1.7"
   resolved "https://registry.npm.taobao.org/react-native-safe-area-context/download/react-native-safe-area-context-3.1.7.tgz#fc9e636dfb168f992a2172d363509ce0611a8403"
   integrity sha1-/J5jbfsWj5kqIXLTY1Cc4GEahAM=
-
-react-native-safe-area-context@^3.1.8:
-  version "3.1.9"
-  resolved "https://registry.npm.taobao.org/react-native-safe-area-context/download/react-native-safe-area-context-3.1.9.tgz#48864ea976b0fa57142a2cc523e1fd3314e7247e"
-  integrity sha1-SIZOqXaw+lcUKizFI+H9MxTnJH4=
 
 react-native-screens@2.10.1:
   version "2.10.1"
@@ -9487,10 +9451,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-kit@^4.5.5:
-  version "4.5.5"
-  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.5.5.tgz#0b7e2a2adf1dcceb63457c8482df2bc3c00d00a6"
-  integrity sha1-C34qKt8dzOtjRXyEgt8rw8ANAKY=
+tuya-panel-kit@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.6.2.tgz#8b7614cda7142e272c343d9cc519c80e6e10cf1d"
+  integrity sha1-i3YUzacULicsND2cxRnIDm4Qzx0=
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
