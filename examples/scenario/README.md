@@ -8,7 +8,7 @@ for users outside Chinese mainland, please remove `.npmrc` file.
 
 ## Attention
 
-The RN version of the template is 0.51, and the template is no longer maintained. It is for reference only, and it is recommended to use [basic-ts-0.59](./basic-ts-0.59)
+The RN version of the template is 0.51, and the template is no longer maintained. It is for reference only, and it is recommended to use [basic-ts-0.59](../basic-ts-0.59)
 
 ## Download manually
 
