@@ -40,10 +40,10 @@ $ yarn && yarn start
 ```
 ## API
 
-* [tuya.m.device.lock.active.period](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
-* [tuya.m.device.lock.alarm.unread](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
-* [tuya.m.scale.history.list](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
-* [tuya.m.device.lock.alarm.list](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
+* [tuya.m.device.lock.active.period](https://docs.tuya.com/en/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
+* [tuya.m.device.lock.alarm.unread](https://docs.tuya.com/en/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
+* [tuya.m.scale.history.list](https://docs.tuya.com/en/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
+* [tuya.m.device.lock.alarm.list](https://docs.tuya.com/en/iot/panel-development/panel-sdk-development/lock-sdk/lock-api/lock-api?id=K9ppulorxzebv)
 
 ## License
 

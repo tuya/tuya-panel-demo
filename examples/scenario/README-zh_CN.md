@@ -38,14 +38,6 @@ $ npm install && npm run start
 $ yarn && yarn start
 ```
 
-## 使用接口
-
-* [tuya.m.linkage.rule.trigger](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/scene-related-interface?id=K9pemz7l3wz0t)
-* [tuya.m.linkage.rule.bind.wifi.query](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/scene-related-interface?id=K9pemz7l3wz0t)
-* [tuya.m.linkage.rule.brief.query](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/scene-related-interface?id=K9pemz7l3wz0t)
-* [tuya.m.linkage.rule.bind.wifi.save](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/scene-related-interface?id=K9pemz7l3wz0t)
-* [tuya.m.linkage.rule.bind.wifi.remove](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/common-sdk-development/scene-related-interface/scene-related-interface?id=K9pemz7l3wz0t)
-
 ## 许可证
 
 Copyright © 2020
