@@ -37,7 +37,7 @@ You can scan the following QR code through the Tuya app to preview.
 
 ## API （interfaces）
 
-[cloud recipe interfaces](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/cooker-recipe-sdk/cooker-recipe-api?id=K9mcn0f0m1q0w)
+[cloud recipe interfaces](https://developer.tuya.com/en/docs/control-panel-sdk/cooker-recipe-api?id=K9mcn0f0m1q0w)
 
 ## Running
 
