@@ -36,7 +36,7 @@ $ cd tuya-panel-cooker-example
 
 ## API （使用接口）
 
-[cloud recipe interfaces](https://docs.tuya.com/zh/iot/panel-development/panel-sdk-development/cooker-recipe-sdk/cooker-recipe-api?id=K9mcn0f0m1q0w)
+[cloud recipe interfaces](https://developer.tuya.com/cn/docs/control-panel-sdk/cooker-recipe-api?id=K9mcn0f0m1q0w)
 
 ## 快速运行
 
