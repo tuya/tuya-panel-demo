@@ -9487,10 +9487,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-kit@~4.0.0-rc.1:
-  version "4.0.0"
-  resolved "https://registry.npm.taobao.org/tuya-panel-kit/download/tuya-panel-kit-4.0.0.tgz#66b753afaf425211e771275dbb4f68140ebccade"
-  integrity sha1-ZrdTr69CUhHncSddu09oFA68yt4=
+tuya-panel-kit@~4.7.4:
+  version "4.7.4"
+  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.7.4.tgz#008c500454e08f00acc09614c5bc1fc578afc11a"
+  integrity sha1-AIxQBFTgjwCswJYUxbwfxXivwRo=
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
@@ -9509,6 +9509,20 @@ tuya-panel-kit@~4.0.0-rc.1:
     react-native-svg "5.5.1"
     style-equal "^1.0.0"
     styled-components "^3.4.10"
+    tuya-panel-theme "^0.0.4"
+    tuya-panel-utils "^0.1.0"
+
+tuya-panel-theme@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.nlark.com/tuya-panel-theme/download/tuya-panel-theme-0.0.4.tgz#6e6ecfe54adfb6168c76022669a2e604947e344d"
+  integrity sha1-bm7P5UrfthaMdgImaaLmBJR+NE0=
+  dependencies:
+    tuya-panel-utils "^0.1.0"
+
+tuya-panel-utils@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.nlark.com/tuya-panel-utils/download/tuya-panel-utils-0.1.0.tgz#9d8b36dc449581695fdaf2c165e0acd61bcfa837"
+  integrity sha1-nYs23ESVgWlf2vLBZeCs1hvPqDc=
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

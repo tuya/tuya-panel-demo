@@ -7267,10 +7267,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-kit@~2.0.0-rc.3:
-  version "2.0.0-rc.3"
-  resolved "https://registry.npm.taobao.org/tuya-panel-kit/download/tuya-panel-kit-2.0.0-rc.3.tgz#1baab8dbdbbaa20d8a607556aea27aa820d1c5a4"
-  integrity sha1-G6q429u6og2KYHVWrqJ6qCDRxaQ=
+tuya-panel-kit@~2.1.0:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-2.1.0.tgz#f00747160aa24c7d11506927961087afc7a8707e"
+  integrity sha1-8AdHFgqiTH0RUGknlhCHr8eocH4=
   dependencies:
     babel-cli "^6.26.0"
     color "^0.11.1"
