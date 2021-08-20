@@ -26,8 +26,6 @@ export { default as CountdownPickerView } from './mode-setting-view/time-picker'
 
 export { default as MinCountdownView } from './mode-setting-view/low-time-picker';
 
-export { default as H5VideoPlayer } from './video-player';
-
 export { default as ShadowImage } from './shadow-image';
 
 export { RecipeUtils };
