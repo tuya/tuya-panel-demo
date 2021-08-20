@@ -1,4 +1,5 @@
 import { Images } from '../config/interface';
+
 const switchIcon = require('./imgs/switch.png');
 const backgroundList = [
   require('./imgs/background1.png'),
@@ -33,6 +34,7 @@ const directionForWard4 = require('./imgs/directionForWard4.png');
 const directionForWard5 = require('./imgs/directionForWard5.png');
 const sub = require('./imgs/sub.png');
 const add = require('./imgs/add.png');
+const texture1 = require('./imgs/texture1.png');
 
 const imgs: Images = {
   switchIcon,
@@ -63,5 +65,6 @@ const imgs: Images = {
   add,
   sub,
   timeCenter,
+  texture1,
 };
 export default imgs;
