@@ -19,7 +19,6 @@ interface DpState {
 
 /**
  * 在此可自定义你的 panel 配置项
- * 配置可前往 https://panel-deploy.tuya-inc.com:7799/ - 面板功能点配置进行
  */
 interface PanelState {
   test: string;
