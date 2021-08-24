@@ -14,6 +14,13 @@ console.disableYellowBox = true;
 const store = configureStore({});
 
 class MainLayout extends NavigatorLayout {
+  constructor(props: any) {
+    super(props);
+    this.staticPrefix = '';
+    getOssUrl().then((staticPrefix: any) => {
+      this.staticPrefix = staticPrefix + defaultBackground;
+    });
+  }
   /**
    * @desc
    *   hookRoute 可以做一些控制处理，
@@ -42,7 +49,7 @@ class MainLayout extends NavigatorLayout {
     switch (route.id) {
       case 'main':
         // eslint-disable-next-line
-        getOssUrl().then((staticPrefix:any) => route.background = staticPrefix + defaultBackground );
+        route.background = this.staticPrefix;
         route.topbarStyle = {
           backgroundColor: 'transparent',
         };
