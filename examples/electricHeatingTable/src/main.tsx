@@ -7,6 +7,7 @@ import configureStore from './redux/configureStore';
 import Home from './containers/Home';
 import Power from './containers/power';
 import { defaultBackground } from './config/boxConfig';
+import { getOssUrl } from './api';
 
 console.disableYellowBox = true;
 
@@ -41,7 +42,7 @@ class MainLayout extends NavigatorLayout {
     switch (route.id) {
       case 'main':
         // eslint-disable-next-line
-        route.background = defaultBackground;
+        getOssUrl().then((staticPrefix:any) => route.background = staticPrefix + defaultBackground );
         route.topbarStyle = {
           backgroundColor: 'transparent',
         };

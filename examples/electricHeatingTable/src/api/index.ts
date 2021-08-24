@@ -48,3 +48,8 @@ const api = (a: string, postData: PostData, v = '1.0') => {
     );
   });
 };
+
+// 获取域名
+export const getOssUrl = () => {
+  return TYSdk.apiRequest<string>('tuya.m.app.panel.url.get', {}, '1.0');
+};
