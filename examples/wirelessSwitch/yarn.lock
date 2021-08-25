@@ -9492,10 +9492,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-kit@~4.7.4:
-  version "4.7.4"
-  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.7.4.tgz#008c500454e08f00acc09614c5bc1fc578afc11a"
-  integrity sha1-AIxQBFTgjwCswJYUxbwfxXivwRo=
+tuya-panel-kit@~4.7.6:
+  version "4.7.6"
+  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.7.6.tgz#8a014bbcf8ebaec95745a6fc4a98ad0b736c2cb8"
+  integrity sha1-igFLvPjrrslXRab8SpitC3NsLLg=
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
