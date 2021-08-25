@@ -53,7 +53,7 @@ const dpCodes: { [key: string]: string } = {
   timing: 'timing',
 };
 const defaultThemeColor = '#3F84C9';
-const defaultBackground = require('../res').imgs.texture1;
+const defaultBackground = '/smart/uiconf/texture1.png?t=1585217208103';
 
 const standardDp = [
   'switch',
