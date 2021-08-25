@@ -54,6 +54,17 @@ Then, open your Tuya Smart app for debugging.
 
 You can check the complete list of Tuya Panel examples [here](./examples).
 
+## Batch upgrade tuya-panel-kit
+
+```sh
+# 4.x & 2.x
+$ sudo ./scripts/tuya-panel-kit 4.x 2.x
+# 4.x
+$ sudo ./scripts/tuya-panel-kit 4.x
+# 2.x
+$ sudo ./scripts/tuya-panel-kit "" 2.x
+```
+
 ## License
 
 Copyright © 2020

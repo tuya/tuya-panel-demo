@@ -54,6 +54,17 @@ $ yarn && yarn start
 
 ### 您可以在[此处](./examples)查看完整的涂鸦品类模板
 
+## 批量升级 tuya-panel-kit 依赖
+
+```sh
+# 4.x 和 2.x
+$ sudo ./scripts/tuya-panel-kit 4.x 2.x
+# 4.x
+$ sudo ./scripts/tuya-panel-kit 4.x
+# 2.x
+$ sudo ./scripts/tuya-panel-kit "" 2.x
+```
+
 ## 许可证
 
 Copyright © 2020
