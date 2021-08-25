@@ -41,7 +41,9 @@ class MainLayout extends NavigatorLayout {
     switch (route.id) {
       case 'main':
         // eslint-disable-next-line
-        route.background = defaultBackground;
+        route.background = { 
+          uri: this.props.staticPrefix + defaultBackground,
+        };
         route.topbarStyle = {
           backgroundColor: 'transparent',
         };
