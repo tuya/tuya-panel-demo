@@ -40,7 +40,7 @@
     "rxjs": "^6.3.1",
     "rxjs-compat": "^6.3.1",
     "style-equal": "^1.0.0",
-    "tuya-panel-kit": "^4.3.3"
+    "tuya-panel-kit": "^4.7.6"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.12.1",
@@ -53,7 +53,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
     "@types/redux-logger": "^3.0.7",
-    "@types/tuya-panel-kit": "^4.0.2",
+    "@types/tuya-panel-kit": "^4.0.8",
     "babel-jest": "^22.1.0",
     "babel-plugin-import": "^1.11.0",
     "babel-plugin-module-resolver": "^4.0.0",
