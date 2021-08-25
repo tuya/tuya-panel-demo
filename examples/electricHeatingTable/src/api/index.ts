@@ -48,3 +48,24 @@ const api = (a: string, postData: PostData, v = '1.0') => {
     );
   });
 };
+
+/**
+ *  获取当前的域名环境
+ * @returns
+ */
+export const getOssUrl = () => {
+  return new Promise((resolve, reject) => {
+    TYNative.apiRNRequest(
+      {
+        a: 'tuya.m.app.panel.url.get',
+        v: '1.0',
+      },
+      (success: any) => {
+        resolve(success);
+      },
+      (error: any) => {
+        reject(error);
+      }
+    );
+  });
+};
