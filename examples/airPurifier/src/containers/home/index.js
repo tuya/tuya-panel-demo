@@ -1,14 +1,11 @@
-import _get from 'lodash/get';
 import React, { PureComponent } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import HomeTopView from './home-top-view';
 import HomeMainView from './home-main-view';
 import HomeTipView from './home-tip-view';
-import HomeCurveView from './home-curve-view';
 import HomeStatView from './home-stat-view';
 import HomeBottomView from './home-bottom-view';
-import TYSdk from '../../api';
 import { store } from '../../redux/configureStore';
 import dpCodes from '../../config/dpCodes';
 
@@ -26,8 +23,6 @@ const {
 
 class HomeScene extends PureComponent {
   render() {
-    const countryCode = _get(TYSdk, 'mobile.mobileInfo.countryCode', 'CN');
-    const hideOutdoorPM25 = countryCode !== 'CN';
     const { devInfo = {} } = store.getState();
     const bottomDps = [];
     const dps = [];
@@ -53,7 +48,6 @@ class HomeScene extends PureComponent {
         }
       });
     }
-    const CurveView = <HomeCurveView hideOutdoorPM25={hideOutdoorPM25} />;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -63,7 +57,6 @@ class HomeScene extends PureComponent {
           <HomeTopView />
           <HomeMainView />
           <HomeTipView />
-          {/* {CurveView} */}
           {dps !== undefined && <HomeStatView dps={dps} />}
         </ScrollView>
         {bottomDps !== undefined && <HomeBottomView dps={bottomDps} />}
