@@ -4681,7 +4681,7 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha1-xZA89AnA39kI84jmGdhrnBF0y0c=
@@ -7815,6 +7815,15 @@ react-native-deprecated-custom-components@0.1.2:
     react-timer-mixin "^0.13.2"
     rebound "^0.0.13"
 
+react-native-gesture-handler@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.3.0.tgz#d0386f565928ccc1849537f03f2e37fd5f6ad43f"
+  integrity sha1-0DhvVlkozMGElTfwPy43/V9q1D8=
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+    invariant "^2.2.2"
+    prop-types "^15.5.10"
+
 react-native-gesture-handler@1.8.0:
   version "1.8.0"
   resolved "https://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.8.0.tgz#18f61f51da50320f938957b0ee79bc58f47449dc"
@@ -7830,22 +7839,27 @@ react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha1-IMYD6aDnZf1vlzlmOL3rDlpgsBA=
 
-react-native-reanimated@1.13.0:
-  version "1.13.0"
-  resolved "https://registry.npm.taobao.org/react-native-reanimated/download/react-native-reanimated-1.13.0.tgz#1ee5d27d34bd2cee7dfad4ae9a3673300872c917"
-  integrity sha1-HuXSfTS9LO59+tSumjZzMAhyyRc=
+react-native-reanimated@1.9.0:
+  version "1.9.0"
+  resolved "https://registry.nlark.com/react-native-reanimated/download/react-native-reanimated-1.9.0.tgz#38676c99dd585504fdc7331efb45e5f48ec7339a"
+  integrity sha1-OGdsmd1YVQT9xzMe+0Xl9I7HM5o=
   dependencies:
     fbjs "^1.0.0"
+
+react-native-safe-area-context@3.0.7:
+  version "3.0.7"
+  resolved "https://registry.nlark.com/react-native-safe-area-context/download/react-native-safe-area-context-3.0.7.tgz#0f53de7a30d626d82936000f3f6db374ecc4b800"
+  integrity sha1-D1PeejDWJtgpNgAPP22zdOzEuAA=
 
 react-native-safe-area-context@3.1.7:
   version "3.1.7"
   resolved "https://registry.npm.taobao.org/react-native-safe-area-context/download/react-native-safe-area-context-3.1.7.tgz#fc9e636dfb168f992a2172d363509ce0611a8403"
   integrity sha1-/J5jbfsWj5kqIXLTY1Cc4GEahAM=
 
-react-native-screens@2.10.1:
-  version "2.10.1"
-  resolved "https://registry.npm.taobao.org/react-native-screens/download/react-native-screens-2.10.1.tgz#06d22fae87ef0ce51c616c34a199726db1403b95"
-  integrity sha1-BtIvrofvDOUcYWw0oZlybbFAO5U=
+react-native-screens@2.9.0:
+  version "2.9.0"
+  resolved "https://registry.nlark.com/react-native-screens/download/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
+  integrity sha1-6tKEMQe6AP7iWao3dYLkV8dPHzs=
 
 react-native-svg@5.5.1:
   version "5.5.1"
@@ -9543,10 +9557,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-kit@~4.7.6:
-  version "4.7.6"
-  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.7.6.tgz#8a014bbcf8ebaec95745a6fc4a98ad0b736c2cb8"
-  integrity sha1-igFLvPjrrslXRab8SpitC3NsLLg=
+tuya-panel-kit@~4.7.8:
+  version "4.7.8"
+  resolved "https://registry.nlark.com/tuya-panel-kit/download/tuya-panel-kit-4.7.8.tgz#a9ed3be868b91d29628d9812b9b2cb1aaa64fd88"
+  integrity sha1-qe076Gi5HSlijZgSubLLGqpk/Yg=
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
@@ -9558,27 +9572,27 @@ tuya-panel-kit@~4.7.6:
     prop-types "^15.6.1"
     react-addons-shallow-compare "^15.6.2"
     react-native-deprecated-custom-components "0.1.2"
-    react-native-gesture-handler "1.8.0"
-    react-native-reanimated "1.13.0"
-    react-native-safe-area-context "3.1.7"
-    react-native-screens "2.10.1"
+    react-native-gesture-handler "1.3.0"
+    react-native-reanimated "1.9.0"
+    react-native-safe-area-context "3.0.7"
+    react-native-screens "2.9.0"
     react-native-svg "5.5.1"
     style-equal "^1.0.0"
     styled-components "^3.4.10"
-    tuya-panel-theme "^0.0.4"
-    tuya-panel-utils "^0.1.0"
+    tuya-panel-theme "^0.0.5"
+    tuya-panel-utils "^0.1.1"
 
-tuya-panel-theme@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.nlark.com/tuya-panel-theme/download/tuya-panel-theme-0.0.4.tgz#6e6ecfe54adfb6168c76022669a2e604947e344d"
-  integrity sha1-bm7P5UrfthaMdgImaaLmBJR+NE0=
+tuya-panel-theme@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.nlark.com/tuya-panel-theme/download/tuya-panel-theme-0.0.5.tgz#0ba589c0eb8e23325df0c37fdeba40e0b565918e"
+  integrity sha1-C6WJwOuOIzJd8MN/3rpA4LVlkY4=
   dependencies:
-    tuya-panel-utils "^0.1.0"
+    tuya-panel-utils "^0.1.1"
 
-tuya-panel-utils@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.nlark.com/tuya-panel-utils/download/tuya-panel-utils-0.1.0.tgz#9d8b36dc449581695fdaf2c165e0acd61bcfa837"
-  integrity sha1-nYs23ESVgWlf2vLBZeCs1hvPqDc=
+tuya-panel-utils@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.nlark.com/tuya-panel-utils/download/tuya-panel-utils-0.1.1.tgz#d424c5dbbce247fb8a3fa0b438b6b85c694c547d"
+  integrity sha1-1CTF27ziR/uKP6C0OLa4XGlMVH0=
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
