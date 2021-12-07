@@ -1,0 +1,681 @@
+{
+  "panel": {
+    "multiMapConfig": {
+      "multiMapAvailable": {
+        "type": "boolean",
+        "desc": "多地图功能_是否支持",
+        "value": true
+      }
+    },
+    "recordConfig": {
+      "recordAvailable": {
+        "type": "boolean",
+        "desc": "清扫记录_是否支持",
+        "value": true
+      }
+    },
+    "mapPartitionConfig": {
+      "partitionAvailable": {
+        "type": "boolean",
+        "desc": "地图编辑功能_是否支持",
+        "value": true
+      },
+      "partitionColorShow": {
+        "type": "boolean",
+        "desc": "地图分区颜色_是否显示",
+        "value": true
+      },
+      "partitionMergeAvailable": {
+        "type": "boolean",
+        "desc": "地图分区合并功能_是否支持",
+        "value": true
+      },
+      "partitionSplitFunc": {
+        "partitionSplitAvaiable": {
+          "type": "boolean",
+          "desc": "地图分区分割功能_是否支持",
+          "value": true
+        },
+        "partitionSplitColor": {
+          "type": "color",
+          "desc": "地图分区分割线颜色",
+          "value": "rgba(0,0,0,0.4)"
+        }
+      },
+      "partitionResetAvailable": {
+        "type": "boolean",
+        "desc": "地图分区恢复功能_是否支持",
+        "value": true
+      }
+    },
+    "attributesConfig": {
+      "attributesFan": {
+        "attributesFanShow": {
+          "type": "boolean",
+          "desc": "属性-吸力_是否显示",
+          "value": true
+        },
+        "attributesFanSet": {
+          "type": "boolean",
+          "desc": "属性-吸力_是否支持设置",
+          "value": true
+        },
+        "attributesFanEnum": {
+          "desc": "属性-吸力-可设置的选项",
+          "type": "enum",
+          "value": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "values": [
+            {
+              "value": "0",
+              "label": "0"
+            },
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            }
+          ]
+        },
+        "attributesFanIconEnum": {
+          "desc": "属性-吸力-可设置的图标",
+          "type": "enum",
+          "value": [
+            "/app/robot/png/Fan_1.png",
+            "/app/robot/png/Fan_1.png",
+            "/app/robot/png/Fan_2.png",
+            "/app/robot/png/Fan_3.png",
+            "/app/robot/png/Fan_4.png"
+          ]
+        }
+      },
+      "attributesWater": {
+        "attributesWaterShow": {
+          "type": "boolean",
+          "desc": "属性-水量_是否显示",
+          "value": true
+        },
+        "attributesWaterSet": {
+          "type": "boolean",
+          "desc": "属性-水量_是否支持设置",
+          "value": true
+        },
+        "attributesWaterEnum": {
+          "desc": "属性-水量-可设置的选项",
+          "type": "enum",
+          "value": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "values": [
+            {
+              "value": "0",
+              "label": "0"
+            },
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            }
+          ]
+        },
+        "attributesWaterIconEnum": {
+          "desc": "属性-水量-可设置的图标",
+          "type": "enum",
+          "value": [
+            "/app/robot/png/Water_close.png",
+            "/app/robot/png/Water_1.png",
+            "/app/robot/png/Water_3.png",
+            "/app/robot/png/Water_5.png"
+          ]
+        }
+      },
+      "attributesOrder": {
+        "attributesOrderShow": {
+          "type": "boolean",
+          "desc": "属性-顺序_是否显示",
+          "value": true
+        },
+        "attributesOrderSet": {
+          "type": "boolean",
+          "desc": "属性-顺序_是否支持设置",
+          "value": true
+        }
+      },
+      "attributesTimes": {
+        "attributesTimesShow": {
+          "type": "boolean",
+          "desc": "属性-次数_是否显示",
+          "value": true
+        },
+        "attributesTimesSet": {
+          "type": "boolean",
+          "desc": "属性-次数_是否支持设置",
+          "value": true
+        },
+        "attributesTimesMaxNum": {
+          "type": "number",
+          "desc": "属性-次数_最大值",
+          "value": 3
+        }
+      }
+    },
+    "nameConfig": {
+      "partitionNameShow": {
+        "type": "boolean",
+        "desc": "分区名称_是否显示",
+        "value": true
+      },
+      "partitionRename": {
+        "type": "boolean",
+        "desc": "分区重命名_是否支持",
+        "value": true
+      },
+      "partitionNameEnum": {
+        "desc": "预设房间名称（多语言字段roomTag_xxx）",
+        "type": "enum",
+        "value": [
+          "bathroom",
+          "kitchen",
+          "study",
+          "balcony",
+          "babyroom",
+          "corridor",
+          "bedroom",
+          "livingroom"
+        ],
+        "values": [
+          {
+            "value": "bathroom",
+            "label": "bathroom"
+          },
+          {
+            "value": "kitchen",
+            "label": "kitchen"
+          },
+          {
+            "value": "livingroom",
+            "label": "livingroom"
+          },
+          {
+            "value": "bedroom",
+            "label": "bedroom"
+          },
+          {
+            "value": "corridor",
+            "label": "corridor"
+          },
+          {
+            "value": "babyroom",
+            "label": "babyroom"
+          },
+          {
+            "value": "balcony",
+            "label": "balcony"
+          },
+          {
+            "value": "study",
+            "label": "study"
+          },
+          {
+            "value": "restaurant",
+            "label": "restaurant"
+          }
+        ]
+      }
+    },
+    "forbiddenAreaConfig": {
+      "mapForbiddenAvailable": {
+        "type": "boolean",
+        "desc": "禁区编辑_是否支持",
+        "value": true
+      },
+      "mapForbiddenSmartAvailable": {
+        "desc": "禁区在自动模式下_是否支持",
+        "type": "boolean",
+        "value": false
+      },
+      "forbiddenAreaProtocolVersion": {
+        "type": "radio",
+        "desc": "禁区协议版本",
+        "value": "V1.0.0",
+        "values": [
+          {
+            "value": "V1.0.0",
+            "label": "V1.0.0"
+          },
+          {
+            "value": "V1.1.0",
+            "label": "V1.1.0"
+          }
+        ]
+      },
+      "pileConfig": {
+        "pileRingAvailable": {
+          "type": "boolean",
+          "desc": "禁区预警圈-是否支持",
+          "value": true
+        },
+        "ringBgColor": {
+          "type": "color",
+          "desc": "圈颜色",
+          "value": "rgba(0,0,0,0.4)"
+        },
+        "ringBorderColor": {
+          "type": "color",
+          "desc": "边虚线颜色",
+          "value": "#ffffff"
+        },
+        "ringRadiusRealMeter": {
+          "type": "number",
+          "desc": "圈半径大小",
+          "value": 1
+        }
+      },
+      "sweepForbiddenArea": {
+        "sweepForbiddenBgColor": {
+          "type": "color",
+          "desc": "框颜色",
+          "value": "rgba(248,28,28,0.5)"
+        },
+        "sweepForbiddenLineColor": {
+          "type": "color",
+          "desc": "边虚线颜色",
+          "value": "rgba(255,255,255,1)"
+        },
+        "sweepForbiddenMinWidth": {
+          "type": "number",
+          "desc": "可设置长宽最小值(单位：米)",
+          "value": 0.5
+        },
+        "sweepForbiddenMaxNum": {
+          "type": "number",
+          "desc": "可设置个数最大值",
+          "value": 8
+        },
+        "sweepForbiddenRotate": {
+          "type": "boolean",
+          "desc": "框旋转_是否支持",
+          "value": true
+        },
+        "sweepForbiddenShowUnit": {
+          "type": "boolean",
+          "desc": "显示单位_是否支持",
+          "value": true
+        },
+        "sweepForbiddenFactorColor": {
+          "type": "color",
+          "desc": "单位字体颜色",
+          "value": "#000000"
+        }
+      },
+      "mopForbiddenArea": {
+        "mopForbiddenAvailable": {
+          "type": "boolean",
+          "desc": "拖地禁区_是否支持",
+          "value": true
+        },
+        "mopForbiddenBgColor": {
+          "type": "color",
+          "desc": "框颜色",
+          "value": "rgba(70,133,255,0.5)"
+        },
+        "mopForbiddenLineColor": {
+          "type": "color",
+          "desc": "边虚线颜色",
+          "value": "rgba(255,255,255,0.4)"
+        },
+        "mopForbiddenMinWidth": {
+          "type": "number",
+          "desc": "可设置长宽最小值(单位：米)",
+          "value": 0.5
+        },
+        "mopForbiddenMaxWidth": {
+          "type": "number",
+          "desc": "可设置长宽最大值(单位：米)",
+          "value": 10
+        },
+        "mopForbiddenMaxNum": {
+          "type": "number",
+          "desc": "可设置个数最大值",
+          "value": 8
+        },
+        "mopForbiddenRotate": {
+          "type": "boolean",
+          "desc": "框旋转_是否支持",
+          "value": true
+        }
+      },
+      "virtualWall": {
+        "virtualWallAvailable": {
+          "type": "boolean",
+          "desc": "虚拟墙功能_是否支持",
+          "value": true
+        },
+        "virtualWallLineColor": {
+          "type": "color",
+          "desc": "虚线颜色",
+          "value": "rgba(248,28,28,1)"
+        },
+        "virtualWallLineWidth": {
+          "type": "number",
+          "desc": "虚线宽度",
+          "value": 1
+        },
+        "virtualWallMaxNum": {
+          "type": "number",
+          "desc": "可设置个数最大值",
+          "value": 8
+        }
+      }
+    },
+    "selectAreaConfig": {
+      "selectAreaAvailable": {
+        "type": "boolean",
+        "desc": "划区清扫_是否支持",
+        "value": true
+      },
+      "selectAreaProtocolVersion": {
+        "type": "radio",
+        "desc": "划区协议版本",
+        "value": "V1.0.0",
+        "values": [
+          {
+            "value": "V1.0.0",
+            "label": "V1.0.0"
+          },
+          {
+            "value": "V1.1.0",
+            "label": "V1.1.0"
+          }
+        ]
+      },
+      "selectAreaCountAvailable": {
+        "type": "boolean",
+        "desc": "划区清扫次数_是否支持",
+        "value": true
+      },
+      "selectAreaBgColor": {
+        "type": "color",
+        "desc": "区域背景色",
+        "value": "rgba(70,133,255,0.5)"
+      },
+      "selectAreaLineColor": {
+        "type": "color",
+        "desc": "边虚线颜色",
+        "value": "#ffffff"
+      },
+      "selectAreaMaxNum": {
+        "type": "number",
+        "desc": "可设置最大数量",
+        "value": 8
+      },
+      "selectAreaTimesMaxNum": {
+        "type": "number",
+        "desc": "划区清扫_最大清扫次数",
+        "value": 3
+      }
+    },
+    "selectPointConfig": {
+      "selectPointAvailable": {
+        "type": "boolean",
+        "desc": "指哪扫哪_是否支持",
+        "value": true
+      },
+      "selectPointUrl": {
+        "type": "string",
+        "desc": "指示位置图标",
+        "value": "/smart/Group6@2x.png"
+      }
+    },
+    "selectRoomConfig": {
+      "selectRoomAvailable": {
+        "type": "boolean",
+        "desc": "选区清扫_是否支持",
+        "value": true
+      },
+      "selectRoomCountAvailable": {
+        "type": "boolean",
+        "desc": "选区清扫_是否支持",
+        "value": true
+      },
+      "selectRoomTimesMaxNum": {
+        "type": "number",
+        "desc": "选区清扫_最大清扫次数",
+        "value": 3
+      }
+    },
+    "scheduleConfig": {
+      "scheduleType": {
+        "type": "radio",
+        "desc": "预约清扫通道",
+        "value": "cloud",
+        "values": [
+          {
+            "value": "cloud",
+            "label": "cloud"
+          },
+          {
+            "value": "local",
+            "label": "local"
+          }
+        ]
+      },
+      "scheduleLocal": {
+        "scheduleLocalMode": {
+          "scheduleLocalModeAvailable": {
+            "type": "boolean",
+            "desc": "定时-工作模式是否支持设置",
+            "value": true
+          },
+          "scheduleLocalModeEnum": {
+            "desc": "工作模式可设置参数",
+            "type": "enum",
+            "value": [
+              "0",
+              "1",
+              "2"
+            ]
+          }
+        },
+        "scheduleLocalWater": {
+          "scheduleLocalWaterAvailable": {
+            "type": "boolean",
+            "desc": "定时-水量-是否支持设置",
+            "value": true
+          },
+          "scheduleLocalWaterEnum": {
+            "desc": "水量可设置参数",
+            "type": "enum",
+            "value": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "scheduleLocalWaterDisableEnum": {
+            "desc": "水量不可设置的工作模式",
+            "type": "enum",
+            "value": [],
+            "values": []
+          }
+        },
+        "scheduleLocalFan": {
+          "scheduleLocalFanAvailable": {
+            "type": "boolean",
+            "desc": "定时-吸力-是否支持设置",
+            "value": true
+          },
+          "scheduleLocalFanEnum": {
+            "desc": "吸力可设置参数",
+            "type": "enum",
+            "value": [
+              "0",
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "scheduleLocalFanDisableEnum": {
+            "desc": "吸力不可设置的工作模式",
+            "type": "enum",
+            "value": [],
+            "values": []
+          }
+        },
+        "scheduleLocalCount": {
+          "scheduleLocalCountAvailable": {
+            "type": "boolean",
+            "desc": "定时-次数是否支持设置",
+            "value": true
+          },
+          "scheduleLocalCountEnum": {
+            "desc": "次数可设置参数",
+            "type": "enum",
+            "value": [
+              "1",
+              "2",
+              "3"
+            ]
+          },
+          "scheduleLocalOrderDisableEnum": {
+            "desc": "次数不可设置的工作模式",
+            "type": "enum",
+            "value": [],
+            "values": []
+          }
+        },
+        "scheduleLocalLocationSet": {
+          "type": "boolean",
+          "desc": "定时-位置是否支持设置",
+          "value": true
+        },
+        "scheduleLocalMaxNum": {
+          "type": "number",
+          "desc": "本地定时最大上限条数设置",
+          "value": 10
+        }
+      }
+    },
+    "ringConfig": {
+      "ringAvailable": {
+        "type": "boolean",
+        "desc": "动态效果_是否支持",
+        "value": true
+      },
+      "ringBgColor": {
+        "type": "color",
+        "desc": "圈颜色",
+        "value": "rgba(0,0,0,0.5)"
+      },
+      "ringMaxRate": {
+        "type": "number",
+        "desc": "圈最大放大倍数",
+        "value": 2
+      },
+      "ringDuration": {
+        "type": "number",
+        "desc": "呼吸圈动画频率",
+        "value": 1
+      }
+    },
+    "pathConfig": {
+      "pathColor": {
+        "transitions": {
+          "type": "color",
+          "desc": "转场路径颜色",
+          "value": "#FFD700"
+        },
+        "common": {
+          "type": "color",
+          "desc": "正常路径颜色",
+          "value": "rgba(255,255,255,1)"
+        },
+        "backCharge": {
+          "type": "color",
+          "desc": "回充颜色",
+          "value": "rgba(0,0,0,0)"
+        },
+        "reserved": {
+          "type": "color",
+          "desc": "预留颜色",
+          "value": "rgba(255,255,255,1)"
+        }
+      },
+      "pathWidth": {
+        "type": "number",
+        "desc": "路径线条宽度",
+        "value": 0.5
+      }
+    },
+    "timeFormatConfig": {
+      "recordTimeIs24": {
+        "type": "boolean",
+        "desc": "清扫记录时间制—是否24小时",
+        "value": true
+      },
+      "scheduleTimeIs24": {
+        "type": "boolean",
+        "desc": "预约清扫时间制—是否24小时",
+        "value": true
+      }
+    },
+    "materialObjConfig": {
+      "materialObjAvaiable": {
+        "type": "boolean",
+        "desc": "虚拟物体展示-是否支持",
+        "value": true
+      },
+      "materialObjWidth": {
+        "type": "number",
+        "desc": "虚拟物体-宽度",
+        "value": 20
+      },
+      "materialObjHeight": {
+        "type": "number",
+        "desc": "虚拟物体-高度",
+        "value": 20
+      },
+      "materialObjEnum": {
+        "desc": "虚拟物体-可设置的图标",
+        "type": "enum",
+        "value": [
+          "/app/robot/png/AI_ico/Wire.png",
+          "/app/robot/png/AI_ico/Shoes.png",
+          "/app/robot/png/AI_ico/Sock.png",
+          "/app/robot/png/AI_ico/Toy.png",
+          "/app/robot/png/AI_ico/Chair.png",
+          "/app/robot/png/AI_ico/Table.png",
+          "/app/robot/png/AI_ico/Ashcan.png",
+          "/app/robot/png/AI_ico/Flowerpot.png"
+        ]
+      }
+    }
+  }
+}
