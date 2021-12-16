@@ -17,13 +17,13 @@ $ cd tuya-panel-centralControlScreen-example
 ## Introduction
 
 This template project is suitable for Tuya central control products and supports the following functions:
-1. Control the hiding and display of equipment
-2. Control the hiding and display of the scene
-3. Management of voice scenes
-4. Gateway function
-5. Custom wake word
-6. Control of relay switch
-7. Music player related functions
+- Voice scene management
+- Scene management
+- Device management
+- Gateway function
+- Jump to the music player panel
+- Nickname settings (custom wake-up words)
+- Relay switch control and name setting
 
 You can scan the following QR code through the Tuya app to preview.
 
