@@ -1,0 +1,43 @@
+# 中控屏模板
+
+[English](./README.md) | 简体中文
+
+如需获取更多信息，请浏览 [涂鸦官方文档](https://docs.tuya.com)
+
+对于中国大陆以外的用户，请删除 `.npmrc` 文件。
+
+## 手动下载
+
+```bash
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/centralControlScreen
+$ mv basic tuya-panel-centralControlScreen-example
+$ cd tuya-panel-centralControlScreen-example
+```
+
+## 介绍
+
+该模板工程适用于涂鸦中控品类产品，支持以下功能: 
+- 语音场景的管理
+- 控制设备的隐藏和显示
+- 控制场景的隐藏和显示
+- 网关功能
+- 提供音乐入口跳转到音乐播放面板
+- 昵称设置（自定义唤醒词）
+- 继电器开关的控制
+
+
+您可以通过涂鸦 App 扫描以下二维码进行预览。
+
+![centralControlScreen](https://imagesd.tuyaus.com/tyims/rms-static/edce1d80-5350-11ec-bf56-238df7ae6cb1-1638436759384.png?tyName=centralControlScreen.png)
+
+## 快速运行
+
+```bash
+$ npm install && npm run start
+# 或者
+$ yarn && yarn start
+```
+
+## 许可证
+
+Copyright © 2020
