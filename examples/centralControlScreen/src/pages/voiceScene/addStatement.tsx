@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { Utils, TYSdk, TYText, TopBar } from 'tuya-panel-kit';
-import { alertDialog } from '@utils';
+import { alertDialog, back } from '@utils';
 import { useSelector, actions } from '@models';
 import Strings from '@i18n';
 import { theme } from '@config';
@@ -49,7 +49,7 @@ const AddStatement: FC = () => {
     _voiceRules.push({ condition: sceneName });
 
     dispatch(actions.voiceScene.saveVoice(_voiceRules));
-    TYSdk.Navigator.pop();
+    back();
   };
 
   const _onChangeText = name => {
@@ -61,7 +61,7 @@ const AddStatement: FC = () => {
       <TopBar
         title={Strings.getLang('addStatement')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('save'),

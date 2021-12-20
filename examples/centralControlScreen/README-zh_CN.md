@@ -28,7 +28,7 @@ $ cd tuya-panel-centralControlScreen-example
 
 您可以通过涂鸦 App 扫描以下二维码进行预览。
 
-![centralControlScreen](https://imagesd.tuyaus.com/tyims/rms-static/edce1d80-5350-11ec-bf56-238df7ae6cb1-1638436759384.png?tyName=centralControlScreen.png)
+![centralControlScreen](https://imagesd.tuyaus.com/tyims/rms-static/c24e08b0-6173-11ec-90a0-319a18fd1baa-1639991035067.png?tyName=centralControlScreen.png)
 
 ## 快速运行
 

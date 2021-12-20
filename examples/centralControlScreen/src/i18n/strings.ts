@@ -55,7 +55,7 @@ export default {
 
     nameNull: 'Nickname can not be blank',
     devicesLess: 'Hide device',
-    tips: 'tips',
+    tips: 'Tips',
     saveSuccess: 'Set successfully',
     noneName: 'Name is required',
     addScenesTitle: 'Please add the scene controlled in the smart panel',

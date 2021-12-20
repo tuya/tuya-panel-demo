@@ -10,7 +10,7 @@ import { useSelector, actions } from '@models';
 import { EmptyView, DeviceItem, Tabs } from '@components';
 import { IFormatDeviceItem, EResourceType } from '@interface';
 import { restoreResource } from '@api';
-import { alertDialog } from '@utils';
+import { alertDialog, back } from '@utils';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -57,7 +57,7 @@ const DeviceRestore: FC = () => {
       <TopBar
         title={Strings.getLang('deviceRestore')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('confirm'),
@@ -132,12 +132,12 @@ const DeviceRestore: FC = () => {
       .then(() => {
         // TYSdk.mobile.hideLoading();
         getDevList();
-        alertDialog(Strings.getLang('saveSuccess'), TYSdk.Navigator.pop);
+        alertDialog(Strings.getLang('saveSuccess'), back);
       })
       .catch((err: any) => {
         console.log(err);
         // TYSdk.mobile.hideLoading();
-        alertDialog(Strings.getLang('saveFail'), TYSdk.Navigator.pop);
+        alertDialog(Strings.getLang('saveFail'), back);
       });
   };
 

@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { Utils, TYSdk, TopBar, IconFont, TYText, DeprecatedNavigatorRoute } from 'tuya-panel-kit';
 import { getDeviceLists, getSceneLists } from '@api';
-import { jumpToPage } from '@utils';
+import { jumpToPage, back } from '@utils';
 import { IDevItemFromApp } from '@interface';
 import Strings from '@i18n';
 
@@ -60,11 +60,7 @@ const ChooseDevice: FC<IControlDevProps> = ({ type }) => {
 
   const renderTopBar = () => {
     return (
-      <TopBar
-        title={Strings.getLang('action_device')}
-        background="transparent"
-        onBack={TYSdk.Navigator.pop}
-      />
+      <TopBar title={Strings.getLang('action_device')} background="transparent" onBack={back} />
     );
   };
 
