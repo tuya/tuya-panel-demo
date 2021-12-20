@@ -1,23 +1,23 @@
-import React from 'react';
-import { View, ViewPropTypes, ColorPropType } from 'react-native';
+import React, { FC } from 'react';
+import { View, StyleProp, ViewStyle } from 'react-native';
 import { Utils } from 'tuya-panel-kit';
 
 const { width } = Utils.RatioUtils;
 
-const TabPanel = ({ style, background, ...props }) => (
-  <View style={[{ width }, { backgroundColor: background }, style]} {...props} />
-);
-
-TabPanel.propTypes = {
+interface ITabPanelProps {
   /**
    *  内容样式
    */
-  style: ViewPropTypes.style,
+  style?: StyleProp<ViewStyle>;
   /**
    *  背景色
    */
-  background: ColorPropType,
-};
+  background?: string;
+}
+
+const TabPanel: FC<ITabPanelProps> = ({ style, background, ...props }) => (
+  <View style={[{ width }, { backgroundColor: background }, style]} {...props} />
+);
 
 TabPanel.defaultProps = {
   style: null,

@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-array-index-key */
 import React, { Component } from 'react';
 import {
@@ -19,7 +20,7 @@ const { winWidth } = Utils.RatioUtils;
 
 interface IAnimationConfig {
   duration: number;
-  easing: () => void;
+  easing: () => number;
   delay: number;
   isInteraction: boolean;
   useNativeDriver: boolean;
@@ -62,7 +63,7 @@ interface ITabContentProps {
   /**
    * 自定义渲染预加载中的占位容器
    */
-  renderPlaceholder?: () => void;
+  renderPlaceholder?: (activeIndex: number, child: any) => React.ReactElement;
 
   /**
    * 动画配置
@@ -77,10 +78,14 @@ interface ITabContentState {
 
 export default class TabContent extends Component<ITabContentProps, ITabContentState> {
   _bounds: number[];
+
   _curDeltaX: number;
+
   _panResponder: PanResponderInstance;
+
   _timerId;
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     style: null,
     disabled: false,
@@ -122,7 +127,6 @@ export default class TabContent extends Component<ITabContentProps, ITabContentS
         return this.isHorizontalSwipe(gestureState); // 如果是水平滚动则捕获内部手势，用于兼容内部是ScrollView的情况
       },
       onPanResponderTerminationRequest: () => false, // 上层的responder是否能中断当前的responder
-      onPanResponderGrant: this._handleGrant,
       onPanResponderMove: this._handleMove,
       onPanResponderRelease: this._handleRelease,
       // onPanResponderTerminate: this._handleRelease,
@@ -197,8 +201,6 @@ export default class TabContent extends Component<ITabContentProps, ITabContentS
     this.state.scrollX.setValue(deltaX);
     return deltaX;
   }
-
-  _handleGrant = () => {};
 
   _handleMove = (e, gestureState) => {
     const { onMove } = this.props;

@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types';
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import {
   View,
-  ViewPropTypes,
   Animated,
   Easing,
-  string,
   StyleSheet,
   PanResponder,
   PanResponderInstance,
@@ -44,7 +42,7 @@ const { winWidth } = RatioUtils;
 
 interface IAnimationConfig {
   duration: number;
-  easing: () => void;
+  easing: () => number;
   delay: number;
   isInteraction: boolean;
   useNativeDriver: boolean;
@@ -139,7 +137,7 @@ interface ITabsProps {
   /**
    * Tab变更回调
    */
-  onChange: () => void;
+  onChange: (tab: any, idx: number) => void;
   /**
    * Tab 的子元素，一般为 TabContent
    */
@@ -162,14 +160,22 @@ interface ITabsState {
 
 export default class Tabs extends Component<ITabsProps, ITabsState> {
   _tabsWidth: number;
+
   _tabWidth: number;
+
   _bounds: number[];
+
   _curDeltaX: number; // 当前的x轴偏移量
+
   _tabIsReady: boolean;
+
   _tabLayouts: any[];
+
   _cachedChildren: number[];
+
   _panResponder: PanResponderInstance;
-  animationFn
+
+  animationFn;
 
   static TabPanel = TabPanel;
 
@@ -177,6 +183,7 @@ export default class Tabs extends Component<ITabsProps, ITabsState> {
 
   static TabScrollView = TabScrollView;
 
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = {
     accessibilityLabel: 'Tabs',
     style: null,
@@ -242,7 +249,6 @@ export default class Tabs extends Component<ITabsProps, ITabsState> {
       onMoveShouldSetPanResponder: () => !this.props.disabled,
       onMoveShouldSetPanResponderCapture: () => !this.props.disabled,
       onPanResponderTerminationRequest: () => !this.props.disabled, // 上层的responder是否能中断当前的responder
-      onPanResponderGrant: () => {},
       onPanResponderMove: this._handleMove,
       onPanResponderRelease: this._handleRelease,
       onPanResponderTerminate: this._handleRelease,

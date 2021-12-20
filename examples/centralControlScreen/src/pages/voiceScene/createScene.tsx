@@ -20,6 +20,7 @@ import {
   Utils,
   Dialog,
   DeprecatedNavigatorRoute,
+  DeprecatedNavigator,
   TopBar,
 } from 'tuya-panel-kit';
 import { useSelector, actions } from '@models';
@@ -32,6 +33,7 @@ import Strings from '@i18n';
 import Res from '@res';
 
 const { convertX: cx, width, isIphoneX } = Utils.RatioUtils;
+const TYNavigator = TYSdk.Navigator as DeprecatedNavigator;
 const background = '#F9F9F9';
 
 const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
