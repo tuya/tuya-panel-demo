@@ -20,7 +20,7 @@ const GridLayout: FC<GridLayoutProps> = ({ children, data, rowNum }) => {
         key={rowIndex} // eslint-disable-line react/no-array-index-key
         style={[styles.row, styles.gridRow]}
       >
-        {grids.map((d, i) => {
+        {grids.map((d: any, i) => {
           return children(d);
         })}
       </View>

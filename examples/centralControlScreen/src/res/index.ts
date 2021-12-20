@@ -50,4 +50,4 @@ export default {
   voiceBg: require('./voiceBg.png'),
   wea: require('./wea.png'),
   weather: require('./weather.png'),
-}
+};

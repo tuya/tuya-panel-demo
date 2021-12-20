@@ -103,7 +103,6 @@ export default {
     emptyDevices: 'No smart device added',
     noChooseScenes: 'No scene is currently checked',
     addDevicesTitle: 'Please add the device controlled in the smart panel',
-    
 
     /* The part of voice scene */
     warning: 'warning',
@@ -118,8 +117,7 @@ export default {
     choiceTouchScene: 'Choose scene:',
     saying: 'Saying',
     actionTip: 'Intelligent speakers to perform an action',
-    actionTip_tips:
-      'Multiple tasks can be added, and Xiaozhi Manager will execute them one by one',
+    actionTip_tips: 'Multiple tasks can be added, and Xiaozhi Manager will execute them one by one',
     addAction: 'Add action',
     useDevice: 'Available device:',
     numberTip: 'Only support Chinese, and no more than 20',
@@ -157,8 +155,7 @@ export default {
     scene_name: 'Scene Name',
     scene_name_tip: "Please set the Scene's name",
     active_condition: 'Execute Condition',
-    active_condition_tip:
-      'Add similar statements to more accurately identify your instructions',
+    active_condition_tip: 'Add similar statements to more accurately identify your instructions',
     conditions_add: 'Add Condition',
     scene_select: 'Scene Select',
     micro_open: 'Open',
@@ -243,7 +240,7 @@ export default {
     addVoiceTitle: '请添加可语音控制的智能场景',
     tips: '提示',
     scenesAdd: '添加场景',
-    
+
     restore: '恢复显示',
     devicesLess: '隐藏设备',
     scenesLess: '隐藏场景',
@@ -255,7 +252,7 @@ export default {
     renameSubName: '修改设备名称',
     save: '保存',
     voiceMain: '语音技能',
-    
+
     allDevs: '所有设备',
     noneName: '名称不能为空',
     renameFail: '服务器失联，请稍后再试',
@@ -268,7 +265,7 @@ export default {
     toAdd: '指示灯在快闪',
     toMoreSub: '查看更多设备重置方式 >',
     nameOverLong: '最大不可超过10字符',
-    
+
     setNickname: '昵称设置',
     deleteTip: '您确定要删除昵称吗？',
     nameNull: '昵称不能为空',
@@ -279,7 +276,6 @@ export default {
     setNicknameSuccess: '昵称设置成功',
     setNicknameFail: '昵称设置失败',
     deleteNicknameSuccess: '删除昵称成功',
-    
 
     /* 语音场景部分 */
     warning: '提醒',
