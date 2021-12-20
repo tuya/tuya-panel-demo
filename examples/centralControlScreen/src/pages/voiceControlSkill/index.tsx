@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Strings from '@i18n';
 import Res from '@res';
 import { theme } from '@config';
+import { back } from '@utils';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -30,8 +31,6 @@ const list = [
 ];
 
 const VoiceControlSkill: FC = () => {
-  const back = useCallback(() => TYSdk.Navigator.pop(), []);
-
   const renderTopBar = () => {
     return (
       <TopBar

@@ -1,13 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, TouchableOpacity, Dimensions } from 'react-native';
-import { Utils, Toast, TYSdk, TopBar, TYText, Dialog } from 'tuya-panel-kit';
+import { Utils, Toast, TYSdk, TopBar, TYText, Dialog, DeprecatedNavigator } from 'tuya-panel-kit';
 import Strings from '@i18n';
 import { getNickname, deleteNickname, setNickname } from '@api';
 import { theme } from '@config';
-import { alertDialog, showToast } from '@utils';
+import { alertDialog, showToast, back } from '@utils';
 
 const { width, height } = Dimensions.get('window');
 const { convertX: cx, isIphoneX } = Utils.RatioUtils;
+const TYNavigator = TYSdk.Navigator as DeprecatedNavigator;
 
 const nameTipList = [
   Strings.getLang('nameTip1'),
@@ -48,7 +49,7 @@ const SetNickname: FC = () => {
         close();
         deleteNickname()
           .then(d => {
-            showToast(Strings.getLang('deleteNicknameSuccess'), TYSdk.Navigator.popToTop);
+            showToast(Strings.getLang('deleteNicknameSuccess'), TYNavigator.popToTop);
           })
           .catch(err => {
             console.log(err);
@@ -76,7 +77,7 @@ const SetNickname: FC = () => {
     }
     setNickname(name)
       .then(d => {
-        alertDialog(Strings.getLang('setNicknameSuccess'), TYSdk.Navigator.popToTop);
+        alertDialog(Strings.getLang('setNicknameSuccess'), TYNavigator.popToTop);
       })
       .catch(err => {
         const errMsg = err && err.message;
@@ -90,7 +91,7 @@ const SetNickname: FC = () => {
       <TopBar
         title={Strings.getLang('setNickname')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('save'),

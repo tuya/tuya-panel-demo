@@ -11,7 +11,7 @@ import {
   Picker,
   DeprecatedNavigatorRoute,
 } from 'tuya-panel-kit';
-import { alertDialog } from '@utils';
+import { alertDialog, back } from '@utils';
 import { actions, useSelector } from '@models';
 import { theme, statementInfo, statements } from '@config';
 import Strings from '@i18n';
@@ -82,7 +82,7 @@ const AddAction: FC<IAddActionProps> = ({
       newActions[index] = args;
     }
     dispatch(actions.voiceScene.saveActions(newActions));
-    TYSdk.Navigator.pop();
+    back();
   };
 
   const _renderStatement = () => {
@@ -175,7 +175,7 @@ const AddAction: FC<IAddActionProps> = ({
       <TopBar
         title={Strings.getLang(`action_${type}`)}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('save'),

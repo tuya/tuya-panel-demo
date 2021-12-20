@@ -8,7 +8,7 @@ import Res from '@res';
 import { theme } from '@config';
 import { useSelector, actions } from '@models';
 import { EmptyView, DeviceItem, Swipeout } from '@components';
-import { jumpToPage, alertDialog, showToast } from '@utils';
+import { jumpToPage, back, showToast } from '@utils';
 import { IFormatDeviceItem, EResourceType } from '@interface';
 import { hideResource } from '@api';
 
@@ -53,7 +53,7 @@ const Device: FC = () => {
       <TopBar
         title={Strings.getLang('devices')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Res.hide,

@@ -27,7 +27,7 @@ This template project is suitable for Tuya central control products and supports
 
 You can scan the following QR code through the Tuya app to preview.
 
-![centralControlScreen](https://imagesd.tuyaus.com/tyims/rms-static/edce1d80-5350-11ec-bf56-238df7ae6cb1-1638436759384.png?tyName=centralControlScreen.png)
+![centralControlScreen](https://imagesd.tuyaus.com/tyims/rms-static/c24e08b0-6173-11ec-90a0-319a18fd1baa-1639991035067.png?tyName=centralControlScreen.png)
 
 ## Running
 

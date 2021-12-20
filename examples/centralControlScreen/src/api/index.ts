@@ -1,5 +1,4 @@
 import { TYSdk } from 'tuya-panel-kit';
-import { NativeModules } from 'react-native';
 import {
   EResourceType,
   IDevItemFromApp,
@@ -15,24 +14,8 @@ import {
   ISaveVoiceScene,
 } from '@interface';
 
-const TYPublicNative = NativeModules.TYRCTScenePanelManager;
-
 const api = (a: string, postData = {}, v = '1.0') => {
   return TYSdk.apiRequest(a, postData, v) as any;
-};
-
-/**
- * @language en-US
- * @description Get the list of scene and automation in the family
- */
-/**
- * @language zh-CN
- * @description 获取家庭下的场景和自动化列表
- */
-export const getSceneAndAuto = () => {
-  return new Promise((resolve, reject) => {
-    TYPublicNative.getAllSceneAndAuto(resolve, reject);
-  });
 };
 
 /**
