@@ -14,7 +14,7 @@ import {
 } from 'tuya-panel-kit';
 import { disableVoiceScene, enableVoiceScene } from '@api';
 import { EmptyView } from '@components';
-import { alertDialog, jumpToPage } from '@utils';
+import { alertDialog, jumpToPage, back } from '@utils';
 import { useSelector, actions } from '@models';
 import { theme, statements, conditionsCfg } from '@config';
 import Res from '@res';
@@ -242,7 +242,7 @@ const SceneList: FC<DeprecatedNavigatorRoute> = ({ id }) => {
       <TopBar
         title={Strings.getLang('voiceScene')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             name: 'plus',

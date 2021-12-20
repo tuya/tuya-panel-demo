@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState, useMemo, useEffect } from 'react';
 import { View, StyleSheet, Image, FlatList } from 'react-native';
-import { Utils, TYSdk, Dialog, TopBar, GlobalToast } from 'tuya-panel-kit';
+import { Utils, TYSdk, Dialog, TopBar } from 'tuya-panel-kit';
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import Strings from '@i18n';
@@ -10,7 +10,7 @@ import { SceneItem, EmptyView, Swipeout } from '@components';
 import { hideResource } from '@api';
 import { useSelector, actions } from '@models';
 import { EResourceType, ISceneItem } from '@interface';
-import { jumpToPage, alertDialog, showToast } from '@utils';
+import { jumpToPage, back, showToast } from '@utils';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -99,7 +99,7 @@ const Scene: FC = () => {
       <TopBar
         title={Strings.getLang('scenes')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Res.hide,

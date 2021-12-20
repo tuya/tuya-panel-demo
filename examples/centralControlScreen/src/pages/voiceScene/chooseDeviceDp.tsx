@@ -2,10 +2,18 @@ import React, { FC, useState, useEffect } from 'react';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Utils, Slider, TopBar, TYSdk, TYText, DeprecatedNavigatorRoute } from 'tuya-panel-kit';
+import {
+  Utils,
+  Slider,
+  TopBar,
+  TYSdk,
+  TYText,
+  DeprecatedNavigatorRoute,
+  DeprecatedNavigator,
+} from 'tuya-panel-kit';
 import { ButtonList } from '@components';
 import { getDeviceDpLists } from '@api';
-import { alertDialog, formatVal } from '@utils';
+import { alertDialog, formatVal, back } from '@utils';
 import { useSelector, actions } from '@models';
 import { IDeviceDPInfo, IChooseDpItem, IDps } from '@interface';
 import Strings from '@i18n';
@@ -14,6 +22,7 @@ import { theme } from '@config';
 
 const { convertX } = Utils.RatioUtils;
 const background = '#FFF';
+const TYNavigator = TYSdk.Navigator as DeprecatedNavigator;
 
 interface IControlDevDpProps extends DeprecatedNavigatorRoute {
   devId?: string;
@@ -139,11 +148,11 @@ const ChooseDeviceDp: FC<IControlDevDpProps> = ({ devId, devName, method, index 
       }
       actionState.push(_args);
       dispatch(actions.voiceScene.saveActions(actionState));
-      TYSdk.Navigator.popN(2);
+      TYNavigator.popN(2);
     } else {
       actionState[index] = _args;
       dispatch(actions.voiceScene.saveActions(actionState));
-      TYSdk.Navigator.pop();
+      back();
     }
   };
 
@@ -215,7 +224,7 @@ const ChooseDeviceDp: FC<IControlDevDpProps> = ({ devId, devName, method, index 
       <TopBar
         title={devName}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('save'),

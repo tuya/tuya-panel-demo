@@ -10,7 +10,7 @@ import { hideResource } from '@api';
 import { EmptyView, SceneItem } from '@components';
 import { useSelector, actions } from '@models';
 import { ISceneItem, EResourceType } from '@interface';
-import { alertDialog } from '@utils';
+import { alertDialog, back } from '@utils';
 
 const { convertX: cx } = Utils.RatioUtils;
 
@@ -23,8 +23,6 @@ const SceneRestore: FC = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  const back = () => TYSdk.Navigator.pop();
 
   const getData = () => {
     dispatch(actions.async.getSceneList());

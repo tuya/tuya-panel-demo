@@ -8,7 +8,7 @@ import Res from '@res';
 import { dpCodes, theme } from '@config';
 import { useSelector, actions } from '@models';
 import { EmptyView, DeviceItem } from '@components';
-import { jumpToPage, alertDialog } from '@utils';
+import { jumpToPage, alertDialog, back } from '@utils';
 import { IFormatDeviceItem, EResourceType } from '@interface';
 import { hideResource } from '@api';
 
@@ -44,21 +44,18 @@ const DeviceHide: FC = () => {
     if (!selectedDevIds.length && !selectedGroupIds.length) {
       return alertDialog(Strings.getLang('noChooseDevices'));
     }
-    // TYSdk.mobile.showLoading();
     const promiseList: any[] = [];
     selectedDevIds.length && promiseList.push(hideResource(EResourceType.device, selectedDevIds));
     selectedGroupIds.length &&
       promiseList.push(hideResource(EResourceType.group, selectedGroupIds));
     Promise.all(promiseList)
       .then(() => {
-        // TYSdk.mobile.hideLoading();
         getDevList();
-        alertDialog(Strings.getLang('saveSuccess'), TYSdk.Navigator.pop);
+        alertDialog(Strings.getLang('saveSuccess'), back);
       })
       .catch((err: any) => {
         console.log(err);
-        // TYSdk.mobile.hideLoading();
-        alertDialog(Strings.getLang('saveFail'), TYSdk.Navigator.pop);
+        alertDialog(Strings.getLang('saveFail'), back);
       });
   };
 
@@ -67,7 +64,7 @@ const DeviceHide: FC = () => {
       <TopBar
         title={Strings.getLang('devicesLess')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('confirm'),

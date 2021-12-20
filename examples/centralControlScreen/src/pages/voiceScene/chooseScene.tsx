@@ -7,7 +7,7 @@ import { ButtonRadios } from '@components';
 import { useSelector, actions } from '@models';
 import { getIotSceneList } from '@api';
 import { ISceneForVoiceItem } from '@interface';
-import { alertDialog } from '@utils';
+import { alertDialog, back } from '@utils';
 import Strings from '@i18n';
 import { statements, theme } from '@config';
 
@@ -88,7 +88,7 @@ const SceneTouch: FC<ISceneTouchProps> = ({ intelligentSceneId, index = 0 }) => 
       actionState.push(args);
     }
     dispatch(actions.voiceScene.saveActions(actionState));
-    TYSdk.Navigator.pop();
+    back();
   };
 
   const renderItem = () => {
@@ -109,7 +109,7 @@ const SceneTouch: FC<ISceneTouchProps> = ({ intelligentSceneId, index = 0 }) => 
       <TopBar
         title={Strings.getLang('voiceScene')}
         background="transparent"
-        onBack={TYSdk.Navigator.pop}
+        onBack={back}
         actions={[
           {
             source: Strings.getLang('save'),

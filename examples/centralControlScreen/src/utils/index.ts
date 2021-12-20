@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { Utils, TYSdk, Dialog, GlobalToast } from 'tuya-panel-kit';
+import { Utils, TYSdk, Dialog, GlobalToast, DeprecatedNavigator } from 'tuya-panel-kit';
 import _ from 'lodash';
 import { IDevItemFromAPI, EResourceType, IFormatDeviceItem, IRoomItem } from '@interface';
 import { categoryList } from '@config';
@@ -46,24 +46,28 @@ export const hexToRgb = (colorVal: string, opacity: number) => {
 };
 
 export const jumpToPage = (id: string, params?: any) => {
-  console.log(`id`, id);
-
-  TYSdk.Navigator.push({
+  const TYNavigator = TYSdk.Navigator as DeprecatedNavigator;
+  TYNavigator.push({
     id,
     ...params,
   });
 };
 
+export const back = () => {
+  const TYNavigator = TYSdk.Navigator as DeprecatedNavigator;
+  TYNavigator.pop();
+};
+
 export const alertDialog = (
   title = '',
-  onConfirm = () => ({}),
+  onConfirm?: () => void,
   confirmText = Strings.getLang('confirm')
 ) => {
   Dialog.alert({
     title,
     confirmText,
     onConfirm: (_data, { close }) => {
-      onConfirm();
+      typeof onConfirm === 'function' && onConfirm();
       close();
     },
   });

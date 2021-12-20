@@ -23,7 +23,7 @@ import {
   TopBar,
 } from 'tuya-panel-kit';
 import { useSelector, actions } from '@models';
-import { alertDialog, jumpToPage, objCompare, hexToRgb } from '@utils';
+import { alertDialog, jumpToPage, objCompare, hexToRgb, back } from '@utils';
 import { DragSortableView } from '@components';
 import { saveVoiceScene, deleteScene } from '@api';
 import { theme, statements, conditionsCfg, conditionType } from '@config';
@@ -33,6 +33,7 @@ import Res from '@res';
 
 const { convertX: cx, width, isIphoneX } = Utils.RatioUtils;
 const background = '#F9F9F9';
+
 const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
   const { themeColor } = theme;
   const { voiceSceneState } = useSelector(state => state);
@@ -60,7 +61,7 @@ const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
   useEffect(() => {
     // 安卓后退按钮兼容
     BackHandler.addEventListener('hardwareBackPress', () => {
-      const router = TYSdk.Navigator.getCurrentRoutes();
+      const router = TYNavigator.getCurrentRoutes();
       // 在当前页面返回时，是否有更改未保存
       if (_.get(_.last(router), 'id') === routerId) {
         clear();
@@ -117,7 +118,7 @@ const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
       .then(res => {
         TYSdk.mobile.hideLoading();
         if (res) {
-          TYSdk.Navigator.pop();
+          back();
           getVoiceSceneList();
         }
       })
@@ -173,7 +174,7 @@ const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
   const clear = () => {
     const diff = objCompare(originData, voiceSceneStateRef.current);
     if (_.isEmpty(diff)) {
-      TYSdk.Navigator.pop();
+      back();
       return false;
     }
     Dialog.confirm({
@@ -182,7 +183,7 @@ const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
       cancelText: Strings.getLang('cancel'),
       onConfirm: (data, { close }) => {
         close();
-        TYSdk.Navigator.pop();
+        back();
       },
     });
   };
@@ -362,7 +363,7 @@ const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
 
   const _renderRules = () => {
     const voiceRules = _.get(voiceSceneState, 'voiceRules', []);
-    const autoRules = _.get(voiceSceneState, 'autoRules', []);
+    const autoRules: any[] = _.get(voiceSceneState, 'autoRules', []);
     const matchType = _.get(voiceSceneState, 'matchType', '1');
     const hasVoiceRules = voiceRules.length > 0;
     const hasAutoRules = autoRules.length > 0;
@@ -484,12 +485,12 @@ const CreateScene: FC<DeprecatedNavigatorRoute> = ({ id: routerId }) => {
         if (id) {
           deleteScene(id).then(res => {
             if (res) {
-              TYSdk.Navigator.pop();
+              back();
               getVoiceSceneList();
             }
           });
         } else {
-          TYSdk.Navigator.pop();
+          back();
         }
       },
     });
