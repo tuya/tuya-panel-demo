@@ -1,5 +1,6 @@
 # Tuya Panel Templates
 
+<!--test-->
 English | [简体中文](./README-zh_CN.md)
 
 This document provides development templates of common categories.
