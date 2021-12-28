@@ -98,7 +98,6 @@ const SceneRestore: FC = () => {
         ListEmptyComponent={
           <EmptyView
             text={Strings.getLang('emptyHideScenes')}
-            addText={Strings.getLang('add')}
             iconStyle={{ width: cx(160), height: cx(160) }}
             icon={Res.noneScenes}
             hideAddBtn={true}

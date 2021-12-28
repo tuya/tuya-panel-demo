@@ -124,10 +124,8 @@ const Scene: FC = () => {
         ListEmptyComponent={
           <EmptyView
             text={Strings.getLang('addScenesTitle')}
-            addText={Strings.getLang('add')}
             icon={Res.emptyScenes}
             hideAddBtn={true}
-            onPress={() => jumpToPage('sceneRestore')}
           />
         }
       />

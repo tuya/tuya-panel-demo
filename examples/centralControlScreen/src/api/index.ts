@@ -299,25 +299,6 @@ export const deleteScene = (id: string) =>
 
 /**
  * @language en-US
- * @param {string} devId Device id.
- * @description Get the list of trigger conditions of the device.
- */
-/**
- * @language zh-CN
- * @param {string} devId 设备id
- * @description 获取设备的触发条件列表
- */
-export const getConditionSource = (devId: string): Promise<IConditionItem[]> =>
-  api(
-    'tuya.m.linkage.condition.source',
-    {
-      devId,
-    },
-    '3.0'
-  );
-
-/**
- * @language en-US
  * @param {string} sceneId The id of the sound scene to be enabled.
  * @description Enable the sound scene.
  */

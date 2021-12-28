@@ -17,7 +17,7 @@ const { convertX: cx } = Utils.RatioUtils;
 
 interface IEmptyProps {
   text: string;
-  addText: string;
+  addText?: string;
   hideAddBtn?: boolean;
   icon: ImageSourcePropType;
   btnStyle?: StyleProp<TextStyle>;
@@ -58,6 +58,7 @@ const EmptyView: FC<IEmptyProps> = ({
 };
 
 EmptyView.defaultProps = {
+  addText: '',
   hideAddBtn: false,
   btnStyle: {},
   style: {},

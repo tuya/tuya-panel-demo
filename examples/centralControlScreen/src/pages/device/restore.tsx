@@ -18,8 +18,6 @@ const DeviceRestore: FC = () => {
   const { hiddenDeviceList, roomList } = useSelector(state => state);
   const dispatch = useDispatch();
 
-  const [selectedTab, setSelectedTab] = useState(0);
-
   const allDeviceRoom = { value: 0, label: Strings.getLang('allDevs') };
 
   // 选中的设备id数组
@@ -34,8 +32,6 @@ const DeviceRestore: FC = () => {
   const displayedRoomList = useMemo(() => {
     const list = roomList.map(d => ({ value: d.roomId, label: d.name }));
     list.unshift(allDeviceRoom);
-    console.log(list);
-
     return list;
   }, [roomList]);
 
@@ -88,7 +84,6 @@ const DeviceRestore: FC = () => {
             d.value === 0
               ? hiddenDeviceList
               : hiddenDeviceList.filter(item => item.roomId === d.value);
-          console.log(arr);
 
           const panel = (
             <FlatList
@@ -100,7 +95,6 @@ const DeviceRestore: FC = () => {
               ListEmptyComponent={
                 <EmptyView
                   text={Strings.getLang('emptyHideDevices')}
-                  addText={Strings.getLang('add')}
                   icon={Res.noneDev}
                   iconStyle={{ width: cx(160), height: cx(160) }}
                   hideAddBtn={true}
@@ -177,7 +171,6 @@ const DeviceRestore: FC = () => {
     <View style={styles.container}>
       {renderTopBar()}
       {renderContent()}
-      {/* {renderTestContent()} */}
     </View>
   );
 };

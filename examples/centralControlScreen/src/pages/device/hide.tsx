@@ -124,11 +124,9 @@ const DeviceHide: FC = () => {
         ListEmptyComponent={
           <EmptyView
             text={Strings.getLang('emptyDevices')}
-            addText={Strings.getLang('add')}
             icon={Res.emptySub}
             style={{ flex: 1 }}
             hideAddBtn={true}
-            onPress={() => jumpToPage('deviceRestore')}
           />
         }
       />
