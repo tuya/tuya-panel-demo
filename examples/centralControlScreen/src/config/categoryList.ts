@@ -1,0 +1,17 @@
+export default [
+  'kg',
+  'cz',
+  'dj',
+  'cl',
+  'kt',
+  'lyj',
+  'xfj',
+  'wk',
+  'pir',
+  'mcs',
+  'sj',
+  'wsdcg',
+  'rqbj',
+  'sos',
+  'dgnbj',
+];
