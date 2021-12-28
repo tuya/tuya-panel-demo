@@ -3,3 +3,5 @@ node_modules
 *.tar.gz
 /yarn.lock
 yarn-error.log
+.git-rewrite
+.DS_Store
