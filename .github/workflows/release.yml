@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*'
-
+      
 jobs:
   demorelease:
     runs-on: ubuntu-latest
@@ -27,3 +27,4 @@ jobs:
             ./examples/*.tar.gz
           body: ${{steps.github_release.outputs.changelog}}
           draft: true
+
