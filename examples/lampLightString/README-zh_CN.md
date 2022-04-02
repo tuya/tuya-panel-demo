@@ -26,7 +26,7 @@ $ cd tuya-panel-lampLightString-example
 支持以下品类：
 - WiFi_BLE
 
-您可以通过涂鸦 App 扫描以下二维码进行预览。
+如需查看更多信息，可点击以下链接进行查看
 
 ![lampLightString](https://solution.tuya.com/cn/panelDetail/146001)
 

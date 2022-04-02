@@ -28,7 +28,7 @@ The following categories are supported:
 
 - WiFi_BLE
 
-You can scan the following QR code through the Tuya app to preview.
+For more information, please click on the link below
 
 ![lampLightString](https://solution.tuya.com/panelDetail/146001)
 
