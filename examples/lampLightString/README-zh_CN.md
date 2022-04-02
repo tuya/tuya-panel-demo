@@ -28,7 +28,7 @@ $ cd tuya-panel-lampLightString-example
 
 如需查看更多信息，可点击以下链接进行查看
 
-![lampLightString](https://solution.tuya.com/cn/panelDetail/146001)
+[幻彩灯串（模板）](https://solution.tuya.com/cn/panelDetail/146001)
 
 ## 快速运行
 
