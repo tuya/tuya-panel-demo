@@ -30,7 +30,7 @@ The following categories are supported:
 
 For more information, please click on the link below
 
-![lampLightString](https://solution.tuya.com/panelDetail/146001)
+[lampLightString](https://solution.tuya.com/panelDetail/146001)
 
 ## Running
 
