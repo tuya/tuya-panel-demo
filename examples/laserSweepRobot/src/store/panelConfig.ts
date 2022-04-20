@@ -213,6 +213,9 @@ export default class PanelConfigStore {
         '/app/robot/png/AI_ico/Flowerpot.png',
       ],
     },
+    streamConfig: {
+      p2pAvailable: true,
+    },
   };
 
   @computed

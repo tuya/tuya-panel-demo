@@ -19,6 +19,8 @@ module.exports = {
           ['@store', path.resolve(__dirname, './src/store')],
           ['@res', path.resolve(__dirname, './src/res')],
           ['@utils', path.resolve(__dirname, './src/utils')],
+          ['@protocol', path.resolve(__dirname, './src/protocol')],
+          ['@pages', path.resolve(__dirname, './src/pages')],
         ],
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
       },

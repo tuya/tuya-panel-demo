@@ -3,7 +3,15 @@ import _ from 'lodash';
 import Manager, { Utils as ManagerUtils } from './resourceManager';
 import { deepEqual } from '../../../utils';
 
-import { realTimeAutoTask, splitEditMapTask, historyTask, multiFloorTask, config } from './config';
+import {
+  realTimeAutoTask,
+  realTimeAutoTaskWithP2p,
+  splitEditMapTaskWithP2p,
+  splitEditMapTask,
+  historyTask,
+  multiFloorTask,
+  config,
+} from './config';
 import { IProps, IStore, mapDisplayModeEnum } from './config/interface';
 import { DrawMap, EmptyMap } from './components/mapLoading';
 import RCTLaserMap from '../../rctLaserMap';
@@ -122,9 +130,16 @@ export default class MapView extends Component<IProps, IState> {
   };
 
   getTask = () => {
-    const { mapDisplayMode } = this.props;
-    if (mapDisplayMode === mapDisplayModeEnum.immediateMap) return realTimeAutoTask;
-    if (mapDisplayMode === mapDisplayModeEnum.splitMap) return splitEditMapTask;
+    const { mapDisplayMode, config } = this.props;
+    const {
+      streamConfig: { p2pAvailable },
+    } = config;
+
+    // 根据参数配置,选择数据通道方式
+    if (mapDisplayMode === mapDisplayModeEnum.immediateMap)
+      return p2pAvailable ? realTimeAutoTaskWithP2p : realTimeAutoTask;
+    if (mapDisplayMode === mapDisplayModeEnum.splitMap)
+      return p2pAvailable ? splitEditMapTaskWithP2p : splitEditMapTask;
     if (mapDisplayMode === mapDisplayModeEnum.history) return historyTask;
     if (mapDisplayMode === mapDisplayModeEnum.multiFloor) return multiFloorTask;
     return {};

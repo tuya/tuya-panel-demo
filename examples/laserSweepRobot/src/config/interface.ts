@@ -158,6 +158,9 @@ export interface IPanelConfig {
     materialObjHeight: number;
     materialObjEnum: Array<string>;
   };
+  streamConfig: {
+    p2pAvailable: boolean;
+  };
 }
 
 export interface IDpData {

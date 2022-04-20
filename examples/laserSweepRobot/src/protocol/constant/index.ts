@@ -179,3 +179,19 @@ export const getBitMapByType = _.memoize(
     return type + houseId;
   }
 );
+
+export default {
+  materialObjMap,
+  dealPointsColor,
+  ForbidTypeEnum,
+  nativeMapStatus,
+  areaTypeMap,
+  unknownAreaId,
+  fileTypeMap,
+  bitmapTypeMap,
+  shrinkValue,
+  createHouseColorMap,
+  colorOriginMap,
+  colorGrayMap,
+  MAX_ID_NUM,
+};

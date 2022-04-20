@@ -80,3 +80,54 @@ export const createAutoUpdateAuthentication = (
     timer && clearInterval(timer);
   };
 };
+
+/**
+ * 监听事件, P2P 方案
+ * @param callback
+ * @param type
+ * @returns
+ */
+const createP2pSubscription = (callback: (value: string) => void, type: OSSMapType) => {
+  const handle = (params: any) => {
+    const { data } = params;
+    if (params.type === type) {
+      callback && callback(data);
+    }
+  };
+  AppDeviceEventEmitter.addListener('onMapDataReceiveByP2P', handle);
+  return () => {
+    AppDeviceEventEmitter.removeListener('onMapDataReceiveByP2P', handle);
+  };
+};
+
+/**
+ * 获取地图订阅，p2p方案
+ * @param callback
+ */
+export const createMapP2pSubscription = (callback: (value: string) => void) => {
+  return createP2pSubscription(callback, OSSMapType.map);
+};
+
+/**
+ * 获取扫地机轨迹订阅，p2p方案
+ * @param callback
+ */
+export const createPathP2pSubscription = (callback: (value: string) => void) => {
+  return createP2pSubscription(callback, OSSMapType.path);
+};
+
+/**
+ * 获取扫地机增量轨迹订阅，p2p方案
+ * @param callback
+ */
+export const createIncrementPathP2pSubscription = (callback: (value: string) => void) => {
+  return createP2pSubscription(callback, OSSMapType.incrementPath);
+};
+
+/**
+ * 获取扫地机规划轨迹订阅，p2p方案
+ * @param callback
+ */
+export const createPlanPathP2pSubscription = (callback: (value: string) => void) => {
+  return createP2pSubscription(callback, OSSMapType.planPath);
+};

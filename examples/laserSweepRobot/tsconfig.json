@@ -29,7 +29,9 @@
       "@i18n": ["./i18n"],
       "@store": ["./store"],
       "@res": ["./res"],
-      "@utils": ["./utils"]
+      "@utils": ["./utils"],
+      "@protocol": ["./protocol"],
+      "@pages": ["./pages"]
     }
   },
   "exclude": [

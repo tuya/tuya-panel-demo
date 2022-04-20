@@ -19,7 +19,9 @@
         "@i18n": "./src/i18n",
         "@store": "./src/store",
         "@res": "./src/res",
-        "@utils": "./src/utils"
+        "@utils": "./src/utils",
+        "@protocol": "./src/protocol",
+        "@pages": "./src/pages"
       }
     }]
   ],

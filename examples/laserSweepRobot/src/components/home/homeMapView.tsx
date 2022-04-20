@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { observer, inject } from 'mobx-react';
 import { Utils, TYSdk } from 'tuya-panel-kit';
 import Strings from '@i18n';
+import { P2pAPI } from '@api';
 import { DPCodes } from '../../config';
 import { IPanelConfig } from '../../config/interface';
 import Store from '../../store';
@@ -43,6 +44,7 @@ interface IProps {
   fontColor: string;
   iconColor: string;
 }
+
 @inject((state: any) => {
   const {
     devInfo,
@@ -84,6 +86,23 @@ export default class HomeMapView extends Component<IProps> {
   mapRef: Ref<MapView>;
 
   componentDidMount() {
+    const {
+      panelConfig: {
+        streamConfig: { p2pAvailable },
+      },
+    } = this.props;
+    // 采用p2p 传输协议进行数据传输
+    if (p2pAvailable) {
+      P2pAPI.initRobotP2pSDK();
+      P2pAPI.connectDeviceByP2P()
+        .then(() => {
+          P2pAPI.startObserverSweeperDataByP2P(1);
+        })
+        .catch((e: any) => {
+          console.warn('connectDeviceByP2P error ===>', e);
+          P2pAPI.startObserverSweeperDataByP2P(1);
+        });
+    }
     if (!this.mapRef) return;
     const manager = this.mapRef.getManager();
     manager.createStoreSubscription((value: any) => {
@@ -101,6 +120,18 @@ export default class HomeMapView extends Component<IProps> {
           isEmptyMap: !value.mapHeader.bgWidth || !value.mapHeader.bgHeight,
         });
     });
+  }
+
+  async componentWillUnmount() {
+    const {
+      panelConfig: {
+        streamConfig: { p2pAvailable },
+      },
+    } = this.props;
+    if (p2pAvailable) {
+      // 退出面板，销毁p2p通道
+      P2pAPI.deInitP2pSDK();
+    }
   }
 
   /**
@@ -157,7 +188,7 @@ export default class HomeMapView extends Component<IProps> {
     const { pixel } = room;
     const roomId = parseRoomId(pixel);
     if (roomId >= 31) {
-      return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => { });
+      return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => {});
     }
     let curData: Array<string> = [];
     if (!selectRoomData.includes(pixel)) {

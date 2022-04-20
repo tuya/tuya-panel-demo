@@ -1,4 +1,6 @@
 import { Utils, TYSdk } from 'tuya-panel-kit';
+import LaserUIApi from './laserUIApi';
+import P2pAPI from './p2pApi';
 
 export const getMultipleMapFiles = () => {
   return new Promise<any>((resolve, reject) => {
@@ -34,4 +36,9 @@ export const getVoiceList = () => {
       .then((d: string) => resolve(Utils.JsonUtils.parseJSON(d)))
       .catch(reject);
   });
+};
+
+export {
+  P2pAPI,
+  LaserUIApi,
 };
