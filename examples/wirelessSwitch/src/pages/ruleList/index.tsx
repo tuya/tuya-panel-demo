@@ -113,21 +113,23 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
               dpId: +valueArr[0],
               list: associativeEntityValueList.map((ls: RequireType) => {
                 const {
-                  enabled,
+                  triggerRuleEnable,
                   id,
                   actions = null,
                   name,
                   displayColor = '#00CC99',
                   background,
+                  triggerRuleId
                 } = ls;
                 return {
-                  enabled,
+                  triggerRuleEnable,
                   id,
                   actions,
                   name,
                   displayColor,
                   background,
                   needBackground: background !== '',
+                  triggerRuleId
                 };
               }),
             };
@@ -157,8 +159,8 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
 
   removeLister() {
     const { isNewApp } = this.props;
-    DeviceEventEmitter.removeListener(isNewApp ? 'ty_panel_scene_create' : 'createScene', () => {});
-    !isNewApp && DeviceEventEmitter.removeListener('editAuto', () => {});
+    DeviceEventEmitter.removeListener(isNewApp ? 'ty_panel_scene_create' : 'createScene', () => { });
+    !isNewApp && DeviceEventEmitter.removeListener('editAuto', () => { });
   }
 
   oldLister(d: RequireType[], themeColor: string) {
@@ -217,7 +219,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
             this.getData();
           })
           .catch(() => {
-            TYSdk.mobile.simpleTipDialog(Strings.getLang('removeError'), () => {});
+            TYSdk.mobile.simpleTipDialog(Strings.getLang('removeError'), () => { });
           });
       },
     });
@@ -333,7 +335,7 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
     const { deviceData } = this.state;
     const { list, associativeEntityId } = item;
     return list.map((ls: any, index: number) => {
-      const { enabled, id, name, displayColor, needBackground, background } = ls;
+      const { triggerRuleEnable, id, name, displayColor, needBackground, background,triggerRuleId } = ls;
       const { icon, devLength } = getDeviceInfo(deviceData, ls);
       return (
         <RuleItem
@@ -343,10 +345,10 @@ export default class RuleList extends PureComponent<RuleListProps, RuleListState
           showIcon={icon}
           name={name}
           isDefaultTheme={isDefaultTheme}
-          enabled={enabled}
+          enabled={triggerRuleEnable}
           needBackground={needBackground}
           background={background}
-          changeEnabled={() => this._handleToToggle(!enabled, id)}
+          changeEnabled={() => this._handleToToggle(!triggerRuleEnable, triggerRuleId)}
           onPress={() => this._handleToTriggle(id, ls)}
           needEnable={true}
           index={index}
