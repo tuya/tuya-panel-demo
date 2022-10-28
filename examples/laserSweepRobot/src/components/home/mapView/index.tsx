@@ -4,10 +4,8 @@ import Manager, { Utils as ManagerUtils } from './resourceManager';
 import { deepEqual } from '../../../utils';
 
 import {
-  realTimeAutoTask,
   realTimeAutoTaskWithP2p,
   splitEditMapTaskWithP2p,
-  splitEditMapTask,
   historyTask,
   multiFloorTask,
   config,
@@ -130,16 +128,11 @@ export default class MapView extends Component<IProps, IState> {
   };
 
   getTask = () => {
-    const { mapDisplayMode, config } = this.props;
-    const {
-      streamConfig: { p2pAvailable },
-    } = config;
+    const { mapDisplayMode } = this.props;
 
     // 根据参数配置,选择数据通道方式
-    if (mapDisplayMode === mapDisplayModeEnum.immediateMap)
-      return p2pAvailable ? realTimeAutoTaskWithP2p : realTimeAutoTask;
-    if (mapDisplayMode === mapDisplayModeEnum.splitMap)
-      return p2pAvailable ? splitEditMapTaskWithP2p : splitEditMapTask;
+    if (mapDisplayMode === mapDisplayModeEnum.immediateMap) return realTimeAutoTaskWithP2p;
+    if (mapDisplayMode === mapDisplayModeEnum.splitMap) return splitEditMapTaskWithP2p;
     if (mapDisplayMode === mapDisplayModeEnum.history) return historyTask;
     if (mapDisplayMode === mapDisplayModeEnum.multiFloor) return multiFloorTask;
     return {};

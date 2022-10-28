@@ -86,23 +86,17 @@ export default class HomeMapView extends Component<IProps> {
   mapRef: Ref<MapView>;
 
   componentDidMount() {
-    const {
-      panelConfig: {
-        streamConfig: { p2pAvailable },
-      },
-    } = this.props;
     // 采用p2p 传输协议进行数据传输
-    if (p2pAvailable) {
-      P2pAPI.initRobotP2pSDK();
-      P2pAPI.connectDeviceByP2P()
-        .then(() => {
-          P2pAPI.startObserverSweeperDataByP2P(1);
-        })
-        .catch((e: any) => {
-          console.warn('connectDeviceByP2P error ===>', e);
-          P2pAPI.startObserverSweeperDataByP2P(1);
-        });
-    }
+    P2pAPI.initRobotP2pSDK();
+    P2pAPI.connectDeviceByP2P()
+      .then(() => {
+        P2pAPI.startObserverSweeperDataByP2P(1);
+      })
+      .catch((e: any) => {
+        console.warn('connectDeviceByP2P error ===>', e);
+        P2pAPI.startObserverSweeperDataByP2P(1);
+      });
+
     if (!this.mapRef) return;
     const manager = this.mapRef.getManager();
     manager.createStoreSubscription((value: any) => {
@@ -123,15 +117,8 @@ export default class HomeMapView extends Component<IProps> {
   }
 
   async componentWillUnmount() {
-    const {
-      panelConfig: {
-        streamConfig: { p2pAvailable },
-      },
-    } = this.props;
-    if (p2pAvailable) {
-      // 退出面板，销毁p2p通道
-      P2pAPI.deInitP2pSDK();
-    }
+    // 退出面板，销毁p2p通道
+    P2pAPI.deInitP2pSDK();
   }
 
   /**

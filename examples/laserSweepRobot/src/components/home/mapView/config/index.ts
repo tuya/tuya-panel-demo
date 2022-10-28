@@ -8,18 +8,12 @@ import * as elementEvent from './elementEvents';
 
 const {
   realTimeArea,
-  realTimeFirstMap,
-  realTimeFullPath,
   realTimeFullPathWithP2p,
-  realTimeFirstPath,
-  realTimeMap,
   realTimeMapWithP2p,
-  realTimePlanPath,
   realTimePlanPathWithP2p,
   updateAuthentication,
   historyMap,
   multiFloor,
-  requestMap,
 } = autoTask;
 
 const config: Interface.IConfig = {
@@ -30,19 +24,6 @@ const config: Interface.IConfig = {
   elementEvent,
 };
 
-const realTimeAutoTask = {
-  updateAuthentication,
-  realTimeFirstMap,
-  realTimeFirstPath,
-  realTimeArea,
-  realTimeMap,
-  // requestPath,
-  realTimeFullPath,
-  // realTimePath,
-  requestMap,
-  realTimePlanPath,
-};
-
 /**
  * P2p 自动化任务
  */
@@ -51,13 +32,6 @@ const realTimeAutoTaskWithP2p = {
   realTimeMapWithP2p,
   realTimeFullPathWithP2p,
   realTimePlanPathWithP2p,
-};
-
-// 房间分区
-const splitEditMapTask = {
-  updateAuthentication,
-  realTimeFirstMap,
-  realTimeMap,
 };
 
 // 历史记录
@@ -81,12 +55,4 @@ const multiFloorTask = {
   multiFloor,
 };
 
-export {
-  realTimeAutoTask,
-  realTimeAutoTaskWithP2p,
-  splitEditMapTaskWithP2p,
-  splitEditMapTask,
-  historyTask,
-  multiFloorTask,
-  config,
-};
+export { realTimeAutoTaskWithP2p, splitEditMapTaskWithP2p, historyTask, multiFloorTask, config };
