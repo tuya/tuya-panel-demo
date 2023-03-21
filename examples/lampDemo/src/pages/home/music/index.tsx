@@ -6,7 +6,7 @@ import Strings from '@i18n';
 import DpCodes from '@config/dpCodes';
 import MyTabBar from '@components/MyTabBar';
 import * as MusicManager from '@utils/music';
-import { SupportUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
+import { SupportUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import AppMusic from './app';
 import LocalMusic from './local';
 

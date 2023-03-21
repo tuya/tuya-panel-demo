@@ -15,14 +15,30 @@ export enum WorkMode {
   scene = 'scene',
   music = 'music',
 }
-
+export interface IControlData {
+  mode?: number;
+  hue: number;
+  saturation: number;
+  value: number;
+  brightness?: number;
+  temperature?: number;
+}
 /** 调光器模式 */
-export enum DimmerMode { white, colour, colourCard, combination }
+export enum DimmerMode {
+  white,
+  colour,
+  colourCard,
+  combination,
+}
 
 export type DimmerTab = keyof typeof DimmerMode;
 
 /** 涂抹类型 */
-export enum SmearMode { all, single, clear }
+export enum SmearMode {
+  all,
+  single,
+  clear,
+}
 
 /** 调光器的value类型 */
 export interface DimmerValue {
@@ -98,7 +114,7 @@ export interface DimmerBoxProps {
   hideBright?: boolean;
   filterTabs?: (tab: string, index: number) => boolean;
   showColorUnits?: boolean;
-  colorUnitsProps?: ColorUnitsProps,
+  colorUnitsProps?: ColorUnitsProps;
   tab?: DimmerTab;
   onTabChange?: (tab: DimmerTab, ...args: any[]) => void;
   value?: DimmerValue;
@@ -193,12 +209,30 @@ export interface SceneValueType {
   colors: SceneColorType[];
 }
 
+export interface RgbMusicValue {
+  id: number;
+  mode: number;
+  power: boolean;
+  sensitivity: number;
+  settingA: number;
+  settingB: number;
+  settingC: number;
+  speed: number;
+  version: number;
+  colors?: [];
+}
 export interface SceneDataType {
   id: number;
   name: string;
   value: SceneValueType;
 }
 
-export enum SceneCategory { scenery, life, festival, mood, diy }
+export enum SceneCategory {
+  scenery,
+  life,
+  festival,
+  mood,
+  diy,
+}
 
 export type SceneCategoryTab = keyof typeof SceneCategory;

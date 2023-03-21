@@ -227,6 +227,7 @@ class CountdownClock extends Component<IProps> {
                 styles.resetText,
                 resetTextStyle,
                 {
+                  // @ts-ignore
                   color: color(fontColor).alpha(0.7).rgbaString(),
                 },
               ]}

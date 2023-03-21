@@ -88,6 +88,7 @@ const SceneTop: FC<TopProps> = props => {
             {
               backgroundColor: color(isDarkTheme ? fontColor : themeColor)
                 .alpha(0.1)
+                // @ts-ignore
                 .rgbaString(),
             },
           ]}

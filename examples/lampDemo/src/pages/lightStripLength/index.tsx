@@ -1,11 +1,10 @@
 import React, { useMemo, useCallback, useRef, useEffect } from 'react';
 import { View, StyleSheet, Platform, BackHandler } from 'react-native';
 import { useUnmount } from 'ahooks';
-import { useTheme, Utils, TYText, BrickButton, SliderWithLine } from 'tuya-panel-kit';
-import dragon from '@tuya-rn/tuya-native-dragon';
-import { SupportUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
-import { NumberSlider } from '@tuya-rn/tuya-native-lamp-elements';
-// import BrightnessSlider from '@components/RectColorAndBrightPicker2/Slider';
+import { useTheme, Utils, TYText, BrickButton } from 'tuya-panel-kit';
+import dragon from '@tuya/tuya-panel-dragon-sdk';
+import { SupportUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
+import { NumberSlider } from '@tuya/tuya-panel-lamp-sdk';
 import MyTopBar from '@components/MyTopBar';
 import PageBackground from '@components/PageBackground';
 import useSelector from '@hooks/useSelector';

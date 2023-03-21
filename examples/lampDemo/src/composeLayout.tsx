@@ -1,31 +1,34 @@
 import _ from 'lodash';
 import { Store } from 'redux';
-import { StatusBar, Platform } from 'react-native';
+import { NativeModules, View } from 'react-native';
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { TYSdk, Theme, DevInfo, GlobalTheme } from 'tuya-panel-kit';
-import dragon from '@tuya-rn/tuya-native-dragon';
-import { withUIConfig } from '@tuya-rn/tuya-native-standard-hoc';
-import { SupportUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils/index';
+import { TYSdk, Theme, DevInfo, Utils } from 'tuya-panel-kit';
+import dragon from '@tuya/tuya-panel-dragon-sdk';
+import { lampApi } from '@tuya/tuya-panel-api';
+import { SupportUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import { ReduxState, DpState } from '@models/type';
 import * as actions from '@actions';
 import { getCorrectWorkMode } from '@utils';
 import * as TaskManager from '@utils/taskManager';
 import ErrorCatch from 'errorcatch';
 import { dragonConfig, registerTheme } from '@config';
+import { defaultLocalMusic } from '@config/default';
 import DpCodes from '@config/dpCodes';
 import * as MusicManager from '@utils/music';
 import SmearFormater from '@config/dragon/SmearFormater';
-
 import { Connect as ConnectComp } from './components';
 
+interface Props {
+  devInfo: DevInfo;
+  preload?: boolean;
+}
+interface IState {
+  showPage: boolean;
+}
+const { deepMerge } = Utils.ThemeUtils;
 const {
   CommonActions: {
-    initializedConfig,
-    initIoTConfig,
-    initCloudConfig,
-    initDpConfig,
-    updateMiscConfig,
     deviceChange,
     asyncDevInfoChange,
     updateUI,
@@ -110,62 +113,38 @@ const { event: TYEvent, device: TYDevice } = TYSdk;
 const composeLayout = (store: Store, Comp: React.ComponentType) => {
   const { dispatch } = store;
 
-  const ThemeContainer = connect((props: { theme: GlobalTheme }) => ({ theme: props.theme }))(
-    Theme
-  );
+  const ThemeContainer = connect((props: ReduxState) => {
+    // 可在@config/theme.ts文件下修改主题信息
+    const defaultTheme = registerTheme();
+    const res = deepMerge(props.theme, defaultTheme);
+    return { theme: res };
+  })(Theme);
 
-  const NavigatorLayout = () => {
+  const NavigatorLayout: React.FC<Props> = p => {
+    React.useEffect(() => {
+      const { TYRCTIoTCardManager } = NativeModules;
+      if (TYRCTIoTCardManager && typeof TYRCTIoTCardManager.ioTcardRechargeHander === 'function') {
+        TYRCTIoTCardManager.ioTcardRechargeHander(p.devInfo.devId, () => {
+          console.log('ioTcardRechargeHander callback');
+        });
+      }
+    }, []);
     return (
       <ConnectComp mapStateToProps={_.identity}>
         {({ mapStateToProps, ...props }: ConnectedProps) => {
-          const { panelConfig, dpState } = props;
-          const hasInit = Object.keys(dpState).length > 0 && panelConfig.initialized;
+          const { dpState } = props;
+          if (Object.keys(props.devInfo.schema).length === 0) {
+            console.warn(
+              '当前设备不存在功能点，模板会白屏状态，如为正常需求，请自行删除此处判断逻辑'
+            );
+          }
+          const hasInit = Object.keys(dpState).length > 0;
           // eslint-disable-next-line react/jsx-props-no-spreading
           return hasInit ? <Comp {...props} /> : null;
         }}
       </ConnectComp>
     );
   };
-
-  const NavigatorLayoutContainer = withUIConfig({
-    /**
-     * @desc
-     * 首次拿到devInfo时触发,
-     * 这里返回的对象会在引入 containers 前塞入 Config.
-     *
-     * @param {Object} - devInfo
-     *
-     * @return {Object} - something inject to Config
-     */
-    onInit: () => null,
-    /**
-     * @desc
-     * 拉取到云端配置并塞入Config时触发,
-     * 此时 containers 已经载入了.
-     *
-     * @param {Object} - Config
-     * @param {Object} - devInfo
-     * @param {String} - source(配置来源) - one of ['default', 'cloud', 'cache']
-     *
-     * @return {Object} - something inject to Config
-     */
-    onApplyConfig: (config, devInfo, source) => {
-      const showSchedule = config.cloudFun.timer ? !!config.cloudFun.timer.selected : false;
-      dispatch(initializedConfig());
-      dispatch(initIoTConfig(config.iot));
-      dispatch(initCloudConfig(config.cloudFun));
-      dispatch(initDpConfig(config.dpFun));
-      dispatch(updateMiscConfig({ ...config.misc, showSchedule }));
-      // theme
-      const theme = registerTheme(config.iot);
-      StatusBar.setBarStyle(
-        theme.isDarkTheme ? 'light-content' : Platform.OS === 'ios' ? 'dark-content' : 'default'
-      );
-      // @ts-ignore wtf
-      dispatch(updateTheme(theme));
-    },
-  })(NavigatorLayout);
-
   TYEvent.on('deviceDataChange', data => {
     switch (data.type) {
       case 'dpData':
@@ -191,6 +170,9 @@ const composeLayout = (store: Store, Comp: React.ComponentType) => {
   class PanelComponent extends Component<Props> {
     constructor(props: Props) {
       super(props);
+      this.state = {
+        showPage: false,
+      };
       if (props && props.devInfo && props.devInfo.devId) {
         TYDevice.setDeviceInfo(props.devInfo);
         TYDevice.getDeviceInfo()
@@ -225,6 +207,7 @@ const composeLayout = (store: Store, Comp: React.ComponentType) => {
     }
 
     async initData(devInfo: DevInfo) {
+      console.log('===devInfo===', devInfo);
       this.initDragon(devInfo);
       // 获取本地数据
       // const cloudData = await LampApi.fetchLocalConfig!();
@@ -239,6 +222,7 @@ const composeLayout = (store: Store, Comp: React.ComponentType) => {
       //     this.handleCloudData(cloudData);
       //   });
       // }
+      this.setState({ showPage: true });
     }
 
     // handleCloudData(cloudData: any) {
@@ -325,16 +309,48 @@ const composeLayout = (store: Store, Comp: React.ComponentType) => {
       });
     };
 
+    handleCloudData(cloudData: any) {
+      dispatch(updateTheme(registerTheme() as any));
+    }
+
+    subscribe() {
+      // 同步数据事件
+      TYEvent.on('beginSyncCloudData', this._handleBeginSyncCloudData);
+      TYEvent.on('endSyncCloudData', this._handleEndSyncCloudData);
+      TYEvent.on('syncCloudDataError', this._handleErrorSyncCloudData);
+    }
+
+    unsubscribe() {
+      TYEvent.remove('beginSyncCloudData', this._handleBeginSyncCloudData);
+      TYEvent.remove('endSyncCloudData', this._handleEndSyncCloudData);
+      TYEvent.remove('syncCloudDataError', this._handleErrorSyncCloudData);
+    }
+
+    _handleBeginSyncCloudData = (data: any) => {
+      console.log('开始同步数据');
+    };
+
+    _handleEndSyncCloudData = (data: any) => {
+      console.log('结束同步数据');
+      this.handleCloudData(data);
+    };
+
+    _handleErrorSyncCloudData = (data: any) => {
+      console.log('同步失败数据');
+    };
+
     render() {
       const { devInfo } = this.props;
+      const { showPage } = this.state;
+      if (!showPage) {
+        return <View style={{ flex: 1 }} />;
+      }
       return (
-        <ErrorCatch>
-          <Provider store={store}>
-            <ThemeContainer>
-              <NavigatorLayoutContainer devInfo={devInfo} />
-            </ThemeContainer>
-          </Provider>
-        </ErrorCatch>
+        <Provider store={store}>
+          <ThemeContainer>
+            <NavigatorLayout devInfo={devInfo} />
+          </ThemeContainer>
+        </Provider>
       );
     }
   }

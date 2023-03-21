@@ -25,7 +25,7 @@ TYSdk.mobile.is24Hour().then((r: boolean) => {
 export const is24Hour = () => is24H;
 
 export type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
+  [K in keyof T]?: T[K] extends Record<string, any> ? DeepPartial<T[K]> : T[K];
 };
 
 export function nToHS(value = 0, num = 2) {
@@ -90,8 +90,8 @@ export function jsonShallowEqual(arr1: any[], arr2: any[]) {
 
 export function objectShallowEqual(obj1: any, obj2: any, keys?: string[]): boolean {
   if (obj1 === obj2) return true;
-  const keys1 = Object.keys(obj1).filter(key => keys ? keys.includes(key) : true);
-  const keys2 = Object.keys(obj2).filter(key => keys ? keys.includes(key) : true);
+  const keys1 = Object.keys(obj1).filter(key => (keys ? keys.includes(key) : true));
+  const keys2 = Object.keys(obj2).filter(key => (keys ? keys.includes(key) : true));
   return keys1.length === keys2.length && keys1.every(key => obj1[key] === obj2[key]);
 }
 
@@ -173,9 +173,7 @@ export function getPreviewColorDatas(
   const frontPart = circles.reduce((acc, cur) => acc.concat(Array(ratio).fill(cur)), []);
   const endPart = frontPart.slice(0, Math.max(0, lightLength - circles.length * ratio));
   const previewCircles = [...frontPart, ...endPart].slice(0, lightLength);
-  return convertRgba
-    ? previewCircles.map(colorDataToRgba)
-    : previewCircles;
+  return convertRgba ? previewCircles.map(colorDataToRgba) : previewCircles;
 }
 
 export const getCircleColor = (colorData: any) => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { View, ViewStyle } from 'react-native';
-import { ColorUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
+import { ColorUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import RectPicker, { ValidBound, ILinear, Point, defaultProps as baseDefualt } from './RectPicker';
 import Slider, { IBrightOption } from './Slider';
 

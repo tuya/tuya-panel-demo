@@ -1,15 +1,9 @@
-/* eslint-disable prettier/prettier */
-import { GlobalTheme, Utils } from 'tuya-panel-kit';
-import { getUIValue } from '@tuya-rn/tuya-native-standard-hoc/lib/withUIConfig/utils';
 import color from 'color';
-import { DeepPartial } from '@utils';
 
-const { convertX: cx } = Utils.RatioUtils;
-
-export default (config: any) => {
-  const isDarkTheme = config.theme === 'default';
+export default () => {
+  const isDarkTheme = true;
   const type = isDarkTheme ? 'dark' : 'light';
-  const themeColor = getUIValue(config, 'themeColor');
+  const themeColor = '#39a9ff';
   const fontColor = isDarkTheme ? '#fff' : '#000';
   const subFontColor = color(fontColor).alpha(0.4).rgbaString();
   const background = isDarkTheme ? '#0B0909' : '#EBF0FF';
@@ -79,5 +73,5 @@ export default (config: any) => {
     dialog: {
       confirmFontColor: themeColor,
     },
-  } as DeepPartial<GlobalTheme>;
+  };
 };

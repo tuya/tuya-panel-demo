@@ -1,4 +1,4 @@
-import { WORKMODE } from '@tuya-rn/tuya-native-lamp-elements/lib/utils/constant';
+import { WORK_MODE } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import DpCodes from '@config/dpCodes';
 import SmearFormater from './SmearFormater';
 import SceneFormater from './SceneFormater';
@@ -69,7 +69,7 @@ export default {
       type: 'NEED',
       conditionType: 'AND',
       condition: [musicCode],
-      effect: { [workModeCode]: WORKMODE.MUSIC },
+      effect: { [workModeCode]: WORK_MODE.MUSIC },
     },
   ],
   // 场景转化插件

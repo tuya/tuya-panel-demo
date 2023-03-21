@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
-import { TYText, Utils, IconFont } from 'tuya-panel-kit';
+import { TYText, Utils } from 'tuya-panel-kit';
 import { connect } from 'react-redux';
 import Res from '@res/index';
 import Strings from '@i18n';
 import MusicBar from '@components/MusicBar';
-import dragon from '@tuya-rn/tuya-native-dragon';
-import { WORKMODE, formatPercent } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
+import dragon from '@tuya/tuya-panel-dragon-sdk';
+import { WORK_MODE, formatPercent } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import DpCodes from '@config/dpCodes';
 import color from 'color';
 import _ from 'lodash';
-import { BrightRectSlider } from '@tuya-rn/tuya-native-lamp-elements';
-import Icons from '@res/icons';
-import LampApi from '@tuya-rn/tuya-native-lamp-elements/lib/api';
+import BrightRectSlider from '@components/BrightRectSlider';
 import { CommonActions } from '@actions';
 
 const { updateLocalMusic, updateCloudStates } = CommonActions;
@@ -62,7 +60,7 @@ class Music extends React.Component<MusicProps, MusicState> {
   componentDidMount() {
     const { localMusicList, power, workMode } = this.props;
     const { activeLocalMusicIndex, animLocalMusicCard } = this.state;
-    if (activeLocalMusicIndex > -1 && power && workMode === WORKMODE.MUSIC) {
+    if (activeLocalMusicIndex > -1 && power && workMode === WORK_MODE.MUSIC) {
       if (!localMusicList[activeLocalMusicIndex]) return;
       const newData = _.cloneDeep(localMusicList[activeLocalMusicIndex]);
       animLocalMusicCard[activeLocalMusicIndex] &&
@@ -88,11 +86,11 @@ class Music extends React.Component<MusicProps, MusicState> {
     if (
       localMusicValue !== nextProps.localMusicValue ||
       (power !== nextProps.power && nextProps.power) ||
-      (nextProps.workMode === WORKMODE.MUSIC && workMode !== nextProps.workMode)
+      (nextProps.workMode === WORK_MODE.MUSIC && workMode !== nextProps.workMode)
     ) {
       this.showCardAnim(nextProps);
     }
-    if ((power !== nextProps.power && !nextProps.power) || nextProps.workMode !== WORKMODE.MUSIC) {
+    if ((power !== nextProps.power && !nextProps.power) || nextProps.workMode !== WORK_MODE.MUSIC) {
       this.stopLocalMusic();
       const { animLocalMusicCard } = this.state;
       this.setState({ activeLocalMusicIndex: -1 });
@@ -133,7 +131,7 @@ class Music extends React.Component<MusicProps, MusicState> {
         duration: 300,
       }).start();
     });
-    if (activeLocalMusicIndex > -1 && workMode === WORKMODE.MUSIC) {
+    if (activeLocalMusicIndex > -1 && workMode === WORK_MODE.MUSIC) {
       if (!localMusicList[activeLocalMusicIndex]) return;
       const newData = _.cloneDeep(localMusicList[activeLocalMusicIndex]);
       animLocalMusicCard[activeLocalMusicIndex] &&
@@ -236,10 +234,10 @@ class Music extends React.Component<MusicProps, MusicState> {
     }
     dragon.putDpData(cmd, options);
     const { workMode } = this.props;
-    if (workMode !== WORKMODE.MUSIC) {
+    if (workMode !== WORK_MODE.MUSIC) {
       dragon.putDpData(
         {
-          [workModeCode]: WORKMODE.MUSIC,
+          [workModeCode]: WORK_MODE.MUSIC,
         },
         {
           updateValidTime: options.updateValidTime || 'reply',
@@ -260,7 +258,7 @@ class Music extends React.Component<MusicProps, MusicState> {
         id === localMusicValue.id &&
         !!localMusicValue.power &&
         power &&
-        workMode === WORKMODE.MUSIC;
+        workMode === WORK_MODE.MUSIC;
       return this.renderMusicRowItem(id, idx, isActive);
     });
   };
@@ -347,8 +345,8 @@ class Music extends React.Component<MusicProps, MusicState> {
                       ? Res.stopIcon
                       : Res.stopIconLight
                     : isDarkTheme
-                      ? Res.startIcon
-                      : Res.startIconLight
+                    ? Res.startIcon
+                    : Res.startIconLight
                 }
                 resizeMode="contain"
               />

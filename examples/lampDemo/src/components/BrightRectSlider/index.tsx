@@ -8,7 +8,7 @@ import { Utils } from 'tuya-panel-kit';
 import {
   NumberSliderProps,
   numberSliderDefaultProps,
-} from '@tuya-rn/tuya-native-lamp-elements/lib/components/slider/number-slider';
+} from '@tuya/tuya-panel-lamp-sdk/lib/components/slider/number-slider';
 import Percent from './Percent';
 import NumberSlider from '../NumberSlider';
 

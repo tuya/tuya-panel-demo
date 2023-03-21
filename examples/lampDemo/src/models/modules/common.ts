@@ -4,12 +4,8 @@ import { DevInfo, GlobalToast } from 'tuya-panel-kit';
 import { Dispatch } from 'redux';
 import { createAction, handleActions } from 'redux-actions';
 import _ from 'lodash';
-import {
-  CloudConfig,
-  IoTPublicConfig,
-} from '@tuya-rn/tuya-native-standard-hoc/lib/withUIConfig/interface';
-import dragon from '@tuya-rn/tuya-native-dragon';
-import { panelConfig as defaultPanelConfig, CloudTimingCategory } from '@config';
+import dragon from '@tuya/tuya-panel-dragon-sdk';
+import { CloudTimingCategory } from '@config';
 import { dimmerModeSmeaModeMaps, defaultLocalMusic } from '@config/default';
 import PresetScenes from '@config/default/scene';
 import DpCodes from '@config/dpCodes';
@@ -18,7 +14,8 @@ import * as TaskManager from '@utils/taskManager';
 import SmearFormater from '@config/dragon/SmearFormater';
 import {
   getDeviceCloudData,
-  saveDeviceCloudData, deleteDeviceCloudData,
+  saveDeviceCloudData,
+  deleteDeviceCloudData,
   addTimer,
   updateTimer,
   updateTimerStatus,
@@ -42,35 +39,18 @@ import { DpState, GetState, UiState, UiStatePayload } from '../type';
 const { powerCode, workModeCode, smearCode, sceneCode, countdownCode } = DpCodes;
 const smearFormater = new SmearFormater();
 
-interface Config {
-  initialized: boolean;
-  iot: IoTPublicConfig;
-  dpFun: Record<string, any>;
-  cloudFun: CloudConfig;
-  misc: Record<string, any>;
-}
-
 type UpdateDevInfoPayload = DevInfo;
 type UpdateDpStatePayload = Partial<DpState> & { [key: string]: DpState }; // 保证起码有一个键值对存在
-type InitIoTConfigPayload = IoTPublicConfig;
-type InitDpConfigPayload = Record<string, any>;
-type InitCloudConfigPayload = CloudConfig;
-type UpdateMiscConfigPayload = Record<string, any>;
 
 // sync actions
 
 const devInfoChange = createAction<UpdateDevInfoPayload>('_DEVINFOCHANGE_');
 const deviceChange = createAction<UpdateDevInfoPayload>('_DEVICECHANGED_');
 const updateDp = createAction<UpdateDpStatePayload>('UPDATE_DP');
-const initIoTConfig = createAction<InitIoTConfigPayload>('INIT_IOT_CONFIG');
-const initDpConfig = createAction<InitDpConfigPayload>('INIT_DP_CONFIG');
-const initCloudConfig = createAction<InitCloudConfigPayload>('INIT_CLOUD_CONFIG');
-const updateMiscConfig = createAction<UpdateMiscConfigPayload>('UPDATE_MISC_CONFIG');
 const consoleChange = createAction('CONSOLECHNAGE');
 const clearConsole = createAction('CLEARCONSOLE');
 const updatePanelState = createAction('UPDATE_PANEL_STATE');
 const updateUI = createAction<UiStatePayload>('UPDATE_UI');
-const initializedConfig = createAction('INITIALIZED_CONFIG');
 const updateCloudState = createAction('UPDATE_CLOUD_STATE');
 const replaceCloudState = createAction('REPLACE_CLOUD_STATE');
 const updateLocalMusic = createAction('UPDATE_LOCAL_MUSIC');
@@ -154,7 +134,7 @@ export const asyncUpdateDp = (d: DpState) => (dispatch: Dispatch, getState: GetS
       },
       [DimmerMode[2]]: {
         [DimmerMode[1]]: { ...dimmerValue[DimmerMode[1] as DimmerTab], value },
-        [DimmerMode[2]]: { hue, saturation, value }
+        [DimmerMode[2]]: { hue, saturation, value },
       },
       [DimmerMode[3]]: { [DimmerMode[3]]: combination },
     };
@@ -166,10 +146,13 @@ export const asyncUpdateDp = (d: DpState) => (dispatch: Dispatch, getState: GetS
   if (Object.keys(uiUpdates).length) dispatch(updateUI(uiUpdates));
 };
 
-export const handleToChangeLights = (data: any = {}, isSave = false) =>
+export const handleToChangeLights =
+  (data: any = {}, isSave = false) =>
   async (dispatch: Dispatch, getState: GetState) => {
     const {
-      dpState: { [smearCode]: { effect } },
+      dpState: {
+        [smearCode]: { effect },
+      },
       uiState: { dimmerMode, smearMode, ledNumber },
     } = getState();
     const smearData = { dimmerMode, smearMode, effect, ledNumber, ...data };
@@ -177,101 +160,119 @@ export const handleToChangeLights = (data: any = {}, isSave = false) =>
     dispatch(updateLights(smearData, isSave));
     if (!isSave) return;
 
-    const fixedWorkMode = [DimmerMode.colour, DimmerMode.colourCard, DimmerMode.combination]
-      .includes(dimmerMode)
+    const fixedWorkMode = [
+      DimmerMode.colour,
+      DimmerMode.colourCard,
+      DimmerMode.combination,
+    ].includes(dimmerMode)
       ? WorkMode.colour
       : WorkMode.white;
-    dragon.putDpData({
-      [smearCode]: smearData,
-    }, { checkCurrent: false, useThrottle: false, clearThrottle: true });
+    dragon.putDpData(
+      {
+        [smearCode]: smearData,
+      },
+      { checkCurrent: false, useThrottle: false, clearThrottle: true }
+    );
     dragon.putDpData({
       [powerCode]: true,
       [workModeCode]: fixedWorkMode,
-    // }, { checkCurrent: false });
+      // }, { checkCurrent: false });
     });
   };
 
 /** 点击灯带 */
-export const handlePressLights = (data: any = {}, isSave = false) =>
+export const handlePressLights =
+  (data: any = {}, isSave = false) =>
   async (dispatch: Dispatch, getState: GetState) => {
     const {
       uiState: { dimmerValue, dimmerMode, smearMode },
     } = getState();
     // 只有在彩光、色卡页签，并且操作是涂抹、橡皮擦的时候, 点击灯带才会更新颜色
-    if (!([SmearMode.single, SmearMode.clear].includes(smearMode)
-      && [DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode))) return;
+    if (
+      !(
+        [SmearMode.single, SmearMode.clear].includes(smearMode) &&
+        [DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)
+      )
+    )
+      return;
 
     const colorData = smearMode === SmearMode.single ? dimmerValue[DimmerMode[dimmerMode]] : {};
     // @ts-ignore wtf
-    dispatch(handleToChangeLights({
-      ...data,
-      ...colorData,
-    }, isSave));
+    dispatch(
+      handleToChangeLights(
+        {
+          ...data,
+          ...colorData,
+        },
+        isSave
+      )
+    );
   };
 
 /** 根据涂抹dp来更新一遍所有lights */
 export const updateLights =
   (smearData: SmearDataType, isSave = false) =>
-    async (dispatch: Dispatch, getState: any) => {
-      const { indexs = new Set(), dimmerMode, smearMode, combination = [] } = smearData;
-      dispatch(updateUI({
+  async (dispatch: Dispatch, getState: any) => {
+    const { indexs = new Set(), dimmerMode, smearMode, combination = [] } = smearData;
+    dispatch(
+      updateUI({
         // 使用了油漆桶功能后 渐变按钮置灰
         afterSmearAll: smearMode === SmearMode.all && dimmerMode !== DimmerMode.combination,
         // 使用了油漆桶-白光功能后，铅笔按钮置灰
         afterSmearAllWhite: smearMode === SmearMode.all && dimmerMode === DimmerMode.white,
-      }));
+      })
+    );
 
-      const {
-        cloudState: { lights = [] },
-        uiState: { ledNumber = 0 },
-      } = getState();
-      // console.log('更新lights --- 工作模式',smearData.dimmerMode);
-      let newLights = [];
-      if (dimmerMode === DimmerMode.combination) {
-        // 其他模式是下发单色，组合是下发多个颜色，单独处理
-        newLights = getPreviewColorDatas(combination, ledNumber).map(
-          ({ hue, saturation, value }) =>
-            `${nToHS(hue, 4)}${nToHS(saturation, 4)}${nToHS(value, 4)}${nToHS(0, 4)}${nToHS(0, 4)}`
-        );
-      } else {
-        const smearDataStr = smearFormater.format(smearData);
-        const color = [DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)
-          ? _.padEnd(smearDataStr.slice(10, 22), 20, '0')
-          : _.padStart(smearDataStr.slice(10, 18), 20, '0');
-        newLights = _.times(
-          ledNumber,
-          i => (smearMode === SmearMode.all ? color : indexs.has(i) ? color : lights[i])
-        );
-      }
-      // @ts-ignore wtf
-      // 白光彩光分开存
-      if (dimmerMode === DimmerMode.white) {
-        dispatch(updateCloudStates('whiteLights', newLights, isSave));
-      } else {
-        dispatch(updateCloudStates('lights', newLights, isSave));
-      }
-    };
-
-export const updateCloudStates = (key: string, data: any, isSave = true) => async (
-  dispatch: Dispatch
-) => {
-  try {
-    dispatch(updateCloudState({ [key]: data }));
-    if (!isSave) return;
-    // 对lights按照1024长度进行切片
-    if (key === 'lights' || key === 'whiteLights') {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const [i, s] of avgSplit(data.join(''), 1024).entries()) {
-        // eslint-disable-next-line no-await-in-loop
-        await saveDeviceCloudData(`${key}_${i}`, s);
-      }
+    const {
+      cloudState: { lights = [] },
+      uiState: { ledNumber = 0 },
+    } = getState();
+    // console.log('更新lights --- 工作模式',smearData.dimmerMode);
+    let newLights = [];
+    if (dimmerMode === DimmerMode.combination) {
+      // 其他模式是下发单色，组合是下发多个颜色，单独处理
+      newLights = getPreviewColorDatas(combination, ledNumber).map(
+        ({ hue, saturation, value }) =>
+          `${nToHS(hue, 4)}${nToHS(saturation, 4)}${nToHS(value, 4)}${nToHS(0, 4)}${nToHS(0, 4)}`
+      );
     } else {
-      await saveDeviceCloudData(key, data);
+      const smearDataStr = smearFormater.format(smearData);
+      const color = [DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)
+        ? _.padEnd(smearDataStr.slice(10, 22), 20, '0')
+        : _.padStart(smearDataStr.slice(10, 18), 20, '0');
+      newLights = _.times(ledNumber, i =>
+        smearMode === SmearMode.all ? color : indexs.has(i) ? color : lights[i]
+      );
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+    // @ts-ignore wtf
+    // 白光彩光分开存
+    if (dimmerMode === DimmerMode.white) {
+      dispatch(updateCloudStates('whiteLights', newLights, isSave));
+    } else {
+      dispatch(updateCloudStates('lights', newLights, isSave));
+    }
+  };
+
+export const updateCloudStates =
+  (key: string, data: any, isSave = true) =>
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch(updateCloudState({ [key]: data }));
+      if (!isSave) return;
+      // 对lights按照1024长度进行切片
+      if (key === 'lights' || key === 'whiteLights') {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [i, s] of avgSplit(data.join(''), 1024).entries()) {
+          // eslint-disable-next-line no-await-in-loop
+          await saveDeviceCloudData(`${key}_${i}`, s);
+        }
+      } else {
+        await saveDeviceCloudData(key, data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 export const handleHomeTabChange = (tab: HomeTab) => (dispatch: Dispatch) => {
   dispatch(updateUI({ homeTab: tab }));
@@ -313,11 +314,16 @@ export const handleDimmerValueChange =
     // 只有油漆桶才会直接下发
     if (smearMode !== SmearMode.all) return;
     // @ts-ignore wtf
-    dispatch(handleToChangeLights({
-      ...([DimmerMode.white, DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)
-        ? dataPayload
-        : data),
-    }, true));
+    dispatch(
+      handleToChangeLights(
+        {
+          ...([DimmerMode.white, DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)
+            ? dataPayload
+            : data),
+        },
+        true
+      )
+    );
   };
 
 /** 处理渐变操作 */
@@ -338,7 +344,8 @@ export const handlePutSceneData = (value: SceneValueType) => async () => {
 };
 
 /** 情景保存 */
-export const handlePutScene = (data: SceneDataType, isEdit = false, isSave = true) =>
+export const handlePutScene =
+  (data: SceneDataType, isEdit = false, isSave = true) =>
   async (dispatch: Dispatch, getState: GetState) => {
     let sceneData = data;
     if (!isEdit && isSave) {
@@ -357,7 +364,7 @@ export const handlePutScene = (data: SceneDataType, isEdit = false, isSave = tru
         value: {
           ...data.value,
           id: newId,
-        }
+        },
       };
     }
     // @ts-ignore
@@ -375,25 +382,22 @@ export const handlePutScene = (data: SceneDataType, isEdit = false, isSave = tru
   };
 
 /** 情景保存 */
-export const handleRemoveScene = (data: SceneDataType) =>
-  async (dispatch: Dispatch) => {
-    // @ts-ignore wtf
-    const res = await deleteDeviceCloudData(`scene_${data.id}`);
-    GlobalToast.show({
-      showIcon: !!res,
-      text: Strings.getLang(res ? 'tip_remove_success' : 'tip_remove_fail'),
-    });
-    // 再更新一遍cloudStates
-    // @ts-ignore wtf
-    dispatch(getCloudStates());
-  };
+export const handleRemoveScene = (data: SceneDataType) => async (dispatch: Dispatch) => {
+  // @ts-ignore wtf
+  const res = await deleteDeviceCloudData(`scene_${data.id}`);
+  GlobalToast.show({
+    showIcon: !!res,
+    text: Strings.getLang(res ? 'tip_remove_success' : 'tip_remove_fail'),
+  });
+  // 再更新一遍cloudStates
+  // @ts-ignore wtf
+  dispatch(getCloudStates());
+};
 
 export const handlePutCountdown = (countdown: number) => (dispatch: Dispatch) => {
   dragon.putDpData({ [countdownCode]: countdown }, { checkCurrent: false });
   GlobalToast.show({
-    text: Strings.getLang(
-      countdown ? 'tip_countdown_open_success' : 'tip_countdown_close_success'
-    ),
+    text: Strings.getLang(countdown ? 'tip_countdown_open_success' : 'tip_countdown_close_success'),
   });
   // @ts-ignore wtf
   dispatch(updateCloudStates('totalCountdown', String(countdown)));
@@ -403,9 +407,8 @@ export const getCloudTimingList = () => async (dispatch: Dispatch) => {
   // 清理云定时互斥
   TaskManager.removeAll(TaskManager.TaskType.NORMAL_TIMING);
   const data = (await getCategoryTimerList(CloudTimingCategory)) || {};
-  const cloudTimingList = _.flatMap(
-    data.groups,
-    item => item.timers.map(it => {
+  const cloudTimingList = _.flatMap(data.groups, item =>
+    item.timers.map(it => {
       const [hour, minute] = it.time.split(':').map(Number);
       const weeks = it.loops.split('').map(Number);
       const datas = {
@@ -417,56 +420,63 @@ export const getCloudTimingList = () => async (dispatch: Dispatch) => {
         power: !!it.status,
         type: 'timer',
       };
-      datas.power && TaskManager.add({
-        id: datas.timerId,
-        weeks: weeks.concat(0),
-        startTime: hour * 60 + minute,
-        endTime: hour * 60 + minute,
-      }, TaskManager.TaskType.NORMAL_TIMING);
+      datas.power &&
+        TaskManager.add(
+          {
+            id: datas.timerId,
+            weeks: weeks.concat(0),
+            startTime: hour * 60 + minute,
+            endTime: hour * 60 + minute,
+          },
+          TaskManager.TaskType.NORMAL_TIMING
+        );
       return datas;
     })
   );
   dispatch(updateUI({ cloudTimingList }));
 };
 
-export const addCloudTiming = (...args: any[]) => async (dispatch: Dispatch) => {
-  const res = await addTimer(...args);
-  // @ts-ignore wtf
-  dispatch(getCloudTimingList());
-  return res;
-};
+export const addCloudTiming =
+  (...args: any[]) =>
+  async (dispatch: Dispatch) => {
+    const res = await addTimer(...args);
+    // @ts-ignore wtf
+    dispatch(getCloudTimingList());
+    return res;
+  };
 
-export const updateCloudTiming = (...args: any[]) => async (dispatch: Dispatch) => {
-  const res = await updateTimer(...args);
-  // @ts-ignore wtf
-  dispatch(getCloudTimingList());
-  return res;
-};
+export const updateCloudTiming =
+  (...args: any[]) =>
+  async (dispatch: Dispatch) => {
+    const res = await updateTimer(...args);
+    // @ts-ignore wtf
+    dispatch(getCloudTimingList());
+    return res;
+  };
 
-export const updateCloudTimingStatus = (...args: any[]) => async (dispatch: Dispatch) => {
-  const res = await updateTimerStatus(...args);
-  // @ts-ignore wtf
-  dispatch(getCloudTimingList());
-  return res;
-};
+export const updateCloudTimingStatus =
+  (...args: any[]) =>
+  async (dispatch: Dispatch) => {
+    const res = await updateTimerStatus(...args);
+    // @ts-ignore wtf
+    dispatch(getCloudTimingList());
+    return res;
+  };
 
-export const removeCloudTiming = (...args: any[]) => async (dispatch: Dispatch) => {
-  const res = await removeTimer(...args);
-  // @ts-ignore wtf
-  dispatch(getCloudTimingList());
-  return res;
-};
+export const removeCloudTiming =
+  (...args: any[]) =>
+  async (dispatch: Dispatch) => {
+    const res = await removeTimer(...args);
+    // @ts-ignore wtf
+    dispatch(getCloudTimingList());
+    return res;
+  };
 
 export const actions = {
   devInfoChange,
   asyncDevInfoChange,
   deviceChange,
   updateDp,
-  initIoTConfig,
-  initDpConfig,
-  initCloudConfig,
-  updateMiscConfig,
-  initializedConfig,
   consoleChange,
   clearConsole,
   updatePanelState,
@@ -523,47 +533,8 @@ const devInfo = handleActions<DevInfo>(
   {} as DevInfo
 );
 
-const panelConfig = handleActions<Config, any>(
-  {
-    [initIoTConfig.toString()]: (state, action: Actions['initIoTConfig']) => {
-      return {
-        ...state,
-        iot: { ...state.iot, ...action.payload },
-      };
-    },
-    [initCloudConfig.toString()]: (state, action: Actions['initCloudConfig']) => {
-      return {
-        ...state,
-        cloudFun: { ...state.cloudFun, ...action.payload },
-      };
-    },
-    [initDpConfig.toString()]: (state, action: Actions['initDpConfig']) => {
-      return {
-        ...state,
-        dpFun: { ...state.dpFun, ...action.payload },
-      };
-    },
-    [updateMiscConfig.toString()]: (state, action: Actions['updateMiscConfig']) => {
-      return {
-        ...state,
-        misc: {
-          ...state.misc,
-          ...action.payload,
-        },
-      };
-    },
-    [initializedConfig.toString()]: state => {
-      return {
-        ...state,
-        initialized: true,
-      };
-    },
-  },
-  defaultPanelConfig as Config
-);
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface PanelState { }
+interface PanelState {}
 
 const panelState = handleActions<PanelState>(
   {
@@ -608,7 +579,7 @@ const cloudState = handleActions(
       ...state,
       ...action.payload,
     }),
-    [replaceCloudState.toString()]: (__, action) => (action.payload),
+    [replaceCloudState.toString()]: (__, action) => action.payload,
     [updateLocalMusic.toString()]: (state, action) => {
       const data: any = action.payload;
       const { localMusicList } = state;
@@ -638,7 +609,6 @@ const cloudState = handleActions(
 export const reducers = {
   dpState,
   devInfo,
-  panelConfig,
   panelState,
   uiState,
   cloudState,

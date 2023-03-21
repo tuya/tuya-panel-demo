@@ -6,10 +6,10 @@ import Res from '@res/index';
 import Strings from '@i18n';
 import MusicBar from '@components/MusicBar';
 import * as MusicManager from '@utils/music';
-import dragon from '@tuya-rn/tuya-native-dragon';
-import { ColorUtils, SupportUtils, WORKMODE } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
+import dragon from '@tuya/tuya-panel-dragon-sdk';
+import { ColorUtils, SupportUtils, WORK_MODE } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import DpCodes from '@config/dpCodes';
-import { ControlData } from '@tuya-rn/tuya-native-dragon/lib/extension/lamp/format/ControlFormater';
+import { IControlData } from '@types';
 import AppMusicDatas from '@config/default/appMusic';
 import color from 'color';
 
@@ -47,7 +47,7 @@ class Music extends React.Component<MusicProps, MusicState> {
   componentWillReceiveProps(nextProps: MusicProps) {
     if (
       (this.props.power !== nextProps.power && !nextProps.power) ||
-      nextProps.workMode !== WORKMODE.MUSIC
+      nextProps.workMode !== WORK_MODE.MUSIC
     ) {
       const { animAppMusicCard } = this.state;
       MusicManager.close();
@@ -97,7 +97,7 @@ class Music extends React.Component<MusicProps, MusicState> {
     try {
       const { power } = this.props;
       let colorStr = 'rgb(255,255,0)';
-      await MusicManager.open(musicOption, (musicData: ControlData, index: number) => {
+      await MusicManager.open(musicOption, (musicData: IControlData, index: number) => {
         const { hue, saturation, value, brightness, temperature } = musicData;
         if (SupportUtils.isSupportColour()) {
           colorStr = ColorUtils.hsv2rgba(hue!, saturation, 1000);
@@ -112,7 +112,7 @@ class Music extends React.Component<MusicProps, MusicState> {
       });
       dragon.putDpData(
         {
-          [workModeCode]: WORKMODE.MUSIC,
+          [workModeCode]: WORK_MODE.MUSIC,
         },
         { checkCurrent: false, useThrottle: false, clearThrottle: true }
       );
@@ -140,7 +140,7 @@ class Music extends React.Component<MusicProps, MusicState> {
     const { activeAppMusicIndex } = this.state;
     return AppMusicDatas.map((item: any, idx: number) => {
       const { id } = item;
-      const isActive = activeAppMusicIndex === idx && workMode === WORKMODE.MUSIC;
+      const isActive = activeAppMusicIndex === idx && workMode === WORK_MODE.MUSIC;
       return this.renderMusicRowItem(id, idx, isActive);
     });
   };
@@ -208,8 +208,8 @@ class Music extends React.Component<MusicProps, MusicState> {
                       ? Res.stopIcon
                       : Res.stopIconLight
                     : isDarkTheme
-                      ? Res.startIcon
-                      : Res.startIconLight
+                    ? Res.startIcon
+                    : Res.startIconLight
                 }
                 resizeMode="contain"
               />

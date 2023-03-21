@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { TYText, Utils, Divider, TopBar, BrickButton, useTheme } from 'tuya-panel-kit';
 import LottieView from 'lottie-react-native';
-import { BrightRectSlider } from '@tuya-rn/tuya-native-lamp-elements';
+import BrightRectSlider from '@components/BrightRectSlider';
 import { useDebounceFn } from 'ahooks';
 import useNavigationBack from '@hooks/useNavigationBack';
 import DimmerBox from '@components/DimmerBox';

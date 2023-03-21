@@ -6,22 +6,15 @@ import { Utils, LinearGradient, useTheme } from 'tuya-panel-kit';
 import _ from 'lodash';
 import { useUpdate } from 'ahooks';
 import useSelector from '@hooks/useSelector';
-import useIoTOtherUIValue from '@hooks/useIoTOtherUIValue';
 import { avgSplit, sToN, colorDataToRgba } from '@utils';
 import Res from '@res';
 import DpCodes from '@config/dpCodes';
 import { LightsUIProps, UIDataPropType } from './interface';
-import { gradientDirMap, UIDataRectangle, UIDataPipe, UIDataPoint } from './config';
+import { gradientDirMap, UIDataRectangle } from './config';
 import Img from './Img';
 
 const { convertX: cx } = Utils.RatioUtils;
 const { smearCode, workModeCode } = DpCodes;
-function getUiInfo(subUiId: string): [number, UIDataPropType[]] {
-  if (['0000017ok5', '0000017q44'].includes(subUiId)) return [2, UIDataPipe];
-  if (['0000017q40', '0000017pc9'].includes(subUiId)) return [3, UIDataPoint];
-  return [1, UIDataRectangle]; // ['0000017pbl', '0000017pbo']
-}
-
 const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
   const forceUpdate = useUpdate();
   const containerLayoutRef = useRef<LayoutRectangle>();
@@ -45,25 +38,24 @@ const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
         const [h, s, v, b, t] = avgSplit(l, 4).map(c => sToN(c));
         return [h, s, v, b, t].some(Boolean)
           ? colorDataToRgba({
-            isColor: [h, s, v].some(Number),
-            hue: h,
-            saturation: s,
-            value: v,
-            brightness: b,
-            temperature: t,
-          })
+              isColor: [h, s, v].some(Number),
+              hue: h,
+              saturation: s,
+              value: v,
+              brightness: b,
+              temperature: t,
+            })
           : isDarkTheme
-            ? '#222222'
-            : '#D1D4E6';
+          ? '#222222'
+          : '#D1D4E6';
       }),
     [lights, isDarkTheme, workMode, whiteLights, isWhiteMode]
   );
+  const UIData = UIDataRectangle;
+  const uiKey = 1;
 
-  const subUiId: string = useIoTOtherUIValue('subUiId');
-  const [uiKey, UIData] = useMemo(() => getUiInfo(subUiId), [subUiId]);
   const UIDatas = useMemo(() => {
     const d = UIData.slice(0, ledNumber);
-    if ([2, 3].includes(uiKey)) return d;
     // 特殊处理ui1末尾直线型色块
     return d.map((item, index, arr) => ({
       ...item,
@@ -73,8 +65,8 @@ const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
           ? [1, 2, 3, 4, 11, 12, 13, 14].includes(index)
             ? 'e2'
             : [6, 7, 8, 9, 16, 17, 18, 19].includes(index)
-              ? 'e1'
-              : item.imgKey
+            ? 'e1'
+            : item.imgKey
           : item.imgKey,
     }));
   }, [uiKey, ledNumber]);
@@ -88,14 +80,7 @@ const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
   useImperativeHandle(innerRef, () => ({ layout: containerLayoutRef.current, UIData: UIDatas }));
 
   return (
-    <View
-      style={[
-        uiKey === 1 && styles.ui1Container,
-        uiKey === 2 && styles.ui2Container,
-        uiKey === 3 && styles.ui3Container,
-      ]}
-      onLayout={handeContainerLayout}
-    >
+    <View style={styles.ui1Container} onLayout={handeContainerLayout}>
       {UIDatas.map(({ pos, width, height, gradientDir, imgKey }, index, arr) => (
         <View
           key={String(index)}
@@ -127,14 +112,6 @@ const styles = StyleSheet.create({
   ui1Container: {
     width: cx(322),
     height: cx(174),
-  },
-  ui2Container: {
-    width: cx(351),
-    height: cx(288),
-  },
-  ui3Container: {
-    width: cx(351),
-    height: cx(288),
   },
   item: {
     position: 'absolute',

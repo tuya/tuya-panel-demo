@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TYFlatList, Utils, useTheme, TYSdk } from 'tuya-panel-kit';
-import { SupportUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils/index';
+import { SupportUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import Strings from '@i18n';
 import DpCodes from '@config/dpCodes';
 

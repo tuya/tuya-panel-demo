@@ -1,4 +1,4 @@
-import dpCodes from '@tuya-rn/tuya-native-lamp-elements/lib/utils/dpCodes';
+import dpCodes from '@tuya/tuya-panel-lamp-sdk/lib/utils/dpCodes';
 
 export default {
   ...dpCodes,

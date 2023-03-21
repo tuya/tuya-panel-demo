@@ -1,16 +1,6 @@
 declare module 'react-native-json-tree';
 
-declare module '@tuya-rn/tuya-native-elements';
 
-// declare module '@tuya-rn/tuya-native-lamp-elements' {
-//   const WaterRipple: any;
-// }
-
-declare module '@tuya-rn/tuya-native-standard-elements' {
-  const StandardUtils: {
-    withProvider: any;
-    withUIConfig: any;
-  };
 
   interface DpCodes {
     power: string; // 开关

@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useCreation } from 'ahooks';
 import { Button, useTheme, Utils, Popup, TYSdk } from 'tuya-panel-kit';
-import { SupportUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils/index';
+import { SupportUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import MyTopBar from '@components/MyTopBar';
 import PageBackground from '@components/PageBackground';
 import useSelector from '@hooks/useSelector';

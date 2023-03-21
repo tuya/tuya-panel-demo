@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { StorageUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
+import { StorageUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import { View, ViewStyle } from 'react-native';
 import RectPicker, {
   ValidBound,

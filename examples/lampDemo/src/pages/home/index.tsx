@@ -3,7 +3,7 @@ import React, { useMemo, useEffect } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { TYSdk, Dialog } from 'tuya-panel-kit';
 import { useNavigation } from '@react-navigation/native';
-import { SupportUtils, StorageUtils } from '@tuya-rn/tuya-native-lamp-elements/lib/utils';
+import { SupportUtils, StorageUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import { HomeTab } from '@types';
 import DpCodes from '@config/dpCodes';
 import useSelector from '@hooks/useSelector';

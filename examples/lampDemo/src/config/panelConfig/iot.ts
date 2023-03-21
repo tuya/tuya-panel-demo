@@ -1,4 +1,3 @@
-import { IoTPublicConfig } from '@tuya-rn/tuya-native-standard-hoc/lib/withUIConfig/interface';
 import { DeepPartial } from '@utils';
 
 export default {
@@ -20,6 +19,6 @@ export default {
     },
   },
 } as {
-  default: DeepPartial<IoTPublicConfig>;
-  light: DeepPartial<IoTPublicConfig>;
+  default: DeepPartial<any>;
+  light: DeepPartial<any>;
 };

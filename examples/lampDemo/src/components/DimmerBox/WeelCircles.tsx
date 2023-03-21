@@ -23,6 +23,7 @@ class WeelCircles extends PureComponent<ColorUnitsProps> {
     const topColor = isDark ? WHITE : themeColor;
     const circleBg = colors(isDark ? '#222222' : themeColor)
       .alpha(isDark ? 1 : 0.1)
+      // @ts-ignore
       .rgbaString();
     const circleData = [...circleArr, 'plus', 'delete']
       // eslint-disable-next-line array-callback-return
