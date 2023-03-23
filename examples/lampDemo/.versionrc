@@ -1,5 +1,0 @@
-{
-  "commitUrlFormat": "https://github.com/tuya/tuya-panel-demo/commit/{{hash}}",
-  "releaseCommitMessageFormat": "chore(release): @template/lampDimmer {{currentTag}}",
-  "path": "."
-}
