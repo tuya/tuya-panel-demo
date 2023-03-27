@@ -1,22 +1,18 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable prettier/prettier */
 import React from 'react';
-import { TouchableOpacity, Text, ViewPropTypes, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+import { TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { TYText } from 'tuya-panel-kit';
 
-const styles = StyleSheet.create({
-  textStyle: {
-    color: '#fff',
-    textAlign: 'center',
-    backgroundColor: 'transparent',
-  },
-  activeTextStyle: {
-    color: '#5190F3',
-  },
-});
-
-const RadioButton = props => {
+interface Iprops {
+  title: string;
+  isActive?: boolean;
+  accessibilityLabel?: string;
+  textAccessibilityLabel?: string;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  activeTextStyle?: StyleProp<ViewStyle>;
+  onItemPress: (t: any) => void;
+}
+const RadioButton = (props: Iprops) => {
   const {
     title,
     onItemPress,
@@ -50,25 +46,22 @@ const RadioButton = props => {
   );
 };
 
-RadioButton.propTypes = {
-  title: PropTypes.node.isRequired,
-  isActive: PropTypes.bool,
-
-  accessibilityLabel: PropTypes.string,
-  textAccessibilityLabel: PropTypes.string,
-
-  style: ViewPropTypes.style,
-  textStyle: Text.propTypes.style,
-  activeTextStyle: Text.propTypes.style,
-
-  onItemPress: PropTypes.func.isRequired,
-};
-
 RadioButton.defaultProps = {
   isActive: false,
   style: {},
   textStyle: {},
   activeTextStyle: {},
+  accessibilityLabel: '',
+  textAccessibilityLabel: '',
 };
-
+const styles = StyleSheet.create({
+  textStyle: {
+    color: '#fff',
+    textAlign: 'center',
+    backgroundColor: 'transparent',
+  },
+  activeTextStyle: {
+    color: '#5190F3',
+  },
+});
 export default RadioButton;

@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable indent */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/default-props-match-prop-types */
 import React from 'react';
 import {
   View,
@@ -11,9 +17,6 @@ import {
   ViewStyle,
   Easing,
 } from 'react-native';
-import { Utils } from 'tuya-panel-kit';
-
-const { convertX: cx } = Utils.RatioUtils;
 
 export const numberSliderDefaultProps = {
   /**
@@ -203,6 +206,7 @@ interface IState {
  * 此滑动条仅保证整数值情况下完整的
  */
 export default class NumberSlider extends React.Component<NumberSliderProps, IState> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps: DefaultProps = numberSliderDefaultProps;
 
   _panResponder: PanResponderInstance;
@@ -539,11 +543,9 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     const thumbStyles = [styles.thumb, thumbStyle];
     const isThumbInner = thumbLimitType === 'inner';
     const trackStyles = [isHorizontal ? styles.track : styles.trackVertical, trackStyle];
-    // @ts-ignore
     const { height: thumbHeight = 24, width: thumbWidth = 24 } = StyleSheet.flatten(thumbStyles);
     const halfThumbWidth = (thumbWidth as number) / 2;
     const halfThumbHeight = (thumbHeight as number) / 2;
-    // @ts-ignore
     const { height: trackHeight = 6, width: trackWidth = 6 } = StyleSheet.flatten(trackStyles);
     return (
       <View style={containerStyle} accessibilityLabel={accessibilityLabel} onLayout={onLayout}>
@@ -574,56 +576,54 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                   styles.tintTrack,
                   isHorizontal
                     ? {
-                      backgroundColor: tintColor,
-                      // @ts-ignore
-                      height: trackHeight,
-                      // @ts-ignore
-                      borderRadius: trackHeight / 2,
-                      width: isThumbInner
-                        ? this.animate.interpolate({
-                          inputRange: [
-                            0,
-                            halfThumbWidth,
-                            Math.max(halfThumbWidth, this.maxLength - halfThumbWidth),
-                            Math.max(halfThumbWidth, this.maxLength),
-                          ],
-                          outputRange: [
-                            0,
+                        backgroundColor: tintColor,
+                        height: trackHeight,
+                        borderRadius: Number(trackHeight) / 2,
+                        width: isThumbInner
+                          ? this.animate.interpolate({
+                              inputRange: [
+                                0,
+                                halfThumbWidth,
+                                Math.max(halfThumbWidth, this.maxLength - halfThumbWidth),
+                                Math.max(halfThumbWidth, this.maxLength),
+                              ],
+                              outputRange: [
+                                0,
                                 thumbWidth as number,
                                 this.maxLength,
-                                // @ts-ignore
+
                                 this.maxLength + (thumbWidth as number),
-                          ],
-                        })
-                        : this.animate,
-                      [reverse ? 'right' : 'left']:
+                              ],
+                            })
+                          : this.animate,
+                        [reverse ? 'right' : 'left']:
                           this.offsetMinLength - (isThumbInner ? halfThumbWidth : 0),
-                    }
+                      }
                     : {
-                      backgroundColor: tintColor,
-                      width: trackWidth,
-                      // @ts-ignore
-                      borderRadius: trackWidth / 2,
-                      height: isThumbInner
-                        ? this.animate.interpolate({
-                          inputRange: [
-                            0,
-                            halfThumbHeight,
-                            Math.max(halfThumbHeight, this.maxLength - halfThumbHeight),
-                            Math.max(halfThumbHeight, this.maxLength),
-                          ],
-                          outputRange: [
-                            0,
+                        backgroundColor: tintColor,
+                        width: trackWidth,
+                        // @ts-ignore
+                        borderRadius: trackWidth / 2,
+                        height: isThumbInner
+                          ? this.animate.interpolate({
+                              inputRange: [
+                                0,
+                                halfThumbHeight,
+                                Math.max(halfThumbHeight, this.maxLength - halfThumbHeight),
+                                Math.max(halfThumbHeight, this.maxLength),
+                              ],
+                              outputRange: [
+                                0,
                                 thumbHeight as number,
                                 this.maxLength,
                                 // @ts-ignore
                                 this.maxLength + (thumbHeight as number),
-                          ],
-                        })
-                        : this.animate,
-                      [reverse ? 'top' : 'bottom']:
+                              ],
+                            })
+                          : this.animate,
+                        [reverse ? 'top' : 'bottom']:
                           this.offsetMinLength - (isThumbInner ? halfThumbHeight : 0),
-                    },
+                      },
                   tintStyle,
                 ]}
               >
@@ -641,17 +641,18 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                 thumbStyles,
                 isHorizontal
                   ? {
-                    [reverse ? 'right' : 'left']: Animated.add(
-                      this.animate,
-                      this.offsetMinLength - halfThumbWidth
-                    ),
-                  }
+                      [reverse ? 'right' : 'left']: Animated.add(
+                        this.animate,
+                        this.offsetMinLength - halfThumbWidth
+                      ),
+                    }
                   : {
-                    [reverse ? 'top' : 'bottom']: Animated.add(
-                      this.animate,
-                      this.offsetMinLength - halfThumbHeight
-                    ),
-                  },,
+                      [reverse ? 'top' : 'bottom']: Animated.add(
+                        this.animate,
+                        this.offsetMinLength - halfThumbHeight
+                      ),
+                    },
+                ,
               ]}
             >
               {!!renderThumb && renderThumb()}

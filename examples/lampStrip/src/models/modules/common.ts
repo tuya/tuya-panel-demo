@@ -379,8 +379,8 @@ export const handlePutScene =
 
     GlobalToast.show({
       text: Strings.getLang(isEdit ? 'tip_edit_success' : 'tip_add_success'),
-      onFinish(): void {
-        throw new Error('Function not implemented.');
+      onFinish: () => {
+        GlobalToast.hide();
       },
     });
     // 再更新一遍cloudStates
@@ -395,8 +395,8 @@ export const handleRemoveScene = (data: SceneDataType) => async (dispatch: Dispa
   GlobalToast.show({
     showIcon: !!res,
     text: Strings.getLang(res ? 'tip_remove_success' : 'tip_remove_fail'),
-    onFinish(): void {
-      throw new Error('Function not implemented.');
+    onFinish: () => {
+      GlobalToast.hide();
     },
   });
   // 再更新一遍cloudStates
@@ -408,8 +408,8 @@ export const handlePutCountdown = (countdown: number) => (dispatch: Dispatch) =>
   dragon.putDpData({ [countdownCode]: countdown }, { checkCurrent: false });
   GlobalToast.show({
     text: Strings.getLang(countdown ? 'tip_countdown_open_success' : 'tip_countdown_close_success'),
-    onFinish(): void {
-      throw new Error('Function not implemented.');
+    onFinish: () => {
+      GlobalToast.hide();
     },
   });
   // @ts-ignore wtf
@@ -602,7 +602,7 @@ const cloudState = handleActions(
       // @ts-ignore wtf
       const { localMusicList } = state;
       // 是否存在，不存在则添加
-      const exist = localMusicList.find((music: RgbMusicValue) => {
+      const exist = localMusicList.find((music: LocalMusicValue) => {
         if (music.id === data.id) {
           Object.assign(music, data);
           return true;

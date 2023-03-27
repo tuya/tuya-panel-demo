@@ -1,15 +1,14 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/no-unused-state */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/ban-types */
 import React from 'react';
-// import PropTypes from 'prop-types';
+
 import {
   View,
   ScrollView,
   Animated,
-  ViewPropTypes,
   StyleSheet,
   TouchableOpacity,
-  Text,
   StyleProp,
   ViewStyle,
   TextStyle,
@@ -18,73 +17,78 @@ import { Utils, TYText } from 'tuya-panel-kit';
 import wrapper from './tabHoc';
 
 const { convertX: cx, winWidth } = Utils.RatioUtils;
-
-interface TabBarProps {
+const defaultProps = {
+  underlineStyle: {},
+  defaultActiveKey: 0,
+  tabs: [],
+  tabStyle: {},
+  tabActiveStyle: {},
+  tabTextStyle: {},
+  tabActiveTextStyle: {},
+  wrapperStyle: {},
+  style: {},
+  onChange: () => {},
+  isUnderlineCenter: true,
+};
+type TabBarProps = {
   /**
    * 下划线的样式
    */
-  underlineStyle: StyleProp<ViewStyle>;
+  underlineStyle?: StyleProp<ViewStyle>;
   /**
    * 每个tab的样式
    */
-  tabStyle: StyleProp<ViewStyle>;
+  tabStyle?: StyleProp<ViewStyle>;
   /**
    * 高亮tab的样式
    */
-  tabActiveStyle: StyleProp<ViewStyle>;
+  tabActiveStyle?: StyleProp<ViewStyle>;
   /**
    * 每个tab内文字的样式
    */
-  tabTextStyle: StyleProp<TextStyle>;
+  tabTextStyle?: StyleProp<TextStyle>;
   /**
    * 高亮tab的文字样式
    */
-  tabActiveTextStyle: StyleProp<TextStyle>;
+  tabActiveTextStyle?: StyleProp<TextStyle>;
   /**
    * tab内层容器样式
    */
-  wrapperStyle: StyleProp<ViewStyle>;
+  wrapperStyle?: StyleProp<ViewStyle>;
   /**
    * tab外层容器样式
    */
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   /**
    * 高亮tab的key
    */
-  // eslint-disable-next-line react/require-default-props
   activeKey: string | number;
   /**
    * 默认高亮tab的key
    */
-  defaultActiveKey: string | number;
+  defaultActiveKey?: string | number;
   /**
    * tab数据
    */
-  tabs: any[];
+  tabs?: any[];
   /**
    * 下划线是否居中
    */
-  isUnderlineCenter: boolean;
+  isUnderlineCenter?: boolean;
   /**
    * tab切换的回调
    */
-  onChange: (params: any) => {};
-}
+  onChange?: (params: any) => {};
+} & Readonly<typeof defaultProps>;
 
-class TabBar extends React.PureComponent<TabBarProps> {
-  static defaultProps = {
-    underlineStyle: {},
-    defaultActiveKey: 0,
-    tabs: [],
-    tabStyle: {},
-    tabActiveStyle: {},
-    tabTextStyle: {},
-    tabActiveTextStyle: {},
-    wrapperStyle: {},
-    style: {},
-    onChange: () => {},
-    isUnderlineCenter: true,
-  };
+interface TabBarState {
+  activeKey: string | number;
+  underlineLeft: any;
+  underlineWidth: any;
+}
+class TabBar extends React.PureComponent<TabBarProps, TabBarState> {
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = defaultProps;
 
   tab: never[];
 
@@ -109,12 +113,14 @@ class TabBar extends React.PureComponent<TabBarProps> {
     };
     this.tab = [];
     this.tabBar = null;
-    this.getActiveIndexByKey(this.state.activeKey);
+    const { activeKey } = this.state;
+    this.getActiveIndexByKey(activeKey);
   }
 
   componentWillReceiveProps(nextProps: TabBarProps) {
     if ('activeKey' in nextProps) {
-      if (nextProps.activeKey === this.state.activeKey) return;
+      const { activeKey } = this.state;
+      if (nextProps.activeKey === activeKey) return;
       this.getActiveIndexByKey(nextProps.activeKey);
       this.setState({ activeKey: nextProps.activeKey }, () => {
         this.updateView(false);
@@ -195,6 +201,7 @@ class TabBar extends React.PureComponent<TabBarProps> {
     const { tabs } = this.props;
     let activeIndex = 0;
     for (let i = 0; i < tabs.length; i++) {
+      // @ts-ignore
       const tabKey = typeof tabs[i].key !== 'undefined' ? tabs[i].key : `tab_${i}`;
       if (activeKey === tabKey) {
         activeIndex = i;
@@ -207,29 +214,35 @@ class TabBar extends React.PureComponent<TabBarProps> {
   updateScrollView = isSysUpdate => {
     const { left, width } = this.tab[this.activeIndex];
     const tempWidth = this.tabBarContainerWidth - width;
+    // @ts-ignore
     const newScrollX = Math.max(Math.min(left - tempWidth / 2, this.tabBar.width - winWidth), 0);
     this.scrollView.scrollTo({ x: newScrollX, y: 0, animated: !isSysUpdate });
   };
 
   updateUnderline = isSysUpdate => {
     const { underlineStyle, isUnderlineCenter } = this.props;
-    const underLineWidth = StyleSheet.flatten([styles.underlineStyle, underlineStyle]).width;
+    const { underlineLeft, underlineWidth } = this.state;
+    const newUnderLineWidth: any = StyleSheet.flatten([
+      styles.underlineStyle,
+      underlineStyle,
+    ]).width;
     this.underlineLeftAnimation && this.underlineLeftAnimation.stop();
     this.underlineWidthAnimation && this.underlineWidthAnimation.stop();
     let { left } = this.tab[this.activeIndex];
     const { width } = this.tab[this.activeIndex];
     if (isUnderlineCenter) {
-      left += (width - underLineWidth) / 2;
+      // @ts-ignore
+      left += (width - newUnderLineWidth) / 2;
     }
     if (isSysUpdate) {
-      this.state.underlineLeft.setValue(left);
-      this.state.underlineWidth.setValue(width);
+      underlineLeft.setValue(left);
+      underlineWidth.setValue(width);
     } else {
-      this.underlineLeftAnimation = Animated.timing(this.state.underlineLeft, {
+      this.underlineLeftAnimation = Animated.timing(underlineLeft, {
         toValue: left,
         duration: 200,
       });
-      this.underlineWidthAnimation = Animated.timing(this.state.underlineWidth, {
+      this.underlineWidthAnimation = Animated.timing(underlineWidth, {
         toValue: width,
         duration: 200,
       });
@@ -262,6 +275,7 @@ class TabBar extends React.PureComponent<TabBarProps> {
 
   tabLayout = (index, e) => {
     const { x, width, height } = e.nativeEvent.layout;
+    // @ts-ignore
     this.tab[index] = { left: x, right: x + width, width, height };
     this.updateView(true);
   };

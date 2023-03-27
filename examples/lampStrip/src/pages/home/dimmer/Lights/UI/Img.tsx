@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useRef } from 'react';
 import { StyleSheet, View, Image, StyleProp, ImageStyle, ImageSourcePropType } from 'react-native';
 import { useTheme } from 'tuya-panel-kit';
@@ -14,6 +15,7 @@ const Img: React.FC<ImgProps> = ({ containerStyle, style, source }) => {
   const containerRef = useRef(null);
 
   const handleLoaded = () => {
+    // @ts-ignore
     containerRef.current?.setNativeProps?.({
       style: { backgroundColor: 'transparent' },
     });
@@ -32,5 +34,8 @@ const Img: React.FC<ImgProps> = ({ containerStyle, style, source }) => {
 const styles = StyleSheet.create({
   container: {},
 });
-
+Img.defaultProps = {
+  containerStyle: {},
+  style: {},
+};
 export default Img;

@@ -1,3 +1,9 @@
+/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable react/static-property-placement */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react/default-props-match-prop-types */
+/* eslint-disable max-classes-per-file */
 import React from 'react';
 import {
   View,
@@ -29,10 +35,12 @@ const defaultProps = {
   // formatPercent: null,
   invalidSwipeDistance: 7,
   clickEnabled: false, // 是否可以点击选择
+  style: {},
   onGrant(v: number) {},
   onMove(v: number) {},
   onRelease(v: number) {},
   onPress(v: number) {},
+  formatPercent(v: number) {},
 };
 
 export interface IBrightOption {
@@ -56,6 +64,7 @@ type IProps = {
 
 interface IState {
   value: number;
+  opacityAnimationValue: any;
 }
 
 export default class Slider extends React.Component<IProps, IState> {
@@ -97,21 +106,22 @@ export default class Slider extends React.Component<IProps, IState> {
       onPanResponderReject: this.handleTerminate,
       onPanResponderTerminate: this.handleTerminate,
     });
-
+    const { value } = this.props;
     this.state = {
-      value: this.props.value,
+      value,
       opacityAnimationValue: new Animated.Value(props.opacityAnimationValue),
     };
   }
 
   componentWillReceiveProps(nextProps: IProps) {
+    const { opacityAnimationValue } = this.props;
     if (!this.locked) {
       this.brightWidth = this.valueToWidth(nextProps.value);
       this.brightAnimate.setValue(this.brightWidth);
       this.setState({ value: nextProps.value });
     }
     // 开关切换改变透明度
-    if (nextProps.opacityAnimationValue !== this.props.opacityAnimationValue) {
+    if (nextProps.opacityAnimationValue !== opacityAnimationValue) {
       this.fadeAnimation(nextProps.opacityAnimationValue);
     }
   }
@@ -121,29 +131,33 @@ export default class Slider extends React.Component<IProps, IState> {
   }
 
   fadeAnimation = (value: number) => {
-    Animated.timing(this.state.opacityAnimationValue, {
+    const { opacityAnimationValue } = this.state;
+    Animated.timing(opacityAnimationValue, {
       toValue: value,
       duration: 300,
     }).start();
   };
 
   handleStartPanResponder = (e: GestureResponderEvent) => {
-    if (this.props.disabled) {
+    const { disabled, clickEnabled } = this.props;
+    if (disabled) {
       return false;
     }
     this.grantTime = +new Date();
-    return this.props.clickEnabled;
+    return clickEnabled;
   };
 
   handleSetPanResponder = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
-    if (this.props.disabled) {
+    const { disabled, invalidSwipeDistance, onGrant } = this.props;
+    const { value } = this.state;
+    if (disabled) {
       return false;
     }
     // 滑动一定象素后，将不允许其他手势抢权
-    if (Math.abs(gesture.dx) >= this.props.invalidSwipeDistance) {
+    if (Math.abs(gesture.dx) >= invalidSwipeDistance) {
       // 小于一定象素不做滑动
       if (!this.moving) {
-        this.props.onGrant(this.state.value);
+        onGrant(value);
         this.moving = true;
         this.locked = true;
       }
@@ -163,33 +177,36 @@ export default class Slider extends React.Component<IProps, IState> {
   };
 
   onMove = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
+    const { invalidSwipeDistance, onGrant, onMove } = this.props;
+    const { value } = this.state;
     if (!this.moving) {
       // 滑动一定象素后，将不允许其他手势抢权
-      if (Math.abs(gesture.dx) < this.props.invalidSwipeDistance) {
+      if (Math.abs(gesture.dx) < invalidSwipeDistance) {
         // 小于一定象素不做滑动
         return;
       }
       // 开始手势
-      this.props.onGrant(this.state.value);
+      onGrant(value);
       this.moving = true;
       this.locked = true;
     }
-    this.handleMove(gesture, this.props.onMove, false);
+    this.handleMove(gesture, onMove, false);
   };
 
   onRelease = (e: GestureResponderEvent, gesture: PanResponderGestureState) => {
     this.isTouchStart = false;
+    const { onRelease, clickEnabled, onPress } = this.props;
     if (this.moving) {
       this.moving = false;
       this.locked = false;
-      this.handleMove(gesture, this.props.onRelease, true);
-    } else if (this.props.clickEnabled) {
+      this.handleMove(gesture, onRelease, true);
+    } else if (clickEnabled) {
       const now = +new Date();
       if (Math.abs(gesture.dx) < 4 && Math.abs(gesture.dy) < 4 && now - this.grantTime < 300) {
         const { locationX } = e.nativeEvent;
         this.handleMove(
           { dx: locationX - this.brightWidth } as PanResponderGestureState,
-          this.props.onPress,
+          onPress,
           true
         );
       }
@@ -222,10 +239,12 @@ export default class Slider extends React.Component<IProps, IState> {
 
   handleLayout = (e: LayoutChangeEvent) => {
     const { width } = e.nativeEvent.layout;
+    const { value } = this.state;
+    const { showPercent } = this.props;
     this.sliderWidth = width;
-    this.brightWidth = this.valueToWidth(this.state.value);
+    this.brightWidth = this.valueToWidth(value);
     this.brightAnimate.setValue(this.brightWidth);
-    this.showPercent = this.props.showPercent;
+    this.showPercent = showPercent;
     this.forceUpdate();
   };
 
@@ -250,7 +269,7 @@ export default class Slider extends React.Component<IProps, IState> {
 
   render() {
     const { trackColor, activeColor, fontColor, style } = this.props;
-    const { opacityAnimationValue } = this.state;
+    const { opacityAnimationValue, value } = this.state;
     const containerStyle = [styles.container, style, { opacity: opacityAnimationValue }];
     // @ts-ignore
     const { height = cx(40) } = StyleSheet.flatten(containerStyle);
@@ -275,7 +294,7 @@ export default class Slider extends React.Component<IProps, IState> {
         {this.showPercent && (
           <Percent
             ref={(ref: React.ReactNode) => (this.percentRef = ref)}
-            percent={this.formatPercent(this.state.value)}
+            percent={this.formatPercent(value)}
             colorOver={activeColor}
             colorInner={fontColor}
             width={this.sliderWidth}
@@ -323,9 +342,7 @@ class Percent extends React.Component<IPercentProps, IPercentProps> {
       <View style={[styles.percent, { height, width }]}>
         <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row' }}>
           <IconFont d={icon} size={32} color={colorOver} style={styles.percentIcon} />
-          <TYText style={[styles.percentText, { color: colorOver }]}> 
-{' '}
-{percent}%</TYText>
+          <TYText style={[styles.percentText, { color: colorOver }]} text={`${percent}%`} />
         </View>
         <View
           style={{
@@ -340,9 +357,7 @@ class Percent extends React.Component<IPercentProps, IPercentProps> {
           }}
         >
           <IconFont style={styles.percentIcon} d={icon} size={32} color={colorInner} />
-          <TYText style={[styles.percentText, { color: colorInner }]}> 
-{' '}
-{percent}%</TYText>
+          <TYText style={[styles.percentText, { color: colorInner }]} text={`${percent}%`} />
         </View>
       </View>
     );

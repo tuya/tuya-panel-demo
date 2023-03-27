@@ -1,69 +1,78 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable react/static-property-placement */
 import React from 'react';
-import { View, StyleSheet, ViewPropTypes, Text } from 'react-native';
-import { Picker, Utils } from 'tuya-panel-kit';
-import PropTypes from 'prop-types';
+import { View, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Picker } from 'tuya-panel-kit';
+
 import _ from 'lodash';
 import Strings from '@i18n';
 
-export default class TimePicker extends React.Component {
-  static propTypes = {
-    is24Hour: PropTypes.bool, // 是否为24小时制
-    hour: PropTypes.number, // 小时
-    minute: PropTypes.number, // 分钟
-    onChange: PropTypes.func, // 改变值时执行此回调 ({ hour, minute }) => void
-    itemTextColor: PropTypes.string, // Picker选项的文字颜色
-    selectedItemTextColor: PropTypes.string, // Picker选项选中的文字颜色
-    dividerColor: PropTypes.string, // Picker选项分割线颜色
-    visibleItemCount: PropTypes.number, // Picker可视区域项目个数
-    itemAlign: PropTypes.string, // Picker项目对齐方式
-    textSize: PropTypes.number, // Picker项目文字大小
-    loop: PropTypes.bool, // 是否循环滚动
-    containerStyle: ViewPropTypes.style, // 容器样式
-    itemStyle: Text.propTypes.style, // Picker文字样式
-    pickerStyle: ViewPropTypes.style, // Picker样式
-    amPmPickerStyle: ViewPropTypes.style, // ampm列Picker样式
-    hourPickerStyle: ViewPropTypes.style, // 小时列Picker样式
-    minutePickerStyle: ViewPropTypes.style, // 分钟列Picker样式
-  };
+const defaultProps = {
+  is24Hour: true,
+  hour: 0,
+  minute: 0,
+  onChange(t: any) {},
+  itemTextColor: '#ccc',
+  dividerColor: '#ccc',
+  selectedItemTextColor: '#000',
+  visibleItemCount: 7,
+  itemAlign: 'center',
+  textSize: 20,
+  loop: false,
+  containerStyle: {},
+  itemStyle: {},
+  pickerStyle: {},
+  amPmPickerStyle: {},
+  hourPickerStyle: {},
+  minutePickerStyle: {},
+};
 
-  static defaultProps = {
-    is24Hour: true,
-    hour: 0,
-    minute: 0,
-    onChange() {},
-    itemTextColor: '#ccc',
-    dividerColor: '#ccc',
-    selectedItemTextColor: '#000',
-    visibleItemCount: 7,
-    itemAlign: 'center',
-    textSize: 20,
-    loop: false,
-    containerStyle: {},
-    itemStyle: {},
-    pickerStyle: {},
-    amPmPickerStyle: {},
-    hourPickerStyle: {},
-    minutePickerStyle: {},
-  };
+type IProps = {
+  is24Hour?: boolean; // 是否为24小时制
+  hour?: number; // 小时
+  minute?: number; // 分钟
+  onChange?: ({ hour, minute }) => void; // 改变值时执行此回调 ({ hour, minute }) => void
+  itemTextColor?: string; // Picker选项的文字颜色
+  selectedItemTextColor?: string; // Picker选项选中的文字颜色
+  dividerColor?: string; // Picker选项分割线颜色
+  visibleItemCount?: number; // Picker可视区域项目个数
+  itemAlign?: 'flex-end' | 'center' | 'flex-start' | 'baseline' | 'stretch' | undefined; // Picker项目对齐方式
+  textSize?: number; // Picker项目文字大小
+  loop?: boolean; // 是否循环滚动
+  containerStyle?: StyleProp<ViewStyle>; // 容器样式
+  itemStyle?: StyleProp<TextStyle>; // Picker文字样式
+  pickerStyle?: StyleProp<ViewStyle>; // Picker样式
+  amPmPickerStyle?: StyleProp<ViewStyle>; // ampm列Picker样式
+  hourPickerStyle?: StyleProp<ViewStyle>; // 小时列Picker样式
+  minutePickerStyle?: StyleProp<ViewStyle>; // 分钟列Picker样式
+} & Readonly<typeof defaultProps>;
+interface IState {
+  amPm;
+  hour;
+  minute;
+}
+export default class TimePicker extends React.Component<IProps, IState> {
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = defaultProps;
+
+  private hours;
+
+  private minutes;
 
   constructor(props) {
     super(props);
     const { is24Hour, hour, minute } = this.props;
 
     this.hours = is24Hour
-      ? _.times(24, n => _.padStart(n, 2, '0'))
-      : _.times(12, n => _.padStart(n === 0 ? 12 : n, 2, '0'));
-    this.minutes = _.times(60, n => _.padStart(n, 2, '0'));
+      ? _.times(24, n => _.padStart(String(n), 2, '0'))
+      : _.times(12, n => _.padStart(String(n === 0 ? 12 : n), 2, '0'));
+    this.minutes = _.times(60, n => _.padStart(String(n), 2, '0'));
 
     this.state = this.updateData(hour, minute);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { hour, minute } = nextProps;
-    if (hour !== this.props.hour || minute !== this.props.minute) {
+    const { hour, minute } = this.props;
+    if (nextProps.hour !== hour || nextProps.minute !== minute) {
       this.setState(this.updateData(hour, minute));
     }
   }
@@ -75,7 +84,7 @@ export default class TimePicker extends React.Component {
     if (is24Hour) {
       hourStr = _.padStart(hour, 2, '0');
     } else if (hour > 12) {
-      hourStr = _.padStart(hour - 12, 2, '0');
+      hourStr = _.padStart(String(hour - 12), 2, '0');
     } else if (hour === 0) {
       hourStr = '12';
     } else {
@@ -90,7 +99,7 @@ export default class TimePicker extends React.Component {
   };
 
   handleChange = () => {
-    const { is24Hour } = this.props;
+    const { is24Hour, onChange } = this.props;
     const { amPm, hour, minute } = this.state;
     const data = {
       hour: +hour,
@@ -105,7 +114,7 @@ export default class TimePicker extends React.Component {
       }
     }
 
-    this.props.onChange(data);
+    onChange(data);
   };
 
   handleAmPm = value => {

@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useCreation } from 'ahooks';
 import { Button, useTheme, Utils, Popup, TYSdk } from 'tuya-panel-kit';
 import { SupportUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
 import MyTopBar from '@components/MyTopBar';
@@ -26,13 +25,9 @@ const Plan: React.FC = () => {
     cloudTimingList: uiState.cloudTimingList || [],
   }));
 
-  const supportCountdown = useCreation(
-    () => SupportUtils.isSupportCountdown() && !SupportUtils.isGroupDevice(),
-    []
-  );
-  const supportCloudTiming = useCreation(
-    () => !!TYSdk.devInfo.panelConfig.bic?.some(item => item?.selected && item?.code === 'timer'),
-    []
+  const supportCountdown = SupportUtils.isSupportCountdown() && !SupportUtils.isGroupDevice();
+  const supportCloudTiming = !!TYSdk.devInfo.panelConfig.bic?.some(
+    item => item?.selected && item?.code === 'timer'
   );
 
   const handleTimingAdd = () => {

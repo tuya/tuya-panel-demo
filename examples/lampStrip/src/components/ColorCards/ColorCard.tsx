@@ -28,22 +28,21 @@ interface ColorCardsProps {
   /**
    * 彩光模式对应数据
    */
-  value?: ColourData;
+  value: ColourData;
   onMove?: (data: ColourData) => void;
-  onRelease?: (data: ColourData) => void;
   hideBright?: boolean;
 }
 
 const ColorCards: React.FC<ColorCardsProps> = props => {
   const {
-    style,
+    style = {},
     cardLength = cx(31),
     xNum = 11,
     yNum = 5,
     hideBright,
-    brightOption,
+    brightOption = {},
     opacityAnimationValue = 1,
-    disabled,
+    disabled = false,
     onMove,
   } = props;
 

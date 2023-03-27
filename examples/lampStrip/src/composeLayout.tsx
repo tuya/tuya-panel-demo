@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable react/require-default-props */
 import _ from 'lodash';
 import { Store } from 'redux';
 import { NativeModules, View } from 'react-native';

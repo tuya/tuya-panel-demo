@@ -1,5 +1,7 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/no-unused-prop-types */
 import React, { FC, useMemo, useRef, useImperativeHandle } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Utils, TabBar, Button, TopBar, useTheme } from 'tuya-panel-kit';
 import { BlurView } from '@react-native-community/blur';
@@ -12,9 +14,8 @@ import Icons from '@res/icons';
 const { convertX: cx } = Utils.RatioUtils;
 
 interface TopProps {
-  style?: StyleProp<ViewStyle>;
-  innerRef?: React.Ref<{ blurRef: React.MutableRefObject<null> }>;
-  hasDiyScene?: boolean;
+  innerRef: React.Ref<{ blurRef: React.MutableRefObject<null> }>;
+  hasDiyScene: boolean;
   activeTab?: SceneCategoryTab;
   defaultActiveTab?: SceneCategoryTab;
   onTabChange?: (activeTab: SceneCategoryTab) => void;

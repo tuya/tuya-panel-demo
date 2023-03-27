@@ -10293,40 +10293,33 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuya-panel-animation-diffusion@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-animation-diffusion/-/tuya-panel-animation-diffusion-0.2.1.tgz#b66716fdac15ac54c7ffe081ea94fe1a2ca37f47"
-  integrity sha512-ICk6e12zOPET3U91QAZ/j0/F40DaIDw6jgd+BoaYxupm6LJEPE5j1o7fqC7+NjIiKCoWu7jOP0wK0h1kXKs1aA==
+tuya-panel-animation-diffusion@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmmirror.com/tuya-panel-animation-diffusion/-/tuya-panel-animation-diffusion-0.1.3.tgz#96f62e108a4ac11e14762e3dc7db9cb8ee56d2a9"
+  integrity sha512-H35Gy643GMUdV3W+4E54hZfKRL9nfLuq/sREKmBJ1f0XnoS9tv0LRQgkryi6g/xGpFtswL1VFL5/lub0/yUZpg==
   dependencies:
-    tuya-panel-utils "^0.2.1"
+    tuya-panel-utils "^0.1.5"
 
-tuya-panel-animation-drawer@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-animation-drawer/-/tuya-panel-animation-drawer-0.2.1.tgz#f6a1cc6a613c4fc1af49b6c51f03cbfede8f3fdf"
-  integrity sha512-ccWGGSPZxypZ5231fbQ/5EnU6DmypnZdDcja05Iak/I+hJYiZHbJMClkLGdK+jRJg/zaaA7DE6ChsX1bLINLqw==
+tuya-panel-animation-drawer@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmmirror.com/tuya-panel-animation-drawer/-/tuya-panel-animation-drawer-0.1.3.tgz#cc4cca07a3c44c86403ea33b0e2221058e7a2058"
+  integrity sha512-V6QSiEHynkJzFh6AhmtaBtpLdJLvyV/OSAif5w0TKg1eD2V2EVEkvUx5a2IBlR3XWJwp/VtTezs0dD/pQ3ojog==
   dependencies:
     lodash "^4.17.21"
-    tuya-panel-utils "^0.2.1"
+    tuya-panel-utils "^0.1.5"
 
-tuya-panel-animation-wave@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-animation-wave/-/tuya-panel-animation-wave-0.2.1.tgz#b246bdbb04a782bce2e0937fadbab47ce91b6890"
-  integrity sha512-2f/rwjUtokSFwVp0y8rK0ihgbTI1GQi8IWEVI7FNmLwrtg95oi9bjD3cFQeoMDwga9prGd9T7zEmzUyZLHeruw==
-  dependencies:
-    react-native-svg "5.5.1"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-icon@^0.1.3:
+tuya-panel-animation-wave@^0.1.3:
   version "0.1.3"
-  resolved "https://registry.npmmirror.com/tuya-panel-icon/-/tuya-panel-icon-0.1.3.tgz#ee96056b36f929933cdc9d1a794ef873d7043a78"
-  integrity sha512-M3iXocLkMt8VJO67K2lJQVfABUISTp4r8d8DXn7RQViN0Gnpwun3DhYEc2vH+wmnx2jBdUG/LSA3zFGvix+slw==
+  resolved "https://registry.npmmirror.com/tuya-panel-animation-wave/-/tuya-panel-animation-wave-0.1.3.tgz#78e04a796782c5030357bc07c136b339a16906d3"
+  integrity sha512-No4Ug/6vsykNEVoCYjDaFhd4vG7gLNox3Qev4+og9v+pNenSRyrMkuUHUk2iFT2jgF8j105waJGg4XSt0pDlWg==
   dependencies:
     react-native-svg "5.5.1"
+    tuya-panel-utils "^0.1.5"
 
-tuya-panel-kit@^4.7.7:
-  version "4.9.4"
-  resolved "https://registry.npmmirror.com/tuya-panel-kit/-/tuya-panel-kit-4.9.4.tgz#041e38ad0c251ea8be2112be5d0ec49502bd7676"
-  integrity sha512-D06eRAHIu75BJ5T7JbZ8nUrBRR/DjlLbdeE0SFgIo5GlCEtVCTm/nFfDdbsFCS+uWgbv0+U7GyOByuwXsy0BWg==
+tuya-panel-kit@~4.7.8:
+  version "4.7.16"
+  resolved "https://registry.npmmirror.com/tuya-panel-kit/-/tuya-panel-kit-4.7.16.tgz#d2fd14982dc24cf3d6ba4154e159a8ef887016a0"
+  integrity sha512-nj2UHl5jmhj9Czyxlo/u1dKyyephuuQk6pv1yTeEzEKLmv1+dgdJ6aWAFbuh3CdDpXA+uG+g930eWVnDzBRKXg==
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
@@ -10345,104 +10338,23 @@ tuya-panel-kit@^4.7.7:
     react-native-svg "5.5.1"
     style-equal "^1.0.0"
     styled-components "^3.4.10"
-    tuya-panel-animation-diffusion "^0.2.1"
-    tuya-panel-animation-drawer "^0.2.1"
-    tuya-panel-animation-wave "^0.2.1"
-    tuya-panel-icon "^0.1.3"
-    tuya-panel-linear-gradient "^0.1.1"
-    tuya-panel-slider "^0.1.1"
-    tuya-panel-stepper "^0.1.3"
-    tuya-panel-switch "^0.1.5"
-    tuya-panel-tab "^0.1.1"
-    tuya-panel-tabbar "^0.1.2"
-    tuya-panel-tabs "^0.1.3"
-    tuya-panel-theme "^0.1.2"
-    tuya-panel-utils "^0.2.1"
+    tuya-panel-animation-diffusion "^0.1.3"
+    tuya-panel-animation-drawer "^0.1.3"
+    tuya-panel-animation-wave "^0.1.3"
+    tuya-panel-theme "^0.0.9"
+    tuya-panel-utils "^0.1.5"
 
-tuya-panel-linear-gradient@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-linear-gradient/-/tuya-panel-linear-gradient-0.1.1.tgz#03d2a74dc9213a79b53cbd9787fd7dc7f17616d9"
-  integrity sha512-f8t+FSl+c3gTR/XsIr+rNKJXwlrSPWbyjeaR0SRhRl/GkhcTMA32AiqPQxiZEPG02SoZ9l5Lm/2n5g2Tiu4hOA==
+tuya-panel-theme@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmmirror.com/tuya-panel-theme/-/tuya-panel-theme-0.0.9.tgz#d97e54c296ccc287f210f35b95f549f01ee4693d"
+  integrity sha512-urEObTxSV7h3MyENes43509vbzWFqshmvj9QvArCms9UYAButxpsD+2E42kkVEyptHEeGaVEXez0APgxEI+JhQ==
   dependencies:
-    color "^0.11.1"
-    react-native-svg "5.5.1"
-    tuya-panel-utils "^0.2.1"
+    tuya-panel-utils "^0.1.5"
 
-tuya-panel-slider@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-slider/-/tuya-panel-slider-0.1.1.tgz#c3b70cc4fafa2d6ddad0362148f1820dc7f20c8f"
-  integrity sha512-OK1ErhfhzlXr2JvIlTJTaApDprafiL7tyOArlKC6k/q9Nkqxe3C0NJaNDakG3NaQ0+9kdA5npgTH96kD3JtXYQ==
-  dependencies:
-    lodash "^4.17.21"
-    react-addons-shallow-compare "^15.6.2"
-    style-equal "^1.0.0"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-stepper@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.npmmirror.com/tuya-panel-stepper/-/tuya-panel-stepper-0.1.3.tgz#1ae58f1e284de320ee400c011429ee48a209358b"
-  integrity sha512-tH8AnHeomQTMYGKS2N2ZwNnBcgl+vISfXYCbfyJQl9YT7Pl2pTtXG3lyOW5vIpGihT91kculT/iiCLlfnyGclA==
-  dependencies:
-    styled-components "^3.4.10"
-    tuya-panel-icon "^0.1.3"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-switch@^0.1.5:
+tuya-panel-utils@^0.1.5:
   version "0.1.5"
-  resolved "https://registry.npmmirror.com/tuya-panel-switch/-/tuya-panel-switch-0.1.5.tgz#c698d9717a44b4da3f369c08291070b96cf5671f"
-  integrity sha512-Az6Mm5w2elRGuQPHqRD7jdCZPjV3VHfbQInB384nRK2yuVAcOUaDtJPRS6fc89ZrR6AB+97Q4G04FFi3c4OrOQ==
-  dependencies:
-    tuya-panel-icon "^0.1.3"
-    tuya-panel-linear-gradient "^0.1.1"
-    tuya-panel-text "^0.1.2"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-tab@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-tab/-/tuya-panel-tab-0.1.1.tgz#a030f73f884d73d466f58f245459c4d8340b6b79"
-  integrity sha512-opekxG8TOGyAInjQMBhtneggcLesDpDgfTH1ttq1ACxQynPd6VlT0LdsXb41cKpKYTBuijgmkYryO6nCeYmCtw==
-  dependencies:
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-tabbar@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npmmirror.com/tuya-panel-tabbar/-/tuya-panel-tabbar-0.1.2.tgz#0b3fb82feb91913f63c4181c8fb5d36f4d409d19"
-  integrity sha512-Z+tl+yQL7J+eWHTZYJlkNSro5ItPSXSRHgIFL3oAAhrg+6760G2dnFtZxsHXLe6Zodm/scofLIZraW4yt5I7jg==
-  dependencies:
-    tuya-panel-text "^0.1.2"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-tabs@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.npmmirror.com/tuya-panel-tabs/-/tuya-panel-tabs-0.1.3.tgz#2c38a1d2f800f12fc327c40b9b14b05a560843be"
-  integrity sha512-o7VjSwYrAG0rPkpiqSdbaiunuYjl6O+2ikXEww+f7KVYjDFQi5u1BaE/+Uuy36LX52a8grfqs82RPVdVTs5+EQ==
-  dependencies:
-    react-native-svg "5.5.1"
-    tuya-panel-linear-gradient "^0.1.1"
-    tuya-panel-text "^0.1.2"
-    tuya-panel-theme "^0.1.2"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-text@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npmmirror.com/tuya-panel-text/-/tuya-panel-text-0.1.2.tgz#8a9fd31bcab14bcb88487d50516d27d5388f8536"
-  integrity sha512-t7SDgq5mRFTUxtVBXDrlQF8WjocoX0jEXVBuee5JZDuJ0h0nJLhKK7wsSY/8QYFQrIPxSlMMGOkC7zzN08N5lA==
-  dependencies:
-    styled-components "^3.4.10"
-    tuya-panel-theme "^0.1.2"
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-theme@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.npmmirror.com/tuya-panel-theme/-/tuya-panel-theme-0.1.2.tgz#eb88c3da783b6042735dbf2ab7056bd402ecbf07"
-  integrity sha512-Mkup38t9OLpIQ/niVGDxkyKSOd0MFPgswFx5pIN0SF9wy1sLhU7GQcdb80m7S9v2nAOJvyi4tD7MtRTSmmS+Pg==
-  dependencies:
-    tuya-panel-utils "^0.2.1"
-
-tuya-panel-utils@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmmirror.com/tuya-panel-utils/-/tuya-panel-utils-0.2.1.tgz#e816582eaad10dc444126443a181d0b468321f12"
-  integrity sha512-ocQzdedhir5oZ+cWBcthmncFqtzKrccL9asZxhjGJVLgmUEhzqgTH6lD3uIITwYyROIHQbKsRn2HYFSdIzgBPw==
+  resolved "https://registry.npmmirror.com/tuya-panel-utils/-/tuya-panel-utils-0.1.5.tgz#ece6554e9fcb39ef646094eb72dfc99a9b938da0"
+  integrity sha512-iC25ZH5Cmjo+IeI0zRsfUxJY0mc+4ftlmZ0dOobNsXkye6Mo0Rn//t5g9aCC8x4iNTV+4yjURE7vRa55xQLNPA==
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

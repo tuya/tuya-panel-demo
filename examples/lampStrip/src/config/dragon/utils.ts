@@ -15,10 +15,10 @@ export const transform = function* transform(value) {
 
 export const generateStep =
   (generator, length = 4, type = 'number') =>
-    () => {
-      const { value } = generator.next(length);
-      if (type === 'number') {
-        return parseInt(value, 16);
-      }
-      return value;
-    };
+  () => {
+    const { value } = generator.next(length);
+    if (type === 'number') {
+      return parseInt(value, 16);
+    }
+    return value;
+  };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState, useMemo, useContext, useRef } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -80,16 +81,16 @@ const CloudTimingList: React.FC = () => {
       GlobalToast.show({
         text: Strings.getLang('tip_remove_fail'),
         showIcon: false,
-        onFinish(): void {
-          throw new Error('Function not implemented.');
+        onFinish: () => {
+          GlobalToast.hide();
         },
       });
       return;
     }
     GlobalToast.show({
       text: Strings.getLang('tip_remove_success'),
-      onFinish(): void {
-        throw new Error('Function not implemented.');
+      onFinish: () => {
+        GlobalToast.hide();
       },
     });
   };
@@ -128,8 +129,10 @@ const CloudTimingList: React.FC = () => {
               close={index !== curOpenSwipeOutIdx}
               onOpen={() => {
                 setCurOpenSwipeOutIdx(index);
+                // @ts-ignore
                 scrollViewRef.current?.setNativeProps?.({ scrollEnabled: false });
               }}
+              // @ts-ignore
               onClose={() => scrollViewRef.current?.setNativeProps?.({ scrollEnabled: true })}
               right={[
                 {
@@ -170,6 +173,7 @@ const CloudTimingList: React.FC = () => {
                         color={subFontColor}
                         size={cx(12)}
                         style={{ marginRight: cx(6), marginBottom: cx(3) }}
+                        // @ts-ignore
                         text={Strings.getLang(`timing_${timeData.isPM ? 'PM' : 'AM'}`)}
                       />
                     )}

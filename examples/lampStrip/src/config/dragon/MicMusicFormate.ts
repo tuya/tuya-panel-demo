@@ -1,5 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable prefer-const */
+/* eslint-disable import/no-unresolved */
 import DpCodes from '@config/dpCodes';
 import { transform, generateStep } from './utils';
 
@@ -8,29 +9,32 @@ const { micMusicCode } = DpCodes;
 export default class MicMusicFormater {
   uuid: string;
 
-  defaultValue: MicMusicData = {
-    v: 1,
-    power: true,
-    id: 0,
-    isLight: 0, // 0 无声时灯灭、 1无声时灯维持10%亮度
-    mode: 3, // 0跳变 1渐变 2 呼吸 3 闪烁
-    speed: 100,
-    sensitivity: 50,
-    a: 0,
-    b: 0,
-    c: 0,
-    brightness: 100,
-    colors: [
-      { hue: 0, saturation: 100 },
-      { hue: 120, saturation: 100 },
-      { hue: 240, saturation: 100 },
-      { hue: 60, saturation: 100 },
-      { hue: 80, saturation: 100 },
-      { hue: 280, saturation: 100 },
-    ],
-  };
+  defaultValue: MicMusicData;
 
-  constructor(uuid = micMusicCode, defaultValue) {
+  constructor(
+    uuid = micMusicCode,
+    defaultValue = {
+      v: 1,
+      power: true,
+      id: 0,
+      isLight: 0, // 0 无声时灯灭、 1无声时灯维持10%亮度
+      mode: 3, // 0跳变 1渐变 2 呼吸 3 闪烁
+      speed: 100,
+      sensitivity: 50,
+      a: 0,
+      b: 0,
+      c: 0,
+      brightness: 100,
+      colors: [
+        { hue: 0, saturation: 100 },
+        { hue: 120, saturation: 100 },
+        { hue: 240, saturation: 100 },
+        { hue: 60, saturation: 100 },
+        { hue: 80, saturation: 100 },
+        { hue: 280, saturation: 100 },
+      ],
+    }
+  ) {
     this.uuid = uuid;
     this.defaultValue = defaultValue;
   }

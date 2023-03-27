@@ -1,11 +1,19 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
-import { View, ViewPropTypes, Animated, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+import { View, Animated, StyleSheet, ViewStyle } from 'react-native';
+
 import { Utils } from 'tuya-panel-kit';
 import RadioButton from './radioButton';
 
 const { convertY } = Utils.RatioUtils;
+interface IState {
+  activeLeft: any;
+  containerHeight: number;
+  activeIndex: number;
+  activeViewHidden: boolean;
+  wrapperWidth: number;
+  everyWidth: number;
+}
 
 const styles = StyleSheet.create({
   activeViewStyle: {
@@ -23,30 +31,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 });
+const defaultProps = {
+  style: {},
+  wrapperStyle: {},
+  activeColor: '',
+  defaultActiveIndex: 0,
+  gutter: 2,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onChange: () => {},
+  activeRadius: 0,
+};
+type IProps = {
+  tabs: any;
+  style?: ViewStyle;
+  wrapperStyle?: ViewStyle;
+  activeColor?: string;
+  defaultActiveIndex?: number;
+  gutter?: number;
+  activeRadius?: number;
+  onChange?: (index: number, item: number) => void;
+} & Readonly<typeof defaultProps>;
+class Group extends React.PureComponent<IProps, IState> {
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = defaultProps;
 
-class Group extends React.PureComponent {
-  static propTypes = {
-    tabs: PropTypes.array.isRequired,
-    style: ViewPropTypes.style,
-    wrapperStyle: ViewPropTypes.style,
-    activeColor: PropTypes.string,
-    // eslint-disable-next-line react/require-default-props
-    activeIndex: PropTypes.number,
-    defaultActiveIndex: PropTypes.number,
-    gutter: PropTypes.number,
-    activeRadius: PropTypes.number,
-    onChange: PropTypes.func,
-  };
+  private containerSize;
 
-  static defaultProps = {
-    style: {},
-    wrapperStyle: {},
-    activeColor: '',
-    defaultActiveIndex: 0,
-    gutter: 2,
-    onChange: () => {},
-    activeRadius: 0,
-  };
+  private wrapperSize;
 
   constructor(props) {
     super(props);
@@ -57,7 +68,10 @@ class Group extends React.PureComponent {
       activeIndex,
       activeViewHidden: true,
       wrapperWidth: 0,
+      containerHeight: 0,
+      everyWidth: 0,
     };
+
     this.containerSize = null;
     this.wrapperSize = null;
   }
@@ -70,8 +84,9 @@ class Group extends React.PureComponent {
 
   getItem = () => {
     const { tabs } = this.props;
-    const buttonStyle = [{ width: this.state.wrapperWidth / tabs.length }];
-    const defaultTextStyle = [{ opacity: this.state.activeViewHidden ? 0 : 1 }];
+    const { wrapperWidth, activeViewHidden, activeIndex } = this.state;
+    const buttonStyle = [{ width: wrapperWidth / tabs.length }];
+    const defaultTextStyle = [{ opacity: activeViewHidden ? 0 : 1 }];
     return tabs.map((item, index) => {
       const { style, textStyle, ...other } = item;
       return (
@@ -82,16 +97,17 @@ class Group extends React.PureComponent {
           style={[buttonStyle, style]}
           textStyle={[defaultTextStyle, textStyle]}
           onItemPress={() => this.changeTab(index, item, item.onItemPress)}
-          isActive={this.state.activeIndex === index}
+          isActive={activeIndex === index}
         />
       );
     });
   };
 
   moveActiveView = index => {
+    const { everyWidth, activeLeft } = this.state;
     const { gutter } = this.props;
-    const currentLeft = index * this.state.everyWidth + gutter;
-    Animated.spring(this.state.activeLeft, {
+    const currentLeft = index * everyWidth + gutter;
+    Animated.spring(activeLeft, {
       toValue: currentLeft,
     }).start();
     this.setState({
@@ -100,8 +116,9 @@ class Group extends React.PureComponent {
   };
 
   changeTab = (index, item, func) => {
+    const { activeIndex } = this.state;
     if (func) func(index);
-    if (index === this.state.activeIndex) return;
+    if (index === activeIndex) return;
     const { onChange } = this.props;
     onChange && onChange(index, item);
     if ('activeIndex' in this.props) return;
@@ -122,7 +139,8 @@ class Group extends React.PureComponent {
     if (!this.wrapperSize || !this.containerSize) return;
     const { tabs, gutter } = this.props;
     const everyWidth = this.wrapperSize.width / tabs.length;
-    this.state.activeLeft.setValue(gutter + everyWidth * this.state.activeIndex);
+    const { activeLeft, activeIndex } = this.state;
+    activeLeft.setValue(gutter + everyWidth * activeIndex);
     this.setState({
       containerHeight: this.containerSize.height,
       wrapperWidth: this.wrapperSize.width,
@@ -133,23 +151,26 @@ class Group extends React.PureComponent {
 
   render() {
     const { style, wrapperStyle, activeColor, tabs, gutter, activeRadius } = this.props;
-    const containerPadding = activeRadius || StyleSheet.flatten([styles.containerStyle, style]).borderRadius + gutter;
+    const { wrapperWidth, containerHeight, activeLeft, activeViewHidden } = this.state;
+    const containerPadding =
+      // @ts-ignore
+      activeRadius || StyleSheet.flatten([styles.containerStyle, style]).borderRadius + gutter;
     const containerStyle = [styles.containerStyle, style, { paddingHorizontal: gutter }];
     const customWrapperStyle = [styles.wrapperStyle, wrapperStyle];
-    const activeLeft = { left: this.state.activeLeft };
+    const newActiveLeft = { left: activeLeft };
     const activeViewStyle = [
       styles.activeViewStyle,
       {
-        width: this.state.wrapperWidth / tabs.length,
-        height: this.state.containerHeight - gutter * 2,
+        width: wrapperWidth / tabs.length,
+        height: containerHeight - gutter * 2,
       },
       activeColor && { backgroundColor: activeColor },
       { borderRadius: containerPadding },
-      activeLeft,
+      newActiveLeft,
     ];
     return (
       <View onLayout={this.containerLayout} style={containerStyle}>
-        {!this.state.activeViewHidden && <Animated.View style={activeViewStyle} />}
+        {!activeViewHidden && <Animated.View style={activeViewStyle} />}
         <View onLayout={this.wrapperLayout} style={customWrapperStyle}>
           {this.getItem()}
         </View>

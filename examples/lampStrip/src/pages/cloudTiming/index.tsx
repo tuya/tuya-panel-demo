@@ -119,23 +119,23 @@ const CloudTiming: React.FC = () => {
 
     const res = isEdit
       ? await dispatch(
-        updateCloudTiming(data?.groupId, CloudTimingCategory, weeks.join(''), instruct)
-      )
+          updateCloudTiming(data?.groupId, CloudTimingCategory, weeks.join(''), instruct)
+        )
       : await dispatch(addCloudTiming(CloudTimingCategory, weeks.join(''), instruct));
     if (!res) {
       GlobalToast.show({
         text: Strings.getLang(isEdit ? 'tip_edit_fail' : 'tip_add_fail'),
         showIcon: false,
-        onFinish(): void {
-          throw new Error('Function not implemented.');
+        onFinish: () => {
+          GlobalToast.hide();
         },
       });
       return;
     }
     GlobalToast.show({
       text: Strings.getLang(isEdit ? 'tip_edit_success' : 'tip_add_success'),
-      onFinish(): void {
-        throw new Error('Function not implemented.');
+      onFinish: () => {
+        GlobalToast.hide();
       },
     });
     navigationBack();
@@ -147,16 +147,16 @@ const CloudTiming: React.FC = () => {
       GlobalToast.show({
         text: Strings.getLang('tip_remove_fail'),
         showIcon: false,
-        onFinish(): void {
-          throw new Error('Function not implemented.');
+        onFinish: () => {
+          GlobalToast.hide();
         },
       });
       return;
     }
     GlobalToast.show({
       text: Strings.getLang('tip_remove_success'),
-      onFinish(): void {
-        throw new Error('Function not implemented.');
+      onFinish: () => {
+        GlobalToast.hide();
       },
     });
     navigationBack();

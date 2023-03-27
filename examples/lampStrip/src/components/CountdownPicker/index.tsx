@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/require-default-props */
 import React, { useMemo, useImperativeHandle } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
@@ -24,6 +25,9 @@ export interface CountdownPickerInnerRefType {
 export interface CountdownPickerProps {
   style?: StyleProp<ViewStyle>;
   innerRef?: React.Ref<CountdownPickerInnerRefType>;
+  value?: number;
+  defaultValue?: number;
+  onChange?: (value: number) => void;
   hourLabel?: string;
   minuteLabel?: string;
   secondLabel?: string;

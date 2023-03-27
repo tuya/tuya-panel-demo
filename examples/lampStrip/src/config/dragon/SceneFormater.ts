@@ -1,7 +1,7 @@
 import { Utils } from 'tuya-panel-kit';
 import _ from 'lodash';
 import { SceneValueType } from '@types';
-import { nToHS, sToN, avgSplit, toN, formatterTransform, checkArray } from '@utils';
+import { nToHS, sToN, avgSplit, toN, formatterTransform } from '@utils';
 import DpCodes from '@config/dpCodes';
 
 const {
@@ -20,7 +20,6 @@ export default class SmearFormater {
   }
 
   parse(val = ''): SceneValueType {
-    // console.log('SmearFormater-parse', val);
     if (!val || typeof val !== 'string') {
       console.warn(sceneCode, 'dp数据有问题，无法解析', val);
       return this.defaultValue;
@@ -81,7 +80,6 @@ export default class SmearFormater {
   }
 
   format(data: SceneValueType): string {
-    // console.log('SceneFormater-format', data);
     const {
       version = 1,
       id,
@@ -132,4 +130,3 @@ export default class SmearFormater {
     return result;
   }
 }
-// # sourceMappingURL=ColourFormater.js.map

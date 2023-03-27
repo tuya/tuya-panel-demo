@@ -1,9 +1,7 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable spaced-comment */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable react/static-property-placement */
 import React, { Component } from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { Utils } from 'tuya-panel-kit';
 import {
   NumberSliderProps,
@@ -18,7 +16,7 @@ interface Props extends NumberSliderProps {
   iconSize?: number;
   iconColor?: string;
   percentStyle?: any;
-  percentTintStyle?: ViewStyle;
+  percentTintStyle?: StyleProp<ViewStyle>;
   outPercentColor?: string;
   customIcon?: string;
   showPercent?: boolean;
@@ -42,7 +40,8 @@ export default class BrightRect1Slider extends Component<Props> {
 
   constructor(props: Props) {
     super(props);
-    this.percent = this.formatPercent(this.props.value);
+    const { value } = this.props;
+    this.percent = this.formatPercent(value);
   }
 
   formatPercent(v: any) {
@@ -54,6 +53,7 @@ export default class BrightRect1Slider extends Component<Props> {
   }
 
   handleThumbChange = (x: number, value: number) => {
+    const { onThumbChange } = this.props;
     this.percent = this.formatPercent(value);
     setTimeout(() => {
       if (this.percentRef) {
@@ -63,8 +63,8 @@ export default class BrightRect1Slider extends Component<Props> {
         this.forceUpdate();
       }
     }, 0);
-    if (this.props.onThumbChange) {
-      this.props.onThumbChange(x, value);
+    if (onThumbChange) {
+      onThumbChange(x, value);
     }
   };
 

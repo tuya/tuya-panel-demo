@@ -17,6 +17,9 @@ const Lights: React.FC<LightsProps> = ({ style }) => {
     </View>
   );
 };
+Lights.defaultProps = {
+  style: {},
+};
 
 const styles = StyleSheet.create({
   container: {

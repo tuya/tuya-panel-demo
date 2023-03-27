@@ -10,8 +10,6 @@ interface IProps {
   y: number;
   isBlackColor: boolean;
 }
-
-
 export default class Thumb extends Component<IProps> {
   animateX = new Animated.Value(this.props.x);
 
@@ -40,11 +38,6 @@ export default class Thumb extends Component<IProps> {
           backgroundColor: color,
         },
       });
-      // this.iconRef.setNativeProps({
-      //   style: {
-      //     tintColor: getIconColor(color),
-      //   },
-      // });
     }
   }
 

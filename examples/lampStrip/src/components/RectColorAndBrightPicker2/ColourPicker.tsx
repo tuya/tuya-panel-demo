@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { View, ViewStyle } from 'react-native';
@@ -102,15 +103,18 @@ type ColourProps = {
 type IState = IHsv;
 
 export default class ColourPicker extends Component<ColourProps, IState> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps: DefaultProps = defaultProps;
 
   constructor(props: ColourProps) {
     super(props);
-    this.state = { ...this.props.value };
+    const { value } = this.props;
+    this.state = { ...value };
   }
 
   componentWillReceiveProps(nextProps: ColourProps) {
-    if (!_.isEqual(nextProps.value, this.props.value)) {
+    const { value } = this.props;
+    if (!_.isEqual(nextProps.value, value)) {
       this.setState({ ...nextProps.value });
     }
   }
@@ -155,49 +159,58 @@ export default class ColourPicker extends Component<ColourProps, IState> {
     return ColorUtils.hsv2rgba(hue!, saturation, value) || '#fff';
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   firPropsEvent(cb: Function, ...args: any[]) {
     typeof cb === 'function' && cb(...args);
   }
 
   onBrightGrant = () => {
     const { hue, saturation, value } = this.state;
-    this.firPropsEvent(this.props.onGrant, { hue, saturation, value }, { isChangeBright: true });
+    const { onGrant } = this.props;
+    this.firPropsEvent(onGrant, { hue, saturation, value }, { isChangeBright: true });
   };
 
   onBrightMove = (value: number) => {
     const { hue, saturation } = this.state;
-    this.firPropsEvent(this.props.onMove, { hue, saturation, value }, { isChangeBright: true });
+    const { onMove } = this.props;
+    this.firPropsEvent(onMove, { hue, saturation, value }, { isChangeBright: true });
   };
 
   onBrightRelease = (value: number) => {
     const { hue, saturation } = this.state;
+    const { onRelease } = this.props;
     this.setState({ value });
-    this.firPropsEvent(this.props.onRelease, { hue, saturation, value }, { isChangeBright: true });
+    this.firPropsEvent(onRelease, { hue, saturation, value }, { isChangeBright: true });
   };
 
   onBrightPress = (value: number) => {
     const { hue, saturation } = this.state;
+    const { onPress } = this.props;
     this.setState({ value });
-    this.firPropsEvent(this.props.onPress, { hue, saturation, value }, { isChangeBright: true });
+    this.firPropsEvent(onPress, { hue, saturation, value }, { isChangeBright: true });
   };
 
   handlePickerGrant = () => {
     const { hue, saturation, value } = this.state;
-    this.firPropsEvent(this.props.onGrant, { hue, saturation, value });
+    const { onGrant } = this.props;
+    this.firPropsEvent(onGrant, { hue, saturation, value });
   };
 
   handlePickerMove = (hsv: IHsv) => {
-    this.firPropsEvent(this.props.onMove, hsv);
+    const { onMove } = this.props;
+    this.firPropsEvent(onMove, hsv);
   };
 
   handlePickerRelease = (hsv: IHsv) => {
     this.setState({ ...hsv });
-    this.firPropsEvent(this.props.onRelease, hsv);
+    const { onRelease } = this.props;
+    this.firPropsEvent(onRelease, hsv);
   };
 
   handlePickerPress = (hsv: IHsv) => {
     this.setState({ ...hsv });
-    this.firPropsEvent(this.props.onPress, hsv);
+    const { onPress } = this.props;
+    this.firPropsEvent(onPress, hsv);
   };
 
   initData = async () => {};

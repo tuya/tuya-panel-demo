@@ -40,20 +40,7 @@ export default {
     },
   ],
   // 场景转化插件
-  formaters: [
-    new SmearFormater(),
-    new SceneFormater(),
-    new MicMusicFormate(),
-    // {
-    //   uuid: countdownCode,
-    //   parse(value: number) {
-    //     return Math.floor(value / 60);
-    //   },
-    //   format(value: number) {
-    //     return value * 60;
-    //   },
-    // },
-  ],
+  formaters: [new SmearFormater(), new SceneFormater(), new MicMusicFormate()],
   // dp 转化规则
   dpMap: {
     [colourCode]: [

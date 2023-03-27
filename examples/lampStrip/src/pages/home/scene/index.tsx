@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable indent */
 import React, { useState, useMemo, useRef } from 'react';
 import { View, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
@@ -79,16 +80,15 @@ const Scene: React.FC = () => {
         backgroundColor="transparent"
         style={{
           marginVertical: cx(7),
-          // width: '100%',
           height: cx(96),
         }}
         disabled={!isDIY}
         autoClose={true}
-        // close={index !== curOpenSwipeOutIdx}
         onOpen={() => {
-          // this.setState({ curOpenSwipeOutIdx: index });
+          // @ts-ignore
           sceneListRef.current?.setNativeProps?.({ scrollEnabled: false });
         }}
+        // @ts-ignore
         onClose={() => sceneListRef.current?.setNativeProps?.({ scrollEnabled: true })}
         right={[
           {
@@ -188,13 +188,14 @@ const Scene: React.FC = () => {
 
   const scrollToIndex = usePersistFn((index: number) => {
     if (index === -1) return;
+    // @ts-ignore
     sceneListRef.current?.scrollToIndex?.({ index, viewOffset: cx(141) });
   });
 
   const handleTabSelect = usePersistFn((tab: SceneCategoryTab) => {
     const targetIndex = Math.max(
       0,
-      scenes.findIndex(item => (item.category || SceneCategory[4]) === tab)
+      scenes.findIndex((item: any) => (item.category || SceneCategory[4]) === tab)
     );
     setTopTab(tab);
     scrollToIndex(targetIndex);
@@ -203,13 +204,12 @@ const Scene: React.FC = () => {
   const handleSceneListScroll = ({ nativeEvent }) => {
     const { y } = nativeEvent.contentOffset;
     // 当情景内容滚动到Top下面才显示模糊效果
+    // @ts-ignore
     topRef.current?.blurRef?.current?.setNativeProps?.({
       style: { opacity: y > cx(7) ? 1 : 0 },
     });
     if (!sceneListDragTag.current) return;
-    // const tabIndex0 = scenes.findIndex(
-    //   item => (item.category || SceneCategory[4]) === SceneCategory[4]
-    // );
+
     const tabIndex1 = scenes.findIndex(
       item => (item.category || SceneCategory[4]) === SceneCategory[0]
     );
@@ -280,22 +280,11 @@ const styles = StyleSheet.create({
     width: cx(343 - 4),
     height: cx(96 - 4),
     borderRadius: cx(13),
-    // alignItems: 'center',
-    // justifyContent: 'flex-start',
-    // paddingHorizontal: cx(10),
-    // paddingTop: cx(10),
   },
   topView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: cx(16),
-  },
-  titleView: {
-    minWidth: cx(56),
-    height: cx(26),
-    borderRadius: cx(13),
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: cx(14),
@@ -308,9 +297,6 @@ const styles = StyleSheet.create({
     width: cx(287),
     height: cx(20),
     resizeMode: 'stretch',
-  },
-  topRight: {
-    flexDirection: 'row',
   },
   diyBtn: {
     width: cx(44),
@@ -332,15 +318,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  titles: {
-    fontSize: cx(16),
-    backgroundColor: 'transparent',
-  },
-  headerStyle: {
-    marginLeft: 0,
-    marginTop: cx(14),
-    marginBottom: cx(12),
   },
   lottieView: {
     height: cx(96),

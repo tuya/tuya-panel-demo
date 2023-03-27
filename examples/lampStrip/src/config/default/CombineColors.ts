@@ -1,5 +1,3 @@
-// import { hex2hsv } from '@utils';
-
 export const hexColors = [
   ['#F4A4C0', '#FF5995', '#FF2072', '#FB065A'],
   ['#E292FE', '#E292FE', '#A7C6FF', '#93E3FC'],
@@ -24,15 +22,6 @@ export const hexColors = [
   ['#52D6FC', '#FEB43F', '#FF6A00', '#D357FE', '#982ABC'],
   ['#FBAFC6', '#FA89B9', '#F95391', '#F95C75', '#F9494A', '#F80701'],
 ];
-
-// const hsvColors = hexColors.map(item =>
-//   item.map(c => {
-//     const [h, s, v] = hex2hsv(c);
-//     return { hue: h, saturation: s, value: v };
-//   })
-// );
-// console.log('hsvColors', JSON.stringify(hsvColors));
-
 export const hsvColors = [
   [
     { hue: 339, saturation: 328, value: 957 },

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 import React from 'react';
 import { View, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { Utils, Button, useTheme } from 'tuya-panel-kit';
@@ -49,6 +50,12 @@ const OperationsBtnGroup: React.FC<OperationsBtnGroupProps> = props => {
       })}
     </View>
   ) : null;
+};
+const niFn = () => null;
+OperationsBtnGroup.defaultProps = {
+  style: {},
+  value: '',
+  onChange: niFn,
 };
 
 const styles = StyleSheet.create({

@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/require-default-props */
@@ -80,11 +83,13 @@ interface IProps extends DefaultProps {
 
 interface IState {
   value: any;
+  fadeAnim: any;
 }
 
 let idIndex = 0;
 
 export default class RectPicker extends Component<IProps, IState> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps = defaultProps;
 
   _panResponder: PanResponderInstance;
@@ -153,7 +158,8 @@ export default class RectPicker extends Component<IProps, IState> {
   }
 
   fadeAnimation = (value: number) => {
-    Animated.timing(this.state.fadeAnim, {
+    const { fadeAnim } = this.state;
+    Animated.timing(fadeAnim, {
       toValue: value,
       duration: 300,
     }).start();
@@ -193,6 +199,7 @@ export default class RectPicker extends Component<IProps, IState> {
     return 'transparent';
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   firPropsEvent(cb: Function, ...args: any[]) {
     cb && cb(...args);
   }
@@ -270,7 +277,7 @@ export default class RectPicker extends Component<IProps, IState> {
     return value;
   }
 
-  formatCoor(x: number, y: number) {
+  formatCoor(x: any, y: number) {
     const {
       width: validWidth,
       height: validHeight,

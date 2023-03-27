@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextStyle, ViewStyle } from 'react-native';
 import { Svg, Path, G, Circle } from 'react-native-svg';
@@ -19,7 +17,7 @@ const ResetText = Strings.getLang('countdown_clock_reset');
 const defaultProps = {
   style: {},
   timeTextStyle: {},
-
+  resetTextStyle: {},
   resetStyle: {},
   timeStyle: {},
   size: cx(255),
@@ -31,15 +29,16 @@ const defaultProps = {
   innerBackgroundColor: 'transparent',
   labelTextStyle: {},
   lineWidth: 1,
+  theme: {},
 };
 
 type IProps = {
-  style?: any;
-  timeTextStyle?: TextStyle | TextStyle[];
-  resetTextStyle?: TextStyle | TextStyle[];
-  resetStyle?: ViewStyle | ViewStyle[];
-  timeStyle?: ViewStyle | ViewStyle[];
-  labelTextStyle?: TextStyle | TextStyle[];
+  style?: ViewStyle;
+  timeTextStyle?: TextStyle;
+  resetTextStyle?: TextStyle;
+  resetStyle?: ViewStyle;
+  timeStyle?: ViewStyle;
+  labelTextStyle?: TextStyle;
   lineColor: string;
   size?: number;
   lineWidth?: number;
@@ -69,7 +68,8 @@ class CountdownClock extends Component<IProps> {
   }
 
   shouldComponentUpdate(nextProps: IProps) {
-    return nextProps.countdown !== this.props.countdown;
+    const { countdown } = this.props;
+    return nextProps.countdown !== countdown;
   }
 
   getPoint(angle: number, radius: number) {
@@ -99,10 +99,10 @@ class CountdownClock extends Component<IProps> {
   }
 
   render() {
+    const { theme } = this.props;
     const {
       global: { fontColor, isDarkTheme },
-    } = this.props.theme;
-    console.log('fontColor', this.props.theme);
+    } = theme;
     const {
       size,
       onReset,
@@ -128,10 +128,6 @@ class CountdownClock extends Component<IProps> {
     const formatHour = _padStart(`${hours}`, 2, '0');
     const formatMinute = _padStart(`${minutes}`, 2, '0');
     const formatSecond = _padStart(`${seconds}`, 2, '0');
-    // const hours = Math.floor(countdown / 60);
-    // const minutes = countdown % 60;
-    // const formatHour = _padStart(`${hours}`, 2, '0');
-    // const formatMinute = _padStart(`${minutes}`, 2, '0');
     const radius = size / 2;
     const innerRadius = radius - lineHeight - (showDot ? 5 : 3);
     const dashWidth = (innerRadius * 2 * Math.PI) / lineNum - lineWidth;
@@ -161,6 +157,7 @@ class CountdownClock extends Component<IProps> {
               const color = (i + 1) / lineNum <= percent ? activeColor : lineColor;
               return (
                 <Path
+                  // eslint-disable-next-line react/no-array-index-key
                   key={i}
                   d={this.getPath(this.angle * i)}
                   fill="transparent"

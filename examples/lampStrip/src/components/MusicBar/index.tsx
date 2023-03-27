@@ -1,4 +1,4 @@
-/* eslint-disable react/require-default-props */
+/* eslint-disable react/state-in-constructor */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable max-classes-per-file */
 import React, { Component } from 'react';
@@ -22,7 +22,6 @@ class Bar extends Component<BarProps> {
         style={{
           width,
           height,
-          // backgroundColor: color1,
           overflow: 'hidden',
         }}
       >
@@ -49,13 +48,13 @@ class Bar extends Component<BarProps> {
 }
 const AnimatedRectangle = Animated.createAnimatedComponent(Bar);
 
-interface BubblesProps {
+type BubblesProps = {
   style?: StyleProp<ViewStyle>;
   size: number;
   color: string[];
   musicIndex: number;
-}
-
+} & Readonly<typeof defaultProps>;
+const defaultProps = { style: {} };
 interface BubblesState {
   bars: Animated.Value[];
 }
@@ -63,12 +62,16 @@ interface BubblesState {
 export default class Bubbles extends Component<BubblesProps, BubblesState> {
   unmounted: boolean;
 
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = defaultProps;
+
   state = {
     bars: bars.map((i: number) => new Animated.Value(1)),
   };
 
   componentDidMount() {
-    this.state.bars.forEach((val, index) => {
+    const { bars } = this.state;
+    bars.forEach((val, index) => {
       const timer = setTimeout(() => this.animate(index), index * 50); // 控制起始间隔时间
       this.timers.push(timer);
     });
@@ -79,19 +82,20 @@ export default class Bubbles extends Component<BubblesProps, BubblesState> {
     this.unmounted = true;
   }
 
-  timers = [];
+  timers: any = [];
 
   animate(index: number) {
-    const { musicIndex } = this.props;
+    const { musicIndex, size } = this.props;
+    const { bars } = this.state;
     const durationMap = [510, 470, 430, 390, 350, 310, 270, 230, 190, 150];
     const duration = durationMap[musicIndex];
     Animated.sequence([
-      Animated.timing(this.state.bars[index], {
-        toValue: this.props.size * 2 * Math.random(), // 控制动画的条形上随机值高度
+      Animated.timing(bars[index], {
+        toValue: size * 2 * Math.random(), // 控制动画的条形上随机值高度
         duration,
       }),
-      Animated.timing(this.state.bars[index], {
-        toValue: (this.props.size / 10) * Math.random(), // 控制动画的条形下随机值高度
+      Animated.timing(bars[index], {
+        toValue: (size / 10) * Math.random(), // 控制动画的条形下随机值高度
         duration,
       }),
     ]).start(() => {
@@ -103,10 +107,9 @@ export default class Bubbles extends Component<BubblesProps, BubblesState> {
 
   renderBar(index) {
     const { color } = this.props;
+    const { bars } = this.state;
     const width = 11;
-    return (
-      <AnimatedRectangle key={index} color={color} width={width} height={this.state.bars[index]} />
-    );
+    return <AnimatedRectangle key={index} color={color} width={width} height={bars[index]} />;
   }
 
   render() {

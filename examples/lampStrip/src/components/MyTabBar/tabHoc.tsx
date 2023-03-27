@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable lines-between-class-members */
 import React from 'react';
 import RadioButton from './radio-button/group';
 
@@ -13,9 +15,11 @@ const WrapperComponent = WrappedComponent => {
         const { activeKey, defaultActiveKey, onChange, ...otherProps } = this.props;
         const radioProps = {};
         if (typeof activeKey !== 'undefined') {
+          // @ts-ignore
           radioProps.activeIndex = this.activeIndex;
         }
         if (typeof defaultActiveKey !== 'undefined') {
+          // @ts-ignore
           radioProps.defaultActiveIndex = this.activeIndex;
         }
         return <RadioButton {...radioProps} {...otherProps} onChange={this.radioOnChange} />;

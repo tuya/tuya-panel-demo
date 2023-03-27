@@ -33,7 +33,6 @@ export default class SmearFormater {
   }
 
   parse(val = ''): SmearDataType {
-    // console.log('SmearFormater-parse', val);
     if (!val || typeof val !== 'string') {
       console.warn(smearCode, 'dp数据有问题，无法解析', val);
       return this.defaultValue;
@@ -144,4 +143,3 @@ export default class SmearFormater {
     return result;
   }
 }
-// # sourceMappingURL=ColourFormater.js.map

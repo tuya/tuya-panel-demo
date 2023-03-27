@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable indent */
 import React, { useMemo, useRef, useImperativeHandle } from 'react';
 import { View, StyleSheet, LayoutChangeEvent, LayoutRectangle } from 'react-native';
@@ -83,6 +84,7 @@ const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
     <View style={styles.ui1Container} onLayout={handeContainerLayout}>
       {UIDatas.map(({ pos, width, height, gradientDir, imgKey }, index, arr) => (
         <View
+          // eslint-disable-next-line react/no-array-index-key
           key={String(index)}
           style={[styles.item, { left: pos[0], top: pos[1], width, height }]}
         >

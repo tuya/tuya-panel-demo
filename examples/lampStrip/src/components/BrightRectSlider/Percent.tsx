@@ -1,6 +1,8 @@
+/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable react/require-default-props */
 /* eslint-disable react-native/no-unused-styles */
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import { TYText, IconFont } from 'tuya-panel-kit';
 import icons from './icons';
 
@@ -13,7 +15,7 @@ interface IPercentProps {
   length?: number;
   iconSize: number;
   iconColor: string;
-  tintStyle?: ViewStyle;
+  tintStyle?: StyleProp<ViewStyle>;
   customIcon?: string;
 }
 
@@ -42,7 +44,7 @@ export default class Percent extends React.Component<IPercentProps, IPercentProp
       layout,
       iconColor,
     } = this.state;
-    const { customIcon } = this.props;
+    const { customIcon, tintStyle } = this.props;
     let icon = icons.brightLevel1;
     if (percent > 20 && percent <= 60) {
       icon = icons.brightLevel2;
@@ -81,8 +83,8 @@ export default class Percent extends React.Component<IPercentProps, IPercentProp
               [lengthKey]: length,
               backgroundColor: colorOver,
             },
-            // eslint-disable-next-line react/destructuring-assignment
-            this.props.tintStyle,
+
+            tintStyle,
           ]}
         >
           <View style={[styles[`${layout}Text`], isVertical ? { minWidth } : { width: minWidth }]}>
