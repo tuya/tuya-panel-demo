@@ -63,8 +63,6 @@ const CountdownInfo: React.FC<CountdownSetProps> = ({ style = {}, setContentType
         showDot={false}
         timeTextStyle={{ marginTop: cx(36) }}
         resetStyle={{ marginTop: cx(23) }}
-        size={0}
-        lineWidth={0}
       />
       <BrickButton
         style={styles.saveBtn}

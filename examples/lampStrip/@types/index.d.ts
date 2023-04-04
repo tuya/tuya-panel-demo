@@ -1,4 +1,5 @@
 declare module 'react-native-json-tree';
+declare module 'react-native-svg';
 
 declare interface ColourData {
   hue: number;
