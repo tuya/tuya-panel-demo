@@ -10,6 +10,7 @@ interface IProps {
   y: number;
   isBlackColor: boolean;
 }
+
 export default class Thumb extends Component<IProps> {
   animateX = new Animated.Value(this.props.x);
 
@@ -19,9 +20,13 @@ export default class Thumb extends Component<IProps> {
 
   iconRef: Image;
 
-  componentWillReceiveProps(nextProps: IProps) {
-    this.animateX.setValue(nextProps.x);
-    this.animateY.setValue(nextProps.y);
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.x !== this.props.x) {
+      this.animateX.setValue(this.props.x);
+    }
+    if (prevProps.y !== this.props.y) {
+      this.animateY.setValue(this.props.y);
+    }
   }
 
   setNativeProps(props: IProps) {

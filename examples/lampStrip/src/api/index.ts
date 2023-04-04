@@ -6,10 +6,6 @@ import { avgSplit, sort, parseJSON } from '@utils';
 const { native: TYNative } = TYSdk;
 const { timezone } = Utils.TimeUtils;
 
-export const getOssUrl = () => {
-  return TYSdk.apiRequest<string>('tuya.m.app.panel.url.get', {});
-};
-
 export const api = TYSdk.apiRequest.bind(TYSdk);
 
 const sucStyle = 'background: green; color: #fff;';
@@ -36,21 +32,20 @@ function request(Request: string, version = '1.0', postData: any) {
     );
   });
 }
-
+// Obtain cloud data
 export const getDeviceCloudData = (key?: string) => {
   return new Promise((resolve, reject) => {
     TYNative.getDevProperty((d: any) => {
-      console.log('getDevProperty1', d);
       if (typeof d !== 'undefined') {
         let data = d;
-        // 单独处理灯串
+        // Handle the string of lights separately
         if (key && !['lights', 'scenes'].includes(key)) {
           data = typeof d[key] !== 'undefined' ? d[key] : {};
         } else {
           const lightsSliceIndexArr: number[] = [];
           const sceneIdArr: number[] = [];
           data = Object.keys(d).reduce((acc: any, cur) => {
-            if (cur.includes('sys_env')) return acc; // 数据里会注入一个embed_sys_env属性，原因不明
+            if (cur.includes('sys_env')) return acc; // The data will be injected with an embed_sys_env attribute for unknown reasons
             if (cur.startsWith('lights_')) {
               lightsSliceIndexArr.push(+cur.slice('lights_'.length));
             } else if (cur.startsWith('whiteLights_')) {
@@ -80,7 +75,6 @@ export const getDeviceCloudData = (key?: string) => {
             else data.scenes = scenes;
           }
         }
-        console.log('getDevProperty2', data);
         if (typeof data === 'string') data = JSON.parse(data);
         resolve(data);
       } else reject();
@@ -93,7 +87,6 @@ export const saveDeviceCloudData = (key: string, data: any) => {
     try {
       if (!data) reject();
       const jsonString = typeof data === 'object' ? JSON.stringify(data) : data;
-      // console.log('setDevProperty', key, jsonString);
       TYNative.setDevProperty(key, jsonString, resolve, reject);
     } catch (e) {
       reject(e);
@@ -101,9 +94,9 @@ export const saveDeviceCloudData = (key: string, data: any) => {
   });
 };
 /**
- * 删除云端数据by key
- * @param  {...String} codes 多个删除字段
- * @return { Boolean } 删除成功返回true，如果数据库不存在删除数据，返回false throw false。
+ * Delete cloud data by key
+ * @param  {...String} codes Multiple deleted fields
+ * @return { Boolean } Return true on success, or false throw false if the database does not have deleted dat.
  */
 export async function deleteDeviceCloudData(...codes: string[]) {
   try {
@@ -125,9 +118,9 @@ export async function deleteDeviceCloudData(...codes: string[]) {
  * @param {[type]} category [description]
  * @param {[type]} loops    [description]
  * @param {[type]} instruct [description]
- * @param {Object} devInfo [设备信息]
- * 添加定时
- * 支持群组定时
+ * @param {Object} devInfo [Device information]
+ * Add timing
+ * Support group timing
  */
 export const addTimer = (
   category: string,
@@ -163,14 +156,14 @@ export const addTimer = (
 
 /**
  * [updateTimer description]
- * @param {[type]} groupId  [群组id]
- * @param {[type]} category [定时类型]
- * @param {[type]} loops    [循环]
- * @param {[type]} instruct [自定义定时内容]
- * @param {Object} devInfo [设备信息]
+ * @param {[type]} groupId  [Group id]
+ * @param {[type]} category [Timing type]
+ * @param {[type]} loops    [cycle]
+ * @param {[type]} instruct [Customize timing content]
+ * @param {Object} devInfo [Device information]
  * @return {[type]}          [description]
- * 更新定时
- * 支持群组定时
+ * Update timing
+ * Support group timing
  */
 export const updateTimer = (
   groupId: string,
@@ -211,10 +204,10 @@ export const updateTimer = (
  * @param {[type]} category [description]
  * @param {[type]} groupId  [description]
  * @param {[type]} status   [description]
- * @param {Object} devInfo [设备信息]
+ * @param {Object} devInfo [Device information]
  * @return {[type]}          [description]
- * 更新某个组定时的状态
- * 支持群组定时
+ * Updates the status of a group timing
+ * Support group timing
  */
 export const updateTimerStatus = (
   status: string,
@@ -251,10 +244,10 @@ export const updateTimerStatus = (
  * [removeTimer description]
  * @param {[type]} groupId  [description]
  * @param {[type]} category [description]
- * @param {Object} devInfo [设备信息]
+ * @param {Object} devInfo [Device information]
  * @return {[type]}          [description]
- * 删除定时
- * 支持群组定时
+ * Deletion timing
+ * Support group timing
  */
 export const removeTimer = (groupId: string, category: string, devInfo: any) => {
   return new Promise((resolve, reject) => {
@@ -284,10 +277,10 @@ export const removeTimer = (groupId: string, category: string, devInfo: any) => 
 /**
  * [getCategoryTimerList description]
  * @param  {[type]} category [description]
- * @param {Object} devInfo [设备信息]
+ * @param {Object} devInfo [Device information]
  * @return {[type]}          [description]
- * 获取某个分类下的定时
- * 支持群组定时
+ * Get the scheduled tasks under a certain category.
+ * Support group scheduling.
  */
 export const getCategoryTimerList = (category: string, devInfo = TYSdk.devInfo) => {
   return new Promise((resolve, reject) => {

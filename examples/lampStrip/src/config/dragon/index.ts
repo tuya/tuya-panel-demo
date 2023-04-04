@@ -16,15 +16,15 @@ const controlMap = [
 ];
 
 export default {
-  // 开启节流
+  // Enable throttle
   openThrottle: true,
-  // updateValidTime: 'syncs', // 同步更新 dp 数据
+  // updateValidTime: 'syncs', // Synchronize update dp data
   /**
-   * 下发数据时，检测当前值，若当前值已经是下发的数据，则过滤掉
+   * When sending data, check the current value. If the current value is already the sent data, filter it out.
    */
   checkCurrent: true,
   throttleWaitTime: 333,
-  // 下发规则
+  // Issuing rules
   rules: [
     {
       type: 'NEED',
@@ -39,9 +39,9 @@ export default {
       effect: { [workModeCode]: WORK_MODE.MUSIC },
     },
   ],
-  // 场景转化插件
+  // Scene conversion plugin
   formaters: [new SmearFormater(), new SceneFormater(), new MicMusicFormate()],
-  // dp 转化规则
+  // dp conversion rules
   dpMap: {
     [colourCode]: [
       { name: 'hue', length: 4, default: 0 },

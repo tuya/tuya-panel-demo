@@ -4,7 +4,7 @@
 import { Utils, TYSdk } from 'tuya-panel-kit';
 import _ from 'lodash';
 import Color from 'color';
-import { HomeTab, WorkMode } from '@types';
+import { WorkMode } from '@types';
 import DpCodes from '@config/dpCodes';
 import { workModeMappingHomeTab } from '@config/default';
 import Strings from '@i18n';
@@ -14,7 +14,7 @@ const {
   CoreUtils,
   NumberUtils: { numToHexString },
   ColorUtils: { color },
-  TimeUtils: { parseHour12, parseTimer, stringToSecond },
+  TimeUtils: { parseTimer, stringToSecond },
 } = Utils;
 
 const { colourCode, brightCode, temperatureCode } = DpCodes;
@@ -42,12 +42,12 @@ export function sToN(str = '', base = 16) {
   return parseInt(str, base) || 0;
 }
 
-/** hex 转 hsv */
+/** hex to hsv */
 export function hex2hsv(hex: string) {
   return color.hex2hsv(hex).map((v, i) => (i > 0 ? Math.round(v * 10) : Math.round(v)));
 }
 
-/** hsv 转 hex */
+/** hsv to hex */
 export function hsv2hex(hue = 0, saturation = 0, value = 1000) {
   return color.hsv2hex(hue, saturation / 10, value / 10);
 }
@@ -55,12 +55,14 @@ export function hsv2hex(hue = 0, saturation = 0, value = 1000) {
 // FIXME:
 export function hsv2rgba(hue = 0, saturation = 0, bright = 1000) {
   const c = color.hsb2hex(hue, Math.round(saturation / 10), 100);
+  // @ts-ignore
   return new Color(c).alpha(bright2Opacity(bright)).rgbString();
 }
 
 // FIXME:
 export function brightKelvin2rgba(bright = 0, kelvin = 0) {
   const c = color.brightKelvin2rgb(1000, kelvin);
+  // @ts-ignore
   return new Color(c).alpha(bright2Opacity(bright)).rgbString();
 }
 
@@ -69,12 +71,12 @@ export function colorDataToRgba(colorData: CommonColorData): string {
   return isColor ? hsv2rgba(hue, saturation, value) : brightKelvin2rgba(brightness, temperature);
 }
 
-/** 转化为number */
+/** To number */
 export function toN(n: any) {
   return +n || 0;
 }
 
-/** JSON浅比较，目前层级只适配了一级，ColourData[] 适用 */
+/** JSON shallow comparison, currently only supports one level, suitable for ColourData[] */
 export function jsonShallowEqual(arr1: any[], arr2: any[]) {
   return (
     arr1 === arr2 ||
@@ -88,7 +90,6 @@ export function jsonShallowEqual(arr1: any[], arr2: any[]) {
       }))
   );
 }
-
 export function objectShallowEqual(obj1: any, obj2: any, keys?: string[]): boolean {
   if (obj1 === obj2) return true;
   const keys1 = Object.keys(obj1).filter(key => (keys ? keys.includes(key) : true));
@@ -96,7 +97,7 @@ export function objectShallowEqual(obj1: any, obj2: any, keys?: string[]): boole
   return keys1.length === keys2.length && keys1.every(key => obj1[key] === obj2[key]);
 }
 
-// TODO: 返回值优化，始终返回 string
+// TODO: Optimize return value, always return string
 export function* formatterTransform(value: string) {
   let start = 0;
   let result: number | string = '';
@@ -119,7 +120,7 @@ export function checkDp() {
   return { isColorfulExist, isWhiteExist, isTempExist };
 }
 
-/** 校正workMode（上报的workMode可能不支持，比如三路上报了白光） */
+/** Correct workMode (the reported workMode may not be supported, such as white light on three channels) */
 export function getCorrectWorkMode(workMode: WorkMode) {
   if ([WorkMode.colour, WorkMode.white].includes(workMode)) {
     const { isColorfulExist, isWhiteExist } = checkDp();
@@ -129,7 +130,7 @@ export function getCorrectWorkMode(workMode: WorkMode) {
   return workMode;
 }
 
-/** 根据workMode获取barMode */
+/** Get barMode based on workMode */
 export function getHomeTabFromWorkMode(workMode: WorkMode) {
   return workModeMappingHomeTab[workMode];
 }
@@ -146,9 +147,10 @@ export function bright2Opacity(
   return Math.round((min + ((brightness - 10) / (1000 - 10)) * (max - min)) * 100) / 100;
 }
 
-// FIXME: 优化
+// FIXME: Optimize
 export function getStops(colors: string[]) {
   if (colors.length === 1) {
+    // eslint-disable-next-line no-param-reassign
     colors = colors.concat(colors);
   }
   const result: any = {};
@@ -164,16 +166,17 @@ export function sort(arr: number[]) {
   return arr.sort((a, b) => a - b);
 }
 
-/** 获取最新的预览颜色数据 */
+/** Get the latest preview color data */
 export function getPreviewColorDatas(
   circles: CommonColorData[] = [],
   lightLength: number,
   convertRgba = false
 ) {
-  const ratio = Math.max(1, Math.floor(lightLength / circles.length));
+  const ratio: number = Math.max(1, Math.floor(lightLength / circles.length));
+  // @ts-ignore
   const frontPart = circles.reduce((acc, cur) => acc.concat(Array(ratio).fill(cur)), []);
   const endPart = frontPart.slice(0, Math.max(0, lightLength - circles.length * ratio));
-  const previewCircles = [...frontPart, ...endPart].slice(0, lightLength);
+  const previewCircles: any[] = [...frontPart, ...endPart].slice(0, lightLength);
   return convertRgba ? previewCircles.map(colorDataToRgba) : previewCircles;
 }
 
@@ -189,16 +192,16 @@ export const getCircleColor = (colorData: any) => {
 export function parseJSON(str: string) {
   let rst;
   if (str && _.isString(str)) {
-    // 当JSON字符串解析
+    // When JSON string is parsed
     try {
       rst = JSON.parse(str);
     } catch (e) {
-      // 出错，用eval继续解析JSON字符串
+      // Error, continue to parse JSON string with eval
       try {
         // eslint-disable-next-line
         rst = eval(`(${str})`);
       } catch (e2) {
-        // 当成普通字符串
+        // Treat as a normal string
         rst = str;
       }
     }
@@ -246,8 +249,8 @@ export function repeatArrtoStr(source: number[]) {
 
 export const customParseHour12 = (second: number) => {
   const t = second % 86400;
-  const originHour = parseInt(t / 3600, 10);
-  const m = parseInt(t / 60 - originHour * 60, 10);
+  const originHour = parseInt((t / 3600).toString(), 10);
+  const m = parseInt((t / 60 - originHour * 60).toString(), 10);
   let h = originHour % 12;
   if (h === 0) {
     h = 12;
@@ -270,46 +273,6 @@ export const calLastTimePoint = (hour: number, minute: number, last: number, is2
   lastTimePointText = is24Hour ? parseTimer(endTimeSecond) : customParseHour12(endTimeSecond);
 
   return lastTimePointText;
-};
-
-export const calSleepWakeupDelayTimePoint = (
-  mode: string,
-  hour: number,
-  minute: number,
-  delay: number,
-  last: number,
-  is24Hour: boolean
-) => {
-  let startTimeSecond = 0;
-  let endTimeSecond = 0;
-  let delayTimePointText = '';
-
-  // if (mode === 'wakeup') {
-  //   const seconds = stringToSecond(`${hour}:${minute}:00`);
-  //   const newSeconds = seconds - delay * 5 * 60;
-  //   startTimeSecond = newSeconds < 0 ? newSeconds + 86400 : newSeconds;
-  //   delayTimePointText = is24Hour
-  //     ? parseTimer(startTimeSecond)
-  //     : customParseHour12(startTimeSecond);
-  // } else {
-  //   startTimeSecond = stringToSecond(`${hour}:${minute}:00`);
-  //   endTimeSecond = startTimeSecond + delay * 5 * 60;
-  //   delayTimePointText = is24Hour ? parseTimer(endTimeSecond) : customParseHour12(endTimeSecond);
-  // }
-  startTimeSecond = stringToSecond(`${hour}:${minute}:00`);
-  endTimeSecond = startTimeSecond + delay * 5 * 60;
-  delayTimePointText = is24Hour ? parseTimer(endTimeSecond) : customParseHour12(endTimeSecond);
-
-  const label = Strings.getLang(`${mode}_delay`);
-  let lastStr = '';
-  if (typeof last !== 'undefined' && last > 0) {
-    lastStr = calLastTimePoint(hour, minute, delay + last, !is12Hour);
-  }
-
-  if (lastStr) {
-    return `${label}: ${delayTimePointText} | ${Strings.getLang('lastTime')}: ${lastStr}`;
-  }
-  return `${label}: ${delayTimePointText}`;
 };
 
 export const parseHour12Data = (second: number) => {

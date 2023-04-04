@@ -1,5 +1,6 @@
+/* eslint-disable react/static-property-placement */
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable default-case */
+
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { StorageUtils } from '@tuya/tuya-panel-lamp-sdk/lib/utils';
@@ -24,15 +25,15 @@ const defaultProps = {
   lossSliderColor: 'rgba(255,255,255,0.4)',
   hideBright: false,
   /**
-   * 排布方向
-   * leftBottom 对角线， 0在左下角
-   * leftTop 对角线, 0在左上角
-   * rightBottom 反向对角线, 0在右下角
-   * rightTop 反向对角线, 0在右上角
-   * left 从左往右，0在左边
-   * right 从右往左，0在右边
-   * top 从上往下，0在上边
-   * bottom 从下往上，0在下边
+   * Layout direction
+   * leftBottom diagonal, 0 in the lower left corner
+   * leftTop diagonal, 0 in the upper left corner
+   * rightBottom reverse diagonal, 0 in the lower right corner
+   * rightTop reverse diagonal, 0 in the upper right corner
+   * left from left to right, 0 on the left
+   * right from right to left, 0 on the right
+   * top from top to bottom, 0 on the top
+   * bottom from bottom to top, 0 on the bottom
    * @version ^0.3.0
    */
   direction: 'leftBottom' as
@@ -50,10 +51,10 @@ const defaultProps = {
     { offset: '60%', stopColor: '#FFFFFF', stopOpacity: 1 },
     { offset: '100%', stopColor: '#CDECFE', stopOpacity: 1 },
   ] as ILinearColors[],
-  onGrant(v: any, option?: { isChangeBright: boolean }) {},
-  onMove(v: any, option?: { isChangeBright: boolean }) {},
-  onRelease(v: any, option?: { isChangeBright: boolean }) {},
-  onPress(v: any, option?: { isChangeBright: boolean }) {},
+  onGrant: (v: any, option?: { isChangeBright: boolean }) => null,
+  onMove: (v: any, option?: { isChangeBright: boolean }) => null,
+  onRelease: (v: any, option?: { isChangeBright: boolean }) => null,
+  onPress: (v: any, option?: { isChangeBright: boolean }) => null,
 };
 interface TempStorageData {
   temperature: number;
@@ -84,7 +85,7 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
 
   constructor(props: WhiteProps) {
     super(props);
-    // 是否定义了storageKey
+    // Whether storageKey is defined
     const {
       storageKey,
       value: { brightness, temperature },
@@ -100,7 +101,6 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
   componentWillReceiveProps(nextProps: WhiteProps) {
     const {
       value: { temperature, brightness },
-      thumbSize,
     } = nextProps;
     if (temperature !== this.props.value.temperature) {
       this.setState({ temperature });
@@ -166,6 +166,8 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
         x2 = '0%';
         y2 = '0%';
         break;
+      default:
+        break;
     }
 
     return [{ x1, y1, x2, y2, colors: bgs }] as ILinear[];
@@ -179,19 +181,19 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
 
   initData = async (validBound: ValidBound) => {
     let cacheEnabled = true;
-    // 尺寸有变化时，不使用缓存
+    // When the size changes, do not use cache
     if (!_.isEqual(validBound, this.pickerBound)) {
       cacheEnabled = false;
     }
     const { temperature } = this.state;
-    // 获取当前positon的值
+    // Get the current position value
     const data = (await StorageUtils.getDevItem(this.storageKey)) as TempStorageData;
-    // 是否相同色温，相同使用缓存坐标展示
+    // Is the same color temperature, the same cache coordinates are used for display
     if (data && data.temperature === temperature && cacheEnabled) {
       this.thumbPosition = data.position;
       this.currentTemperature = temperature;
     } else {
-      // 根据色温计算位置
+      // Calculate position based on color temperature
       this.thumbPosition = this.autoTemperaturePosition(temperature, validBound);
       this.currentTemperature = temperature;
     }
@@ -236,10 +238,10 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
 
   coorToValue = ({ x, y }: Point, bound: ValidBound) => {
     const { brightness } = this.state;
-    // 获取基准向量
+    // Get the reference vector
     const normalVector = this.getNormalVector(bound);
     const vector1 = { x: x - normalVector.originX, y: y - normalVector.originY };
-    // 对角线的长度
+    // Diagonal length
     const total = Math.sqrt(normalVector.x ** 2 + normalVector.y ** 2);
     const diff = (vector1.x * normalVector.x + vector1.y * normalVector.y) / total;
     const temperature = Math.round((diff / total) * 1000);
@@ -247,7 +249,7 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
   };
 
   handleTemperaturePosition(temperature: number, bound: ValidBound) {
-    //  获取基准向量
+    // Get the normal vector
     const normalVector = this.getNormalVector(bound);
     const total = Math.sqrt(normalVector.x ** 2 + normalVector.y ** 2);
     const normal = { x: normalVector.x / total, y: normalVector.y / total };
@@ -260,8 +262,8 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
     return position;
   }
 
-  valueToCoor = ({ temperature }: IWhite, origin: Point, validBound: ValidBound): Point => {
-    // origin 不存在时，不在滑动时候
+  valueToCoor = ({ temperature }: IWhite, origin: Point | null, validBound: ValidBound): Point => {
+    // When origin is not present, it is not during slide
     if (!origin) {
       let cacheEnabled = true;
       if (!_.isEqual(validBound, this.pickerBound)) {
@@ -293,6 +295,7 @@ export default class WhitePicker extends Component<WhiteProps, IWhite> {
     return 'transparent';
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   firPropsEvent(cb: Function, ...args: any[]) {
     typeof cb === 'function' && cb(...args);
   }

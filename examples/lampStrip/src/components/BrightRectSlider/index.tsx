@@ -11,7 +11,7 @@ import Percent from './Percent';
 import NumberSlider from '../NumberSlider';
 
 const { convertX: cx } = Utils.RatioUtils;
-interface Props extends NumberSliderProps {
+interface IProps extends NumberSliderProps {
   formatPercent?: (v: number) => number;
   iconSize?: number;
   iconColor?: string;
@@ -20,11 +20,9 @@ interface Props extends NumberSliderProps {
   outPercentColor?: string;
   customIcon?: string;
   showPercent?: boolean;
-  value?: number;
-  onThumbChange?: (value: number, value1: number) => void;
 }
 
-export default class BrightRect1Slider extends Component<Props> {
+export default class BrightRect1Slider extends Component<IProps> {
   // eslint-disable-next-line
   static defaultProps = {
     ...numberSliderDefaultProps,
@@ -38,7 +36,7 @@ export default class BrightRect1Slider extends Component<Props> {
 
   private percent = 0;
 
-  constructor(props: Props) {
+  constructor(props: IProps) {
     super(props);
     const { value } = this.props;
     this.percent = this.formatPercent(value);

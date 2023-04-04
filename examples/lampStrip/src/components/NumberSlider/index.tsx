@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -20,124 +21,124 @@ import {
 
 export const numberSliderDefaultProps = {
   /**
-   * 当前值
+   * Current value
    */
   value: 0,
   /**
-   * 允许滑动的最小值
-   * 默认值 0
+   * Minimum value allowed to slide
+   * Default value 0
    */
   min: 0,
   /**
-   * 允许滑动的最大值
-   * 默认值 1000
+   * Maximum value allowed to slide
+   * Default value 1000
    */
   max: 1000,
   /**
-   * 滑动时的步长
+   * Step size when sliding
    */
   step: 1,
   /**
-   * 是否禁用
-   * 默认 false
+   * Whether it is disabled
+   * Default false
    */
   disabled: false,
   /**
-   * 轨道颜色
-   * 默认 rgba(0,0,0,.4)
+   * Track color
+   * Default rgba(0,0,0,.4)
    */
   trackColor: 'rgba(0,0,0,.4)',
   /**
-   * 激活的轨道颜色
-   * 默认 #fff
+   * Active track color
+   * Default #fff
    */
   tintColor: '#fff',
   /**
-   * 滑动生效的开始距离
-   * 默认为 7 个像素距离
+   * The starting distance for the slide to take effect
+   * Default is 7 pixels distance
    */
   invalidSwipeDistance: 7,
   /**
-   * 是否可以点击选择
-   * 默认为 true
+   * Whether it can be clicked to select
+   * Default is true
    */
   clickEnabled: true,
 
   /**
-   * 是否可以能过轨道直接滑动
+   * Whether it can slide directly through the track
    */
   trackSlideEnabled: false,
 
   /**
-   * 是否显示激活轨道
-   * 默认为显示
+   * Whether to show the active track
+   * Default is to show
    */
   showTint: true,
 
   /**
-   * 滑动方向
+   * Sliding direction
    */
   direction: 'horizontal' as 'horizontal' | 'vertical',
 
   /**
-   * 是否反向滑动
-   * 当为水平滑动条时，默认滑条的最小值在左边，设置reverse = true后，最小值在右边
-   * 当为垂直滑动条时，默认滑条的最小值在下边，设置reverse = true后，最小值在上边
+   * Whether to slide in reverse
+   * When it is a horizontal slider, the default minimum value is on the left, and the minimum value is on the right after setting reverse = true
+   * When it is a vertical slider, the default minimum value is at the bottom, and the minimum value is at the top after setting reverse = true
    */
   reverse: false,
   /**
-   * 使用动画显示
+   * Show with animation
    */
   showAnimation: true,
   /**
-   * 拖动时，滑动的有效触控区大小
+   * When dragging, the effective touch area size of the slider
    */
   thumbTouchSize: { width: 40, height: 40 },
 
   /**
-   * 测试标位
+   * Test position
    */
   accessibilityLabel: 'numberSlider',
 
   /**
-   * 滑块的可滑动范围类型
-   * inner 为滑动范围为滑块内，滑动不会超出轨道的范围
-   * outer 为滑动范围可超出轨道范围，滑动时滑块中心位置可与轨道的边重叠
+   * The range of the slider's sliding range
+   * inner means that the sliding range is within the slider, and the sliding will not exceed the range of the track
+   * outer means that the sliding range can exceed the track range, and the center position of the slider can overlap with the edge of the track when sliding
    */
   thumbLimitType: 'inner' as 'inner' | 'outer',
 
   /**
-   * 滑动开始事件
-   * @param v 当前值
+   * Sliding start event
+   * @param v Current value
    */
   onGrant(v: number) {},
   /**
-   * 滑动中事件
-   * @param v 当前值
+   * Sliding event
+   * @param v Current value
    */
   onMove(v: number) {},
   /**
-   * 滑动结束事件
-   * @param v 当前值
+   * Sliding end event
+   * @param v Current value
    */
   onRelease(v: number) {},
   /**
-   * 点击事件
-   * 当 clickEnabled = true时，有效
-   * @param v 当前值
+   * Click event
+   * When clickEnabled = true, it is valid
+   * @param v Current value
    */
   onPress(v: number) {},
 
   /**
-   * 用户主动交互时，如果滑动条的数据值有变化，会触发此事件
-   * @param v 变化的数据值
+   * When the user actively interacts, if the data value of the slider changes, this event will be triggered
+   * @param v Changed data value
    */
   onChange(v: number) {},
 
   /**
-   * 滑块变动时触发事件
-   * @param offset 滑块的相对轨道最小值一端的偏移量
-   * @param value 滑块位置对应的数据值
+   * Event triggered when the slider changes
+   * @param offset The offset of the slider relative to the minimum value of the track
+   * @param value The data value corresponding to the slider position
    */
   onThumbChange(offset: number, value?: number) {},
 };
@@ -146,52 +147,52 @@ type DefaultProps = Readonly<typeof numberSliderDefaultProps>;
 
 export type NumberSliderProps = {
   /**
-   * 组件最外层容器样式
+   * Component outermost container style
    */
   style?: ViewStyle | ViewStyle[];
   /**
-   * 轨道的样式
+   * Track style
    */
   trackStyle?: ViewStyle | ViewStyle[];
   /**
-   * 激活部分轨道样式
+   * Active part of the track style
    */
   tintStyle?: ViewStyle | ViewStyle[];
   /**
-   * 滑块的样式
+   * Slider style
    */
   thumbStyle?: ViewStyle | ViewStyle[];
   /**
-   * 显示的最小值
-   * 值此必须小于等于允许滑动的最小值 min 的值，如果不设置则默认等于允许滑动的最小值 min 的值
+   * Minimum value displayed
+   * The value must be less than or equal to the minimum value min allowed to slide. If not set, the default is equal to the minimum value min allowed to slide
    *
    */
   showMin?: number;
   /**
-   * 显示的最大值
-   * 值此必须大于等于允许滑动的最大值 max 的值，如果不设置则默认等于允许滑动的最大值 max 的值
+   * Maximum value displayed
+   * The value must be greater than or equal to the maximum value max allowed to slide. If not set, the default is equal to the maximum value max allowed to slide
    */
   showMax?: number;
 
   /**
-   * 渲染轨道
+   * Render track
    */
   renderTrack?: () => React.ReactNode;
   /**
-   * 渲染激活部分轨道
+   * Render active part of the track
    */
   renderTint?: () => React.ReactNode;
   /**
-   * 渲染滑块
+   * Render slider
    */
   renderThumb?: () => React.ReactNode;
 
   /**
-   * 组件的layout事件
+   * Component layout event
    */
   onLayout?: (e: LayoutChangeEvent) => void;
   /**
-   * 组件的轨道layout事件
+   * Component track layout event
    */
   onTrackLayout?: (e: LayoutChangeEvent) => void;
 } & DefaultProps;
@@ -202,8 +203,8 @@ interface IState {
 }
 
 /**
- * 基础滑动条 slider
- * 此滑动条仅保证整数值情况下完整的
+ * Basic slider
+ * This slider only guarantees the complete integer value
  */
 export default class NumberSlider extends React.Component<NumberSliderProps, IState> {
   // eslint-disable-next-line react/static-property-placement
@@ -213,23 +214,23 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
 
   locked = false;
 
-  trackLength = 0; // 轨道长度
+  trackLength = 0; // Track length
 
   trackSize: number[] = [0, 0];
 
-  trackWidth = 0; // 轨道宽度
+  trackWidth = 0; // Track width
 
-  valueLength = 0; // 激活的长度
+  valueLength = 0; // Active length
 
-  offsetMinLength = 0; // 相对最小显示位置可滑动的最小偏移距离
+  offsetMinLength = 0; // Minimum offset distance that can be slid relative to the minimum display position
 
-  offsetMaxLength = 0; // 相对最大显示位置可滑动的最大偏移距离
+  offsetMaxLength = 0; // Maximum offset distance that can be slid relative to the maximum display position
 
-  maxLength = 0; // 可滑动的最大距离
+  maxLength = 0; // Maximum sliding distance
 
-  thumbWidth = 0; // 滑块的宽
+  thumbWidth = 0; // Slider width
 
-  thumbHeight = 0; // 滑动的高
+  thumbHeight = 0; // Slider height
 
   animate: Animated.Value = new Animated.Value(0);
 
@@ -245,18 +246,18 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
 
   trackY = 0;
 
-  tempValue = 0; // 数据临时值
+  tempValue = 0; // Temporary data value
 
   constructor(props: NumberSliderProps) {
     super(props);
     this._panResponder = PanResponder.create({
-      // 要求成为响应者：
+      // Request to become a responder:
       onStartShouldSetPanResponder: this.handleStartPanResponder,
       onMoveShouldSetPanResponder: this.handleSetPanResponder,
       onPanResponderTerminationRequest: () => !this.moving,
       onPanResponderMove: this.onMove,
       onPanResponderRelease: this.onRelease,
-      // 当前有其他的东西成为响应器并且没有释放它。
+      // Currently, something else has become a responder and has not released it.
       onPanResponderReject: this.handleTerminate,
       onPanResponderTerminate: this.handleTerminate,
     });
@@ -305,7 +306,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
   }
 
   /**
-   * 返回滑动位置
+   * Returns the sliding position
    */
   getThumbBound() {
     const {
@@ -355,15 +356,15 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     const isHorizontal = direction === 'horizontal';
 
     if (!this.moving) {
-      // 滑动一定象素后，将不允许其他手势抢权
+      // After sliding a certain number of pixels, other gestures will not be allowed to grab power
       if (
         (isHorizontal && Math.abs(gesture.dx) < invalidSwipeDistance) ||
         (!isHorizontal && Math.abs(gesture.dy) < invalidSwipeDistance)
       ) {
-        // 小于一定象素不做滑动
+        // Do not slide if it is less than a certain number of pixels
         return false;
       }
-      // 是否需要点中滑块才能拖动
+      // Do you need to click on the slider to drag
       if (!trackSlideEnabled) {
         const { locationX, locationY } = e.nativeEvent;
         const currentX = locationX - this.trackX;
@@ -373,7 +374,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
           return false;
         }
       }
-      // 开始手势
+      // Start gesture
       onGrant(this.state.value);
       this.moving = true;
       this.locked = true;
@@ -382,7 +383,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
   };
 
   handleTerminate = () => {
-    // 响应器已经从该视图抽离
+    // The responder has been withdrawn from this view
     this.moving = false;
     this.locked = false;
     this.isTouchStart = false;
@@ -434,7 +435,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
       diff = dy * (reverse ? 1 : -1);
     }
     let currentLength = valueLength + diff;
-    // 边界处理
+    // Boundary processing
     if (currentLength < 0) {
       currentLength = 0;
     } else if (currentLength > maxLength) {
@@ -445,12 +446,12 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
     currentLength = this.valueToCoor(value);
     this.setAnimationValue(currentLength, !isEnd);
 
-    // value 可以浮点数，此处使用差来判断是否不相等
+    // value can be a floating point number, here we use the difference to determine whether they are not equal
     if (Math.abs(value - this.tempValue) >= 0.000001) {
       onChange(value);
     }
 
-    this.tempValue = value; // 记录临时值
+    this.tempValue = value; // Record temporary value
     if (isEnd) {
       this.valueLength = currentLength;
       this.setState({ value });
@@ -554,7 +555,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
           pointerEvents="box-only"
           {...this._panResponder.panHandlers}
         >
-          {/* 轨道 */}
+          {/* track */}
           <View
             onLayout={this.handleLayout}
             style={[
@@ -569,7 +570,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
             ]}
           >
             <View style={{ flex: 1 }}>{!!renderTrack && renderTrack()}</View>
-            {/* 激活部分轨道 */}
+            {/* Activated partial orbit */}
             {showTint && visibleTint && (
               <Animated.View
                 style={[
@@ -634,7 +635,7 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
           <View style={{ ...StyleSheet.absoluteFillObject }} pointerEvents="none">
             {children}
           </View>
-          {/* 滑块 */}
+          {/* sliding block */}
           {showTint && (
             <Animated.View
               style={[
@@ -652,7 +653,6 @@ export default class NumberSlider extends React.Component<NumberSliderProps, ISt
                         this.offsetMinLength - halfThumbHeight
                       ),
                     },
-                ,
               ]}
             >
               {!!renderThumb && renderThumb()}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useMemo, useCallback, useRef, useEffect } from 'react';
 import { View, StyleSheet, Platform, BackHandler } from 'react-native';
 import { useUnmount } from 'ahooks';
@@ -23,7 +24,7 @@ const LightStripLength: React.FC = () => {
     workMode: dpState[workModeCode],
     lightPixelNumberSet: dpState[lightPixelNumberSetCode],
     lightPixel: dpState[lightPixelCode] || 0,
-    lightLength: dpState[lightLengthCode] || 0, // 上报的长度单位是厘米
+    lightLength: dpState[lightLengthCode] || 0, // The reported unit of length is centimeters
   }));
   const max = lightPixel;
   const min = 10;
@@ -31,9 +32,9 @@ const LightStripLength: React.FC = () => {
   const initLightPixel = useRef(lightPixelNumberSet);
   const valueTextRef = useRef(null);
 
-  const hasLength = useMemo(() => SupportUtils.isSupportDp(lightLengthCode), []); // 如果没有总长度dp，面板显示点数
+  const hasLength = useMemo(() => SupportUtils.isSupportDp(lightLengthCode), []); // If there is no total length dp, the panel displays the number of points
 
-  // 处理安卓环境下侧滑返回情况
+  // Handle the side swipe return situation in the Android environment
   useEffect(() => {
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', handleBack);
@@ -65,19 +66,6 @@ const LightStripLength: React.FC = () => {
     [getValueText, lightPixelNumberSet]
   );
 
-  // const handleSliderChange = (v: { minValue: number; maxValue: number }) => {
-  //   console.log('handleSliderChange', v.maxValue);
-  //   // @ts-ignore wtf
-  //   valueTextRef.current?.setText?.(getValueText(v.maxValue));
-  // };
-
-  // const handleSliderComplete = (v: { minValue: number; maxValue: number }) => {
-  //   console.log('handleSliderComplete', v.maxValue);
-  //   // @ts-ignore wtf
-  //   valueTextRef.current?.setText?.(getValueText(v.maxValue));
-  //   dragon.putDpData({ [lightPixelNumberSetCode]: v.maxValue });
-  // };
-
   const handleSliderChange = (v: number) => {
     // @ts-ignore wtf
     valueTextRef.current?.setText?.(getValueText(v));
@@ -92,14 +80,14 @@ const LightStripLength: React.FC = () => {
   const handleBack = () => {
     dragon.putDpData(
       { [lightPixelNumberSetCode]: initLightPixel.current },
-      { checkCurrent: false } // 裁剪快速点击取消不生效
+      { checkCurrent: false } // Trim fast click cancel does not take effect
     );
   };
 
   const handleCancel = () => {
     dragon.putDpData(
       { [lightPixelNumberSetCode]: initLightPixel.current },
-      { checkCurrent: false } // 裁剪快速点击取消不生效
+      { checkCurrent: false } // Trim fast click cancel does not take effect
     );
     setTimeout(navigationBack, 300);
   };
@@ -108,7 +96,7 @@ const LightStripLength: React.FC = () => {
     navigationBack();
   };
 
-  // 退出时恢复workMode
+  // Restore workMode when exiting
   useUnmount(() => {
     dragon.putDpData({ [workModeCode]: workMode }, { checkCurrent: false });
   });
@@ -187,26 +175,6 @@ const LightStripLength: React.FC = () => {
             renderTrack={() => renderSliderTrackLineBox(isDarkTheme ? '#fff' : themeColor)}
             renderTint={renderSliderTrackLineBox}
           />
-
-          {/* <SliderWithLine
-            style={styles.slider}
-            nounColor={isDarkTheme ? '#fff' : themeColor}
-            activeNounColor="#fff"
-            backgroundColor={isDarkTheme ? '#3c3b3b' : '#EBF0FF'}
-            activeBackgroundColor={themeColor}
-            startText=""
-            endText=""
-            borderRadius={cx(8)}
-            nounHeight={cx(10)}
-            width={cx(311)}
-            height={cx(32)}
-            min={min}
-            max={max}
-            maxValue={lightPixelNumberSet}
-            stepValue={1}
-            // onValueChange={handleSliderChange}
-            // onSlidingComplete={handleSliderComplete}
-          /> */}
           <View style={styles.rangeRange}>
             <TYText size={cx(12)} color={subFontColor}>
               {minText}
@@ -257,12 +225,6 @@ const styles = StyleSheet.create({
   sliderTitle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  slider: {
-    marginTop: cx(34),
-    height: cx(32),
-    borderRadius: cx(8),
-    overflow: 'hidden',
   },
   rangeRange: {
     flexDirection: 'row',

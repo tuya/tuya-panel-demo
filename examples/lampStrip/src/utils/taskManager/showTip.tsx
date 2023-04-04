@@ -6,8 +6,8 @@ import Strings from '@i18n';
 import { TaskType } from '.';
 
 /**
- * 显示冲突提示
- * @param {Object} data 冲突的数据
+ * Show conflict tips
+ * @param {Object} data Conflicting data
  */
 const showTip = (data: any, cb?: () => void) => {
   const keys = Object.keys(data);
@@ -15,7 +15,7 @@ const showTip = (data: any, cb?: () => void) => {
   const hasCountDown = keys.includes(TaskType.COUNTDOWN);
   const hasTimer = keys.some(key => key !== TaskType.RHYTHMS_TASK && key !== TaskType.COUNTDOWN);
   const timers = keys.filter(key => key !== TaskType.RHYTHMS_TASK && key !== TaskType.COUNTDOWN);
-  // 本地定时
+  // Local timing
   const hasLocal = keys.includes(TaskType.LOCAL_TIMING);
   let labelKey = '';
   if (hasRhythms && hasCountDown && hasTimer) {
@@ -34,8 +34,6 @@ const showTip = (data: any, cb?: () => void) => {
     labelKey = 'conflict_timer_label';
   }
 
-  console.log('showTip', labelKey, Strings.getLang(labelKey));
-
   Dialog.custom({
     title: Strings.getLang('tip'),
     content: (
@@ -51,6 +49,7 @@ const showTip = (data: any, cb?: () => void) => {
               <View key={key} style={{ paddingHorizontal: 8 }}>
                 {list.map(({ startTime, endTime, weeks }: any, i) => {
                   return (
+                    // eslint-disable-next-line react/no-array-index-key
                     <TYText key={i} color="#000" style={{ fontSize: 10 }}>
                       {Strings.formatValue(
                         tipKey,

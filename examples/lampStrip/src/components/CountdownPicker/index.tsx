@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unused-prop-types */
-/* eslint-disable react/require-default-props */
 import React, { useMemo, useImperativeHandle } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useControllableValue } from 'ahooks';
@@ -26,8 +25,8 @@ export interface CountdownPickerProps {
   style?: StyleProp<ViewStyle>;
   innerRef?: React.Ref<CountdownPickerInnerRefType>;
   value?: number;
-  defaultValue?: number;
-  onChange?: (value: number) => void;
+  defaultValue: number;
+  onChange: (value: number) => void;
   hourLabel?: string;
   minuteLabel?: string;
   secondLabel?: string;
@@ -76,7 +75,7 @@ const CountdownPicker: React.FC<CountdownPickerProps> = props => {
   return (
     <View
       style={[styles.container, style]}
-      // 防止安卓下手势与父节点冲突
+      // Prevents Android gestures from colliding with parent nodes
       onMoveShouldSetResponder={() => true}
       onResponderTerminationRequest={() => false}
     >
@@ -96,7 +95,14 @@ const CountdownPicker: React.FC<CountdownPickerProps> = props => {
     </View>
   );
 };
-
+CountdownPicker.defaultProps = {
+  style: {},
+  value: 1,
+  innerRef: null,
+  hourLabel: HourLabel,
+  minuteLabel: MinuteLabel,
+  secondLabel: SecondLabel,
+};
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',

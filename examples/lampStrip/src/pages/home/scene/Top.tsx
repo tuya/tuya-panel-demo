@@ -89,7 +89,9 @@ const SceneTop: FC<TopProps> = props => {
             {
               backgroundColor: color(isDarkTheme ? fontColor : themeColor)
                 .alpha(0.1)
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
+
                 .rgbaString(),
             },
           ]}

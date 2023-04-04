@@ -56,7 +56,7 @@ const CloudTimingList: React.FC = () => {
 
   const handleTimingSwitch = async (v: boolean, item: any) => {
     if (v) {
-      // 互斥校验
+      // Exclusive check
       const taskType = TaskManager.TaskType.NORMAL_TIMING;
       const [isCheck, checkDatas] = TaskManager.check(
         {

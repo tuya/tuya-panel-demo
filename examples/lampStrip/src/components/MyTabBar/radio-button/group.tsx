@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   containerStyle: {
     height: convertY(30),
     borderRadius: convertY(15),
-    // borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#fff',
     justifyContent: 'center',
   },
@@ -37,8 +36,7 @@ const defaultProps = {
   activeColor: '',
   defaultActiveIndex: 0,
   gutter: 2,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onChange: () => {},
+  onChange: () => null,
   activeRadius: 0,
 };
 type IProps = {

@@ -32,7 +32,7 @@ export default function useGestureHandlers(): HandlersType {
   }));
 
   const handlePress = usePersistFn((e: GestureResponderEvent, isSave = false) => {
-    // 只有在开灯、彩光、色卡页签，并且操作是涂抹、橡皮擦的时候, 点击灯带才会更新颜色
+    // Only when the light, color light, color TAB is turned on, and the operation is to smear, eraser, click the light band will update the color
     if (
       !(
         power &&

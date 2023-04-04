@@ -26,6 +26,8 @@ export default function configureStore(initialState?: Partial<ReduxState>) {
     initialState,
     compose(
       appliedMiddleware,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       isDebuggingInChrome && window.devToolsExtension ? window.devToolsExtension() : (f: any) => f
     )
   );

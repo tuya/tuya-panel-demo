@@ -1,13 +1,13 @@
 export default [
-  // 摇滚
+  // Rock
   {
-    v: 1, // 版本
+    v: 1, // Version
     power: false,
     id: 0,
     isLight: 0,
     mode: 3,
     speed: 100,
-    sensitivity: 50, // 灵敏度
+    sensitivity: 50, // Sensitivity
     a: 0,
     b: 0,
     c: 0,
@@ -22,15 +22,15 @@ export default [
       { hue: 0, saturation: 0 },
     ],
   },
-  // 爵士
+  // Jazz
   {
-    v: 1, // 版本
+    v: 1, // Version
     power: false,
     id: 1,
     isLight: 0,
     mode: 2,
     speed: 100,
-    sensitivity: 50, // 灵敏度
+    sensitivity: 50, // Sensitivity
     a: 0,
     b: 0,
     c: 0,
@@ -45,15 +45,15 @@ export default [
       { hue: 0, saturation: 0 },
     ],
   },
-  // 经典
+  // Classic
   {
-    v: 1, // 版本
+    v: 1, // Version
     power: false,
     id: 2,
     isLight: 1,
     mode: 2,
     speed: 100,
-    sensitivity: 50, // 灵敏度
+    sensitivity: 50, // Sensitivity
     a: 0,
     b: 0,
     c: 0,
@@ -68,7 +68,7 @@ export default [
       { hue: 0, saturation: 0 },
     ],
   },
-  // 滚动
+  // Rolling
   {
     v: 1,
     power: false,
@@ -91,7 +91,7 @@ export default [
       { hue: 0, saturation: 0 },
     ],
   },
-  // 能量
+  // Energy
   {
     v: 1,
     power: false,
@@ -113,7 +113,7 @@ export default [
       { hue: 300, saturation: 100 },
     ],
   },
-  // 频谱
+  // Spectrum
   {
     v: 1,
     power: false,

@@ -2,7 +2,7 @@ import { WorkMode, HomeTab, DimmerMode, SmearMode } from '@types';
 
 export { default as defaultLocalMusic } from './localMusic';
 
-/** dimmerMode对应的smearMode */
+/** Corresponding smearMode for dimmerMode */
 export const dimmerModeSmeaModeMaps = {
   [DimmerMode.white]: [SmearMode.all],
   [DimmerMode.colour]: [SmearMode.all, SmearMode.single, SmearMode.clear],
@@ -10,7 +10,7 @@ export const dimmerModeSmeaModeMaps = {
   [DimmerMode.combination]: [SmearMode.all],
 };
 
-/** workMode对应的homeTab */
+/** Corresponding homeTab for workMode */
 export const workModeMappingHomeTab = {
   [WorkMode.white]: HomeTab.dimmer,
   [WorkMode.colour]: HomeTab.dimmer,

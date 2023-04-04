@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React, { useEffect, useMemo, useRef } from 'react';
 import {
   View,
@@ -12,7 +11,7 @@ import { Utils } from 'tuya-panel-kit';
 import { useControllableValue, usePersistFn } from 'ahooks';
 import Res from '@res';
 import { objectShallowEqual } from '@utils';
-import RectColorAndBrightPicker from '../RectColorAndBrightPicker2';
+import RectColorAndBrightPicker from '../RectColorAndBrightPicker';
 import { Color as ColorData } from './Colors';
 
 const { convertX: cx } = Utils.RatioUtils;
@@ -26,7 +25,7 @@ interface ColorCardsProps {
   xNum?: number;
   yNum?: number;
   /**
-   * 彩光模式对应数据
+   * Color light mode corresponds to data
    */
   value: ColourData;
   onMove?: (data: ColourData) => void;
@@ -35,7 +34,7 @@ interface ColorCardsProps {
 
 const ColorCards: React.FC<ColorCardsProps> = props => {
   const {
-    style = {},
+    style,
     cardLength = cx(31),
     xNum = 11,
     yNum = 5,
@@ -140,7 +139,18 @@ const ColorCards: React.FC<ColorCardsProps> = props => {
     </View>
   );
 };
-
+const niFn = () => null;
+ColorCards.defaultProps = {
+  style: {},
+  opacityAnimationValue: 1,
+  cardLength: cx(31),
+  xNum: 11,
+  yNum: 5,
+  brightOption: {},
+  disabled: false,
+  hideBright: false,
+  onMove: niFn,
+};
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',

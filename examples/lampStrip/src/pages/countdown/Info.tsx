@@ -50,6 +50,7 @@ const CountdownInfo: React.FC<CountdownSetProps> = ({ style = {}, setContentType
       <TYText style={styles.subTitle}>
         {Strings.getLang(power ? 'title_countdown_info_off' : 'title_countdown_info_on')}
       </TYText>
+      {/** @ts-ignore */}
       <CountdownClock
         style={{ flex: 1 }}
         countdown={countdown}
@@ -62,6 +63,8 @@ const CountdownInfo: React.FC<CountdownSetProps> = ({ style = {}, setContentType
         showDot={false}
         timeTextStyle={{ marginTop: cx(36) }}
         resetStyle={{ marginTop: cx(23) }}
+        size={0}
+        lineWidth={0}
       />
       <BrickButton
         style={styles.saveBtn}

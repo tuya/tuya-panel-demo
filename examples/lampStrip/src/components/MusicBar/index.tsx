@@ -72,7 +72,7 @@ export default class Bubbles extends Component<BubblesProps, BubblesState> {
   componentDidMount() {
     const { bars } = this.state;
     bars.forEach((val, index) => {
-      const timer = setTimeout(() => this.animate(index), index * 50); // 控制起始间隔时间
+      const timer = setTimeout(() => this.animate(index), index * 50); // Control the initial interval
       this.timers.push(timer);
     });
   }
@@ -91,11 +91,11 @@ export default class Bubbles extends Component<BubblesProps, BubblesState> {
     const duration = durationMap[musicIndex];
     Animated.sequence([
       Animated.timing(bars[index], {
-        toValue: size * 2 * Math.random(), // 控制动画的条形上随机值高度
+        toValue: size * 2 * Math.random(), // Control the random height value of the animation bar
         duration,
       }),
       Animated.timing(bars[index], {
-        toValue: (size / 10) * Math.random(), // 控制动画的条形下随机值高度
+        toValue: (size / 10) * Math.random(), // Controls the height of random values under bars of animation
         duration,
       }),
     ]).start(() => {

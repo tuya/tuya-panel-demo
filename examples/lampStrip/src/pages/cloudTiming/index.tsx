@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -102,7 +103,7 @@ const CloudTiming: React.FC = () => {
 
   const handleSave = async () => {
     const instruct = [{ time: `${toFixed(time.hour, 2)}:${toFixed(time.minute, 2)}`, dps }];
-    // 互斥校验
+    // Exclusive check
     const [isCheck, taskData] = TaskManager.check(
       {
         id: data?.timerId || -1,

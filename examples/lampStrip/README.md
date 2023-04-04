@@ -9,7 +9,7 @@ for users outside Chinese mainland, please remove `.npmrc` file.
 ## Download manually
 
 ```bash
-$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/lampString
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/lampStrip
 $ mv basic tuya-panel-lampStrip-example
 $ cd tuya-panel-lampStrip-example
 ```
@@ -19,10 +19,11 @@ $ cd tuya-panel-lampStrip-example
 The template project is the basic typescript template of react native version 0.59, Can be used to quickly create lighting 3 magic string projects, support the following functions:
 
 - Daub the dimming
-- Colorful scene
+- Colorful scene, Diy scene
 - App music, local music
 - Cloud timing
 - The countdown
+- Point setting
 
 The following categories are supported:
 

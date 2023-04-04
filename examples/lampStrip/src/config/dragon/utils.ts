@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 export const transform = function* transform(value) {
   let start = 0;
   let result = 0;

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 /* eslint-disable react/no-array-index-key */
 import React, { FC, useEffect, useMemo, useRef } from 'react';
 import {
@@ -19,7 +18,7 @@ import { hexColors, hsvColors } from '@config/default/CombineColors';
 import CombinationBox from './Box';
 
 const { convertX: cx } = Utils.RatioUtils;
-const fixedHexColors = hexColors.map(c => c.slice(1).concat(c[0])); // 渲染的顺序跟产品要求的顺序不一样
+const fixedHexColors = hexColors.map(c => c.slice(1).concat(c[0]));
 
 export interface CombinationProps {
   style?: StyleProp<ViewStyle>;
@@ -46,7 +45,7 @@ const Combination: FC<CombinationProps> = props => {
 
   const [value, setValue] = useControllableValue<ColourData[]>(props);
 
-  // 用两个JSON来对比寻找出hexColor(直接转换颜色再对比的话，有误差且转换效率低)
+  // Use two JSONs to compare and find out hexColor (if you directly convert the color and then compare, there will be errors and the conversion efficiency is low)
   const selectedIndex = useMemo(
     () => hsvColors.findIndex(item => jsonShallowEqual(item, value)),
     [value]
@@ -62,7 +61,6 @@ const Combination: FC<CombinationProps> = props => {
       duration: 300,
     }).start();
   }, [opacityAnimationValue]);
-
   return (
     <Animated.View style={[style, { opacity }]}>
       <ScrollView
@@ -77,11 +75,11 @@ const Combination: FC<CombinationProps> = props => {
             style={{ margin: circleMargin, borderWidth: circleBorderWidth }}
             radius={circleRadius}
             colors={item}
-            selected={index === selectedIndex}
+            selected={Number(index) === Number(selectedIndex)}
             onPress={() => handleSelect(index)}
           />
         ))}
-        {/* 处理Flex布局最后一行左对齐问题 */}
+        {/* Fix the left alignment of the last row of the Flex layout */}
         {fixedHexColors.map((__, index) => (
           <View
             key={index}
@@ -95,7 +93,16 @@ const Combination: FC<CombinationProps> = props => {
     </Animated.View>
   );
 };
-
+const niFn = () => null;
+Combination.defaultProps = {
+  style: {},
+  containerStyle: {},
+  circleRadius: cx(23),
+  circleBorderWidth: cx(2),
+  circleMargin: cx(4),
+  opacityAnimationValue: 1,
+  onScroll: niFn,
+};
 const styles = StyleSheet.create({
   container: {
     flexWrap: 'wrap',

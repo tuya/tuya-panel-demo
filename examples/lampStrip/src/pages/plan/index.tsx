@@ -41,7 +41,7 @@ const Plan: React.FC = () => {
       },
       cancelTextStyle: { color: isDarkTheme ? '#fff' : themeColor },
     };
-    const dataSource = [
+    const dataSource: any = [
       {
         key: 'cloudTiming',
         value: 'cloudTiming',

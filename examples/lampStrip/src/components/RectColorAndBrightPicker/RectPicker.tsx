@@ -25,7 +25,7 @@ export interface Point {
 }
 
 /**
- * thumb 的有效区域
+ * Effective region of thumb
  */
 export interface ValidBound {
   width: number;
@@ -56,8 +56,8 @@ export const defaultProps = {
   thumbSize: 40,
   touchThumbSize: 60,
   showThumbWhenDisabled: true,
-  clickEnabled: true, // 是否可以点击选择
-  lossShow: false, // 数据未在设备生效处理，若为true，则loassColor 启效，并thumb及亮度调节会变成指定颜色
+  clickEnabled: true, // Whether it can be clicked to select
+  lossShow: false, // Data not effective on the device, if true, then lossColor takes effect, and thumb and brightness adjustment will change to the specified color
   lossColor: 'rgba(0,0,0,0.2)',
   // eslint-disable-next-line react/default-props-match-prop-types
   thumbImg: {
@@ -75,7 +75,7 @@ interface IProps extends DefaultProps {
   value: any;
   style?: any;
   coorToValue: (coor: Point, validBound: ValidBound) => any;
-  valueToCoor: (value: any, originCoor?: Point, validBound?: ValidBound) => Point;
+  valueToCoor: (value: any, originCoor?: Point | null, validBound?: ValidBound) => Point;
   valueToColor: (value: any) => string;
   initData: (validBound?: ValidBound) => void;
   opacityAnimationValue: number;
@@ -106,7 +106,7 @@ export default class RectPicker extends Component<IProps, IState> {
 
   validBound: ValidBound = { x: 0, y: 0, width: 0, height: 0 };
 
-  locked = false; // 是否锁定组件，锁定后，组件接受react正常更新
+  locked = false; // Whether to lock the component, after locking, the component accepts normal react updates
 
   thumbRef: React.ReactNode;
 
@@ -123,7 +123,7 @@ export default class RectPicker extends Component<IProps, IState> {
       fadeAnim: new Animated.Value(props.opacityAnimationValue),
     };
 
-    // rn的坑，需要在此赋值才有效果
+    // A pit of rn, you need to assign a value here to take effect
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this.handleSetResponder,
       onPanResponderTerminationRequest: () => !this.locked,
@@ -151,7 +151,7 @@ export default class RectPicker extends Component<IProps, IState> {
     if (nextProps.thumbSize !== this.props.thumbSize) {
       this.handleViewBoxChange(nextProps.thumbSize);
     }
-    // 开关切换改变透明度
+    // Switch toggle changes opacity
     if (nextProps.opacityAnimationValue !== this.props.opacityAnimationValue) {
       this.fadeAnimation(nextProps.opacityAnimationValue);
     }
@@ -180,7 +180,7 @@ export default class RectPicker extends Component<IProps, IState> {
   valueToCoor(value: any, originCoor?: Point): Point {
     const { valueToCoor } = this.props;
 
-    // 是否有显示区, 无显示区直接返回原点坐标
+    // Whether there is a display area, no display area directly returns the origin coordinates
     const { width, height } = this.validBound;
     if (width === 0 || height === 0) {
       return { x: 0, y: 0 };
@@ -208,7 +208,7 @@ export default class RectPicker extends Component<IProps, IState> {
     if (this.props.disabled) {
       return false;
     }
-    // 是否点中标记
+    // Whether the mark is clicked
     const { locationX, locationY } = e.nativeEvent;
     const { thumbSize, touchThumbSize, clickEnabled } = this.props;
     let validRadius = thumbSize / 2;
@@ -247,10 +247,10 @@ export default class RectPicker extends Component<IProps, IState> {
       this.setState({ value });
       this.firPropsEvent(this.props.onRelease, value);
     } else if (this.props.clickEnabled) {
-      // 点击选择颜色
+      // Click to select color
       const now = +new Date();
       if (Math.abs(gesture.dx) < 4 && Math.abs(gesture.dy) < 4 && now - this.grantTime < 300) {
-        // 点击位置
+        // Click position
         const { locationX, locationY } = e.nativeEvent;
         const { x: newX, y: newY } = this.formatCoor(locationX, locationY);
         const value = this.coorToValue({ x: newX, y: newY });
@@ -266,10 +266,10 @@ export default class RectPicker extends Component<IProps, IState> {
   handleGestureMove(e: PanResponderGestureState, isEnd = false) {
     const { dx, dy } = e;
     const { x, y } = this.thumbPosition;
-    // 边界处理
+    // Boundary processing
     const { x: newX, y: newY } = this.formatCoor(x + dx, y + dy);
 
-    // 转为实际值，再转回成坐标
+    // Convert to actual value, then convert back to coordinates
     const value = this.coorToValue({ x: newX, y: newY });
     const coor = this.valueToCoor(value, { x: newX, y: newY });
     const color = this.valueToColor(value);
@@ -284,7 +284,7 @@ export default class RectPicker extends Component<IProps, IState> {
       x: validStartX,
       y: validStartY,
     } = this.validBound;
-    // 边界处理
+    // Boundary processing
     if (x < validStartX) {
       x = validStartX;
     } else if (x > validWidth + validStartX) {
@@ -324,8 +324,8 @@ export default class RectPicker extends Component<IProps, IState> {
     const { thumbSize, lossColor, lossShow } = this.props;
     const { width, height } = e.nativeEvent.layout;
     if (width !== this.pickerWidth || height !== this.pickerHeight) {
-      this.pickerWidth = width || 10; // svg 尺寸不能为0，此处确保值大于0
-      this.pickerHeight = height || 10; // svg 尺寸不能为0，此处确保值大于0
+      this.pickerWidth = width || 10; // svg size cannot be 0, ensure value is greater than 0 here
+      this.pickerHeight = height || 10; // svg size cannot be 0, ensure value is greater than 0 here
       if (!this.showPicker) {
         this.showPicker = true;
         this.color = lossShow ? lossColor : this.valueToColor(this.props.value);
@@ -399,7 +399,7 @@ export default class RectPicker extends Component<IProps, IState> {
               img={thumbImg}
               size={thumbSize}
               color={this.color}
-              isBlackColor={opacityAnimationValue < 1} // 关灯颜色为黑色
+              isBlackColor={opacityAnimationValue < 1} // Turn off the light color black
               // disabled={disabled}
             />
           )}

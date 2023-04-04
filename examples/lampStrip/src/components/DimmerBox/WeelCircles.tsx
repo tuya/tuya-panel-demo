@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable react/destructuring-assignment */
+
 import React, { PureComponent } from 'react';
 import colors from 'color';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
@@ -20,6 +20,7 @@ class WeelCircles extends PureComponent<ColorUnitsProps> {
       maxCircleNum = 8,
       minCircleNum = 2,
       selectCircle,
+      handleToSetCircle,
     } = this.props;
     const topColor = isDark ? WHITE : themeColor;
     const circleBg = colors(isDark ? '#222222' : themeColor)
@@ -64,7 +65,7 @@ class WeelCircles extends PureComponent<ColorUnitsProps> {
                       : {},
                   ]}
                   onPress={() => {
-                    this.props.handleToSetCircle?.(c, idx);
+                    handleToSetCircle?.(c, idx);
                   }}
                 >
                   {(c === 'plus' || c === 'delete') && (

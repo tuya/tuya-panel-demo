@@ -8,11 +8,11 @@ import { Button, TYText, LinearGradient, Utils, Swipeout, TopBar, useTheme } fro
 import { useMount, usePersistFn } from 'ahooks';
 import { useNavigation } from '@react-navigation/native';
 import color from 'color';
+import { SceneDataType, SceneCategory, SceneCategoryTab, SceneValueType } from '@types';
 import useSelector from '@hooks/useSelector';
 import LottieView from '@components/LottieView';
 import { getStops, hsv2rgba, checkArray } from '@utils';
 import { CommonActions } from '@actions';
-import { SceneCategory, SceneCategoryTab, SceneValueType } from '@types';
 import Strings from '@i18n';
 import Res from '@res';
 import LottiesJSON from '@res/lotties';
@@ -39,14 +39,13 @@ const Scene: React.FC = () => {
   const { scene, presetScenes, diyScenes } = useSelector(({ dpState, uiState, cloudState }) => ({
     scene: dpState[sceneCode] as SceneValueType,
     presetScenes: uiState.presetScenes,
-    diyScenes: cloudState.scenes || [],
+    diyScenes: (cloudState.scenes as SceneDataType[]) || [],
   }));
 
-  const scenes = useMemo(
+  const scenes: SceneDataType[] = useMemo(
     () => [...diyScenes].reverse().concat(presetScenes),
     [diyScenes, presetScenes]
   );
-
   const hasDiyScene = useMemo(() => checkArray(diyScenes), [diyScenes]);
 
   const handleSceneSelect = item => {
@@ -63,8 +62,9 @@ const Scene: React.FC = () => {
 
   const handleRemove = async (item, index: number) => {
     if (diyScenes.length === 1) setTopTab(SceneCategory[0] as SceneCategoryTab);
+    // @ts-ignore
     sceneListRef.current?.setNativeProps?.({ scrollEnabled: true });
-    await dispatch(handleRemoveScene(item, index));
+    await dispatch(handleRemoveScene(item));
     if (scene.id === item.id) dispatch(handlePutSceneData(scenes[index === 0 ? 1 : 0].value));
   };
 
@@ -162,7 +162,8 @@ const Scene: React.FC = () => {
                         ? isActive
                           ? themeColor
                           : 'rgba(255,255,255,0.1)'
-                        : color(themeColor).alpha(0.1).rgbaString(),
+                        : // @ts-ignore
+                          color(themeColor).alpha(0.1).rgbaString(),
                     },
                   ]}
                   textStyle={{
@@ -203,7 +204,7 @@ const Scene: React.FC = () => {
 
   const handleSceneListScroll = ({ nativeEvent }) => {
     const { y } = nativeEvent.contentOffset;
-    // 当情景内容滚动到Top下面才显示模糊效果
+    // The blurring effect is displayed when the scene content is scroll below Top
     // @ts-ignore
     topRef.current?.blurRef?.current?.setNativeProps?.({
       style: { opacity: y > cx(7) ? 1 : 0 },

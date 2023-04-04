@@ -10,8 +10,8 @@ interface IPercentProps {
   layout: 'left' | 'top' | 'right' | 'bottom';
   percent?: number;
   colorOver: string;
-  style: any; // 百分比样式
-  outColor: string; // 滑动激活区外的百分比颜色
+  style: any; // the style of the percentage
+  outColor: string; // the color of the percentage outside of the active area
   length?: number;
   iconSize: number;
   iconColor: string;

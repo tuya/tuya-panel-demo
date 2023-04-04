@@ -35,9 +35,9 @@ const fireEvent = (type: Type) => {
 
 const handleTimeOut = () => {
   return setTimeout(() => {
-    // 10秒内未有音源输入, 调用检测中事件
+    // If there is no audio input within 10 seconds, call the checking event
     fireEvent('checking');
-    // 30 秒内没有音源输入，则调用失事件，并主动停止监听
+    // If there is no audio input within 30 seconds, call the failure event and actively stop listening
     timeOutTimer = setTimeout(() => {
       close(false);
       fireEvent('failure');
@@ -89,7 +89,7 @@ export const handleAudioRgbChange = _.throttle(
     if (SupportUtils.isSupportColour()) {
       [hue, saturation, value] = ColorUtils.rgb2hsb(R, G, B);
     } else {
-      // 是否支持白光音乐功能
+      // Whether to support white light music function
       if (typeof bright === 'undefined' || typeof temp === 'undefined') {
         return;
       }
@@ -138,7 +138,7 @@ export const handleAudioRgbChange = _.throttle(
 );
 
 /**
- * 开启麦克风，并开始监听
+ * Turn on the microphone and start listening
  */
 export const open = async (musicOption: any, musicCallback: any) => {
   if (isListening) {
@@ -151,10 +151,10 @@ export const open = async (musicOption: any, musicCallback: any) => {
       DeviceEvent.addListener('audioRgbChange', (musicData: any) =>
         handleAudioRgbChange(musicData, musicOption, musicCallback)
       );
-      // 开启麦克风
+      // Turn on the microphone
       await TYPublicNative.startVoice(
         (d: any) => {
-          // 保持屏幕
+          // Keep the screen on
           TYNative.screenAlwaysOn(true);
           Promise.resolve(d);
         },
@@ -171,7 +171,7 @@ export const open = async (musicOption: any, musicCallback: any) => {
 };
 
 /**
- * 关闭麦克风
+ * Turn off the microphone
  */
 export const close = async (needFire = true) => {
   if (!isListening) {
@@ -185,10 +185,10 @@ export const close = async (needFire = true) => {
   isSendEanbled = true;
   try {
     DeviceEvent.removeAllListeners('audioRgbChange');
-    // 关掉麦克风
+    // Turn off the microphone
     await TYPublicNative.stopVoice(
       (d: any) => {
-        // 关掉保持屏幕
+        // Turn off the screen keep on
         TYNative.screenAlwaysOn(false);
         Promise.resolve(d);
       },
@@ -202,7 +202,7 @@ export const close = async (needFire = true) => {
 };
 
 /**
- * 暂停下发
+ * Pause sending
  */
 export const pause = () => {
   handleSuccess.cancel();
@@ -210,7 +210,7 @@ export const pause = () => {
 };
 
 /**
- * 继续下发
+ * Continue sending
  */
 export const resume = () => {
   isSendEanbled = true;

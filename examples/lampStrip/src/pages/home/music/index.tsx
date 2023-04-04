@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { TYText, Utils } from 'tuya-panel-kit';
@@ -11,24 +12,26 @@ import AppMusic from './app';
 import LocalMusic from './local';
 
 interface MusicProps {
-  dispatch: any;
   power: boolean;
-  workMode: string;
   theme?: any;
-
   localMusicValue: LocalMusicValue;
-  localMusicList: LocalMusicValue[];
 }
 
 interface MusicState {
-  musicMode: 'local' | 'app';
+  musicMode: MusicModeType;
 }
-
-const { convertX: cx, isIphoneX, topBarHeight } = Utils.RatioUtils;
+type MusicModeType = 'local' | 'app';
+const { convertX: cx, isIphoneX } = Utils.RatioUtils;
 const { withTheme } = Utils.ThemeUtils;
-const { powerCode, workModeCode, micMusicCode } = DpCodes;
+const { powerCode, micMusicCode } = DpCodes;
 
+const defaultProps = {
+  theme: {},
+};
 class Music extends React.Component<MusicProps, MusicState> {
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = defaultProps;
+
   constructor(props: MusicProps) {
     super(props);
     this.state = {
@@ -37,17 +40,15 @@ class Music extends React.Component<MusicProps, MusicState> {
   }
 
   componentWillReceiveProps(nextProps: MusicProps) {
-    if (
-      this.props.localMusicValue !== nextProps.localMusicValue &&
-      !!nextProps.localMusicValue.power
-    ) {
+    const { localMusicValue } = this.props;
+    if (localMusicValue !== nextProps.localMusicValue && !!nextProps.localMusicValue.power) {
       MusicManager.close();
       this.setState({ musicMode: 'local' });
     }
   }
 
   getTabs = () => {
-    const tabs = [];
+    const tabs: MusicModeType[] = [];
     if (SupportUtils.isSupportDp(micMusicCode)) {
       tabs.push('local');
     }
@@ -81,6 +82,7 @@ class Music extends React.Component<MusicProps, MusicState> {
             {Strings.getLang(musicMode === 'app' ? 'tip_app_music' : 'tip_local_music')}
           </TYText>
           {tabs.length > 1 && (
+            // @ts-ignore
             <MyTabBar
               type="radio"
               tabs={tabs.map(key => ({
@@ -106,13 +108,10 @@ class Music extends React.Component<MusicProps, MusicState> {
   }
 }
 
-export default connect(({ dpState, cloudState }: any) => ({
+export default connect(({ dpState }: any) => ({
   power: dpState[powerCode],
-  workMode: dpState[workModeCode],
   localMusicValue: dpState[micMusicCode],
-  localMusicList: cloudState.localMusicList,
 }))(withTheme(Music));
-
 const styles = StyleSheet.create({
   musicTip: {
     fontSize: cx(12),
@@ -129,7 +128,6 @@ const styles = StyleSheet.create({
   },
 
   tabItemStyle: {
-    // width: 'auto',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -148,7 +146,6 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: cx(16),
     alignItems: 'center',
-    // marginTop: cx(60),
     paddingBottom: isIphoneX ? cx(105) : cx(75),
   },
 });

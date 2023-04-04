@@ -36,7 +36,7 @@ const CountdownSet: React.FC<CountdownSetProps> = ({ style }) => {
   };
 
   const handleSave = () => {
-    // 互斥校验
+    // Exclusive check
     const taskType = TaskManager.TaskType.COUNTDOWN;
     const [isCheck, checkData] = TaskManager.check(curCountdown, taskType, 'second');
     if (isCheck) {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { Picker } from 'tuya-panel-kit';
@@ -10,7 +9,6 @@ const defaultProps = {
   is24Hour: true,
   hour: 0,
   minute: 0,
-  onChange(t: any) {},
   itemTextColor: '#ccc',
   dividerColor: '#ccc',
   selectedItemTextColor: '#000',
@@ -27,23 +25,23 @@ const defaultProps = {
 };
 
 type IProps = {
-  is24Hour?: boolean; // 是否为24小时制
-  hour?: number; // 小时
-  minute?: number; // 分钟
-  onChange?: ({ hour, minute }) => void; // 改变值时执行此回调 ({ hour, minute }) => void
-  itemTextColor?: string; // Picker选项的文字颜色
-  selectedItemTextColor?: string; // Picker选项选中的文字颜色
-  dividerColor?: string; // Picker选项分割线颜色
-  visibleItemCount?: number; // Picker可视区域项目个数
-  itemAlign?: 'flex-end' | 'center' | 'flex-start' | 'baseline' | 'stretch' | undefined; // Picker项目对齐方式
-  textSize?: number; // Picker项目文字大小
-  loop?: boolean; // 是否循环滚动
-  containerStyle?: StyleProp<ViewStyle>; // 容器样式
-  itemStyle?: StyleProp<TextStyle>; // Picker文字样式
-  pickerStyle?: StyleProp<ViewStyle>; // Picker样式
-  amPmPickerStyle?: StyleProp<ViewStyle>; // ampm列Picker样式
-  hourPickerStyle?: StyleProp<ViewStyle>; // 小时列Picker样式
-  minutePickerStyle?: StyleProp<ViewStyle>; // 分钟列Picker样式
+  is24Hour?: boolean; // Whether it is a 24-hour system
+  hour?: number; // Hour
+  minute?: number; // Minute
+  onChange: ({ hour, minute }) => void; // Execute this callback when the value changes ({ hour, minute }) => void
+  itemTextColor?: string; // Text color of Picker options
+  selectedItemTextColor?: string; // Text color of selected Picker options
+  dividerColor?: string; // Divider color of Picker options
+  visibleItemCount?: number; // Number of items in the Picker visible area
+  itemAlign?: 'flex-end' | 'center' | 'flex-start' | 'baseline' | 'stretch' | undefined; // Picker item alignment
+  textSize?: number; // Text size of Picker items
+  loop?: boolean; // Whether to scroll in a loop
+  containerStyle?: StyleProp<ViewStyle>; // Container style
+  itemStyle?: StyleProp<TextStyle>; // Picker text style
+  pickerStyle?: StyleProp<ViewStyle>; // Picker style
+  amPmPickerStyle?: StyleProp<ViewStyle>; // ampm column Picker style
+  hourPickerStyle?: StyleProp<ViewStyle>; // Hour column Picker style
+  minutePickerStyle?: StyleProp<ViewStyle>; // Minute column Picker style
 } & Readonly<typeof defaultProps>;
 interface IState {
   amPm;

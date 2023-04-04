@@ -47,7 +47,7 @@ const Operations: FC<OperationsProps> = ({ style }) => {
         { value: SmearMode[1], icon: Icons.single, disabled: afterSmearAllWhite },
         { value: SmearMode[2], icon: Icons.clear },
       ].filter(
-        item =>
+        (item: BtnItemType) =>
           !item.hidden &&
           dimmerModeSmeaModeMaps[dimmerMode]?.includes(
             SmearMode[item.value as keyof typeof SmearMode]
@@ -98,5 +98,7 @@ const styles = StyleSheet.create({
     marginLeft: cx(8),
   },
 });
-
+Operations.defaultProps = {
+  style: {},
+};
 export default Operations;

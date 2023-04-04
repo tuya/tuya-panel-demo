@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import color from 'color';
 
+// Theme  configurations
 export default () => {
   const isDarkTheme = true;
   const type = isDarkTheme ? 'dark' : 'light';
@@ -24,8 +25,8 @@ export default () => {
     subPageBoxBgColor: isDarkTheme ? 'rgba(255,255,255,0.07)' : '#fff',
     global: {
       isDarkTheme,
-      brand: themeColor, // 品牌色（主题色）
-      themeColor, // 主题色
+      brand: themeColor, // Theme color
+      themeColor, // Theme color
       background,
       fontSizeBase: 0.875, // 14/16
       fontColor,
@@ -39,8 +40,8 @@ export default () => {
     },
     slider: {
       light: {
-        // minimumTrackTintColor: themeColor, // 最小值颜色
-        // maximumTrackTintColor: '#e5e5e5', // 最大值颜色
+        // minimumTrackTintColor: themeColor, // Minimum color
+        // maximumTrackTintColor: '#e5e5e5', // Maximum color
       },
       dark: {
         // minimumTrackTintColor: themeColor,

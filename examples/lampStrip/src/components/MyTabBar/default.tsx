@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @typescript-eslint/ban-types */
 import React from 'react';
 
 import {
@@ -27,60 +25,59 @@ const defaultProps = {
   tabActiveTextStyle: {},
   wrapperStyle: {},
   style: {},
-  onChange: () => {},
+  onChange: () => null,
   isUnderlineCenter: true,
 };
 type TabBarProps = {
   /**
-   * 下划线的样式
+   * Underline style
    */
   underlineStyle?: StyleProp<ViewStyle>;
   /**
-   * 每个tab的样式
+   * Style of each tab
    */
   tabStyle?: StyleProp<ViewStyle>;
   /**
-   * 高亮tab的样式
+   * Style of highlighted tab
    */
   tabActiveStyle?: StyleProp<ViewStyle>;
   /**
-   * 每个tab内文字的样式
+   * Style of text inside each tab
    */
   tabTextStyle?: StyleProp<TextStyle>;
   /**
-   * 高亮tab的文字样式
+   * Style of highlighted tab text
    */
   tabActiveTextStyle?: StyleProp<TextStyle>;
   /**
-   * tab内层容器样式
+   * Style of inner container of tab
    */
   wrapperStyle?: StyleProp<ViewStyle>;
   /**
-   * tab外层容器样式
+   * Style of outer container of tab
    */
   style?: StyleProp<ViewStyle>;
   /**
-   * 高亮tab的key
+   * Key of highlighted tab
    */
   activeKey: string | number;
   /**
-   * 默认高亮tab的key
+   * Key of default highlighted tab
    */
   defaultActiveKey?: string | number;
   /**
-   * tab数据
+   * Tab data
    */
   tabs?: any[];
   /**
-   * 下划线是否居中
+   * Whether the underline is centered
    */
   isUnderlineCenter?: boolean;
   /**
-   * tab切换的回调
+   * Callback for tab switching
    */
-  onChange?: (params: any) => {};
+  onChange?: (params: any) => null;
 } & Readonly<typeof defaultProps>;
-
 interface TabBarState {
   activeKey: string | number;
   underlineLeft: any;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState, useMemo, useRef } from 'react';
 import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -40,7 +41,7 @@ const DiySceneTop: React.FC<DiySceneProps> = ({ isEdit, sceneData, setSceneData 
   const previewedRef = useRef(false);
   const [showMoreSceneModes, setShowMoreSceneModes] = useState(false);
 
-  // 取预设情景中对应变化方式的的第一个情景动效
+  // Retrieve the first animation effect of the corresponding changing method in the preset scenario.
   const lottieKey = useMemo(
     () =>
       (PresetScenes.find(item => item.value.mode === sceneData?.value?.mode) || PresetScenes[0])
@@ -196,6 +197,7 @@ const DiySceneTop: React.FC<DiySceneProps> = ({ isEdit, sceneData, setSceneData 
                         Platform.OS === 'ios' ? (isDarkTheme ? '#181717' : '#f4f6f9') : boxBgColor,
                     },
                   ]}
+                  // @ts-ignore
                   pointerEvents="none"
                   source={Res.more_mask}
                 />
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
   allSceneModes: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    minHeight: cx(30), // 解决Collapsible高度挤压导致的内容挤压
+    minHeight: cx(30), // Solve the problem of content compression caused by Collapsible height compression
     paddingTop: cx(8),
     paddingLeft: cx(16),
     paddingBottom: cx(6),
@@ -326,5 +328,8 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
 });
+DiySceneTop.defaultProps = {
+  isEdit: false,
+};
 
 export default DiySceneTop;

@@ -20,7 +20,7 @@ const DiyScene: React.FC = () => {
     onRemove,
   } = (useRoute().params as DiySceneParams) || {};
 
-  const [sceneData, setSceneData] = useState(
+  const [sceneData, setSceneData] = useState<SceneDataType>(
     sourceSceneData || {
       id: 0,
       name: Strings.getLang('scene_name_default'),

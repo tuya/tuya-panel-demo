@@ -1,5 +1,5 @@
 export const Color = [
-  // 第一行
+  // First row
   { hue: 0, saturation: 400, value: 1000 },
   { hue: 20, saturation: 400, value: 1000 },
   { hue: 40, saturation: 400, value: 1000 },
@@ -11,7 +11,7 @@ export const Color = [
   { hue: 270, saturation: 400, value: 1000 },
   { hue: 300, saturation: 400, value: 1000 },
   { hue: 330, saturation: 400, value: 1000 },
-  // 第二行
+  // Second row
   { hue: 0, saturation: 600, value: 1000 },
   { hue: 20, saturation: 600, value: 1000 },
   { hue: 40, saturation: 600, value: 1000 },
@@ -23,7 +23,7 @@ export const Color = [
   { hue: 270, saturation: 600, value: 1000 },
   { hue: 300, saturation: 600, value: 1000 },
   { hue: 330, saturation: 600, value: 1000 },
-  // 第三行
+  // Third row
   { hue: 0, saturation: 750, value: 1000 },
   { hue: 20, saturation: 750, value: 1000 },
   { hue: 40, saturation: 750, value: 1000 },
@@ -35,7 +35,7 @@ export const Color = [
   { hue: 270, saturation: 750, value: 1000 },
   { hue: 300, saturation: 750, value: 1000 },
   { hue: 330, saturation: 750, value: 1000 },
-  // 第四行
+  // Fourth row
   { hue: 0, saturation: 850, value: 1000 },
   { hue: 20, saturation: 850, value: 1000 },
   { hue: 40, saturation: 850, value: 1000 },
@@ -47,7 +47,7 @@ export const Color = [
   { hue: 270, saturation: 850, value: 1000 },
   { hue: 300, saturation: 850, value: 1000 },
   { hue: 330, saturation: 850, value: 1000 },
-  // 第五行
+  // Fifth row
   { hue: 0, saturation: 1000, value: 1000 },
   { hue: 20, saturation: 1000, value: 1000 },
   { hue: 40, saturation: 1000, value: 1000 },
@@ -59,18 +59,4 @@ export const Color = [
   { hue: 270, saturation: 1000, value: 1000 },
   { hue: 300, saturation: 1000, value: 1000 },
   { hue: 330, saturation: 1000, value: 1000 },
-];
-
-export const White = [
-  { color: '#FFCA5C', value: 90 },
-  { color: '#FFD783', value: 180 },
-  { color: '#FFE7B4', value: 270 },
-  { color: '#FFF2D6', value: 360 },
-  { color: '#FFF7E7', value: 450 },
-  { color: '#FFFFFF', value: 540 },
-  { color: '#F2FAFF', value: 630 },
-  { color: '#E8F6FE', value: 720 },
-  { color: '#DFF3FF', value: 810 },
-  { color: '#D7F0FF', value: 900 },
-  { color: '#CDECFE', value: 990 },
 ];

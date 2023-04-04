@@ -10,7 +10,7 @@ import useSelector from '@hooks/useSelector';
 import { avgSplit, sToN, colorDataToRgba } from '@utils';
 import Res from '@res';
 import DpCodes from '@config/dpCodes';
-import { LightsUIProps, UIDataPropType } from './interface';
+import { LightsUIProps } from './interface';
 import { gradientDirMap, UIDataRectangle } from './config';
 import Img from './Img';
 
@@ -57,10 +57,10 @@ const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
 
   const UIDatas = useMemo(() => {
     const d = UIData.slice(0, ledNumber);
-    // 特殊处理ui1末尾直线型色块
+    // special handling for the straight-line block at the end of ui1
     return d.map((item, index, arr) => ({
       ...item,
-      // fix最后一个ele
+      // fix last element
       imgKey:
         index === arr.length - 1
           ? [1, 2, 3, 4, 11, 12, 13, 14].includes(index)
@@ -74,7 +74,7 @@ const LightsUI: React.FC<LightsUIProps> = ({ innerRef }) => {
 
   const handeContainerLayout = (e: LayoutChangeEvent) => {
     containerLayoutRef.current = e.nativeEvent.layout;
-    // fix useImperativeHandle获取不到最新值
+    // fix useImperativeHandle not getting the latest value
     forceUpdate();
   };
 

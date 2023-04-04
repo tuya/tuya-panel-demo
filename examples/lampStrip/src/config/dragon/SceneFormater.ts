@@ -21,7 +21,7 @@ export default class SmearFormater {
 
   parse(val = ''): SceneValueType {
     if (!val || typeof val !== 'string') {
-      console.warn(sceneCode, 'dp数据有问题，无法解析', val);
+      console.warn(sceneCode, 'dp data is faulty and cannot be parsed', val);
       return this.defaultValue;
     }
 
@@ -44,14 +44,14 @@ export default class SmearFormater {
     } as SceneValueType;
 
     if (mode === 20) {
-      // 混合模式
-      // FIXME: 用数组优化
+      // Mixed mode
+      // FIXME: Optimize with array
       const optionA = toN(step(2).value);
       const optionB = toN(step(2).value);
       const optionC = toN(step(2).value);
       result.mixedIds = [optionA, optionB, optionC];
     } else {
-      // 非混合模式
+      // Non-mixed mode
       const optionA = toN(step(2).value);
       const optionAStr = toFixed(optionA.toString(2), 8);
 
@@ -104,10 +104,10 @@ export default class SmearFormater {
     )}`;
 
     if (mode === 20) {
-      // 混合模式
+      // Mixed mode
       result += mixedIds.map(v => `${nToHS(v)}`).join('');
     } else {
-      // 非混合模式
+      // Non-mixed mode
       const optionA = nToHS(
         parseInt(
           `${segmented}${loop}${excessive}${direction}${toFixed(

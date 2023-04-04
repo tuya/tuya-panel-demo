@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { View, ViewStyle } from 'react-native';
@@ -15,23 +15,23 @@ export interface IHsv {
 const defaultProps = {
   ...baseDefualt,
   /**
-   * 值
+   * Value
    */
   value: { hue: 0, saturation: 1000, value: 1000 } as IHsv,
   /**
-   * 色度偏量
+   * Hue offset
    */
   hueOffset: 1,
   /**
-   * 亮度配置
+   * Brightness configuration
    */
   brightOption: {} as IBrightOption,
   /**
-   * 是否隐藏亮度调节
+   * Hide brightness adjustment
    */
   hideBright: false,
   /**
-   * 失去焦点时的亮度滑动条颜色
+   * Loss of focus slider color
    */
   lossSliderColor: 'rgba(255,255,255,0.4)',
   bgs: [
@@ -60,42 +60,41 @@ const defaultProps = {
     },
   ] as ILinear[],
   /**
-   * 滑动开始事件
+   * Slide start event
    * @param v
    * @param option
    */
-  onGrant(v: any, option?: { isChangeBright: boolean }) {},
+  onGrant: (v: any, option?: { isChangeBright: boolean }) => null,
   /**
-   * 滑动过程事件
+   * Slide process event
    * @param v
    * @param option
    */
-  onMove(v: any, option?: { isChangeBright: boolean }) {},
+  onMove: (v: any, option?: { isChangeBright: boolean }) => null,
   /**
-   * 滑动结束事件
+   * Slide end event
    * @param v
    * @param option
    */
-  onRelease(v: any, option?: { isChangeBright: boolean }) {},
+  onRelease: (v: any, option?: { isChangeBright: boolean }) => null,
 
   /**
-   * 点击事件
+   * Click event
    * @param v
    * @param option
    * @version ^0.3.0
    */
-  onPress(v: any, option?: { isChangeBright: boolean }) {},
+  onPress: (v: any, option?: { isChangeBright: boolean }) => null,
 };
-
 type DefaultProps = Readonly<typeof defaultProps>;
 
 type ColourProps = {
   /**
-   * 组件的样式
+   * Component's style
    */
   style?: ViewStyle;
   /**
-   * 颜色选择区的样式
+   * Style of the color selection area
    */
   rectStyle?: ViewStyle;
 } & DefaultProps;
@@ -130,8 +129,8 @@ export default class ColourPicker extends Component<ColourProps, IState> {
     let hue = Math.round(((x - validStartX) / width) * 360 + hueOffset) % 360;
     const saturation = Math.round(((y - validStartY) / height) * 1000);
 
-    // hueOffset 不等于0时，最左边与最右边的值一样，为确保不会滑到最左边时跳到最右边
-    // 滑到最左边时，hue + 1;
+    // if hueOffset !== 0 , The leftmost value is the same as the rightmost value, to ensure that you don't slide to the left by jumping to the right，
+    // When sliding to the far left, hue + 1;
     if (hueOffset !== 0) {
       if (Math.abs(x - validStartX) < 1) {
         hue += 1;
@@ -213,7 +212,7 @@ export default class ColourPicker extends Component<ColourProps, IState> {
     this.firPropsEvent(onPress, hsv);
   };
 
-  initData = async () => {};
+  initData = async () => null;
 
   render() {
     const {

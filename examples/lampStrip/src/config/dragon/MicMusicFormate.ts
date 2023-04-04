@@ -17,8 +17,8 @@ export default class MicMusicFormater {
       v: 1,
       power: true,
       id: 0,
-      isLight: 0, // 0 无声时灯灭、 1无声时灯维持10%亮度
-      mode: 3, // 0跳变 1渐变 2 呼吸 3 闪烁
+      isLight: 0, // 0 means light off when silent, 1 means light maintains 10% brightness when silent
+      mode: 3, // 0 for jump, 1 for gradient, 2 for breathing, 3 for flashing
       speed: 100,
       sensitivity: 50,
       a: 0,
@@ -40,8 +40,8 @@ export default class MicMusicFormater {
   }
 
   /**
-   * 解析场景各个单元
-   * @param generator generator 函数
+   * Parse each unit of the scene
+   * @param generator generator function
    */
   parseUnits(generator: Generator) {
     const step2 = () => {
@@ -73,7 +73,7 @@ export default class MicMusicFormater {
   parse(value: string) {
     const { length } = value;
     if (!length) {
-      console.warn(micMusicCode, 'dp数据有问题，无法解析', value);
+      console.warn(micMusicCode, 'dp data is faulty and cannot be parsed', value);
       return this.defaultValue;
     }
 
@@ -86,7 +86,7 @@ export default class MicMusicFormater {
     const opt = Array.from(step2().toString(2).padStart(8, '0')).map(i => Number(i));
     const isLight = parseInt(opt.slice(0, 4).join('').padStart(8, '0'), 2);
     const mode = parseInt(opt.slice(4).join('').padStart(8, '0'), 2);
-    // 摇滚、爵士、古典 特殊处理
+    // Special handling for rock, jazz, and classical
     if (id === 0) {
       if (isLight === 0 && mode === 3) id = 0;
       if (isLight === 0 && mode === 2) id = 1;

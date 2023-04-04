@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextStyle, ViewStyle } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextStyle, ViewStyle, StyleProp } from 'react-native';
 import { Svg, Path, G, Circle } from 'react-native-svg';
 import { Utils, TYText } from 'tuya-panel-kit';
 import _padStart from 'lodash/padStart';
@@ -33,12 +33,12 @@ const defaultProps = {
 };
 
 type IProps = {
-  style?: ViewStyle;
-  timeTextStyle?: TextStyle;
-  resetTextStyle?: TextStyle;
-  resetStyle?: ViewStyle;
-  timeStyle?: ViewStyle;
-  labelTextStyle?: TextStyle;
+  style?: StyleProp<ViewStyle>;
+  timeTextStyle?: StyleProp<TextStyle>;
+  resetTextStyle?: StyleProp<TextStyle>;
+  resetStyle?: StyleProp<ViewStyle>;
+  timeStyle?: StyleProp<ViewStyle>;
+  labelTextStyle?: StyleProp<TextStyle>;
   lineColor: string;
   size?: number;
   lineWidth?: number;
@@ -113,12 +113,12 @@ class CountdownClock extends Component<IProps> {
       lineNum,
       lineColor = isDarkTheme ? 'rgba(255,255,255, 0.4)' : 'rgba(0,0,0,0.4)',
       timeTextStyle,
-      resetTextStyle,
+      resetTextStyle = {},
       resetStyle,
       innerBackgroundColor,
       showDot,
-      timeStyle,
-      labelTextStyle,
+      timeStyle = {},
+      labelTextStyle = {},
       style,
     } = this.props;
     const activeColor = fontColor;

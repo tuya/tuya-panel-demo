@@ -3,20 +3,20 @@ import showTip from './showTip';
 export { showTip };
 
 export const TaskType = {
-  RANDOM_TIMING: 'randomTiming', // 随机定时类型
-  CYCLE_TIMING: 'cycleTiming', // 循环定时类型
-  COUNTDOWN: 'countdown', // 倒计时类型
-  SLEEP_TIMING: 'sleepTiming', // 入睡定时类型
-  WAKEUP_TIMING: 'wakeupTimging', // 唤醒定时类型
-  NORMAL_TIMING: 'normalTiming', // 普通定时类型
-  RHYTHMS_TASK: 'rhythmsTask', // 生物节律类型
-  OTHER: 'other', // 其他类型
-  LOCAL_TIMING: 'localTiming', // 本地定时类型
+  RANDOM_TIMING: 'randomTiming', // Random timing type
+  CYCLE_TIMING: 'cycleTiming', // Loop timing type
+  COUNTDOWN: 'countdown', // Countdown type
+  SLEEP_TIMING: 'sleepTiming', // Sleep timing type
+  WAKEUP_TIMING: 'wakeupTimging', // Wake up timing type
+  NORMAL_TIMING: 'normalTiming', // Normal timing type
+  RHYTHMS_TASK: 'rhythmsTask', // Biological rhythm type
+  OTHER: 'other', // Other type
+  LOCAL_TIMING: 'localTiming', // Local timing type
 };
 
 /**
- * 当前有效任务队列
- * 数据格式:
+ * Current valid task queue
+ * Data format:
  * {id: any, week: number, startTime: number, endTime: number, type: TaskType, originData: any}
  */
 export const tasks: any[] = [];
@@ -26,11 +26,11 @@ const save = (data: any) => {
 };
 
 /**
- *  添加一个任务
- * @param {*} data 一般为:
- * type 为 COUNTDOWN 时, data 为 数字
- * type 为 RHYTHMS_TASK 时，data 为对象，必须有 weeks
- * 其他情况下为obj，必须要有以下属性: id, weeks, startTime, endTime
+ *  Add a task
+ * @param {*} data Generally:
+ * type is COUNTDOWN, data is a number
+ * type is RHYTHMS_TASK, data is an object, must have weeks
+ * In other cases, it is an obj, must have the following attributes: id, weeks, startTime, endTime
  * @param {TaskType} type
  * @param {'minute'|'second'} unit
  */
@@ -65,7 +65,7 @@ export const add = (data: any, type = TaskType.OTHER, unit = 'minute') => {
       weeks.forEach((open: number, week: number) => {
         if (open) {
           hasNotWeek = false;
-          // 开始时间大于结束时间
+          // Start time is greater than end time
           const result = getDataBySingleTime(id, week, startTimeBySecond, endTimeBySecond);
           result.forEach(item => {
             save({ ...item, type, originData: data });
@@ -91,7 +91,7 @@ export const add = (data: any, type = TaskType.OTHER, unit = 'minute') => {
       weeks.forEach((open: number, week: number) => {
         if (open) {
           hasNotWeek = false;
-          // 开始时间大于结束时间
+          // Start time is greater than end time
           const result = getDataByTime(id, week, startTimeBySecond, endTimeBySecond, isStartInWeek);
           result.forEach(item => {
             save({ ...item, type, originData: data });
@@ -110,9 +110,9 @@ export const add = (data: any, type = TaskType.OTHER, unit = 'minute') => {
 };
 
 /**
- * 删除某一类定时数据
+ * Delete a certain type of timing data
  * @param type
- * @param id // 如果传入，比较type 后，会再比较id，两者匹配才会删除数据
+ * @param id // If passed in, compare type, and then compare id, both match to delete data
  */
 export const remove = (...args: any[]) => {
   const [type, id] = args;
@@ -130,7 +130,7 @@ export const remove = (...args: any[]) => {
   }
 };
 
-// 处理云定时
+// Handle cloud timing
 export const removeAll = (type: string) => {
   for (let i = 0; i < tasks.length; i++) {
     const item = tasks[i];
@@ -141,7 +141,7 @@ export const removeAll = (type: string) => {
 };
 
 /**
- * 检索当前是否存在该时间段的定时任务
+ * Check if there is a timing task for this time period
  * @param {*} data
  */
 const findExistTiming = (data: any) => {
@@ -149,7 +149,7 @@ const findExistTiming = (data: any) => {
   return tasks.filter(item => {
     if (id !== item.id || type !== item.type) {
       if (item.week === week) {
-        // 时间是否不存在交集
+        // Whether the time does not exist intersection
         if (
           (startTime < item.startTime && endTime < item.startTime) ||
           (item.startTime < startTime && item.endTime < startTime)
@@ -168,7 +168,7 @@ const findExistTimingSingleTime = (data: any) => {
   return tasks.filter(item => {
     if (id !== item.id || type !== item.type) {
       if (item.week === week) {
-        // 时间是否不存在交集
+        // Whether the time does not exist intersection
         if (startTime < item.startTime || startTime > item.endTime) {
           return false;
         }
@@ -180,7 +180,7 @@ const findExistTimingSingleTime = (data: any) => {
 };
 
 /**
- * 检查定时的段时是否已经存在其他定时
+ * Check if the timing period already exists in other timings
  * @param {*} data
  * @param {*} type
  * @param {*} unit
@@ -214,7 +214,7 @@ export const check = (data: any, type = TaskType.OTHER, unit = 'minute') => {
       const { id, weeks, startTime, endTime } = data;
       const startTimeBySecond = unit === 'minute' ? startTime * 60 : startTime;
       const endTimeBySecond = unit === 'minute' ? endTime * 60 : endTime;
-      // 是否选择了星期
+      // Whether the week is selected
       let isHasWeek = false;
       weeks.forEach((open: number, week: number) => {
         if (open) {
@@ -241,7 +241,7 @@ export const check = (data: any, type = TaskType.OTHER, unit = 'minute') => {
       const { id, weeks, startTime, endTime } = data;
       const startTimeBySecond = unit === 'minute' ? startTime * 60 : startTime;
       const endTimeBySecond = unit === 'minute' ? endTime * 60 : endTime;
-      // 是否选择了星期
+      // Whether the week is selected
       let isHasWeek = false;
       weeks.forEach((open: number, week: number) => {
         if (open) {
@@ -262,7 +262,7 @@ export const check = (data: any, type = TaskType.OTHER, unit = 'minute') => {
     }
   }
 
-  // 去重
+  // Remove duplicates
   if (exist.length) {
     const result: any = {};
     exist.forEach(item => {
@@ -290,11 +290,11 @@ export const formatCountdown = (countdown: number, unit: string) => {
   const minute = now.getMinutes();
   const second = now.getSeconds();
   const currentTime = hour * 3600 + minute * 60 + second;
-  // 当天离明天还有多少时间
+  // Time left in the day until tomorrow
   const diffTime = 86400 - currentTime;
   let week = now.getDay();
   let startTime = currentTime + countdown;
-  // 倒计时在明天才执行
+  // Countdown will be executed tomorrow
   if (countdown > diffTime) {
     startTime = countdown - diffTime;
     if (week === 6) {
@@ -333,9 +333,9 @@ const getDataByTime = (
   isStartInWeek: boolean
 ) => {
   const result: any[] = [];
-  // 下一天
+  // Next day
   if (startTime >= endTime) {
-    // 开始时间在当天
+    // Start time is in the current day
     if (isStartInWeek) {
       const nextWeek = week !== 6 ? week + 1 : 0;
       result.push({
@@ -366,7 +366,7 @@ const getDataByTime = (
       });
     }
   } else if (endTime > 86400) {
-    // 结束时间跨天
+    // End time spans across days
     const nextWeek = week !== 6 ? week + 1 : 0;
     result.push({
       id,

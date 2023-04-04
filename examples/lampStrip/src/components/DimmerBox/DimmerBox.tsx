@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { FC, useState, useEffect, useMemo, useRef } from 'react';
 import { View, StyleSheet, Platform, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { Utils, TabBar, useTheme } from 'tuya-panel-kit';
 import { useControllableValue, useCreation } from 'ahooks';
-import RectColorAndBrightPicker from '@components/RectColorAndBrightPicker2';
+import RectColorAndBrightPicker from '@components/RectColorAndBrightPicker';
 import ColorCards from '@components/ColorCards/ColorCard';
 import { BlurView } from '@react-native-community/blur';
 import { checkDp } from '@utils';
@@ -66,7 +65,7 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
 
   const handleCombinationScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = nativeEvent.contentOffset;
-    // 当情景内容滚动到Top下面才显示模糊效果
+    // The blurring effect is displayed when the scene content is scroll below Top
     // @ts-ignore
     topBlurRef.current?.setNativeProps?.({
       style: { opacity: y > cx(12) ? 1 : 0 },
@@ -90,7 +89,7 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
     ].filter((item, index) => !item.hidden && (filterTabs ? filterTabs(item.key, index) : true));
   }, [filterTabs]);
 
-  // 是否是彩光
+  // Color light or not
   const isColor = tab !== DimmerMode[0];
 
   const brightOption = {
@@ -109,6 +108,7 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
         style={[styles.content, tab !== DimmerMode[3] && styles.tabPanel, contentContainerStyle]}
       >
         {showColorUnits && (
+          // @ts-ignore
           <WeelCircles
             isDark={isDarkTheme}
             themeColor={themeColor}
@@ -123,13 +123,16 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
         )}
         {tab === DimmerMode[1] && (
           <RectColorAndBrightPicker.ColourPicker
+            // @ts-ignore
             style={[styles.picker, propStyles?.colour]}
             opacityAnimationValue={opacity}
             brightOption={brightOption}
             disabled={disabled}
             value={value.colour}
             hideBright={hideBright}
+            // @ts-ignore
             onRelease={handleColorCompelete}
+            // @ts-ignore
             onPress={handleColorCompelete}
           />
         )}
@@ -137,14 +140,18 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
           isWhiteExist &&
           (isTempExist ? (
             <RectColorAndBrightPicker.WhitePicker
+              // @ts-ignore
               style={[styles.picker, propStyles?.white]}
               direction="left"
               opacityAnimationValue={opacity}
               brightOption={brightOption}
               hideBright={hideBright}
               disabled={disabled}
+              // @ts-ignore
               value={value.white}
+              // @ts-ignore
               onRelease={handleColorCompelete}
+              // @ts-ignore
               onPress={handleColorCompelete}
             />
           ) : (
@@ -154,11 +161,14 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
               activeColor={isDarkTheme ? '#fff' : themeColor}
               fontColor={isDarkTheme ? '#000' : '#fff'}
               opacityAnimationValue={opacity}
+              // @ts-ignore
               brightOption={brightOption}
               disabled={disabled}
               clickEnabled={true}
               value={value.white?.brightness}
+              // @ts-ignore
               onRelease={handleBrightnessComplete}
+              // @ts-ignore
               onPress={handleBrightnessComplete}
             />
           ))}
@@ -170,6 +180,7 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
             brightOption={brightOption}
             hideBright={hideBright}
             value={value.colourCard!}
+            // @ts-ignore
             onRelease={handleColorCompelete}
           />
         )}
@@ -181,6 +192,7 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
               paddingHorizontal: cx(11),
             }}
             opacityAnimationValue={opacity}
+            // @ts-ignore
             value={value.combination}
             onChange={handleCombinationChange}
             onScroll={handleCombinationScroll}
@@ -219,7 +231,6 @@ const DimmerBox: FC<DimmerBoxProps> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    // height: cx(266),
     borderTopLeftRadius: cx(16),
     borderTopRightRadius: cx(16),
     overflow: 'hidden',

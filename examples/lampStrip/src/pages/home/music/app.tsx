@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable react/require-default-props */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
@@ -15,7 +17,6 @@ import AppMusicDatas from '@config/default/appMusic';
 import color from 'color';
 
 interface MusicProps {
-  dispatch: any;
   power: boolean;
   workMode: string;
   theme?: any;
@@ -46,10 +47,8 @@ class Music extends React.Component<MusicProps, MusicState> {
   }
 
   componentWillReceiveProps(nextProps: MusicProps) {
-    if (
-      (this.props.power !== nextProps.power && !nextProps.power) ||
-      nextProps.workMode !== WORK_MODE.MUSIC
-    ) {
+    const { power } = this.props;
+    if ((power !== nextProps.power && !nextProps.power) || nextProps.workMode !== WORK_MODE.MUSIC) {
       const { animAppMusicCard } = this.state;
       MusicManager.close();
       animAppMusicCard.forEach((animItem: any) => {
@@ -135,7 +134,7 @@ class Music extends React.Component<MusicProps, MusicState> {
     }
   };
 
-  // app音乐模式
+  // app music mode
   renderAppMusic = () => {
     const { workMode } = this.props;
     const { activeAppMusicIndex } = this.state;
@@ -210,8 +209,8 @@ class Music extends React.Component<MusicProps, MusicState> {
                       ? Res.stopIcon
                       : Res.stopIconLight
                     : isDarkTheme
-                      ? Res.startIcon
-                      : Res.startIconLight
+                    ? Res.startIcon
+                    : Res.startIconLight
                 }
                 resizeMode="contain"
               />
@@ -251,6 +250,7 @@ class Music extends React.Component<MusicProps, MusicState> {
     return <View style={{ flex: 1 }}>{this.renderAppMusic()}</View>;
   }
 }
+
 export default connect(({ dpState }: any) => ({
   power: dpState[powerCode],
   workMode: dpState[workModeCode],

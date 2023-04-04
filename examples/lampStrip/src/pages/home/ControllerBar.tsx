@@ -39,7 +39,7 @@ const ControllerBar: FC<ControllerBarProps> = () => {
 
   const handlePower = () => {
     if (power) MusicManager.close();
-    // 去掉节流，否则音乐的时候关不掉灯
+    // Remove the throttling, or you won't be able to turn off the lights while the music is playing
     dragon.putDpData({ [powerCode]: !power }, { useThrottle: false, clearThrottle: true });
   };
 

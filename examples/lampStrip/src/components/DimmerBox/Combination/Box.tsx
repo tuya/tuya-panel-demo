@@ -1,5 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/no-array-index-key */
 import React, { FC } from 'react';
 import { TouchableOpacity, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
 import { Utils, useTheme } from 'tuya-panel-kit';
@@ -55,7 +53,12 @@ const CombinationBox: FC<CombinationBoxProps> = ({
     </TouchableOpacity>
   );
 };
-
+const niFn = () => null;
+CombinationBox.defaultProps = {
+  style: {},
+  selected: false,
+  onPress: niFn,
+};
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',

@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React, { useEffect, useRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import Lottie from 'lottie-react-native';
@@ -19,8 +18,8 @@ interface AnimationObject {
 }
 interface MyLottieProps {
   style?: StyleProp<ViewStyle>;
-  autoPlay?: boolean;
-  loop?: boolean;
+  autoPlay: boolean;
+  loop: boolean;
   source: string | AnimationObject | { uri: string };
 }
 
@@ -48,5 +47,7 @@ const LottieView: React.FC<MyLottieProps> = ({ style, autoPlay, loop, source, ..
     />
   );
 };
-
+LottieView.defaultProps = {
+  style: {},
+};
 export default LottieView;

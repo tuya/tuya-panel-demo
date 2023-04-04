@@ -1,5 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { TopBar, TYSdk, TopBarActionProps } from 'tuya-panel-kit';
@@ -33,7 +31,15 @@ const MyTopBar: React.FC<TopBarProps> = ({
     />
   );
 };
-
+MyTopBar.defaultProps = {
+  style: {},
+  titleStyle: {},
+  contentStyle: {},
+  absolute: false,
+  title: TYSdk.devInfo.name,
+  leftActions: undefined,
+  actions: undefined,
+};
 const styles = StyleSheet.create({
   absoluteTopbar: {
     position: 'absolute',

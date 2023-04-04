@@ -14,16 +14,6 @@ console.ignoredYellowBox = ['Require cycle:', 'Module TYRCT'];
 
 const store = configureStore({});
 
-const customRouteOptions = {
-  ...TransitionPresets.ModalPresentationDarkThemeIOS,
-  cardOverlayEnabled: true,
-  cardStyle: {
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-  },
-  hideTopbar: true,
-};
-
 const router: NavigationRoute[] = [
   {
     name: 'main',

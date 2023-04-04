@@ -42,7 +42,7 @@ const { powerCode, workModeCode, smearCode, sceneCode, countdownCode } = DpCodes
 const smearFormater = new SmearFormater();
 
 type UpdateDevInfoPayload = DevInfo;
-type UpdateDpStatePayload = Partial<DpState> & { [key: string]: DpState }; // 保证起码有一个键值对存在
+type UpdateDpStatePayload = Partial<DpState> & { [key: string]: DpState }; // Make sure there is at least one key-value pair.
 
 // sync actions
 
@@ -65,7 +65,7 @@ export const asyncDevInfoChange = (data: any) => async (dispatch: Dispatch) => {
   dispatch(updateUI({ ledNumber: +data?.panelConfig?.fun?.strip_leaf || 20 }));
 };
 
-/** 初始化cloudState中的lights */
+/** Initialize lights in cloudState */
 export const getCloudStates = () => async (dispatch: Dispatch) => {
   try {
     const data: any = (await getDeviceCloudData()) || {};
@@ -75,7 +75,7 @@ export const getCloudStates = () => async (dispatch: Dispatch) => {
       const val = data[cur];
       acc[cur] = typeof val === 'string' ? JSON.parse(val) : val;
 
-      // 本地音乐
+      // local music
       if (/^local_music_\d+$/.test(cur) && acc[cur]) {
         const id = +cur.substr(12);
         for (let i = 0; i < localMusicList.length; i++) {
@@ -104,17 +104,17 @@ export const asyncUpdateDp = (d: DpState) => (dispatch: Dispatch, getState: GetS
   const uiUpdates: UiStatePayload = {};
   const workMode: WorkMode = d[workModeCode];
 
-  // 根据workMode更新homeTab(只有当前处于workMode页面，才会去更新barMode)
+  // Update homeTab based on workMode (only update barMode if currently on workMode page)
   if (workMode !== undefined) {
     if ([HomeTab.dimmer, HomeTab.scene, HomeTab.music].includes(homeTab)) {
       uiUpdates.homeTab = getHomeTabFromWorkMode(workMode);
     }
   }
-  // 处理涂抹dp上报
+  // Handle smear dp report
   if (d[smearCode] !== undefined) {
     // @ts-ignore wtf
     dispatch(updateLights(d[smearCode], true));
-    // 根据涂抹dp上报更新dimmerValue
+    // Update dimmerValue based on smear dp report
     const {
       dimmerMode,
       smearMode,
@@ -125,7 +125,7 @@ export const asyncUpdateDp = (d: DpState) => (dispatch: Dispatch, getState: GetS
       temperature,
       combination,
     }: SmearDataType = d[smearCode];
-    if (smearMode === SmearMode.clear) return; // 如果是擦除，不影响dimmerValue
+    if (smearMode === SmearMode.clear) return; // If it is erasing, it won’t affect dimmerValue
     // @ts-ignore wtf
     dispatch(handleDimmerModeChange(dimmerMode));
     const dimmerValueMaps = {
@@ -182,14 +182,14 @@ export const handleToChangeLights =
     });
   };
 
-/** 点击灯带 */
+/** Click on the LED strip */
 export const handlePressLights =
   (data: any = {}, isSave = false) =>
   async (dispatch: Dispatch, getState: GetState) => {
     const {
       uiState: { dimmerValue, dimmerMode, smearMode },
     } = getState();
-    // 只有在彩光、色卡页签，并且操作是涂抹、橡皮擦的时候, 点击灯带才会更新颜色
+    // Only update the color when SmearMode is ‘single’ or ‘clear’ and dimmerMode is ‘colour’ or ‘colourCard’ on the color bulb and color card tabs
     if (
       !(
         [SmearMode.single, SmearMode.clear].includes(smearMode) &&
@@ -211,16 +211,16 @@ export const handlePressLights =
     );
   };
 
-/** 根据涂抹dp来更新一遍所有lights */
+/** Update all lights based on smear dp */
 export const updateLights =
   (smearData: SmearDataType, isSave = false) =>
   async (dispatch: Dispatch, getState: any) => {
     const { indexs = new Set(), dimmerMode, smearMode, combination = [] } = smearData;
     dispatch(
       updateUI({
-        // 使用了油漆桶功能后 渐变按钮置灰
+        // Disable gradient button after using the paint bucket feature
         afterSmearAll: smearMode === SmearMode.all && dimmerMode !== DimmerMode.combination,
-        // 使用了油漆桶-白光功能后，铅笔按钮置灰
+        // Disable pencil button after using the white light function of the paint bucket
         afterSmearAllWhite: smearMode === SmearMode.all && dimmerMode === DimmerMode.white,
       })
     );
@@ -229,10 +229,9 @@ export const updateLights =
       cloudState: { lights = [] },
       uiState: { ledNumber = 0 },
     } = getState();
-    // console.log('更新lights --- 工作模式',smearData.dimmerMode);
     let newLights: any = [];
     if (dimmerMode === DimmerMode.combination) {
-      // 其他模式是下发单色，组合是下发多个颜色，单独处理
+      // Other modes send a single color, while the combination sends multiple colors and is handled separately
       newLights = getPreviewColorDatas(combination, ledNumber).map(
         ({ hue, saturation, value }) =>
           `${nToHS(hue, 4)}${nToHS(saturation, 4)}${nToHS(value, 4)}${nToHS(0, 4)}${nToHS(0, 4)}`
@@ -247,7 +246,7 @@ export const updateLights =
       );
     }
 
-    // 白光彩光分开存
+    // Store white light and color separately
     if (dimmerMode === DimmerMode.white) {
       // @ts-ignore wtf
       dispatch(updateCloudStates('whiteLights', newLights, isSave));
@@ -263,7 +262,7 @@ export const updateCloudStates =
     try {
       dispatch(updateCloudState({ [key]: data }));
       if (!isSave) return;
-      // 对lights按照1024长度进行切片
+      // Slice lights into segments with a length of 1024
       if (key === 'lights' || key === 'whiteLights') {
         // eslint-disable-next-line no-restricted-syntax
         for (const [i, s] of avgSplit(data.join(''), 1024).entries()) {
@@ -282,25 +281,25 @@ export const handleHomeTabChange = (tab: HomeTab) => (dispatch: Dispatch) => {
   dispatch(updateUI({ homeTab: tab }));
 };
 
-/** 修正smearMode（在切换完dimmerMode之后） */
+/** Correct smearMode (after switching dimmerMode) */
 export const fixSmearMode =
   (dimmerMode: DimmerMode) => (dispatch: Dispatch, getState: GetState) => {
     const {
       uiState: { smearMode },
     } = getState();
-    const supportedSmearModes = dimmerModeSmeaModeMaps[dimmerMode]; // 当前dimmerMode支持的smearMode
+    const supportedSmearModes = dimmerModeSmeaModeMaps[dimmerMode]; // Supported smearMode for the current dimmerMode
     if (supportedSmearModes?.includes(smearMode)) return;
-    dispatch(updateUI({ smearMode: supportedSmearModes[0] })); // 默认选中支持的第一个smearMode
+    dispatch(updateUI({ smearMode: supportedSmearModes[0] })); // Default to the first supported smearMode
   };
 
-/** 处理dimmerMode变更 */
+/** Handle dimmerMode change */
 export const handleDimmerModeChange = (mode: DimmerMode) => (dispatch: Dispatch) => {
   // @ts-ignore wtf
   dispatch(fixSmearMode(mode));
   dispatch(updateUI({ dimmerMode: mode }));
 };
 
-/** 处理调光器颜色change */
+/** Handle dimmer color change */
 export const handleDimmerValueChange =
   (data: DimmerValue) => (dispatch: Dispatch, getState: GetState) => {
     const {
@@ -315,7 +314,7 @@ export const handleDimmerValueChange =
         },
       })
     );
-    // 只有油漆桶才会直接下发
+    // Only paint bucket will be sent directly
     if (smearMode !== SmearMode.all) return;
     dispatch(
       // @ts-ignore wtf
@@ -330,13 +329,12 @@ export const handleDimmerValueChange =
     );
   };
 
-/** 处理渐变操作 */
+/** Process gradient operation */
 export const handleSmearEffectSwitch = () => (__: Dispatch, getState: GetState) => {
   const {
     dpState: { [smearCode]: smearData },
   } = getState();
   dragon.putDpData({ [smearCode]: { ...smearData, effect: +!smearData.effect } });
-  // TODO: 首次点击后有个弹窗提示
 };
 
 export const handlePutSceneData = (value: SceneValueType) => async () => {
@@ -347,20 +345,21 @@ export const handlePutSceneData = (value: SceneValueType) => async () => {
   dragon.putDpData({ [workModeCode]: 'scene', [powerCode]: true });
 };
 
-/** 情景保存 */
+/** Scene preservation */
 export const handlePutScene =
   (data: SceneDataType, isEdit = false, isSave = true) =>
   async (dispatch: Dispatch, getState: GetState) => {
     let sceneData = data;
     if (!isEdit && isSave) {
-      // 更新最新的scene列表，确保保存的id是最新的
+      // Update the latest scene list, making sure the saved ids are up to date
       // @ts-ignore wtf
       // await dispatch(getCloudStates());
       const {
         cloudState: { scenes = [] },
       } = getState();
-      const maxId = scenes.reduce((acc, cur) => Math.max(acc, +cur.id), 0);
-      // DIY情景id最小200
+      const maxId = scenes.reduce((acc, cur: any) => Math.max(acc, +cur.id), 0);
+
+      // diy Scene id minimum 200
       const newId = Math.max(200, maxId) + 1;
       sceneData = {
         ...data,
@@ -383,12 +382,12 @@ export const handlePutScene =
         GlobalToast.hide();
       },
     });
-    // 再更新一遍cloudStates
+    // Update cloudStates again
     // @ts-ignore wtf
     dispatch(getCloudStates());
   };
 
-/** 情景保存 */
+/** Scene preservation */
 export const handleRemoveScene = (data: SceneDataType) => async (dispatch: Dispatch) => {
   // @ts-ignore wtf
   const res = await deleteDeviceCloudData(`scene_${data.id}`);
@@ -399,7 +398,7 @@ export const handleRemoveScene = (data: SceneDataType) => async (dispatch: Dispa
       GlobalToast.hide();
     },
   });
-  // 再更新一遍cloudStates
+  // Update cloudStates again
   // @ts-ignore wtf
   dispatch(getCloudStates());
 };
@@ -417,7 +416,7 @@ export const handlePutCountdown = (countdown: number) => (dispatch: Dispatch) =>
 };
 
 export const getCloudTimingList = () => async (dispatch: Dispatch) => {
-  // 清理云定时互斥
+  // Clearing the cloud is mutually exclusive
   TaskManager.removeAll(TaskManager.TaskType.NORMAL_TIMING);
   const data: any = (await getCategoryTimerList(CloudTimingCategory)) || {};
   const cloudTimingList = _.flatMap(data.groups, item =>
@@ -580,8 +579,8 @@ const uiState = handleActions<UiState>(
       [DimmerMode[2]]: { hue: 339, saturation: 980, value: 980 },
       [DimmerMode[3]]: [],
     },
-    afterSmearAll: true, // 当前灯带是否使用了油漆桶功能
-    afterSmearAllWhite: false, // 当前灯带是否使用了油漆桶-白光功能
+    afterSmearAll: true, // Whether the paint bucket function is used on the current light strip
+    afterSmearAllWhite: false, // Whether the current light strip uses the paint bucket - white light function
     scenes: PresetScenes,
     presetScenes: PresetScenes,
     totalCountdown: 0,
@@ -601,7 +600,7 @@ const cloudState = handleActions(
       const data: any = action.payload;
       // @ts-ignore wtf
       const { localMusicList } = state;
-      // 是否存在，不存在则添加
+      // If yes, add it if no
       const exist = localMusicList.find((music: LocalMusicValue) => {
         if (music.id === data.id) {
           Object.assign(music, data);
@@ -616,9 +615,9 @@ const cloudState = handleActions(
     },
   },
   {
-    // loaded: 1, // 是否配网后第一次进入面板
-    lights: [], // 彩光数据
-    whiteLights: [], // 白光数据
+    // loaded: 1, // Whether the panel is loaded for the first time after network configuration
+    lights: [], // Color light data
+    whiteLights: [], // White light data
     scenes: [],
     totalCountdown: 0,
   }

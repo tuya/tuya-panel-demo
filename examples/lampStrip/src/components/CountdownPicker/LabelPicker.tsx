@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Picker, TYText, Utils } from 'tuya-panel-kit';

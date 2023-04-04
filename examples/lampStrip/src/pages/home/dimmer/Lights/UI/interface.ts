@@ -1,6 +1,6 @@
 import { LayoutRectangle } from 'react-native';
 
-/** 渐变方向: 0: →, 1: ←, 2: ↑, 3: ↓ */
+/** Gradient direction: 0: →, 1: ←, 2: ↑, 3: ↓ */
 export enum GradientDir {
   right,
   left,

@@ -1,7 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable react/static-property-placement */
-/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/default-props-match-prop-types */
 /* eslint-disable max-classes-per-file */
 import React from 'react';
@@ -32,15 +30,13 @@ const defaultProps = {
   fontColor: '#000',
   trackColor: '#313131',
   activeColor: '#fff',
-  // formatPercent: null,
   invalidSwipeDistance: 7,
-  clickEnabled: false, // 是否可以点击选择
+  clickEnabled: false, // Whether to click to select
   style: {},
-  onGrant(v: number) {},
-  onMove(v: number) {},
-  onRelease(v: number) {},
-  onPress(v: number) {},
-  formatPercent(v: number) {},
+  onGrant: (v: number) => null,
+  onMove: (v: number) => null,
+  onRelease: (v: number) => null,
+  onPress: (v: number) => null,
 };
 
 export interface IBrightOption {
@@ -59,6 +55,7 @@ type DefaultProps = Readonly<typeof defaultProps>;
 
 type IProps = {
   style?: ViewStyle | ViewStyle[];
+  // eslint-disable-next-line react/require-default-props
   formatPercent?: (value: number) => number;
 } & DefaultProps;
 
@@ -68,6 +65,7 @@ interface IState {
 }
 
 export default class Slider extends React.Component<IProps, IState> {
+  // eslint-disable-next-line react/static-property-placement
   static defaultProps: DefaultProps = defaultProps;
 
   _panResponder: PanResponderInstance;
@@ -96,13 +94,13 @@ export default class Slider extends React.Component<IProps, IState> {
     super(props);
 
     this._panResponder = PanResponder.create({
-      // 要求成为响应者：
+      // Request to become a responder:
       onStartShouldSetPanResponder: this.handleStartPanResponder,
       onMoveShouldSetPanResponder: this.handleSetPanResponder,
       onPanResponderTerminationRequest: () => !this.moving,
       onPanResponderMove: this.onMove,
       onPanResponderRelease: this.onRelease,
-      // 当前有其他的东西成为响应器并且没有释放它。
+      // Currently something else becomes the responder and does not release it.
       onPanResponderReject: this.handleTerminate,
       onPanResponderTerminate: this.handleTerminate,
     });
@@ -120,7 +118,7 @@ export default class Slider extends React.Component<IProps, IState> {
       this.brightAnimate.setValue(this.brightWidth);
       this.setState({ value: nextProps.value });
     }
-    // 开关切换改变透明度
+    // Switch toggle changes opacity
     if (nextProps.opacityAnimationValue !== opacityAnimationValue) {
       this.fadeAnimation(nextProps.opacityAnimationValue);
     }
@@ -153,9 +151,9 @@ export default class Slider extends React.Component<IProps, IState> {
     if (disabled) {
       return false;
     }
-    // 滑动一定象素后，将不允许其他手势抢权
+    // After sliding a certain pixel, other gestures will not be allowed to grab power
     if (Math.abs(gesture.dx) >= invalidSwipeDistance) {
-      // 小于一定象素不做滑动
+      // Do not slide if it is less than a certain pixel
       if (!this.moving) {
         onGrant(value);
         this.moving = true;
@@ -170,7 +168,7 @@ export default class Slider extends React.Component<IProps, IState> {
   };
 
   handleTerminate = () => {
-    // 响应器已经从该视图抽离
+    // The responder has been withdrawn from this view
     this.moving = false;
     this.locked = false;
     this.isTouchStart = false;
@@ -180,12 +178,12 @@ export default class Slider extends React.Component<IProps, IState> {
     const { invalidSwipeDistance, onGrant, onMove } = this.props;
     const { value } = this.state;
     if (!this.moving) {
-      // 滑动一定象素后，将不允许其他手势抢权
+      // After sliding a certain pixel, other gestures will not be allowed to grab power
       if (Math.abs(gesture.dx) < invalidSwipeDistance) {
-        // 小于一定象素不做滑动
+        // Do not slide if it is less than a certain pixel
         return;
       }
-      // 开始手势
+      // Start gesture
       onGrant(value);
       this.moving = true;
       this.locked = true;
@@ -216,7 +214,7 @@ export default class Slider extends React.Component<IProps, IState> {
   handleMove(gesture: PanResponderGestureState, callback: (value: number) => void, isEnd = false) {
     const { dx } = gesture;
     let width: number = this.brightWidth + dx;
-    // 边界处理
+    // Boundary processing
     if (width < 0) {
       width = 0;
     } else if (width > this.sliderWidth) {
@@ -226,7 +224,6 @@ export default class Slider extends React.Component<IProps, IState> {
     const value = this.coorToValue(width);
     width = this.valueToWidth(value);
     this.brightAnimate.setValue(width);
-
     // @ts-ignore
     this.percentRef?.setNativeProps({ percent: this.formatPercent(value), brightWidth: width });
 

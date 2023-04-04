@@ -18,10 +18,10 @@ const defaultSceneData = {
 
 const modes = [1, 2, 3, 4, 10, 11, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16];
 
-/** 可调分段的变化方式 */
+/** Modes with adjustable segments */
 export const SegmentableModes = [1, 2, 3, 4, 6, 7, 12];
 
-/** 可调方向的变化方式 */
+/** Modes with adjustable direction */
 export const DirectionAbleModes = [10, 11, 5, 6, 7, 8, 9];
 
 export default modes.map(mode => ({

@@ -1,4 +1,4 @@
-# 幻彩灯串
+# 幻彩灯带
 
 [English](./README.md) | 简体中文
 
@@ -9,28 +9,25 @@
 ## 手动下载
 
 ```bash
-$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/lampLightString
-$ mv basic tuya-panel-lampLightString-example
-$ cd tuya-panel-lampLightString-example
+$ curl https://codeload.github.com/tuya/tuya-panel-demo/tar.gz/master | tar -xz --strip=2 tuya-panel-demo-master/examples/lampStrip
+$ mv basic tuya-panel-lampStrip-example
+$ cd tuya-panel-lampStrip-example
 ```
 
 ## 介绍
 
-本模板工程基于 React Native 0.59 版本的 TS 基础模板， 可用于快速创建照明 3 路幻彩灯串项目，支持以下功能：
+本模板工程基于 React Native 0.59 版本的 TS 基础模板， 可用于快速创建照明 3~5 路幻彩灯带项目，支持以下功能：
 
 - 涂抹调光
-- 幻彩情景
+- 幻彩情景、DIY情景
 - App、本地音乐
 - 云端定时
 - 倒计时
+- 点数/长度设置
 
 支持以下品类：
 
 - WiFi_BLE
-
-如需查看更多信息，可点击以下链接进行查看
-
-[幻彩灯串（模板）](https://solution.tuya.com/cn/panelDetail/146001)
 
 ## 快速运行
 

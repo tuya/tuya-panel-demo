@@ -34,7 +34,7 @@ export default class SmearFormater {
 
   parse(val = ''): SmearDataType {
     if (!val || typeof val !== 'string') {
-      console.warn(smearCode, 'dp数据有问题，无法解析', val);
+      console.warn(smearCode, 'dp data is faulty and cannot be parsed', val);
       return this.defaultValue;
     }
 
@@ -54,12 +54,12 @@ export default class SmearFormater {
     } as SmearDataType;
 
     if (dimmerMode === DimmerMode.white) {
-      // 白光
+      // White light
       result.smearMode = toN(step(2).value);
       result.brightness = toN(step(4).value);
       result.temperature = toN(step(4).value);
     } else if ([DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)) {
-      // 彩光/色卡
+      // Color light / color card
       const smearMode = toN(step(2).value);
       result.smearMode = smearMode;
       result.hue = toN(step(4).value);
@@ -73,20 +73,20 @@ export default class SmearFormater {
         const indexStr = step().value.toString();
         const indexs = new Set<number>();
         if (singleType === 0) {
-          // 连续
+          // Continuous
           avgSplit(indexStr, 4).forEach(v => {
             const arr = avgSplit(v, 2);
             _.range(sToN(arr[0]), sToN(arr[1]) + 1).forEach(a => indexs.add(a - 1));
           });
         } else if (singleType === 1) {
-          // 单点
+          // Single point
           avgSplit(indexStr, 2).forEach(v => indexs.add(sToN(v) - 1));
         }
         result.indexs = indexs;
       }
     } else if (dimmerMode === DimmerMode.combination) {
       result.smearMode = SmearMode.all;
-      // 颜色组合
+      // Color combination
       result.combineType = toN(step(2).value);
       result.combination = avgSplit(step().value.toString(), 12).map(v => {
         const [hue, saturation, value] = avgSplit(v, 4).map(c => sToN(c));
@@ -113,16 +113,16 @@ export default class SmearFormater {
       combination = [],
     } = data;
 
-    // 白光不支持渐变
+    // White light does not support gradient
     let result = `${nToHS(version)}${nToHS(dimmerMode)}${nToHS(
       dimmerMode === DimmerMode.white ? 0 : effect
     )}${nToHS(ledNumber)}`;
 
     if (dimmerMode === DimmerMode.white) {
-      // 白光
+      // White light
       result += `${nToHS(smearMode)}${nToHS(brightness, 4)}${nToHS(temperature, 4)}`;
     } else if ([DimmerMode.colour, DimmerMode.colourCard].includes(dimmerMode)) {
-      // 彩光/色卡
+      // Color light / color card
       result += `${nToHS(smearMode)}${nToHS(hue, 4)}${nToHS(saturation, 4)}${nToHS(value, 4)}`;
       if ([SmearMode.single, SmearMode.clear].includes(smearMode)) {
         const { singleType = 1, indexs = new Set(), quantity = indexs.size } = data;
@@ -133,7 +133,7 @@ export default class SmearFormater {
         result += `${singleDataStr}${indexsStr}`;
       }
     } else if (dimmerMode === DimmerMode.combination) {
-      // 组合
+      // Combination
       const colors = combination.map(
         item => `${nToHS(item.hue, 4)}${nToHS(item.saturation, 4)}${nToHS(item.value, 4)}`
       );

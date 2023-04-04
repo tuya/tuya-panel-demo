@@ -1,14 +1,15 @@
-/* eslint-disable react/require-default-props */
+/* eslint-disable max-len */
+
 /* eslint-disable react/no-array-index-key */
 import React, { FC, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 /**
- * 计算圆周上点坐标
- * @param center 圆心坐标
- * @param radius 半径
- * @param center 顺时针偏角（弧度角）
+ * Calculate the coordinates of points on the circumference
+ * @param center Center coordinates
+ * @param radius radius
+ * @param angle Clockwise deviation angle (radian)
  */
 function getCircleCoordinate(center: number[], radius: number, angle: number) {
   const [x, y] = center;
@@ -24,25 +25,25 @@ export type ColorsType = string[] | ColorDataType[];
 
 export interface ColorCircleProps {
   style?: StyleProp<ViewStyle>;
-  /** 圆半径 */
+  /** Circle radius */
   radius: number;
-  /** 起始偏角 */
+  /** Starting deviation angle */
   startRadian?: number;
-  /** 颜色(数组或没有percent按等分处理) */
+  /** Color (array or no percent is treated as equal parts) */
   colors: ColorsType;
 }
 
 const ColorCircle: FC<ColorCircleProps> = ({ style, radius = 0, startRadian = 0, colors = [] }) => {
   const colorDatas = useMemo(() => {
-    const center = [radius, radius]; // 圆心坐标
-    let cumulativeRadian = startRadian; // 偏角累加
+    const center = [radius, radius]; // Center coordinates
+    let cumulativeRadian: number = startRadian; // Accumulated deviation angle
     return colors.map(item => {
       const { color, percent } =
         typeof item === 'string' ? { color: item, percent: 1 / colors.length } : item;
-      const radian = Math.PI * 2 * percent; // 当前part偏角
-      const [startX, startY] = getCircleCoordinate(center, radius, cumulativeRadian); // 起始点坐标
+      const radian = Math.PI * 2 * percent; // Current part deviation angle
+      const [startX, startY] = getCircleCoordinate(center, radius, cumulativeRadian); // Starting point coordinates
       cumulativeRadian += radian;
-      const [endX, endY] = getCircleCoordinate(center, radius, cumulativeRadian); // 结束点坐标
+      const [endX, endY] = getCircleCoordinate(center, radius, cumulativeRadian); // End point coordinates
       return {
         color,
         center,
@@ -68,5 +69,8 @@ const ColorCircle: FC<ColorCircleProps> = ({ style, radius = 0, startRadian = 0,
     </Svg>
   );
 };
-
+ColorCircle.defaultProps = {
+  style: {},
+  startRadian: 0,
+};
 export default ColorCircle;

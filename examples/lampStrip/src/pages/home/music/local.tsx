@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity, Image } from 'react-native';
@@ -39,7 +40,13 @@ const { withTheme } = Utils.ThemeUtils;
 const { color: Color } = Utils.ColorUtils;
 const { powerCode, workModeCode, micMusicCode } = DpCodes;
 
+const defaultProps = {
+  theme: {},
+};
 class Music extends React.Component<MusicProps, MusicState> {
+  // eslint-disable-next-line react/static-property-placement
+  static defaultProps = defaultProps;
+
   constructor(props: MusicProps) {
     super(props);
     const { localMusicValue, localMusicList } = props;
@@ -250,7 +257,7 @@ class Music extends React.Component<MusicProps, MusicState> {
     }
   };
 
-  // 本地音乐模式
+  // Local music model
   renderLocalMusic = () => {
     const { localMusicValue, localMusicList, power, workMode } = this.props;
     return localMusicList?.map((item: any, idx: number) => {
@@ -348,14 +355,14 @@ class Music extends React.Component<MusicProps, MusicState> {
                       : Res.stopIconLight
                     : isDarkTheme
                       ? Res.startIcon
-                      : Res.startIconLight
+                    : Res.startIconLight
                 }
                 resizeMode="contain"
               />
             </View>
           </TouchableOpacity>
         </View>
-        {/* 灵敏度调节 */}
+        {/* Sensitivity regulation */}
         <View style={styles.sensitivityHeader}>
           <TYText style={{ fontSize: cx(12) }}>
             {Strings.getLang('local_music_sensitivity_label')}

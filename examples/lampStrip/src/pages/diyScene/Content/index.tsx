@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState, useMemo, useRef } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { TYText, Utils, Divider, TopBar, BrickButton, useTheme } from 'tuya-panel-kit';
@@ -234,6 +235,7 @@ const DiySceneContent: React.FC<DiySceneContentProps> = ({
         filterTabs={tab => dimmerTabs.includes(tab)}
         hideBright={true}
         showColorUnits={true}
+        // @ts-ignore
         colorUnitsProps={{
           circleArr,
           selectCircle,
@@ -253,6 +255,7 @@ const DiySceneContent: React.FC<DiySceneContentProps> = ({
           color={dividerColor}
           height={cx(1)}
         />
+        {/** @ts-ignore */}
         <BrightRectSlider
           {...sliderProps}
           iconSize={cx(32)}
@@ -330,6 +333,7 @@ const DiySceneContent: React.FC<DiySceneContentProps> = ({
           color={dividerColor}
           height={cx(1)}
         />
+        {/** @ts-ignore */}
         <BrightRectSlider
           {...sliderProps}
           thumbStyle={styles.sliderThumbStyle}
@@ -365,6 +369,9 @@ const DiySceneContent: React.FC<DiySceneContentProps> = ({
       )}
     </ScrollView>
   );
+};
+DiySceneContent.defaultProps = {
+  isEdit: false,
 };
 
 const styles = StyleSheet.create({

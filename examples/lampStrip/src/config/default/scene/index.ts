@@ -2,7 +2,7 @@ import Strings from '@i18n';
 import { SceneCategory } from '@types';
 
 export default [
-  /** 风景 */
+  /** 风景 scenery */
 
   // 冰岛蓝 Iceland Blue
   {
@@ -549,7 +549,7 @@ export default [
     },
   },
 
-  /** 生活 */
+  /** 生活 life */
 
   // 游戏 Game
   {
@@ -765,7 +765,7 @@ export default [
     },
   },
 
-  /** 节日 */
+  /** 节日 festival */
   // 圣诞节 Christmas
   {
     id: 41,
@@ -981,7 +981,7 @@ export default [
     },
   },
 
-  /** 心情 */
+  /** 心情 mood */
   // 夏日牧歌 Summer idyll
   {
     id: 51,

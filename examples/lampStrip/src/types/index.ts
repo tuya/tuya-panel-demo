@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { StyleProp, ViewStyle } from 'react-native';
 
-/** Home页签 */
+/** Home tab */
 export enum HomeTab {
   dimmer = 'dimmer',
   scene = 'scene',
@@ -23,7 +23,7 @@ export interface IControlData {
   brightness?: number;
   temperature?: number;
 }
-/** 调光器模式 */
+/** Dimmer mode */
 export enum DimmerMode {
   white,
   colour,
@@ -33,14 +33,14 @@ export enum DimmerMode {
 
 export type DimmerTab = keyof typeof DimmerMode;
 
-/** 涂抹类型 */
+/** Smear type */
 export enum SmearMode {
   all,
   single,
   clear,
 }
 
-/** 调光器的value类型 */
+/** Dimmer value type */
 export interface DimmerValue {
   colour?: ColourData;
   white?: WhiteData;
@@ -50,47 +50,47 @@ export interface DimmerValue {
 
 export interface ColorUnitsProps {
   /**
-   * 主题 深 / 浅
+   * Theme dark / light
    */
   isDark: boolean;
   /**
-   * 主题色
+   * Theme color
    */
   themeColor: string;
   /**
-   * 是否只展示一个圆圈（只显示选中值）
+   * Whether to display only one circle (only show the selected value)
    */
   isSingleCircle?: boolean;
   /**
-   *  默认选中第几个圆圈
+   * Default selected circle
    */
   selectCircle: number;
   /**
-   * 设置圆圈，返回设置类型，以及对应索引
+   * Set the circle, return the setting type and corresponding index
    */
   handleToSetCircle: (type: any, index: number) => void;
   /**
-   * 圆圈对应hsvbt数据组
+   * Circle corresponding hsvbt data group
    */
   circleArr: any[];
-  /** 颜色单元最小个数 */
+  /** Minimum number of color units */
   minCircleNum?: number;
-  /** 颜色单元最大个数 */
+  /** Maximum number of color units */
   maxCircleNum?: number;
   /**
-   * 是否是彩光状态
+   * Whether it is a colorful state
    */
   isColorFul: boolean;
   /**
-   * 是否支持彩光模式
+   * Whether the colorful mode is supported
    */
   isColorfulExist: boolean;
   /**
-   * 是否支持白光
+   * Whether white light is supported
    */
   isWhiteExist: boolean;
   /**
-   * 当前数据
+   * Current data
    */
   currentData: {
     isColor?: boolean;
@@ -102,7 +102,7 @@ export interface ColorUnitsProps {
   };
 }
 
-/** 调光器Props */
+/** Dimmer Props */
 export interface DimmerBoxProps {
   style?: StyleProp<ViewStyle>;
   styles?: Partial<Record<DimmerTab | 'topbar', StyleProp<ViewStyle>>>;
@@ -121,39 +121,39 @@ export interface DimmerBoxProps {
   onChange?: (value: DimmerValue, ...args: any[]) => void;
 }
 
-/** 涂抹dp数据 */
+/** Smear dp data */
 export interface SmearDataType {
-  /** 版本号 */
+  /** Version number */
   version: number;
-  /** 模式 (0: 白光, 1: 彩光, 2: 色卡, 3: 组合) */
+  /** Mode (0: white light, 1: colorful light, 2: color card, 3: combination) */
   dimmerMode: DimmerMode;
-  /** 涂抹效果 (0: 无, 1: 渐变) */
+  /** Smear effect (0: none, 1: gradient) */
   effect?: number;
-  /** 灯带UI段数 */
+  /** LED strip UI segments */
   ledNumber?: number;
-  /** 涂抹动作 (0: 油漆桶, 1: 涂抹, 2: 橡皮擦) */
+  /** Smear action (0: paint bucket, 1: smear, 2: eraser) */
   smearMode?: SmearMode;
-  /** 彩光色相 */
+  /** Colorful light hue */
   hue?: number;
-  /** 彩光饱和度 */
+  /** Colorful light saturation */
   saturation?: number;
-  /** 彩光亮度 */
+  /** Colorful light brightness */
   value?: number;
-  /** 白光亮度 */
+  /** White light brightness */
   brightness?: number;
-  /** 白光色温 */
+  /** White light color temperature */
   temperature?: number;
-  /** 当前涂抹色是否是彩光 */
+  /** Whether the current smear color is colorful */
   isColour?: boolean;
-  /** 点选类型(0: 连续，1: 单点) */
+  /** Point selection type (0: continuous, 1: single point) */
   singleType?: number;
-  /** 当次操作的灯带数 */
+  /** Number of LED strips operated this time */
   quantity?: number;
-  /** 组合类型 */
+  /** Combination type */
   combineType?: number;
-  /** 颜色组合 */
+  /** Color combination */
   combination?: ColourData[];
-  /** 编号 */
+  /** Number */
   indexs?: Set<number>;
 }
 
@@ -162,34 +162,34 @@ interface SceneColorType {
   saturation: number;
 }
 
-/** 涂抹dp数据 */
+/** Smear dp data */
 export interface SceneValueType {
-  /** 版本号(1byte) */
+  /** Version number (1byte) */
   version?: number;
-  /** 场景号(自定义200+)(1byte) */
+  /** Scene number (custom 200+) (1byte) */
   id: number;
-  /** 变化方式(1byte) */
+  /** Change mode (1byte) */
   mode: number;
-  /** 单元切换间隔(1byte) */
+  /** Unit switching interval (1byte) */
   // intervalTime: number;
-  /** 单元变化时间(1byte) */
+  /** Unit change time (1byte) */
   // changeTime: number;
   speed?: number;
-  /** 混合的场景号 */
+  /** Mixed scene number */
   mixedIds?: number[];
   /**
    * Option_A(1byte)
-   * 非混合情景模式下:
-   *    segmented   7bit: 0-全段、1-分段
-   *    loop        6bit: 0-不循环、1-循环
-   *    excessive   5bit: 0-不过渡、1-过度
-   *    direction   4bit: 0-顺时针方向、1-逆时针方向
-   *    expand      3bit_2bit: 00-默认模式、01-拓展1、10-拓展2、11-拓展3
-   *                           流星情景: 01-流星,10-流星雨,11-幻彩流星
-   *                           开合情景: 01-同时,10-交错
-   *    reserved_1  1bit: 无
-   *    reserved_2  0bit: 无
-   * 混合情景模式下: 场景号
+   * In non-mixed scene mode:
+   *    segmented   7bit: 0-whole segment, 1-segmented
+   *    loop        6bit: 0-non-circular, 1-circular
+   *    excessive   5bit: 0-no transition, 1-transition
+   *    direction   4bit: 0-clockwise direction, 1-counterclockwise direction
+   *    expand      3bit_2bit: 00-default mode, 01-expansion 1, 10-expansion 2, 11-expansion 3
+   *                           Meteor scene: 01-meteor, 10-meteor shower, 11-fantasy meteor
+   *                           Open and close scene: 01-simultaneous, 10-staggered
+   *    reserved_1  1bit: none
+   *    reserved_2  0bit: none
+   * In mixed scene mode: scene number
    */
   // optionA?: number;
   segmented?: number;
@@ -199,13 +199,13 @@ export interface SceneValueType {
   expand?: number;
   reserved1?: number;
   reserved2?: number;
-  /** Option_B(一期预留，二期混合模式用ABC表场景号)(1byte) */
+  /** Option_B (reserved for the first phase, used for ABC table scene number in the second phase mixed mode) (1byte) */
   // optionB?: number;
-  /** Option_C(一期预留，二期混合模式用ABC表场景号)(1byte) */
+  /** Option_C (reserved for the first phase, used for ABC table scene number in the second phase mixed mode) (1byte) */
   // optionC?: number;
-  /** 亮度(所有颜色公用一个亮度)(1byte) */
+  /** Brightness (all colors share one brightness) (1byte) */
   brightness: number;
-  /** 颜色单元(每个颜色3byte, hue: 2byte, saturation: 1byte) */
+  /** Color unit (each color 3byte, hue: 2byte, saturation: 1byte) */
   colors: SceneColorType[];
 }
 
@@ -223,7 +223,9 @@ export interface RgbMusicValue {
 }
 export interface SceneDataType {
   id: number;
+  key?: string;
   name: string;
+  category?: string;
   value: SceneValueType;
 }
 
