@@ -216,10 +216,41 @@ export function transformPileXY({ pileX, pileY }: any, { originX, originY }: any
  * @param dec 十进制数字
  * @param padNum 向前补几位
  */
-export function DECNumberToHex(dec: number) {
+export function DECNumberToHex(dec: number, type: string) {
   if (dec === undefined || dec === null) return '';
   const bits = Number(dec).toString(2);
-  const pad = `${bits}00`;
+  const pad = bits + type;
   const decc = parseInt(pad, 2);
   return toFixed16(decc);
 }
+
+/**
+ * UTF8转码为16进制字符串
+ * @param str
+ * @returns
+ */
+export const UTF8ToHex = (str: string) => {
+  return Array.from(str)
+    .map(c =>
+      c.charCodeAt(0) < 128
+        ? c.charCodeAt(0).toString(16).padStart(2, '0')
+        : encodeURIComponent(c).replace(/\%/g, '').toLowerCase()
+    )
+    .join('');
+};
+/**
+ * 16进制字符串转为字符串
+ * @param str
+ * @returns
+ */
+export const hexToUTF8 = (hex: string) => {
+  try {
+    const arr = hex.match(/.{1,2}/g);
+    const result = arr?.filter(item => item !== '00');
+    if (!result?.length) return '';
+    return decodeURIComponent(`%${result?.join('%')}`);
+  } catch (e) {
+    console.log('decodeURIComponent 错误\n', e);
+    return '';
+  }
+};

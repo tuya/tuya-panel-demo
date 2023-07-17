@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { Utils as NativeUtils, TYText, TYSdk } from 'tuya-panel-kit';
 import { observer, inject } from 'mobx-react';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 import Res from '@res';
 import Strings from '@i18n';
 import { DPCodes } from '../../config';
 import { IPanelConfig } from '../../config/interface';
-import LaserUIApi from '../../api/laserUIApi';
 import Store from '../../store';
 import utils from '../../utils/mapStateUtils';
 import {

@@ -1,6 +1,6 @@
-import { Interface } from '../../resourceManager';
-import { IStore, IProps } from '../interface';
-import Utils from '../../../../../protocol/utils';
+import { Interface } from '../../../resourceManager';
+import { IStore, IProps } from '../../interface';
+import Utils from '../../../../../../protocol/utils';
 
 const { convertColorToArgbHex } = Utils.PressCoordinateUtils;
 

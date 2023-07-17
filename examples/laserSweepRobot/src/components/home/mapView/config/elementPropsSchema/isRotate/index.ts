@@ -1,5 +1,5 @@
-import { Interface } from '../../resourceManager';
-import { IStore, IProps } from '../interface';
+import { Interface } from '../../../resourceManager';
+import { IStore, IProps } from '../../interface';
 
 // isRotate Props生成规则
 const format = (store: IStore, configs: IProps) => {

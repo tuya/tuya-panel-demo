@@ -1,10 +1,10 @@
 import { TYSdk, Utils as NativeUtils } from 'tuya-panel-kit';
 import _isUndefined from 'lodash/isUndefined';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 import Strings from '@i18n';
 import { DPCodes } from '../config';
 import { atHexToString, stringToAtHex } from '.';
 import RobotStatus from './robotStatus';
-import LaserUIApi from '../api/laserUIApi';
 import Utils from '../protocol/utils';
 
 const ALL_ZONE_MUN_MAX = 100;
@@ -17,12 +17,12 @@ const {
  * 检查地图中的清扫框、虚拟墙、禁区框数量
  * @param {number} num 数量
  */
-async function checkMapPointNumber(num, extendZoneLength = 0) {
+async function checkMapPointNumber(mapId, num, extendZoneLength = 0) {
   try {
-    const { data = [] } = await LaserUIApi.getLaserMapPoints();
+    const { data = [] } = await LaserUIApi.getLaserMapPoints(IndoorMapUtils.getMapInstance(mapId));
     const zoneNum = data.length + extendZoneLength + 1;
     if (zoneNum > num) {
-      TYSdk.mobile.simpleTipDialog(Strings.getLang('areaNumLimit'), () => { });
+      TYSdk.mobile.simpleTipDialog(Strings.getLang('areaNumLimit'), () => {});
       return Promise.reject();
     }
     return true;
@@ -53,7 +53,7 @@ function setMapCleanZone(
 ) {
   const { init = false } = opts;
   return new Promise((resolve, reject) => {
-    checkMapPointNumber(ALL_ZONE_MUN_MAX, extendAreaNum)
+    checkMapPointNumber(mapId, ALL_ZONE_MUN_MAX, extendAreaNum)
       .then(() => {
         const area = {
           id: `${areaId}`,
@@ -85,7 +85,7 @@ function setMapCleanZone(
             { x: originX - 30, y: originY + 30 },
           ];
         }
-        LaserUIApi.addLaserMapArea({
+        LaserUIApi.addLaserMapArea(IndoorMapUtils.getMapInstance(mapId), {
           mapId,
           area: getRCTAreaStructure({
             ...area,
@@ -124,7 +124,7 @@ function setMapForbiddenZone({
 }) {
   return new Promise((resolve, reject) => {
     let points: { x: number; y: number }[] = [];
-    checkMapPointNumber(ALL_ZONE_MUN_MAX, extendAreaNum)
+    checkMapPointNumber(mapId, ALL_ZONE_MUN_MAX, extendAreaNum)
       .then(() => {
         if (tempAreaList.length) {
           // 如果有临时区域，以上一个为准来偏移
@@ -178,7 +178,7 @@ function setMapForbiddenZone({
           canRename: false,
         });
 
-        LaserUIApi.addLaserMapArea({
+        LaserUIApi.addLaserMapArea(IndoorMapUtils.getMapInstance(mapId), {
           mapId,
           area: areaZone,
         }).then(() => resolve({ area: { ...areaTemp, mode, type: nativeMapStatus.virtualArea } }));
@@ -210,7 +210,7 @@ function setMapVirtualWall({
   return new Promise((resolve, reject) => {
     let points: { x: number; y: number }[] = [];
 
-    checkMapPointNumber(ALL_ZONE_MUN_MAX, extendAreaNum)
+    checkMapPointNumber(mapId, ALL_ZONE_MUN_MAX, extendAreaNum)
       .then(() => {
         if (tempAreaList.length) {
           // 如果有临时区域，以上一个为准来偏移
@@ -258,7 +258,7 @@ function setMapVirtualWall({
           },
         });
 
-        LaserUIApi.addLaserMapArea({
+        LaserUIApi.addLaserMapArea(IndoorMapUtils.getMapInstance(mapId), {
           mapId,
           area: areaZone,
         }).then(() => resolve({ area: { ...areaTemp, type: nativeMapStatus.virtualWall } }));
@@ -453,7 +453,10 @@ async function isForbiddenZonePointsInCurPos(
  */
 async function getMapPointsCompatibleWiltV1(opts = {}) {
   const { mapId } = opts;
-  const { data = [] } = await LaserUIApi.getLaserMapPointsInfo({ mapId });
+  const { data = [] } = await LaserUIApi.getLaserMapPointsInfo(
+    IndoorMapUtils.getMapInstance(mapId),
+    { mapId }
+  );
 
   if (mapId) {
     const points = data.map(item => item.points);

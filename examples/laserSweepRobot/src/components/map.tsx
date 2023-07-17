@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Utils, TYFlatList, IconFont, TYText } from 'tuya-panel-kit';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
+import { nativeMapStatusEnum } from '@tuya/rn-robot-map/lib/indoor-map-webview/api';
 import Strings from '@i18n';
-import LaserUIApi, { nativeMapStatusEnum } from '../api/laserUIApi';
 import MapView from './home/mapView';
 import { parseRoomId } from '../utils';
 
@@ -25,6 +26,7 @@ interface IState {
   mode: string | undefined;
   mapRoomData: any;
   selected?: number;
+  mapLoadEnd: boolean;
 }
 
 interface IroomState {
@@ -53,6 +55,7 @@ export default class MapPartition extends Component<IProps, IState> {
       disabled: props.disabled,
       mode: props.mode,
       mapRoomData: new Map(),
+      mapLoadEnd: false,
     };
   }
 
@@ -64,13 +67,17 @@ export default class MapPartition extends Component<IProps, IState> {
   }
 
   onMapId = ({ mapId }: { mapId: string }) => {
-    LaserUIApi.setLaserMapStateAndEdit({
+    LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(mapId), {
       mapId,
       state: nativeMapStatusEnum.mapSelect,
       edit: true,
     }).then(() => {
       this.setState({ mapId });
     });
+  };
+
+  onMapLoadEnd = (success: boolean) => {
+    this.setState({ mapLoadEnd: success });
   };
 
   get data() {
@@ -89,9 +96,12 @@ export default class MapPartition extends Component<IProps, IState> {
 
   getValue = async () => {
     const { mapId, mode } = this.state;
-    const { data = [] } = await LaserUIApi.getLaserMapPointsInfo({
-      mapId,
-    });
+    const { data = [] } = await LaserUIApi.getLaserMapPointsInfo(
+      IndoorMapUtils.getMapInstance(mapId),
+      {
+        mapId,
+      }
+    );
     if (!data.length) {
       return {
         mode: 'smart',
@@ -121,7 +131,7 @@ export default class MapPartition extends Component<IProps, IState> {
 
   render() {
     const { laserMapConfig, selectTags = [], fontColor, iconColor } = this.props;
-    const { disabled, mapRoomData, selected, mode } = this.state;
+    const { disabled, mapRoomData, selected, mode, mapLoadEnd } = this.state;
 
     const roomStateList: Array<IroomState> = [];
 
@@ -152,9 +162,13 @@ export default class MapPartition extends Component<IProps, IState> {
           <MapView
             mapDisplayMode="splitMap"
             config={laserMapConfig}
+            uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }}
             onMapId={this.onMapId}
+            onMapLoadEnd={this.onMapLoadEnd}
+            mapLoadEnd={mapLoadEnd}
             fontColor={fontColor}
             iconColor={iconColor}
+            pathVisible={false}
           />
         </View>
         <View style={{ flex: 1, backgroundColor: '#fff' }}>

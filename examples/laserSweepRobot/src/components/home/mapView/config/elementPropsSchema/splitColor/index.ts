@@ -1,13 +1,14 @@
-import { Interface } from '../../resourceManager';
-import { IStore, IProps } from '../interface';
-import Utils from '../../../../../protocol/utils';
+import { Interface } from '../../../resourceManager';
+import { IStore, IProps } from '../../interface';
+import Utils from '../../../../../../protocol/utils';
 
-const { convertColorToArgbHex } = Utils.PressCoordinateUtils;
+const {
+  PressCoordinateUtils: { convertColorToArgbHex },
+} = Utils;
 
 // splitColor Props生成规则
 const format = (store: IStore, configs: IProps) => {
   const { mapPartitionConfig } = configs.laserMapPanelConfig;
-
   return convertColorToArgbHex(mapPartitionConfig.partitionSplitFunc.partitionSplitColor);
 };
 

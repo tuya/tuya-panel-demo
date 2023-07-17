@@ -19,23 +19,17 @@ import Toast from '../toastModal';
 
 const { convertY: cy, width, height, iPhoneX } = Utils.RatioUtils;
 const {
-  status: workStatusCode,
   robotStatus: robotStatusCode,
   workMode: workModeCode,
   customizeModeSwitch: customizeModeSwitchCode,
 } = DPCodes;
 interface IProps {
-  devInfo: any;
+  mapId: string;
   mapStatus: number;
-  onMapId: () => void;
-  workStatus: string;
   robotStatus: string;
   workMode: string;
   customizeModeSwitch: boolean;
   panelConfig: IPanelConfig;
-  onVituralAreaAdded: () => void;
-  customConfig: () => void;
-  mapId: string;
   curPos: { x: number; y: number };
   origin: { x: number; y: number };
   pilePosition: { x: number; y: number };
@@ -45,9 +39,12 @@ interface IProps {
   iconColor: string;
 }
 
+interface IState {
+  mapLoadEnd: boolean;
+}
+
 @inject((state: any) => {
   const {
-    devInfo,
     panelConfig: { store: panelConfig = {} },
     customConfig: { store: customConfig = {} },
     dpState: { getData: dpState },
@@ -55,7 +52,6 @@ interface IProps {
     theme: { getData: theme = {} },
   } = state;
   const {
-    [workStatusCode]: workStatus,
     [robotStatusCode]: robotStatus,
     [workModeCode]: workMode,
     [customizeModeSwitchCode]: customizeModeSwitch,
@@ -63,8 +59,6 @@ interface IProps {
   const { mapId, curPos, origin, pilePosition, selectRoomData, foldableRoomIds } = mapDataState;
 
   return {
-    devInfo: devInfo.data,
-    workStatus,
     robotStatus,
     workMode,
     customizeModeSwitch,
@@ -82,8 +76,16 @@ interface IProps {
   };
 })
 @observer
-export default class HomeMapView extends Component<IProps> {
+export default class HomeMapView extends Component<IProps, IState> {
   mapRef: Ref<MapView>;
+  removeOnP2PErrorHandle: any;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mapLoadEnd: false,
+    };
+  }
 
   componentDidMount() {
     // 采用p2p 传输协议进行数据传输
@@ -91,10 +93,14 @@ export default class HomeMapView extends Component<IProps> {
     P2pAPI.connectDeviceByP2P()
       .then(() => {
         P2pAPI.startObserverSweeperDataByP2P(1);
+        if (P2pAPI.isSupportReconnectP2P()) {
+          // 添加p2p断开连接监听事件
+          this.removeOnP2PErrorHandle = P2pAPI.onP2PError();
+        }
       })
       .catch((e: any) => {
-        console.warn('connectDeviceByP2P error ===>', e);
-        P2pAPI.startObserverSweeperDataByP2P(1);
+        console.log('connectDeviceByP2P error ===>', e);
+        P2pAPI.reconnectDeviceByP2P();
       });
 
     if (!this.mapRef) return;
@@ -117,6 +123,7 @@ export default class HomeMapView extends Component<IProps> {
   }
 
   async componentWillUnmount() {
+    typeof this.removeOnP2PErrorHandle === 'function' && this.removeOnP2PErrorHandle();
     // 退出面板，销毁p2p通道
     P2pAPI.deInitP2pSDK();
   }
@@ -156,8 +163,12 @@ export default class HomeMapView extends Component<IProps> {
    * 地图唯一标识
    * @param data
    */
-  onMapId = (data: { mapId: string }) => {
-    Store.mapDataState.setData({ mapId: data.mapId });
+  onMapId = (data: { mapId: string; dataMapId: number }) => {
+    Store.mapDataState.setData({ mapId: data.mapId, dataMapId: data.dataMapId });
+  };
+
+  onMapLoadEnd = (success: boolean) => {
+    this.setState({ mapLoadEnd: success });
   };
 
   /**
@@ -168,9 +179,10 @@ export default class HomeMapView extends Component<IProps> {
     Store.mapDataState.setData({ RCTAreaList: data });
   };
 
-  onClickSplitArea = ({ data }) => {
+  onClickSplitArea = (data: any) => {
     const { selectRoomData, robotStatus } = this.props;
     if (!isRobotQuiet(robotStatus)) return;
+    if (!data || !data.length || !Array.isArray(data)) return;
     const room = data[0];
     const { pixel } = room;
     const roomId = parseRoomId(pixel);
@@ -229,6 +241,7 @@ export default class HomeMapView extends Component<IProps> {
       iconColor,
       foldableRoomIds,
     } = this.props;
+    const { mapLoadEnd } = this.state;
 
     const edit = mapStatus !== DPCodes.nativeMapStatus.normal;
     const isShowCurPosRing = isRobotQuiet(robotStatus);
@@ -244,7 +257,7 @@ export default class HomeMapView extends Component<IProps> {
       isShowCurPosRing, // 当前点ring
       isShowAppoint, // 是否显示指哪扫哪点
       isShowAreaset, // 是否显示清扫区域
-      isCustomizeMode: customizeModeSwitch,
+      isCustomizeMode: true,
       isSelectRoom: this.isSelectingRoom(), // 当前状态是否为选择
     };
 
@@ -262,9 +275,12 @@ export default class HomeMapView extends Component<IProps> {
           selectRoomData={selectRoomData}
           foldableRoomIds={foldableRoomIds}
           onMapId={this.onMapId}
+          onMapLoadEnd={this.onMapLoadEnd}
           onLaserMapPoints={this.onLaserMapPoints}
           onClickSplitArea={this.onClickSplitArea}
           onClickRoom={this.onClickRoom}
+          mapLoadEnd={mapLoadEnd}
+          pathVisible={true}
         />
       </View>
     );

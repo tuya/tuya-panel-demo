@@ -27,9 +27,14 @@ export interface IMapHeader {
   type?: number;
   bgWidth: number;
   bgHeight: number;
+  totalCount: number;
+  compressBeforeLength: number;
+  compressAfterLength: number;
   originData?: string;
 }
 export interface IStore extends ImapData {
+  dataMapId: number;
+  staticPrefix: string;
   // OSS 通道信息
   bucket: string;
 
@@ -39,6 +44,7 @@ export interface IStore extends ImapData {
     width: number;
     height: number;
     map: string;
+    originMap?: string;
     origin: { x: number; y: number };
     roomIdColorMap: string;
     roomInfo: string;
@@ -58,21 +64,22 @@ export interface IStore extends ImapData {
   // ---路径信息
   pathId: number | undefined; // 路径Id
   pathData:
-  | {
-    x: number;
-    y: number;
-    type: string;
-    hidden: boolean;
-    rate: number;
-    bgColor: string;
-    duration: number;
-    dataColors: {
-      common: string;
-      charge: string;
-      transitions: string;
-    };
-  }[]
-  | [];
+    | {
+        x: number;
+        y: number;
+        type: string;
+        hidden: boolean;
+        rate: number;
+        bgColor: string;
+        duration: number;
+        dataColors: {
+          common: string;
+          charge: string;
+          transitions: string;
+        };
+      }[]
+    | [];
+  originPathData?: string; // 原始路径数据
   totalCount: number;
   forceUpdate: boolean;
   type: string | number;
@@ -95,13 +102,14 @@ export interface IProps {
     pathLen?: number;
   };
   uiInterFace?: {
-    isEdit: boolean; // 当前地图是否可修改
-    isShowPileRing: boolean; // 是否显示禁区ring
-    isShowCurPosRing: boolean; // 当前点ring
-    isShowAppoint: boolean; // 是否显示指哪扫哪点
-    isShowAreaset: boolean; // 是否显示清扫区域
-    isCustomizeMode: boolean;
-    isSelectRoom: boolean; // 是否显示选区清扫
+    isFoldable?: boolean; // 是否是折叠样式
+    isEdit?: boolean; // 当前地图是否可修改
+    isShowPileRing?: boolean; // 是否显示禁区ring
+    isShowCurPosRing?: boolean; // 当前点ring
+    isShowAppoint?: boolean; // 是否显示指哪扫哪点
+    isShowAreaset?: boolean; // 是否显示清扫区域
+    isCustomizeMode?: boolean;
+    isSelectRoom?: boolean; // 是否显示选区清扫
   };
 
   // laserMapPanelConfig?: any,
@@ -110,6 +118,32 @@ export interface IProps {
   onLaserMapPoints?: (data: any) => void;
   onClickSplitArea?: (data: any) => void;
   onClickRoom?: (data: any) => void;
+  onLoggerInfo?: (info: string | any) => void;
+  onClickModel?: (data: {
+    info: any;
+    infoKey: string;
+    scale: number;
+    rotate: number;
+    target: number;
+    point: { x: number; y: number; z: number };
+  }) => void;
+  onModelLoadingProgress?: (data: { key: string; progress: number }) => void;
+  onMapLoadEnd?: (success: boolean) => void;
+  onClickRoomMoreProperties?: (properties: any) => void;
+  onGestureChange?: (start: boolean) => void;
+  onClickRoomProperties?: (data: any) => void;
+  onPosPoints?: (data: { data: any; type: string }) => void;
+  onClickMapView?: (data: { data: any; eventType: string }) => void;
+  onSplitLine?: (data: { data: any; type: string }) => void;
+  onScreenSnapshot?: (data: { image: string; width: number; height: number; step: string }) => void;
+  onVirtualInfoRendered?: (data: { rendered: boolean; data: { areaInfoList: any } }) => void;
+  onRenderContextLost?: (data: { info: string; timestamp: number }) => void;
+  onRenderContextRestored?: (data: { info: string; timestamp: number }) => void;
+  onContainerVisibilityChange?: (data: { info: string; timestamp: number }) => void;
+  onRobotPositionChange?: (data: {
+    position: { x: number; y: number };
+    originPosition: { x: number; y: number };
+  }) => void;
 
   // dpCodes,
   DPCodes?: any;
@@ -127,6 +161,12 @@ export interface IProps {
   foldableRoomIds?: Array<string>;
   fontColor?: string;
   iconColor?: string;
+
+  mapLoadEnd?: boolean;
+  isFreezeMap?: boolean;
+  is3d?: boolean;
+  snapshotImage?: { image: string; width: number; height: number } | undefined;
+  pathVisible?: boolean;
 }
 
 export enum mapDisplayModeEnum {
@@ -160,6 +200,7 @@ export interface IHistory {
   mapState: IDpData;
   pathState: IDpData;
   virtualState?: IDpData;
+  originPathData?: string; // 原始路径数据
 }
 
 export interface IMultiFloor {
