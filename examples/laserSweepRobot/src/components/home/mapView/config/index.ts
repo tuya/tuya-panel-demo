@@ -11,6 +11,7 @@ const {
   realTimeFullPathWithP2p,
   realTimeMapWithP2p,
   realTimePlanPathWithP2p,
+  realTimeOriginFullPathWithP2p,
   updateAuthentication,
   historyMap,
   multiFloor,
@@ -30,8 +31,7 @@ const config: Interface.IConfig = {
 const realTimeAutoTaskWithP2p = {
   realTimeArea,
   realTimeMapWithP2p,
-  realTimeFullPathWithP2p,
-  realTimePlanPathWithP2p,
+  realTimeOriginFullPathWithP2p,
 };
 
 // 历史记录
@@ -44,7 +44,6 @@ const historyTask = {
  * P2p房间分区
  */
 const splitEditMapTaskWithP2p = {
-  updateAuthentication,
   realTimeMapWithP2p,
   realTimeArea,
 };

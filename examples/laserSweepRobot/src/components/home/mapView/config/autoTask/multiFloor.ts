@@ -13,7 +13,10 @@ const { map, area } = TuyaProtocol;
 // 历史地图-任务
 const historyMap: Interface.ITask = {
   action: async (store: IStore, nextData: any, elementProps: IProps) => {
-    const { history } = elementProps;
+    const {
+      history,
+      laserMapPanelConfig: { mapConfig },
+    } = elementProps;
     if (history && (!history.file || !history.bucket)) {
       return {};
     }
@@ -30,7 +33,7 @@ const historyMap: Interface.ITask = {
           .value()
           .join('');
 
-        const mapState = map.decode(data);
+        const mapState = map.decode(data, mapConfig);
         const {
           mapHeader: { compressAfterLength, bgHeight, bgWidth, originData },
         } = mapState;

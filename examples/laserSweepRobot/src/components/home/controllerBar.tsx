@@ -11,7 +11,8 @@ import { reaction } from 'mobx';
 import _ from 'lodash';
 import Res from '@res';
 import Strings from '@i18n';
-import LaserUIApi from '../../api/laserUIApi';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
+import { mapSplitStateEnum } from '@tuya/rn-robot-map/lib/indoor-map-webview/api';
 import { DPCodes, getEnum } from '../../config';
 import { IPanelConfig } from '../../config/interface';
 import {
@@ -82,25 +83,25 @@ interface IState {
 }
 @inject((state: any) => {
   const {
-    dpState: { getData: dpState },
-    panelConfig: { store: panelConfig = {} },
-    mapDataState: { getData: mapDataState = {} },
+  dpState: { getData: dpState },
+  panelConfig: { store: panelConfig = {} },
+  mapDataState: { getData: mapDataState = {} },
   } = state;
   const { [workStatusCode]: workStatus, [robotStatusCode]: robotStatus } = dpState;
   return {
-    cleanSwitch: dpState[cleanSwitchCode],
-    mode: dpState[DPCodes.mode],
-    workMode: dpState[workModeCode],
-    pauseSwitch: dpState[pauseSwitchCode],
-    workStatus,
-    robotStatus,
-    panelConfig,
-    sweepCount: mapDataState.sweepCount,
-    mapId: mapDataState.mapId,
-    selectRoomData: mapDataState.selectRoomData,
-    origin: mapDataState.origin,
+  cleanSwitch: dpState[cleanSwitchCode],
+  mode: dpState[DPCodes.mode],
+  workMode: dpState[workModeCode],
+  pauseSwitch: dpState[pauseSwitchCode],
+  workStatus,
+  robotStatus,
+  panelConfig,
+  sweepCount: mapDataState.sweepCount,
+  mapId: mapDataState.mapId,
+  selectRoomData: mapDataState.selectRoomData,
+  origin: mapDataState.origin,
   };
-})
+  })
 @observer
 export default class ControllerBarView extends Component<IProps, IState> {
   mapScale: number;
@@ -133,12 +134,9 @@ export default class ControllerBarView extends Component<IProps, IState> {
         }
         if (!cleanSwitch || !this.props.mapId) return;
         if (
-          [
-            robotIsPointPause,
-            robotIsPointArrived,
-            robotIsPointUnarrived,
-            robotIsPartPause,
-          ].some(fn => fn(workMode, robotStatus))
+          [robotIsPointPause, robotIsPointArrived, robotIsPointUnarrived, robotIsPartPause].some(
+            fn => fn(workMode, robotStatus)
+          )
         ) {
           this.props.setMapStatus(DPCodes.nativeMapStatus.pressToRun);
         }
@@ -147,9 +145,9 @@ export default class ControllerBarView extends Component<IProps, IState> {
         }
         if ([robotIsSelectRoomPaused, robotIsSelectRoom].some(fn => fn(workMode, robotStatus))) {
           await this.props.setMapStatus(DPCodes.nativeMapStatus.mapClick, true);
-          await LaserUIApi.setLaserMapSplitType({
+          await LaserUIApi.setLaserMapSplitType(IndoorMapUtils.getMapInstance(this.props.mapId), {
             mapId: this.props.mapId,
-            state: LaserUIApi.mapSplitStateEnum.click,
+            state: mapSplitStateEnum.click,
           });
           TYSdk.device.putDeviceData({
             [DPCodes.commText]: getRoomClean(),
@@ -256,7 +254,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
         Strings.getLang('shouldOff'),
         Strings.getLang('offTip'),
         async () => await fun(),
-        () => { }
+        () => {}
       );
     }
   };
@@ -285,7 +283,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
   createLimitByNum = async (data: Array<any>, num = 8, tip: string) => {
     try {
       if (data.length > num) {
-        TYSdk.mobile.simpleTipDialog(Strings.formatValue(tip, num), () => { });
+        TYSdk.mobile.simpleTipDialog(Strings.formatValue(tip, num), () => {});
         return true;
       }
       return false;
@@ -307,7 +305,10 @@ export default class ControllerBarView extends Component<IProps, IState> {
         },
         selectAreaConfig: { selectAreaMaxNum },
       } = panelConfig;
-      const { data } = await LaserUIApi.getLaserMapPointsInfo({ mapId });
+      const { data } = await LaserUIApi.getLaserMapPointsInfo(
+        IndoorMapUtils.getMapInstance(mapId),
+        { mapId }
+      );
       let countLimit = false;
       switch (mapStatus) {
         case DPCodes.nativeMapStatus.virtualArea:
@@ -358,7 +359,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
       }
       putFn();
     } catch (error) {
-      TYSdk.mobile.simpleTipDialog(Strings.getLang('pleaseSetPoint'), () => { });
+      TYSdk.mobile.simpleTipDialog(Strings.getLang('pleaseSetPoint'), () => {});
       throw error;
     }
   };
@@ -532,7 +533,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
     try {
       if (selectRoomData.length >= 32) return; // 不能超过32个房间
       if (selectRoomData.length === 0) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('pleaseSelectRoom'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('pleaseSelectRoom'), () => {});
       }
       const data = encodeRoomClean(selectRoomData, sweepCount);
       TYSdk.device.putDeviceData({ [DPCodes.commText]: data });
@@ -638,7 +639,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
           () => {
             TYSdk.device.putDeviceData({ [chargeSwitchCode]: true });
           },
-          () => { }
+          () => {}
         );
       }
       // TYSdk.device.putDeviceData({ [chargeSwitchCode]: true });
@@ -661,7 +662,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
           () => {
             TYSdk.device.putDeviceData(cmd);
           },
-          () => { }
+          () => {}
         );
       }
     }
@@ -672,9 +673,9 @@ export default class ControllerBarView extends Component<IProps, IState> {
     const isSelectroom = mapStatus === DPCodes.nativeMapStatus.mapClick;
     await setMapStatus(mapStatus, true);
     isSelectroom &&
-      (await LaserUIApi.setLaserMapSplitType({
+      (await LaserUIApi.setLaserMapSplitType(IndoorMapUtils.getMapInstance(mapId), {
         mapId,
-        state: LaserUIApi.mapSplitStateEnum.click,
+        state: mapSplitStateEnum.click,
       }));
   };
 
@@ -696,7 +697,7 @@ export default class ControllerBarView extends Component<IProps, IState> {
       selectAreaConfig: { selectAreaAvailable },
     } = panelConfig || {};
 
-    function loop() { }
+    function loop() {}
 
     function autorunIsStart(status: string) {
       return status !== pause && (status === totaling || status === totalingStandard);
@@ -785,15 +786,8 @@ export default class ControllerBarView extends Component<IProps, IState> {
 
   renderContentByMapStatus = (mapStatus: number) => {
     const { workMode, robotStatus, cleanSwitch } = this.props;
-    const {
-      virtualArea,
-      virtualWall,
-      normal,
-      pressToRun,
-      areaSet,
-      selectRoom,
-      mapClick,
-    } = DPCodes.nativeMapStatus;
+    const { virtualArea, virtualWall, normal, pressToRun, areaSet, selectRoom, mapClick } =
+      DPCodes.nativeMapStatus;
     if (
       cleanSwitch &&
       [

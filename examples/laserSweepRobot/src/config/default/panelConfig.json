@@ -597,12 +597,117 @@
       "ringMaxRate": {
         "type": "number",
         "desc": "圈最大放大倍数",
-        "value": 2
+        "value": 1.5
       },
       "ringDuration": {
         "type": "number",
         "desc": "呼吸圈动画频率",
-        "value": 1
+        "value": 2
+      }
+    },
+    "mapConfig": {
+      "mapColor": {
+        "cleaningColor": {
+          "type": "color",
+          "desc": "可清扫区/无障碍区",
+          "value": "#D0D0D0"
+        },
+        "obstacleColor": {
+          "type": "color",
+          "desc": "障碍物",
+          "value": "rgba(0, 0, 0, 0.19)"
+        },
+        "unknownColor": {
+          "type": "color",
+          "desc": "未知区/背景",
+          "value": "rgba(255,255,255,0)"
+        },
+        "room60Color": {
+          "type": "color",
+          "desc": "60号房间",
+          "value": "#D0D0D0"
+        },
+        "room61Color": {
+          "type": "color",
+          "desc": "61号房间",
+          "value": "#D0D0D1"
+        },
+        "room62Color": {
+          "type": "color",
+          "desc": "62号房间",
+          "value": "#D0D0D2"
+        },
+        "room63Color": {
+          "type": "color",
+          "desc": "63号房间",
+          "value": "#D0D0D3"
+        }
+      },
+      "originMapColor": {
+        "desc": "分区颜色",
+        "type": "enum",
+        "value": [
+          "#F9424F",
+          "#FDD02B",
+          "#46A890",
+          "#208CFF",
+          "#FA7A80",
+          "#A8E772",
+          "#49F9CA",
+          "#7CF8FF",
+          "#F3A0A4",
+          "#79E420",
+          "#65EAF3",
+          "#A188F8",
+          "#F8C6A1",
+          "#BCFF83",
+          "#5CDBFA",
+          "#EEBAFC"
+        ],
+      },
+      "highlightMapColor": {
+        "desc": "分区高亮颜色",
+        "type": "enum",
+        "value": [
+          "#FF0012",
+          "#FFC800",
+          "#00A57C",
+          "#007BFF",
+          "#FF2832",
+          "#9AFF44",
+          "#00FFBA",
+          "#00F1FF",
+          "#D85258",
+          "#75FF00",
+          "#37F2FF",
+          "#7B56FF",
+          "#F9964E",
+          "#93FF39",
+          "#00CDFF",
+          "#C900FF"
+        ]
+      },
+      "grayMapColor": {
+        "desc": "分区黑白色",
+        "type": "enum",
+        "value": [
+          "#E8E8E8",
+          "#D2D2D2",
+          "#B4B4B4",
+          "#A8A8A8",
+          "#818181",
+          "#787878",
+          "#676767",
+          "#4E4E4E",
+          "#CEB7B7",
+          "#A08989",
+          "#886E6E",
+          "#5E4B4B",
+          "#5A4242",
+          "#7B5454",
+          "#4B2F2F",
+          "#3E2323"
+        ]
       }
     },
     "pathConfig": {

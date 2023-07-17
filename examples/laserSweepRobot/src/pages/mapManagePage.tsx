@@ -19,6 +19,7 @@ import { IPanelConfig } from '../config/interface';
 import { encodeSaveMap, encodeUseMap, encodeDeleteMap } from '../utils';
 import MapView from '../components/home/mapView';
 import { Api } from '../components/home/mapView/resourceManager';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 
 
 const {
@@ -209,12 +210,14 @@ interface ICardProps {
 
 interface ICardState {
   loading: boolean;
+  mapLoadEnd: boolean;
   [index: string]: boolean;
 }
 
 type CardMapType = 'save' | 'delete' | 'use';
 // tslint:disable-next-line: max-classes-per-file
 class Card extends Component<ICardProps, ICardState> {
+  mapId = '';
   static defaultProps = {
     isCurrent: false,
     panelConfig: {},
@@ -226,6 +229,34 @@ class Card extends Component<ICardProps, ICardState> {
     saveLoading: false,
     deleteLoading: false,
     useLoading: false,
+    mapLoadEnd: false,
+    snapshotImage: undefined,
+  };
+
+  onMapId = (data: { mapId: string, dataMapId: string }) => {
+    this.mapId = data.mapId;
+  }
+
+  onMapLoadEnd = (success: boolean) => {
+    this.setState({ mapLoadEnd: success });
+  }
+
+  onVirtualInfoRendered = (data: {rendered: boolean,  data: { areaInfoList: any }}) => {
+    const { rendered } = data;
+    console.log('onVirtualInfoRendered interval', this.mapId, data);
+    setTimeout(() => {
+      if (rendered && this.mapId) {
+        LaserUIApi.getCurrentScreenSnapshot(IndoorMapUtils.getMapInstance(this.mapId)).then((snapshotImage: any) => {
+          console.log('onVirtualInfoRendered snapshotImage', snapshotImage);
+          if (snapshotImage && snapshotImage.image) {
+            this.setState({ snapshotImage, mapLoadEnd: true });
+          }
+        }).catch(e => {
+          console.log('onVirtualInfoRendered error', e);
+          this.setState({ mapLoadEnd: true });
+        });
+      }
+    }, 1000);
   };
 
   showLoading = (type: CardMapType) => {
@@ -375,7 +406,7 @@ class Card extends Component<ICardProps, ICardState> {
 
   render() {
     const { bucket, file, title, time, isCurrent, panelConfig } = this.props;
-
+    const { mapLoadEnd, snapshotImage } = this.state;
 
     return (
       <View style={styles.card}>
@@ -386,11 +417,16 @@ class Card extends Component<ICardProps, ICardState> {
         <View style={styles.divider} />
         <View style={styles.cardMap} pointerEvents="none">
           {isCurrent ? (
-            <MapView mapDisplayMode="splitMap" config={panelConfig} />
+            <MapView uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }} pathVisible={false}  mapDisplayMode="splitMap" config={panelConfig} onMapLoadEnd={this.onMapLoadEnd} mapLoadEnd={mapLoadEnd}  />
           ) : (
             <MapView
               mapDisplayMode="multiFloor"
               config={panelConfig}
+              pathVisible={false}  
+              uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }}
+              onMapId={this.onMapId} 
+              mapLoadEnd={mapLoadEnd}
+              snapshotImage={snapshotImage}
               history={{
                 bucket,
                 file,

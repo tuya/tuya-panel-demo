@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { observer, inject } from 'mobx-react';
 import { Utils } from 'tuya-panel-kit';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 import Strings from '@i18n';
-import LaserUIApi from '../api/laserUIApi';
 import HomeTopView from '../components/home/homeTopView';
 import HomeMapView from '../components/home/homeMapView';
 import HomeBottomView from '../components/home/homeBottomView';
@@ -67,7 +67,7 @@ export default class MainLayout extends Component<IProps, IState> {
 
   setMapStatus = async (status: number, edit?: boolean) => {
     const { mapId } = this.props;
-    await LaserUIApi.setLaserMapStateAndEdit({
+    await LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(mapId), {
       state: status,
       mapId,
       edit: edit || false,

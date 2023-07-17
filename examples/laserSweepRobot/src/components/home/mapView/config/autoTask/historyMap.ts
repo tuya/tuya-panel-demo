@@ -12,7 +12,10 @@ const { map, path, area } = TuyaProtocol;
 // 历史地图-任务
 const historyMap: Interface.ITask = {
   action: async (store: IStore, nextData: any, elementProps: IProps) => {
-    const { history } = elementProps;
+    const {
+      history,
+      laserMapPanelConfig: { mapConfig },
+    } = elementProps;
     if (history && (!history.file || !history.bucket)) return {};
     const { bucket, file, mapLen = 0, pathLen = 0 } = history;
     const url = await Api.OSSAPI.getCloudFileUrl(bucket, file);
@@ -31,21 +34,23 @@ const historyMap: Interface.ITask = {
         const mapData = data.slice(0, mapStrLength);
         const pathData = data.slice(mapStrLength, mapStrLength + pathStrLength);
         const virtualData = data.slice(mapStrLength + pathStrLength);
-        const mapState = map.decode(mapData);
+        const mapState = map.decode(mapData, mapConfig);
         const pathState = path.decode(pathData);
         const virtualState = area.decode(virtualData);
         return {
           mapState,
-          pathState,
+          // pathState,
+          originPathData: pathData,
           virtualState,
         };
       }
     });
-    const { mapState, pathState, virtualState } = nextMap;
+    const { mapState, pathState, originPathData, virtualState } = nextMap;
     return _.omitBy(
       {
         ...mapState,
-        ...pathState,
+        // ...pathState,
+        originPathData,
         ...virtualState,
       },
       _.isNil

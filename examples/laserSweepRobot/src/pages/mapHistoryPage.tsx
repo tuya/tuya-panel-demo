@@ -31,7 +31,13 @@ export default class MapHistory extends Component<any, any> {
 
   constructor(props: any) {
     super(props);
-    this.state = {};
+    this.state = {
+      mapLoadEnd: false,
+    };
+  }
+
+  onMapLoadEnd = (success: boolean) => {
+    this.setState({ mapLoadEnd: success });
   }
 
   getTopData = () => {
@@ -72,6 +78,7 @@ export default class MapHistory extends Component<any, any> {
 
   render() {
     const { panelConfig, history, bucket, fontColor, iconColor } = this.props;
+    const { mapLoadEnd } = this.state;
     return (
       <View style={styles.container}>
         <MapView
@@ -80,6 +87,9 @@ export default class MapHistory extends Component<any, any> {
           config={panelConfig}
           fontColor={fontColor}
           iconColor={iconColor}
+          onMapLoadEnd={this.onMapLoadEnd}
+          mapLoadEnd={mapLoadEnd}
+          pathVisible={true}
         />
         <View style={styles.topContainer}>
           {this.getTopData().map((d, k) => {

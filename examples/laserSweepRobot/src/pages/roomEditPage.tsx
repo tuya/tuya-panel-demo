@@ -3,9 +3,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Utils, TYSdk, TYText } from 'tuya-panel-kit';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
+import { mapSplitStateEnum } from '@tuya/rn-robot-map/lib/indoor-map-webview/api';
 import { observer, inject } from 'mobx-react';
 import Strings from '@i18n';
-import LaserUIApi from '../api/laserUIApi';
 import { createDpValue$ } from '../protocol/utils';
 import { Button, Rename, Toast } from '../components';
 import store from '../store';
@@ -96,8 +97,9 @@ export default class RoomEdit extends Component<any, any> {
       tip: '',
       showRenameModal: false,
       roomIdHexState: '',
-      previewCustom: {},
+      previewCustom: [],
       bottomBtnLen: 6,
+      mapLoadEnd: false,
     };
   }
 
@@ -117,7 +119,7 @@ export default class RoomEdit extends Component<any, any> {
           const curData = Object.assign(customConfig, previewCustom);
           store.customConfig.setCustomConfig(curData);
           this.setState({
-            previewCustom: {},
+            previewCustom: [],
           });
           TYSdk.mobile.hideLoading();
           this.timer && clearTimeout(this.timer);
@@ -166,7 +168,7 @@ export default class RoomEdit extends Component<any, any> {
       TYSdk.mobile.hideLoading();
       store.customConfig.clearCustomConfig();
       this.setState({
-        previewCustom: {},
+        previewCustom: [],
       });
     }, 20000);
   };
@@ -177,18 +179,11 @@ export default class RoomEdit extends Component<any, any> {
    */
   calculeCount() {
     const { panelConfig } = this.props;
-    const {
-      partitionMergeAvailable,
-      partitionSplitFunc,
-      partitionResetAvailable,
-    } = panelConfig.mapPartitionConfig;
+    const { partitionMergeAvailable, partitionSplitFunc, partitionResetAvailable } =
+      panelConfig.mapPartitionConfig;
     const { partitionRename } = panelConfig.nameConfig;
-    const {
-      attributesFan,
-      attributesOrder,
-      attributesTimes,
-      attributesWater,
-    } = panelConfig.attributesConfig;
+    const { attributesFan, attributesOrder, attributesTimes, attributesWater } =
+      panelConfig.attributesConfig;
     const arr = [
       partitionMergeAvailable,
       partitionSplitFunc.partitionSplitAvaiable,
@@ -196,8 +191,8 @@ export default class RoomEdit extends Component<any, any> {
       partitionRename,
       attributesOrder.attributesOrderSet,
       attributesFan.attributesFanSet ||
-      attributesWater.attributesWaterSet ||
-      attributesTimes.attributesTimesSet,
+        attributesWater.attributesWaterSet ||
+        attributesTimes.attributesTimesSet,
     ];
     this.setState({
       bottomBtnLen: arr.filter(i => i).length,
@@ -208,16 +203,20 @@ export default class RoomEdit extends Component<any, any> {
     this.appMapId = data.mapId;
   };
 
+  onMapLoadEnd = (success: boolean) => {
+    this.setState({ mapLoadEnd: success });
+  };
+
   handleSplit = async () => {
     try {
-      await LaserUIApi.setLaserMapStateAndEdit({
+      await LaserUIApi.setLaserMapSplitType(IndoorMapUtils.getMapInstance(this.appMapId), {
+        mapId: this.appMapId,
+        state: mapSplitStateEnum.split,
+      });
+      await LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(this.appMapId), {
         state: 5,
         mapId: this.appMapId,
         edit: true,
-      });
-      await LaserUIApi.setLaserMapSplitType({
-        mapId: this.appMapId,
-        state: LaserUIApi.mapSplitStateEnum.split,
       });
     } catch (error) {
       console.warn(error);
@@ -225,26 +224,26 @@ export default class RoomEdit extends Component<any, any> {
   };
 
   handleMerge = async () => {
-    await LaserUIApi.setLaserMapStateAndEdit({
+    await LaserUIApi.setLaserMapSplitType(IndoorMapUtils.getMapInstance(this.appMapId), {
+      state: mapSplitStateEnum.merge,
+      mapId: this.appMapId,
+    });
+    await LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(this.appMapId), {
       state: 5,
       mapId: this.appMapId,
       edit: true,
-    });
-    await LaserUIApi.setLaserMapSplitType({
-      state: LaserUIApi.mapSplitStateEnum.merge,
-      mapId: this.appMapId,
     });
   };
 
   handleRename = async () => {
-    await LaserUIApi.setLaserMapStateAndEdit({
+    await LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(this.appMapId), {
       mapId: this.appMapId,
       state: 5,
-      edit: true,
+      edit: false, // 这里需要设置edit 为false
     });
-    await LaserUIApi.setLaserMapSplitType({
+    await LaserUIApi.setLaserMapSplitType(IndoorMapUtils.getMapInstance(this.appMapId), {
       mapId: this.appMapId,
-      state: LaserUIApi.mapSplitStateEnum.click,
+      state: mapSplitStateEnum.click,
     });
   };
 
@@ -252,7 +251,7 @@ export default class RoomEdit extends Component<any, any> {
    * 使地图处于可编辑状态
    */
   handleReorder = async () => {
-    await LaserUIApi.setLaserMapStateAndEdit({
+    await LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(this.appMapId), {
       state: 6,
       mapId: this.appMapId,
       edit: true,
@@ -271,8 +270,7 @@ export default class RoomEdit extends Component<any, any> {
   handleCustomRoom = (firstRoom: { pixel: string; extend: string }) => {
     const { navigation } = this.props;
     const { pixel, extend } = firstRoom;
-    const extendJson = extend ? JSON.parse(extend) : {};
-    const { y_mode = '0', fan = '1', water_level = '1', sweep_count = '1' } = extendJson;
+    const { y_mode = '0', fan = '1', water_level = '1', sweep_count = '1' } = extend;
     const { previewCustom } = this.state;
     const room = previewCustom[pixel] || {};
     const curRoom = {
@@ -327,27 +325,30 @@ export default class RoomEdit extends Component<any, any> {
   // };
 
   handleReset = async () => {
-    await LaserUIApi.setLaserMapSplitType({
+    await LaserUIApi.setLaserMapSplitType(IndoorMapUtils.getMapInstance(this.appMapId), {
       mapId: this.appMapId,
-      state: LaserUIApi.mapSplitStateEnum.normal,
+      state: mapSplitStateEnum.normal,
     });
   };
 
   handleSplitOk = async () => {
     const { origin } = this.props;
     try {
-      const res: any = await LaserUIApi.getLaserMapSplitPoint({
-        mapId: this.appMapId,
-      });
+      const res: any = await LaserUIApi.getLaserMapSplitPoint(
+        IndoorMapUtils.getMapInstance(this.appMapId),
+        {
+          mapId: this.appMapId,
+        }
+      );
       const {
         type,
         data: [{ points, pixel }],
       } = res;
       const roomId = parseRoomId(pixel);
       if (!roomId) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('pleaseSelectRoom'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('pleaseSelectRoom'), () => {});
       }
-      if (type === LaserUIApi.mapSplitStateEnum.split) {
+      if (type === mapSplitStateEnum.split) {
         const data = encodeRoomSplit(roomId, points, origin);
         TYSdk.device.putDeviceData({ [DPCodes.commText]: data });
         this.startLoading();
@@ -361,16 +362,19 @@ export default class RoomEdit extends Component<any, any> {
   handleMergeOk = async () => {
     const { roomInfo } = this.props;
     try {
-      const res: any = await LaserUIApi.getLaserMapSplitPoint({
-        mapId: this.appMapId,
-      });
+      const res: any = await LaserUIApi.getLaserMapSplitPoint(
+        IndoorMapUtils.getMapInstance(this.appMapId),
+        {
+          mapId: this.appMapId,
+        }
+      );
       const { type, data } = res;
       const roomIds = data.map((room: { pixel: string }) => parseRoomId(room.pixel));
       if (roomIds.length !== 2) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_merge_count_error'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_merge_count_error'), () => {});
       }
       if (roomIds.some((roomId: number) => roomId > 31)) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => {});
       }
       const vertexDataArr = data.map((room: { pixel: string }) => {
         if (roomInfo && roomInfo[room.pixel] && roomInfo[room.pixel].vertexData) {
@@ -379,9 +383,9 @@ export default class RoomEdit extends Component<any, any> {
       });
 
       if (!isBorder(vertexDataArr[0], vertexDataArr[1])) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_merge_board_error'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_merge_board_error'), () => {});
       }
-      if (type === LaserUIApi.mapSplitStateEnum.merge) {
+      if (type === mapSplitStateEnum.merge) {
         const encodedData = encodeRoomMerge(roomIds);
         TYSdk.device.putDeviceData({ [DPCodes.commText]: encodedData });
         this.startLoading();
@@ -401,10 +405,10 @@ export default class RoomEdit extends Component<any, any> {
       const customKeys = Object.keys(previewCustom);
 
       if (customKeys.some(key => parseRoomId(key) > 31)) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => {});
       }
       if (customKeys.some(key => stringToByte(previewCustom[key]).length > 18)) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('name_too_long'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('name_too_long'), () => {});
       }
       this.startLoading();
       const data = encodeRoomName(previewCustom);
@@ -420,7 +424,7 @@ export default class RoomEdit extends Component<any, any> {
       const { previewCustom } = this.state;
       const customKeys = Object.keys(previewCustom);
       if (customKeys.some(key => parseRoomId(key) > 31)) {
-        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => { });
+        return TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => {});
       }
       this.startLoading();
       const data = encodeRoomCustom(previewCustom);
@@ -436,10 +440,14 @@ export default class RoomEdit extends Component<any, any> {
    */
   handleRoomOrderOk = async () => {
     try {
-      const points = await LaserUIApi.getLaserMapPointsInfo({
-        mapId: this.appMapId,
-      });
+      const points = await LaserUIApi.getLaserMapPointsInfo(
+        IndoorMapUtils.getMapInstance(this.appMapId),
+        {
+          mapId: this.appMapId,
+        }
+      );
 
+      console.log('handleRoomOrderOk', points);
       const orderArr =
         Array.isArray(points.data) &&
         points.data.sort((a: { order }, b: { order }) => a.order - b.order).map(itm => itm.pixel);
@@ -454,7 +462,7 @@ export default class RoomEdit extends Component<any, any> {
 
   handleCancelStep = () => {
     this.handleResetStep();
-    this.setState({ previewCustom: {} });
+    this.setState({ previewCustom: [] });
   };
 
   handleResetStep = () => {
@@ -463,7 +471,7 @@ export default class RoomEdit extends Component<any, any> {
   };
 
   handleResetOrder = async () => {
-    await LaserUIApi.setLaserMapStateAndEdit({
+    await LaserUIApi.setLaserMapStateAndEdit(IndoorMapUtils.getMapInstance(this.appMapId), {
       state: 0,
       mapId: this.appMapId,
       edit: false,
@@ -529,18 +537,11 @@ export default class RoomEdit extends Component<any, any> {
   renderCommonAction = () => {
     // mapPartitionMergeFunc等均为后台配置属性，false不支持操作
     const { panelConfig } = this.props;
-    const {
-      partitionMergeAvailable,
-      partitionSplitFunc,
-      partitionResetAvailable,
-    } = panelConfig.mapPartitionConfig;
+    const { partitionMergeAvailable, partitionSplitFunc, partitionResetAvailable } =
+      panelConfig.mapPartitionConfig;
     const { partitionRename } = panelConfig.nameConfig;
-    const {
-      attributesFan,
-      attributesOrder,
-      attributesTimes,
-      attributesWater,
-    } = panelConfig.attributesConfig;
+    const { attributesFan, attributesOrder, attributesTimes, attributesWater } =
+      panelConfig.attributesConfig;
 
     const data = [
       {
@@ -657,14 +658,16 @@ export default class RoomEdit extends Component<any, any> {
     });
   };
 
-  onClickSplitArea = ({ data }) => {
+  onClickSplitArea = (data: any) => {
     const { status } = this.state;
-    if (!data && !data.length && !Array.isArray(data)) return;
-    const [firstRoom] = data;
+    let firstRoom = data;
+    if (Array.isArray(data)) {
+      firstRoom = data[0];
+    }
     const { pixel } = firstRoom;
     const roomId = parseRoomId(pixel);
     if (roomId >= 32) {
-      TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => { });
+      TYSdk.mobile.simpleTipDialog(Strings.getLang('home_selectRoom_unknown'), () => {});
     } else {
       switch (status) {
         case roomEditStatusEnum.reName:
@@ -681,7 +684,7 @@ export default class RoomEdit extends Component<any, any> {
 
   render() {
     const { panelConfig, fontColor, iconColor, customConfig } = this.props;
-    const { previewCustom, showRenameModal, status, bottomBtnLen, tip } = this.state;
+    const { previewCustom, showRenameModal, status, bottomBtnLen, tip, mapLoadEnd } = this.state;
     const { partitionNameEnum } = panelConfig.nameConfig;
     return (
       <View style={styles.flex1}>
@@ -697,12 +700,16 @@ export default class RoomEdit extends Component<any, any> {
             mapDisplayMode="splitMap"
             config={panelConfig}
             // 修改后存储的临时数据
+            uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }}
             preCustomConfig={previewCustom}
             customConfig={customConfig} // 修改成功后属性
             onMapId={this.handleMapId}
+            onMapLoadEnd={this.onMapLoadEnd}
+            mapLoadEnd={mapLoadEnd}
             onClickSplitArea={this.onClickSplitArea}
             fontColor={fontColor}
             iconColor={iconColor}
+            pathVisible={false}
           />
         </View>
         <View
@@ -734,12 +741,13 @@ export default class RoomEdit extends Component<any, any> {
               previewCustom: curData,
             });
           }}
-          onCancle={() =>
+          onCancle={() => {
             this.setState({
               status: 0,
               tip: '',
               showRenameModal: false,
-            })}
+            });
+          }}
         />
       </View>
     );

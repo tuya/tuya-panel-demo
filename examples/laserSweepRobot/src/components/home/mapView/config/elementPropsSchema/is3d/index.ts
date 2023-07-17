@@ -1,18 +1,19 @@
 import { Interface } from '../../../resourceManager';
 import { IStore, IProps } from '../../interface';
 
-// hasTypeMap Props生成规则
+// is3d
 const format = (store: IStore, configs: IProps) => {
-  return true;
+  return false;
 };
 
 const validate = (value: any) => {
-  return !!value;
+  if (value === undefined) return false;
+  return true;
 };
 
-const hasTypeMap: Interface.IElementProps = {
+const is3d: Interface.IElementProps = {
   format,
   validate,
 };
 
-export default hasTypeMap;
+export default is3d;

@@ -1,6 +1,8 @@
 /* eslint-disable no-lone-blocks */
 import { Utils } from 'tuya-panel-kit';
 import _ from 'lodash';
+import tinycolor from 'tinycolor2';
+import { toFixed16 } from 'protocol/utils/robotUtil';
 import { scaleNumber } from '../utils';
 import { convertColorToArgbDEC } from '../utils/pressCoordinateUtil';
 
@@ -17,6 +19,42 @@ export const bitmapTypeMap = {
   barrier: '01', // 障碍点
   battery: '10', // 充电桩
   unknown: '11', // 未知区域
+};
+export const bitmapTypeMapReflection = {
+  '00': 'sweep',
+  '01': 'barrier',
+  '10': 'battery',
+  '11': 'unknown',
+  '111': 'sweep',
+  '001': 'barrier',
+  '000': 'unknown',
+  '010': 'carpet',
+};
+
+/**
+ * 高五位 低三位的数据
+ */
+export const bitmapTypeMapV2 = {
+  sweep: '111', // 清扫点
+  barrier: '001', // 障碍点
+  carpet: '010', // 地毯
+  unknown: '000', // 未知区域
+};
+
+/**
+ * 地图数据对应的类型点Hex
+ */
+export const bitmapTypeHexMap = {
+  '00': '00', // 清扫点
+  '01': 'f1', // 障碍点
+  '10': 'f2', // 充电桩
+  '11': 'ff', // 未知区域
+};
+
+export const bitmapTypeFloorMaterial = {
+  carpet: '00', // 地毯
+  tile: '01', // 瓷砖
+  wooden: '02', // 木质
 };
 
 export const fileTypeMap = {
@@ -92,34 +130,54 @@ export const colorGrayMap = [
   '#3E2323',
 ];
 
-function createHouseColorMap(count: number, colors: string[]) {
-  function getColor(step: number, color: string) {
-    const [h, s, v] = ColorUtils.hex2hsv(color);
-    return ColorUtils.hsv2hex(h, s, v - step);
+export const createHouseColorMap = (
+  version: number,
+  count: number,
+  colors: string[],
+  room1Color?: string,
+  room2Color?: string,
+  room3Color?: string,
+  room4Color?: string
+) => {
+  let room1 = '#D0D0D0';
+  if (tinycolor(room1Color).isValid()) {
+    room1 = tinycolor(room1Color).toHexString();
+  }
+  let room2 = '#D0D0D1';
+  if (tinycolor(room2Color).isValid()) {
+    room2 = tinycolor(room2Color).toHexString();
+  }
+  let room3 = '#D0D0D2';
+  if (tinycolor(room3Color).isValid()) {
+    room3 = tinycolor(room3Color).toHexString();
+  }
+  let room4 = '#D0D0D3';
+  if (tinycolor(room4Color).isValid()) {
+    room4 = tinycolor(room4Color).toHexString();
   }
   const map = new Map();
-  let step = 0; // 第几圈
-  const counts = colors.length; // 一圈有多少数量
+  const counts = colors.length; // 一共有多少种颜色(默认16)
   for (let index = 0; index < count; index++) {
-    const hex = getColor(step, colors[index % counts]);
+    const hex = colors[index % counts];
     const id = index;
     map.set(id, hex);
-    if (index % counts === 0) step += 1;
   }
-  {
-    map.set(60, '#D0D0D0');
-    map.set(61, '#D0D0D1');
-    map.set(62, '#D0D0D2');
-    map.set(63, '#D0D0D3');
+  if (version !== 2) {
+    map.set(60, room1);
+    map.set(61, room2);
+    map.set(62, room3);
+    map.set(63, room4);
+  } else {
+    map.set(28, room1);
+    map.set(29, room2);
+    map.set(30, room3);
+    map.set(31, room4);
   }
   return map;
-}
+};
 
 export const unknownAreaId = [60, 61, 62, 63];
-
-export const houseColorMap = createHouseColorMap(MAX_ID_NUM, colorOriginMap);
-export const houseHighlightColorMap = createHouseColorMap(MAX_ID_NUM, colorHighlightMap);
-export const houseGrayColorMap = createHouseColorMap(MAX_ID_NUM, colorGrayMap);
+export const unknownAreaIdV2 = [28, 29, 30, 31];
 
 // 解析地图框数据的type
 export const areaTypeMap = {
@@ -145,13 +203,48 @@ export enum ForbidTypeEnum {
   mop = 'mop',
 }
 
-export function dealPointsColor(type: string) {
-  const [sweep, barrier, unknown, battery] = pointsColor;
+/**
+ * 转化为#00000000形式的颜色数据
+ * @param color
+ * @returns
+ */
+export const toCMYKColor = (color: string) => {
+  if (tinycolor(color).isValid()) {
+    const rgb = tinycolor(color).toHex8().slice(0, 6);
+    const alpha = toFixed16(Math.round(tinycolor(color).getAlpha() * 255));
+    const colorHex = `#${alpha}${rgb}`;
+    return colorHex.toUpperCase();
+  }
+  return false;
+};
+
+export function dealPointsColor(
+  type: string,
+  sweepColor?: string,
+  barrierColor?: string,
+  unknownColor?: string
+) {
+  const [sweep, barrier, unknown] = pointsColor;
   const mapColor = {
-    [bitmapTypeMap.sweep]: sweep,
-    [bitmapTypeMap.barrier]: barrier,
-    [bitmapTypeMap.battery]: battery,
-    [bitmapTypeMap.unknown]: unknown,
+    [bitmapTypeMap.sweep]: toCMYKColor(sweepColor) || sweep,
+    [bitmapTypeMap.barrier]: toCMYKColor(barrierColor) || barrier,
+    [bitmapTypeMap.unknown]: toCMYKColor(unknownColor) || unknown,
+  };
+  return mapColor[type] || sweep;
+}
+
+export function dealPointsColorV2(
+  type: string,
+  sweepColor?: string,
+  barrierColor?: string,
+  unknownColor?: string
+) {
+  const [sweep, barrier, unknown] = pointsColor;
+  const mapColor = {
+    [bitmapTypeMapV2.sweep]: toCMYKColor(sweepColor) || sweep,
+    [bitmapTypeMapV2.barrier]: toCMYKColor(barrierColor) || barrier,
+    [bitmapTypeMapV2.unknown]: toCMYKColor(unknownColor) || unknown,
+    [bitmapTypeMapV2.carpet]: toCMYKColor(sweepColor) || sweep,
   };
   return mapColor[type] || sweep;
 }

@@ -50,6 +50,8 @@ const composeLayout = (store, component) => {
           store.devInfo.changeDevInfo(data);
           store.dpState.initDpState(data.state);
         });
+        // 更新静态资源信息
+        store.devInfo.setStaticPrefix(props.devInfo);
         // eslint-disable-next-line
       } else if (props.preload) {
         // do something

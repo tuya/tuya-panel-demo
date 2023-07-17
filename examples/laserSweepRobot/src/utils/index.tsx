@@ -4,8 +4,8 @@
 import { TYSdk, Modal, Utils as NativeUtils } from 'tuya-panel-kit';
 import React from 'react';
 import _ from 'lodash';
+import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 import Utils from '../protocol/utils';
-import LaserUIApi from '../api/laserUIApi';
 import ListModalView from '../components/listModalView';
 import { DPCodes } from '../config';
 
@@ -717,7 +717,10 @@ export async function isForbiddenZonePointsInPile(
  */
 async function getMapPointsCompatibleWiltV1(opts = {}) {
   const { mapId } = opts;
-  const { data = [] } = await LaserUIApi.getLaserMapPointsInfo({ mapId });
+  const { data = [] } = await LaserUIApi.getLaserMapPointsInfo(
+    IndoorMapUtils.getMapInstance(mapId),
+    { mapId }
+  );
 
   if (mapId) {
     const points = data.map((item: any) => item.points);
@@ -1016,7 +1019,7 @@ function lineSpace(x1: number, y1: number, x2: number, y2: number) {
  * @param x
  * @param y
  */
-export const deepEqual = function (x: any, y: any) {
+export const deepEqual = function(x: any, y: any) {
   // 指向同一内存时
   if (x === y) {
     return true;

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { View, Image } from 'react-native';
 import _ from 'lodash';
+import { IndoorMap } from '@tuya/rn-robot-map';
 import Manager, { Utils as ManagerUtils } from './resourceManager';
 import { deepEqual } from '../../../utils';
+import Store from '../../../store';
 
 import {
   realTimeAutoTaskWithP2p,
@@ -12,7 +15,6 @@ import {
 } from './config';
 import { IProps, IStore, mapDisplayModeEnum } from './config/interface';
 import { DrawMap, EmptyMap } from './components/mapLoading';
-import RCTLaserMap from '../../rctLaserMap';
 
 const { mergeConifg } = ManagerUtils;
 
@@ -69,6 +71,7 @@ export default class MapView extends Component<IProps, IState> {
   }
 
   initManager = () => {
+    const { mapDisplayMode } = this.props;
     // done： 需要深合并elementConfigs
     const nextConfig = this.getConfig();
     const autoTask = this.getTask();
@@ -82,6 +85,10 @@ export default class MapView extends Component<IProps, IState> {
     this.uninstallTask = manager.createRunTask();
     this.unsubscribeStore = manager.createStoreSubscription(value => {
       this.store = value;
+      if (mapDisplayMode === mapDisplayModeEnum.immediateMap) {
+        const cacheData = _.cloneDeep(value);
+        Store.MapStoreState.setData(cacheData);
+      }
     });
     this.unsubscribeProps = manager.createElementPropsSubscription(value => {
       this.setState({ elementProps: value });
@@ -89,6 +96,11 @@ export default class MapView extends Component<IProps, IState> {
 
     const elementEvent = manager.getElementEvents();
     this.setState({ eventProps: elementEvent });
+
+    const mapDataCache = Store.MapStoreState.getData;
+    if (!_.isEmpty(mapDataCache?.mapData) && mapDisplayMode === mapDisplayModeEnum.splitMap) {
+      manager.store.update(mapDataCache, manager.events);
+    }
   };
 
   getManager = () => {
@@ -105,10 +117,29 @@ export default class MapView extends Component<IProps, IState> {
       customConfig,
       selectRoomData,
       foldableRoomIds,
+      mapLoadEnd,
+      isFreezeMap,
+      snapshotImage,
+      pathVisible,
       onMapId,
       onLaserMapPoints,
       onClickSplitArea,
       onClickRoom,
+      onLoggerInfo,
+      onMapLoadEnd,
+      onClickMapView,
+      onGestureChange,
+      onPosPoints,
+      onSplitLine,
+      onClickModel,
+      onModelLoadingProgress,
+      onClickRoomMoreProperties,
+      onClickRoomProperties,
+      onVirtualInfoRendered,
+      onRobotPositionChange,
+      onRenderContextLost,
+      onRenderContextRestored,
+      onScreenSnapshot,
     } = this.props;
     return {
       uiInterFace,
@@ -119,11 +150,30 @@ export default class MapView extends Component<IProps, IState> {
       customConfig, // 修改成功后属性信息
       selectRoomData,
       foldableRoomIds,
+      mapLoadEnd,
+      isFreezeMap,
+      snapshotImage,
+      pathVisible,
       onMapId,
       onLongPressInAreaView: onLaserMapPoints,
       onLaserMapPoints,
       onClickSplitArea,
       onClickRoom,
+      onLoggerInfo,
+      onMapLoadEnd,
+      onClickMapView,
+      onGestureChange,
+      onPosPoints,
+      onSplitLine,
+      onClickModel,
+      onModelLoadingProgress,
+      onClickRoomMoreProperties,
+      onClickRoomProperties,
+      onVirtualInfoRendered,
+      onRobotPositionChange,
+      onRenderContextLost,
+      onRenderContextRestored,
+      onScreenSnapshot,
     };
   };
 
@@ -145,18 +195,57 @@ export default class MapView extends Component<IProps, IState> {
   };
 
   render() {
-    const { fontColor, iconColor } = this.props;
+    const {
+      fontColor,
+      iconColor,
+      mapLoadEnd,
+      selectRoomData = [],
+      snapshotImage,
+      pathVisible,
+    } = this.props;
     const { elementProps, eventProps } = this.state;
     const { mapData = {} } = this.store || {};
     const { width, height } = mapData || {};
-    const showLoading = !mapData;
-    const isEmpty = !width || !height;
-    if (showLoading) {
-      return <DrawMap fontStyle={{ color: fontColor }} iconColor={iconColor} />;
-    }
-    if (isEmpty) {
-      return <EmptyMap fontStyle={{ color: fontColor }} iconColor={iconColor} />;
-    }
-    return <RCTLaserMap key={this.id} {...elementProps} {...eventProps} />;
+    const isEmpty =
+      !!mapData &&
+      !_.isEmpty(mapData) &&
+      width !== undefined &&
+      height !== undefined &&
+      (!width || !height);
+    const isLoading = (!mapData || _.isEmpty(mapData)) && !mapLoadEnd;
+    return (
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          backgroundColor: 'transparent',
+        }}
+      >
+        {isLoading && <DrawMap fontStyle={{ color: fontColor }} iconColor={iconColor} />}
+        {isLoading && isEmpty && (
+          <EmptyMap fontStyle={{ color: fontColor }} iconColor={iconColor} />
+        )}
+        {!isLoading && !snapshotImage && (
+          <IndoorMap
+            mapId={this.id}
+            {...elementProps}
+            {...eventProps}
+            isFreezeMap={false}
+            selectRoomData={selectRoomData}
+            asynchronousLoadMap={false}
+            pathVisible={pathVisible}
+          />
+        )}
+        {snapshotImage && (
+          <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+            <Image
+              source={{ uri: snapshotImage.image }}
+              style={{ width: snapshotImage.width, height: snapshotImage.height }}
+            />
+          </View>
+        )}
+      </View>
+    );
   }
 }
