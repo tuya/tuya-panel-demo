@@ -1000,10 +1000,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tuya/tuya-panel-ipc-sdk@^1.19.0":
-  version "1.19.0"
-  resolved "https://registry.npmmirror.com/@tuya/tuya-panel-ipc-sdk/-/tuya-panel-ipc-sdk-1.19.0.tgz#618247cdae79144bd65d2364e49c25d49e3693bb"
-  integrity sha512-HbDs9v5H75rPOjGMA7+MrkPSoNS5O3xJ7uJqu8f5SY1s//tmgpbdatA0RbHSwO20GDPKdzYH3iQ2b539ha1cEw==
+"@tuya/tuya-panel-ipc-sdk@^1.19.1":
+  version "1.19.1"
+  resolved "https://registry.npmmirror.com/@tuya/tuya-panel-ipc-sdk/-/tuya-panel-ipc-sdk-1.19.1.tgz#c81d50b447e602719f8d5d2c58bbb5382610fdab"
+  integrity sha512-qPEu6MfOP+3GshJe1LxDiuQt0muHspw4K0Y7Zf8OYJw9M+8RAYX8UeG3gDDIl+YV2KtknpcLu4M/2VaKy2Zmqw==
   dependencies:
     "@types/lodash" "^4.14.149"
     "@types/react" "^16.9.17"
