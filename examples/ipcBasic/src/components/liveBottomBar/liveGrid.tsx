@@ -5,14 +5,14 @@ import { TYText, TYSdk } from 'tuya-panel-kit';
 import { useSelector } from 'react-redux';
 import { gridFeatureInitData, commonConfig, commonClick } from '@config';
 
-const { cx, smallScreen, middlleScreen, is7Plus } = commonConfig;
+const { cx, smallScreen, middleScreen, is7Plus } = commonConfig;
 
 const TYDevice = TYSdk.device;
 
 let panelPadding = 28;
 if (smallScreen) {
   panelPadding = 4;
-} else if (middlleScreen) {
+} else if (middleScreen) {
   if (is7Plus) {
     panelPadding = 24;
   } else {
@@ -42,8 +42,8 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
     setMenuArr(gridMenu);
   }, [ipcCommonState.isSupportedCloudStorage]);
 
-  const panelFeature = (key: string, fatureType: string) => {
-    if (fatureType === 'basic') {
+  const panelFeature = (key: string, featureType: string) => {
+    if (featureType === 'basic') {
       switch (key) {
         case 'generalAlbum':
           commonClick.toggleNativePage('paramAlbum');
@@ -63,7 +63,7 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
         default:
           return false;
       }
-    } else if (fatureType === 'switch') {
+    } else if (featureType === 'switch') {
       const sendValue = !dpState[key];
       if (key === 'basic_private') {
         if (commonClick.isRecordingNow() || commonClick.isMicTalking()) {
@@ -73,11 +73,11 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
       TYDevice.putDeviceData({
         [key]: sendValue,
       });
-    } else if (fatureType === 'switchDialog') {
+    } else if (featureType === 'switchDialog') {
       commonClick.savePopDataToRedux(key, dpState[key]);
-    } else if (fatureType === 'customDialog') {
+    } else if (featureType === 'customDialog') {
       commonClick.saveCustomDialogDataToRedux(key);
-    } else if (fatureType === 'switchPage') {
+    } else if (featureType === 'switchPage') {
       key === 'rnCustomPage' && commonClick.enterFirstRnPage('customPage');
     }
   };
@@ -97,43 +97,45 @@ const LiveGrid: React.FC<LiveGridProps> = (props: LiveGridProps) => {
         showsVerticalScrollIndicator={false}
         alwaysBounceVertical={false}
       >
-        {menuArr.map((item: any) => (
-          <TouchableWithoutFeedback
-            key={item.key}
-            onPress={_.throttle(() => panelFeature(item.key, item.type), 500)}
-            onPressIn={() => pressInPanel(item.key)}
-            onPressOut={pressOutPanel}
-            disabled={!commonClick.getPanelOpacity(item.key)}
-          >
-            <View
-              style={[
-                styles.itemBox,
-                {
-                  paddingVertical: panelPadding,
-                  backgroundColor: hoverMenu === item.key ? themeFeatureHoverBgc : 'transparent',
-                  opacity: commonClick.getPanelOpacity(item.key) ? 1 : 0.2,
-                },
-              ]}
+        {menuArr
+          .filter((item: any) => item.show !== false)
+          .map((item: any) => (
+            <TouchableWithoutFeedback
+              key={item.key}
+              onPress={_.throttle(() => panelFeature(item.key, item.type), 500)}
+              onPressIn={() => pressInPanel(item.key)}
+              onPressOut={pressOutPanel}
+              disabled={!commonClick.getPanelOpacity(item.key)}
             >
-              <Image
-                source={item.imgSource}
+              <View
                 style={[
-                  styles.panelImg,
+                  styles.itemBox,
                   {
-                    tintColor: commonClick.getPanelTintColor(item.key, item.type)
-                      ? ipcCommonState.panelItemActiveColor
-                      : themeFeatureNormalTintColor,
+                    paddingVertical: panelPadding,
+                    backgroundColor: hoverMenu === item.key ? themeFeatureHoverBgc : 'transparent',
+                    opacity: commonClick.getPanelOpacity(item.key) ? 1 : 0.2,
                   },
                 ]}
-              />
-              <View style={styles.panelTextBox}>
-                <TYText style={[styles.panelText, { color: themeFeatureNormalTintColor }]}>
-                  {item.imgTitle}
-                </TYText>
+              >
+                <Image
+                  source={item.imgSource}
+                  style={[
+                    styles.panelImg,
+                    {
+                      tintColor: commonClick.getPanelTintColor(item.key, item.type)
+                        ? ipcCommonState.panelItemActiveColor
+                        : themeFeatureNormalTintColor,
+                    },
+                  ]}
+                />
+                <View style={styles.panelTextBox}>
+                  <TYText style={[styles.panelText, { color: themeFeatureNormalTintColor }]}>
+                    {item.imgTitle}
+                  </TYText>
+                </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        ))}
+            </TouchableWithoutFeedback>
+          ))}
       </ScrollView>
     </View>
   );

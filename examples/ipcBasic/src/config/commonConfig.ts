@@ -1,7 +1,6 @@
 import { Dimensions, Platform } from 'react-native';
 
 import { Utils } from 'tuya-panel-kit';
-import Strings from '@i18n';
 
 const {
   convertX: cx,
@@ -16,7 +15,7 @@ const { width: winWidth, height: winHeight } = Dimensions.get('screen');
 
 const smallScreen = winHeight < 667;
 
-const middlleScreen = winHeight >= 667 && winHeight <= 736;
+const middleScreen = winHeight >= 667 && winHeight <= 736;
 
 const isIOS = Platform.OS === 'ios';
 // 针对7p做单独处理
@@ -34,7 +33,7 @@ const normalPlayerHeight = Math.ceil((winWidth * 9) / 16);
 
 let listHight = Math.ceil(cy(55));
 smallScreen && (listHight = Math.ceil(cy(29)));
-middlleScreen && (listHight = Math.ceil(cy(38)));
+middleScreen && (listHight = Math.ceil(cy(38)));
 
 export default {
   cx,
@@ -46,7 +45,7 @@ export default {
   statusBarHeight: statusBarHeight2 + 2,
   topBarHeight,
   smallScreen,
-  middlleScreen,
+  middleScreen,
   fullPlayerWidth,
   fullPlayerHeight,
   normalPlayerWidth,

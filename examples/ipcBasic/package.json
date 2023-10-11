@@ -22,7 +22,7 @@
   "main": "index.ios.js",
   "description": "Basic Ipc Template (Ipc模板 React Native 0.59 TS 版本)",
   "dependencies": {
-    "@tuya/tuya-panel-ipc-sdk": "^1.2.1",
+    "@tuya/tuya-panel-ipc-sdk": "^1.19.0",
     "events": "^1.1.1",
     "lodash": "^4.17.19",
     "moment": "^2.20.1",
