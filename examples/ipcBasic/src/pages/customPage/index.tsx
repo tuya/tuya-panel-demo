@@ -30,7 +30,7 @@ const CustomPage: React.FC<CustomPageProps> = (props: CustomPageProps) => {
         leftPress={leftPress}
         contentTitle={Strings.getLang('ipc_panel_button_custom_page')}
       />
-      <TYText>Custom Page333</TYText>
+      <TYText>Custom Page</TYText>
     </View>
   );
 };

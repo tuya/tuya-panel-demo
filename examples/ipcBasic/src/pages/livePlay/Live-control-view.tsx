@@ -3,13 +3,13 @@ import { View, StyleSheet, LayoutAnimation, UIManager } from 'react-native';
 import { commonConfig } from '@config';
 import { LiveControlBasic, LiveGrid } from '@components';
 
-const { isIphoneX, smallScreen, middlleScreen, is7Plus, isIOS } = commonConfig;
+const { isIphoneX, smallScreen, middleScreen, is7Plus, isIOS } = commonConfig;
 
 let defaultBaseHeight = 370;
 
 smallScreen && (defaultBaseHeight = 275);
-middlleScreen && is7Plus && (defaultBaseHeight = 350);
-middlleScreen && !is7Plus && (defaultBaseHeight = 310);
+middleScreen && is7Plus && (defaultBaseHeight = 350);
+middleScreen && !is7Plus && (defaultBaseHeight = 310);
 
 const initAnimScrollBoxHeight = isIphoneX ? 92 : 72;
 

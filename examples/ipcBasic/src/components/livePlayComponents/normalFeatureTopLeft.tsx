@@ -20,10 +20,10 @@ const NormalFeatureTopLeft: React.FC<NormalFeatureTopLeftProps> = (
     if (commonClick.isRecordingNow() || commonClick.isMicTalking()) {
       return false;
     }
-    const sendResoultionData = commonClick.resoultionData(ipcCommonState.clarityStatus);
+    const sendResolutionData = commonClick.resolutionData(ipcCommonState.clarityStatus);
     dispatch(
       actions.ipcCommonActions.popData({
-        popData: sendResoultionData,
+        popData: sendResolutionData,
       })
     );
     dispatch(

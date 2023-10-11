@@ -15,7 +15,6 @@ interface HeaderViewProps {
 }
 
 const HeaderView: React.FC<HeaderViewProps> = (props: HeaderViewProps) => {
-  const ipcCommonState = useSelector((state: any) => state.ipcCommonState);
   const theme = useSelector((state: any) => state.theme);
   const { type, customTheme } = theme;
   const themeTextColor = customTheme[type].textColor;
@@ -29,7 +28,7 @@ const HeaderView: React.FC<HeaderViewProps> = (props: HeaderViewProps) => {
       <StatusBar
         barStyle={themeBarStyleBg}
         translucent={true}
-        backgroundColor={ipcCommonState.showPagePreLoading && !isIOS ? '#000000' : 'transparent'}
+        backgroundColor="transparent"
         hidden={isFullScreen}
       />
       {!isFullScreen && (
