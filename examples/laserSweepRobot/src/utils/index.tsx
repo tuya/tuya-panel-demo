@@ -8,8 +8,8 @@ import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-ma
 import Utils from '../protocol/utils';
 import ListModalView from '../components/listModalView';
 import { DPCodes } from '../config';
-
-const { toFixed16 } = Utils.RobotUtils;
+import Store from '@store';
+import { bitmapTypeMap, bitmapTypeMapV2 } from 'protocol/constant';
 
 const { numToHexString } = NativeUtils.NumberUtils;
 const { hexStringToNumber } = NativeUtils.StringUtils;
@@ -20,6 +20,16 @@ const {
 
 function toFixed(d) {
   return parseInt(d, 16);
+}
+
+function toFixed16(v: string, length = 2) {
+  let d = parseInt(v, 10).toString(16);
+  if (d.length < length) {
+    d = '0'.repeat(length - d.length) + d;
+  } else {
+    d = d.slice(0, length);
+  }
+  return d;
 }
 
 export function showSelectDialog(name, lists, selected, func) {
@@ -428,16 +438,36 @@ export function getRoomClean() {
   return 'aa00011515';
 }
 
+/**
+ * 获取划区框
+ * @returns
+ */
+export function getAreaClean() {
+  return 'aa00013b3b';
+}
+
+/**
+ * 获取目标点坐标
+ * @returns 
+ */
+export function getPosClean() {
+  return 'aa00011717';
+}
+
 export function getRoomSuccess(str: string) {
   const commonArr = str.match(/\w{2}/g);
   if (!commonArr || commonArr[3] !== '15') {
     return false;
   }
   try {
+    const data = Store.mapDataState.getData;
+    const { version: v } = data as any;
+    const padHex = v === 1 ? bitmapTypeMap.sweep : bitmapTypeMapV2.sweep;
     const arr = commonArr.map(d => parseInt(d, 16));
     const count = arr[4];
     const number = arr[5];
-    const roomIds = arr.splice(6, number).map(id => DECNumberToHex(id));
+    // eslint-disable-next-line new-cap
+    const roomIds = arr.splice(6, number).map(id => DECNumberToHex(id, padHex));
     return {
       count,
       roomIds,
@@ -559,7 +589,7 @@ export function encodeRoomOrder(roomIdHexs: Array<string>) {
     len,
     parseInt(cmd, 16),
     roomIds.length,
-    ...roomIds.map(d => parseRoomId(d)),
+    ...roomIds,
     check,
   ];
   return data.reduce((pre, cur) => pre + toFixed16(cur, 2), '');
@@ -570,13 +600,17 @@ export function encodeRoomOrder(roomIdHexs: Array<string>) {
  */
 export function orderSuccess(str: string) {
   const commonArr = str.match(/\w{2}/g);
+  const data = Store.mapDataState.getData;
+  const { version: v } = data as any;
+  const padHex = v === 1 ? bitmapTypeMap.sweep : bitmapTypeMapV2.sweep;
   if (!commonArr || commonArr[0].toLowerCase() !== 'aa') {
     return false;
   }
   const cmd = commonArr[3];
   if (cmd === '27') {
     const hexArr = commonArr.splice(5, commonArr.length - 6);
-    return hexArr.map(i => parseInt(i, 16));
+    // eslint-disable-next-line new-cap
+    return hexArr.map(i => DECNumberToHex(parseInt(i, 16), padHex));
   }
   return false;
 }
@@ -1038,10 +1072,26 @@ export const deepEqual = function(x: any, y: any) {
 
 /**
  * 转换字节到整型roomId
+ * 需要根据协议版本进行转换
+ * 适配0x01，0x02
  * @param pixel
+ * @param v
  */
-export const parseRoomId = (pixel: string | number): number => {
-  const point_2 = _.padStart(parseInt(pixel, 16).toString(2), 8, '0');
-  const roomId = parseInt(point_2.slice(0, 6), 2);
+export const parseRoomId = (pixel: string) => {
+  const data = Store.mapDataState.getData;
+  const { version: v } = data as any;
+  let length = 6;
+  switch (v) {
+    case 1:
+      length = 6;
+      break;
+    case 2:
+      length = 5;
+      break;
+    default:
+      length = 6;
+  }
+  const pointHex = _.padStart(parseInt(pixel, 16).toString(2), 8, '0');
+  const roomId = parseInt(pointHex.slice(0, length), 2);
   return roomId;
 };

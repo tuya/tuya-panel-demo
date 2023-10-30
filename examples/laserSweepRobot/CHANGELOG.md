@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 
+## [1.0.5] - 2023-07-17
+
+- P2p components are migrated from SweeperKit to TTT Kit to adapt to more business scenarios
+
+1. Migrate SweeperKit's P2p capability to TTT's P2p capability
+
+2. Add multi-floor caching strategy to improve rendering performance
+
+3. Performance improvement
+
 ## [1.0.4] - 2023-07-17
 
 - Change the TYRCTLaserMap component to IndoorMap component which implement with cross-end technology

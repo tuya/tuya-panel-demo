@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Base64 from 'base64-js';
 import RNFetchBlob from 'rn-fetch-blob';
+import { ossApiInstance } from '@api';
 import { Interface, Api } from '../../resourceManager';
 import { IStore, IProps, IMultiFloor } from '../interface';
 import TuyaProtocol from '../../../../../protocol';
@@ -21,7 +22,7 @@ const historyMap: Interface.ITask = {
       return {};
     }
     const { bucket, file } = history;
-    const url = await Api.OSSAPI.getCloudFileUrl(bucket, file);
+    const url = await ossApiInstance.getCloudFileUrl(bucket, file);
     logger.success('多地图文件url链接', url);
     const mapData: IMultiFloor = await RNFetchBlob.fetch('GET', url, {}).then(res => {
       const { status } = res.respInfo;

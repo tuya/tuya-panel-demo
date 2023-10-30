@@ -1,14 +1,9 @@
 /* eslint-disable no-lone-blocks */
-import { Utils } from 'tuya-panel-kit';
 import _ from 'lodash';
 import tinycolor from 'tinycolor2';
-import { toFixed16 } from 'protocol/utils/robotUtil';
 import { scaleNumber } from '../utils';
 import { convertColorToArgbDEC } from '../utils/pressCoordinateUtil';
-
-const {
-  ColorUtils: { color: ColorUtils },
-} = Utils;
+import { toFixed16 } from '../utils/robotUtil';
 
 export function shrinkValue(value: any) {
   return scaleNumber(1, value);

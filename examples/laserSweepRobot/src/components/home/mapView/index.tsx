@@ -87,7 +87,7 @@ export default class MapView extends Component<IProps, IState> {
       this.store = value;
       if (mapDisplayMode === mapDisplayModeEnum.immediateMap) {
         const cacheData = _.cloneDeep(value);
-        Store.MapStoreState.setData(cacheData);
+        Store.mapStoreState.setData(cacheData);
       }
     });
     this.unsubscribeProps = manager.createElementPropsSubscription(value => {
@@ -97,7 +97,7 @@ export default class MapView extends Component<IProps, IState> {
     const elementEvent = manager.getElementEvents();
     this.setState({ eventProps: elementEvent });
 
-    const mapDataCache = Store.MapStoreState.getData;
+    const mapDataCache = Store.mapStoreState.getData;
     if (!_.isEmpty(mapDataCache?.mapData) && mapDisplayMode === mapDisplayModeEnum.splitMap) {
       manager.store.update(mapDataCache, manager.events);
     }
@@ -140,6 +140,9 @@ export default class MapView extends Component<IProps, IState> {
       onRenderContextLost,
       onRenderContextRestored,
       onScreenSnapshot,
+      onContainerVisibilityChange,
+      onClickMaterial,
+      onVirtualInfoOutOfBoundingBox,
     } = this.props;
     return {
       uiInterFace,
@@ -174,6 +177,9 @@ export default class MapView extends Component<IProps, IState> {
       onRenderContextLost,
       onRenderContextRestored,
       onScreenSnapshot,
+      onContainerVisibilityChange,
+      onClickMaterial,
+      onVirtualInfoOutOfBoundingBox,
     };
   };
 
@@ -202,6 +208,7 @@ export default class MapView extends Component<IProps, IState> {
       selectRoomData = [],
       snapshotImage,
       pathVisible,
+      mapDisplayMode,
     } = this.props;
     const { elementProps, eventProps } = this.state;
     const { mapData = {} } = this.store || {};
@@ -216,17 +223,14 @@ export default class MapView extends Component<IProps, IState> {
     return (
       <View
         style={{
-          width: '100%',
-          height: '100%',
-          position: 'relative',
-          backgroundColor: 'transparent',
+          flex: 1,
         }}
       >
         {isLoading && <DrawMap fontStyle={{ color: fontColor }} iconColor={iconColor} />}
         {isLoading && isEmpty && (
           <EmptyMap fontStyle={{ color: fontColor }} iconColor={iconColor} />
         )}
-        {!isLoading && !snapshotImage && (
+        {!isLoading && !isEmpty && !snapshotImage && (
           <IndoorMap
             mapId={this.id}
             {...elementProps}
@@ -235,6 +239,14 @@ export default class MapView extends Component<IProps, IState> {
             selectRoomData={selectRoomData}
             asynchronousLoadMap={false}
             pathVisible={pathVisible}
+            initUseThread={false}
+            enableAICapability={false}
+            resourceUsageLevel={
+              mapDisplayMode === mapDisplayModeEnum.multiFloor ||
+              mapDisplayMode === mapDisplayModeEnum.history
+                ? 'low'
+                : 'high'
+            }
           />
         )}
         {snapshotImage && (

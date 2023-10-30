@@ -2,6 +2,7 @@ import _ from 'lodash';
 import TuyaProtocol, { protocolUtil } from '@protocol';
 import { IStore } from '../interface';
 import { Interface, Api } from '../../resourceManager';
+import { P2pEvent } from '@api';
 
 const { logger } = protocolUtil;
 
@@ -22,7 +23,7 @@ const realTimePlanPathWithP2p: Interface.ITask = {
     const handleData = async (data: string) => {
       next(data);
     };
-    const unsubscribe = Api.OSSEvent.createPlanPathP2pSubscription(handleData);
+    const unsubscribe = P2pEvent.createPlanPathP2pSubscription(handleData);
     return unsubscribe;
   },
 };

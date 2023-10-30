@@ -12,7 +12,7 @@ const customConfig = new CustomConfigStore();
 const panelConfig = new PanelConfigStore();
 const mapDataState = new MapDataStore();
 const theme = new ThemeStore();
-const MapStoreState = new MapStore();
+const mapStoreState = new MapStore();
 
 export default {
   devInfo,
@@ -20,6 +20,6 @@ export default {
   customConfig,
   panelConfig,
   mapDataState,
-  MapStoreState,
+  mapStoreState,
   theme,
 };

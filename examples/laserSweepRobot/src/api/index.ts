@@ -1,5 +1,9 @@
 import { Utils, TYSdk } from 'tuya-panel-kit';
 import P2pAPI from './p2pApi';
+import sweeperP2pInstance from './sweeperP2p';
+import * as P2pEvent from './p2pEvent';
+import ossApiInstance from './ossApi';
+import * as Storage from './storage';
 
 export const getMultipleMapFiles = () => {
   return new Promise<any>((resolve, reject) => {
@@ -45,4 +49,4 @@ export const getOssUrl = () => {
   });
 };
 
-export { P2pAPI };
+export { P2pAPI, sweeperP2pInstance, P2pEvent, ossApiInstance, Storage };
