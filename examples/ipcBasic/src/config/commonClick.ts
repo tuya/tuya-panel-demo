@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import { Linking } from 'react-native';
 import { TYIpcNative } from '@tuya/tuya-panel-ipc-sdk';
 import { TYSdk, Popup } from 'tuya-panel-kit';
@@ -127,15 +128,18 @@ const adjustSize = () => {
   store.dispatch(actions.ipcCommonActions.scaleStatus({ scaleStatus: sendScaleStatus }));
 };
 
-const isSuppportedCloudStorage = () => {
-  TYIpcNative.isSupportedCloudStorage().then((data: any) => {
-    const { isSupported } = data;
-    if (isSupported) {
+const isSupportedCloudStorage = () => {
+  const state = store.getState();
+  try {
+    const { attribute } = state.devInfo;
+    if (attribute & (1 << 13) || attribute & (1 << 15)) {
       store.dispatch(
-        actions.ipcCommonActions.isSupportedCloudStorage({ isSupportedCloudStorage: isSupported })
+        actions.ipcCommonActions.isSupportedCloudStorage({ isSupportedCloudStorage: true })
       );
     }
-  });
+  } catch (err) {
+    console.log(err, 'err');
+  }
 };
 
 const changeClarityAndAudio = (value: any) => {
@@ -266,11 +270,11 @@ const changeThemeState = (value: string) => {
   store.dispatch(actions.ipcCommonActions.saveThemeColor(value));
 };
 
-const getInitLiveConig = () => {
+const getInitLiveConfig = () => {
   store.dispatch(actions.ipcCommonActions.getThemeColor());
 };
 
-const resoultionData = clarityType => {
+const resolutionData = clarityType => {
   const sendData = {
     title: '',
     dpValue: clarityType,
@@ -291,11 +295,6 @@ const resoultionData = clarityType => {
   return sendData;
 };
 
-const closeGlobalLoading = () => {
-  setTimeout(() => {
-    store.dispatch(actions.ipcCommonActions.showPagePreLoading({ showPagePreLoading: false }));
-  }, 500);
-};
 const callTelephoneAlarm = () => {
   const tel = '911';
   Linking.openURL(`tel:${tel}`);
@@ -378,7 +377,7 @@ export default {
   // 切换按宽按高适配
   adjustSize,
   // 判断是否支持云存储
-  isSuppportedCloudStorage,
+  isSupportedCloudStorage,
   // 切换视频流或音频
   changeClarityAndAudio,
   // 保存公共pop数据到redux下
@@ -390,11 +389,9 @@ export default {
   // 切换主题
   changeThemeState,
   // 获取初始化相关配置
-  getInitLiveConig,
+  getInitLiveConfig,
   // 视频流清晰度类型
-  resoultionData,
-  // 关闭预置全局Loading
-  closeGlobalLoading,
+  resolutionData,
   // 电话报警功能
   callTelephoneAlarm,
   // 从预览跳转一级Rn页面

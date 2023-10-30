@@ -1,7 +1,5 @@
 export { default as Connect } from './connect';
 
-export { default as PagePreLoading } from './publicComponents/pagePreLoading';
-
 export { default as HeaderView } from './publicComponents/headerView';
 
 export { default as LiveControlBasic } from './liveBottomBar/liveControlBasic';
