@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import TuyaProtocol, { protocolUtil } from '@protocol';
+import { P2pEvent } from '@api';
 import { IStore } from '../interface';
 import { Interface, Api } from '../../resourceManager';
 
@@ -16,7 +17,7 @@ const realTimeOriginFullPathWithP2p: Interface.ITask = {
     const handleData = async (path: string) => {
       next(path);
     };
-    const unsubscribe = Api.OSSEvent.createPathP2pSubscription(handleData);
+    const unsubscribe = P2pEvent.createPathP2pSubscription(handleData);
     return unsubscribe;
   },
 };

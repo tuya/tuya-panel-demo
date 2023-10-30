@@ -39,10 +39,11 @@ const attributesEnum = {
 export default class CustomEdit extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    const params = props.route.params;
     this.state = {
-      fan: props.fan || '0',
-      water_level: props.water_level || '0',
-      sweep_count: props.sweep_count || '1',
+      fan: params.fan || '0',
+      water_level: params.water_level || '0',
+      sweep_count: params.sweep_count || '1',
       status: 0, // status 表示当前选择的属性
     };
   }
@@ -64,7 +65,8 @@ export default class CustomEdit extends Component<IProps, IState> {
     this.setState({
       status: 0,
     });
-    const { handleSubmit } = this.props;
+    const params = this.props.route.params;
+    const { handleSubmit } = params;
     const { fan, water_level, sweep_count } = this.state;
     handleSubmit &&
       handleSubmit({

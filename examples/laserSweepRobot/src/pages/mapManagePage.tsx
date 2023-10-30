@@ -9,16 +9,17 @@ import { of } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
 import moment from 'moment';
 import { Utils, TYSdk } from 'tuya-panel-kit';
-import { getMultipleMapFiles } from '../api';
+import { Storage, getMultipleMapFiles } from '../api';
 import { handleError, createDpValue$ } from '../protocol/utils';
 import { isRobotQuiet } from '../utils/robotStatus';
 import { Button, Toast } from '../components';
 import i18n from '@i18n';
+import { ossApiInstance } from '@api';
 import { DPCodes } from '../config';
 import { IPanelConfig } from '../config/interface';
 import { encodeSaveMap, encodeUseMap, encodeDeleteMap } from '../utils';
 import MapView from '../components/home/mapView';
-import { Api } from '../components/home/mapView/resourceManager';
+
 import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 
 
@@ -102,6 +103,7 @@ export default class MapManage extends PureComponent<IMapManangeProps, IMapManag
           id,
           isCurrent: false,
           file: appUseFile,
+          filePathKey: `${time}_${appUseFile}`,
           robotUseFile,
           bucket,
           title: i18n.getLang(`mapManage_floor_${idx + 1}`),
@@ -192,6 +194,7 @@ interface ICardProps {
   id: number;
   bucket: string;
   file: string;
+  filePathKey: string;
   robotUseFile: string;
   title: string;
   time: string;
@@ -241,15 +244,36 @@ class Card extends Component<ICardProps, ICardState> {
     this.setState({ mapLoadEnd: success });
   }
 
+  componentDidMount() {
+    this.getLocalSnapshotImage();
+  }
+
+  getLocalSnapshotImage = async () => {
+    try {
+      if (this.props.filePathKey) {
+        const fileName = Storage.translateFileName(this.props.filePathKey);
+        const localJson = await Storage.readJsonFile(fileName);
+        const localSnapshotImage = JSON.parse(localJson);
+        console.log('===getLocalSnapshotImage===', localSnapshotImage, fileName);
+        if (localSnapshotImage?.image) {
+          this.setState({ snapshotImage: localSnapshotImage, mapLoadEnd: true });
+        }
+      }
+    } catch (error) {
+      console.log('getLocalSnapshotImage', error);
+    }
+  };
+
   onVirtualInfoRendered = (data: {rendered: boolean,  data: { areaInfoList: any }}) => {
     const { rendered } = data;
-    console.log('onVirtualInfoRendered interval', this.mapId, data);
     setTimeout(() => {
       if (rendered && this.mapId) {
         LaserUIApi.getCurrentScreenSnapshot(IndoorMapUtils.getMapInstance(this.mapId)).then((snapshotImage: any) => {
           console.log('onVirtualInfoRendered snapshotImage', snapshotImage);
           if (snapshotImage && snapshotImage.image) {
             this.setState({ snapshotImage, mapLoadEnd: true });
+            const fileName = Storage.translateFileName(this.props.filePathKey);
+            Storage.saveJsonFile(snapshotImage, fileName);
           }
         }).catch(e => {
           console.log('onVirtualInfoRendered error', e);
@@ -286,7 +310,7 @@ class Card extends Component<ICardProps, ICardState> {
   handleUseMap = (cb: any, robotPath: string) => {
     return async () => {
       const { bucket } = this.props;
-      const url = await Api.OSSAPI.getCloudFileUrl(bucket, robotPath);
+      const url = await ossApiInstance.getCloudFileUrl(bucket, robotPath);
 
       if (url && cb) {
         await cb(url);
@@ -417,14 +441,22 @@ class Card extends Component<ICardProps, ICardState> {
         <View style={styles.divider} />
         <View style={styles.cardMap} pointerEvents="none">
           {isCurrent ? (
-            <MapView uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }} pathVisible={false}  mapDisplayMode="splitMap" config={panelConfig} onMapLoadEnd={this.onMapLoadEnd} mapLoadEnd={mapLoadEnd}  />
+            <MapView 
+            uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }} 
+            pathVisible={false}  
+            mapDisplayMode="splitMap" 
+            config={panelConfig} 
+            onMapId={this.onMapId} 
+            onMapLoadEnd={this.onMapLoadEnd} 
+            mapLoadEnd={mapLoadEnd}  />
           ) : (
             <MapView
               mapDisplayMode="multiFloor"
               config={panelConfig}
               pathVisible={false}  
               uiInterFace={{ isCustomizeMode: true, isShowAppoint: false }}
-              onMapId={this.onMapId} 
+              onMapId={this.onMapId}
+              onVirtualInfoRendered={this.onVirtualInfoRendered}
               mapLoadEnd={mapLoadEnd}
               snapshotImage={snapshotImage}
               history={{

@@ -144,6 +144,26 @@ export interface IProps {
     position: { x: number; y: number };
     originPosition: { x: number; y: number };
   }) => void;
+  onVirtualInfoOutOfBoundingBox?: (data: {
+    target: number;
+    type: number;
+    isOutOfBoundingBox: boolean;
+    data: {
+      id: number;
+      extend: any;
+      areaType: number;
+      content: any;
+      points: { x: number; y: number }[];
+    }}) => void;
+  onClickMaterial?: (data: {
+    operation: 'remove' | 'rotate' | 'resize' | 'edit' | 'move' | 'add' | 'click';
+    target: number;
+    type: number;
+    data: {
+      extends: { x: number; y: number; type: number };
+      uri: string;
+    };
+  }) => void;
 
   // dpCodes,
   DPCodes?: any;

@@ -19,3 +19,5 @@ export { default as onRenderContextLost } from './onRenderContextLost';
 export { default as onRenderContextRestored } from './onRenderContextRestored';
 export { default as onGestureChange } from './onGestureChange';
 export { default as onContainerVisibilityChange } from './onContainerVisibilityChange';
+export { default as onVirtualInfoOutOfBoundingBox } from './onVirtualInfoOutOfBoundingBox';
+export { default as onClickMaterial } from './onClickMaterial';

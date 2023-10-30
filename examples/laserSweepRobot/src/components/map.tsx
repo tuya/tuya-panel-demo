@@ -4,8 +4,11 @@ import { Utils, TYFlatList, IconFont, TYText } from 'tuya-panel-kit';
 import { IndoorMapUtils, IndoorMapWebApi as LaserUIApi } from '@tuya/rn-robot-map';
 import { nativeMapStatusEnum } from '@tuya/rn-robot-map/lib/indoor-map-webview/api';
 import Strings from '@i18n';
+import Store from '@store';
 import MapView from './home/mapView';
 import { parseRoomId } from '../utils';
+import { DECNumberToHex } from 'protocol/utils/robotUtil';
+import { bitmapTypeMap, bitmapTypeMapV2 } from 'protocol/constant';
 
 const { convertY: cy, convertX: cx, width } = Utils.RatioUtils;
 
@@ -132,8 +135,19 @@ export default class MapPartition extends Component<IProps, IState> {
   render() {
     const { laserMapConfig, selectTags = [], fontColor, iconColor } = this.props;
     const { disabled, mapRoomData, selected, mode, mapLoadEnd } = this.state;
-
     const roomStateList: Array<IroomState> = [];
+
+    const data = Store.mapDataState.getData;
+    const { version: v } = data as any;
+
+    const selectRoomData = selectTags.map(tag => {
+      let type = bitmapTypeMap.sweep;
+      if (v === 2) {
+        type = bitmapTypeMapV2.sweep;
+      }
+      // eslint-disable-next-line new-cap
+      return DECNumberToHex(tag, type) || '00';
+    });
 
     mapRoomData.forEach((value, key) => {
       if (value) {
@@ -166,6 +180,7 @@ export default class MapPartition extends Component<IProps, IState> {
             onMapId={this.onMapId}
             onMapLoadEnd={this.onMapLoadEnd}
             mapLoadEnd={mapLoadEnd}
+            selectRoomData={selectRoomData}
             fontColor={fontColor}
             iconColor={iconColor}
             pathVisible={false}

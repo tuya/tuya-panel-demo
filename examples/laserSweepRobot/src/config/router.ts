@@ -67,7 +67,7 @@ const router = [
     component: MapHistory,
   },
   {
-    name: 'EidtMapTimerCustomTimer',
+    name: 'EditMapTimerCustomTimer',
     component: EditMap,
   },
 ];

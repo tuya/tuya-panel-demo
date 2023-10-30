@@ -1,6 +1,8 @@
 import { TYSdk } from 'tuya-panel-kit';
+import { P2pEvent } from '@api';
 import { Interface, Api } from '../../resourceManager';
 import { IStore } from '../interface';
+
 
 const updateAuthentication: Interface.ITask = {
   action: (store: IStore, nextData: string) => {
@@ -12,7 +14,7 @@ const updateAuthentication: Interface.ITask = {
     const handle = (bucket: string) => {
       next(bucket);
     };
-    const unsubscribe = Api.OSSEvent.createAutoUpdateAuthentication(
+    const unsubscribe = P2pEvent.createAutoUpdateAuthentication(
       { devId: TYSdk.devInfo.devId },
       handle
     );

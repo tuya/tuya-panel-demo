@@ -70,23 +70,23 @@ const roomEditStatusEnum = {
 
 @inject((state: any) => {
   const {
-    dpState,
-    customConfig: { store: customConfig = {} },
-    panelConfig: { store: panelConfig = {} },
-    mapDataState: { getData: mapDataState = {} },
-    theme: { getData: theme = {} },
+  dpState,
+  customConfig: { store: customConfig = {} },
+  panelConfig: { store: panelConfig = {} },
+  mapDataState: { getData: mapDataState = {} },
+  theme: { getData: theme = {} },
   } = state;
   return {
-    smartRoomsMsg: Strings.getDpLang(smartRoomsMsgCode, dpState.data[smartRoomsMsgCode]),
-    dpState: dpState.data,
-    customConfig,
-    panelConfig,
-    roomInfo: mapDataState.roomInfo,
-    origin: mapDataState.origin,
-    fontColor: theme.fontColor,
-    iconColor: theme.iconColor,
+  smartRoomsMsg: Strings.getDpLang(smartRoomsMsgCode, dpState.data[smartRoomsMsgCode]),
+  dpState: dpState.data,
+  customConfig,
+  panelConfig,
+  roomInfo: mapDataState.roomInfo,
+  origin: mapDataState.origin,
+  fontColor: theme.fontColor,
+  iconColor: theme.iconColor,
   };
-})
+  })
 @observer
 // eslint-disable-next-line import/prefer-default-export
 export default class RoomEdit extends Component<any, any> {
@@ -205,6 +205,12 @@ export default class RoomEdit extends Component<any, any> {
 
   onMapLoadEnd = (success: boolean) => {
     this.setState({ mapLoadEnd: success });
+  };
+
+  onLoggerInfo = (data: { info: string; theme: string; args: any }) => {
+    if (data) {
+      console.log(data.info || '', data.theme || '', ...Object.values(data.args || {}));
+    }
   };
 
   handleSplit = async () => {
@@ -662,7 +668,7 @@ export default class RoomEdit extends Component<any, any> {
     const { status } = this.state;
     let firstRoom = data;
     if (Array.isArray(data)) {
-      firstRoom = data[0];
+      [firstRoom] = data;
     }
     const { pixel } = firstRoom;
     const roomId = parseRoomId(pixel);
@@ -705,6 +711,7 @@ export default class RoomEdit extends Component<any, any> {
             customConfig={customConfig} // 修改成功后属性
             onMapId={this.handleMapId}
             onMapLoadEnd={this.onMapLoadEnd}
+            onLoggerInfo={this.onLoggerInfo}
             mapLoadEnd={mapLoadEnd}
             onClickSplitArea={this.onClickSplitArea}
             fontColor={fontColor}

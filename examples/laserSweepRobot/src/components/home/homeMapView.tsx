@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { Component, Ref } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, AppState, AppStateStatus } from 'react-native';
 import { observer, inject } from 'mobx-react';
 import { Utils, TYSdk } from 'tuya-panel-kit';
 import Strings from '@i18n';
-import { P2pAPI } from '@api';
+import { sweeperP2pInstance } from '@api';
+import { protocolUtil } from '@protocol';
 import { DPCodes } from '../../config';
 import { IPanelConfig } from '../../config/interface';
 import Store from '../../store';
@@ -18,6 +19,7 @@ import MapView from './mapView';
 import Toast from '../toastModal';
 
 const { convertY: cy, width, height, iPhoneX } = Utils.RatioUtils;
+const { logger } = protocolUtil;
 const {
   robotStatus: robotStatusCode,
   workMode: workModeCode,
@@ -45,40 +47,49 @@ interface IState {
 
 @inject((state: any) => {
   const {
-    panelConfig: { store: panelConfig = {} },
-    customConfig: { store: customConfig = {} },
-    dpState: { getData: dpState },
-    mapDataState: { getData: mapDataState = {} },
-    theme: { getData: theme = {} },
+  panelConfig: { store: panelConfig = {} },
+  customConfig: { store: customConfig = {} },
+  dpState: { getData: dpState },
+  mapDataState: { getData: mapDataState = {} },
+  theme: { getData: theme = {} },
   } = state;
   const {
-    [robotStatusCode]: robotStatus,
-    [workModeCode]: workMode,
-    [customizeModeSwitchCode]: customizeModeSwitch,
+  [robotStatusCode]: robotStatus,
+  [workModeCode]: workMode,
+  [customizeModeSwitchCode]: customizeModeSwitch,
   } = dpState;
   const { mapId, curPos, origin, pilePosition, selectRoomData, foldableRoomIds } = mapDataState;
 
   return {
-    robotStatus,
-    workMode,
-    customizeModeSwitch,
-    panelConfig,
-    customConfig,
-    fontColor: theme.fontColor,
-    iconColor: theme.iconColor,
+  robotStatus,
+  workMode,
+  customizeModeSwitch,
+  panelConfig,
+  customConfig,
+  fontColor: theme.fontColor,
+  iconColor: theme.iconColor,
 
-    mapId,
-    curPos,
-    origin,
-    pilePosition,
-    selectRoomData,
-    foldableRoomIds,
+  mapId,
+  curPos,
+  origin,
+  pilePosition,
+  selectRoomData,
+  foldableRoomIds,
   };
-})
+  })
 @observer
 export default class HomeMapView extends Component<IProps, IState> {
   mapRef: Ref<MapView>;
-  removeOnP2PErrorHandle: any;
+
+  isInit: boolean;
+
+  isAppEnterBackground: boolean;
+
+  appState: AppStateStatus;
+
+  previousAppState: AppStateStatus;
+
+  timer: any;
 
   constructor(props) {
     super(props);
@@ -87,21 +98,72 @@ export default class HomeMapView extends Component<IProps, IState> {
     };
   }
 
-  componentDidMount() {
+  eventChange = async (newAppState: AppStateStatus) => {
+    if (newAppState === 'background') {
+      logger.info('【HomeMapView】 => onAppHide');
+      this.isAppEnterBackground = true;
+      if (this.isInit) {
+        this.timer = setTimeout(() => {
+          logger.info('【HomeMapView】 => Timer has been exe');
+          if (this.isAppEnterBackground) {
+            this.unmount();
+          }
+          clearTimeout(this.timer);
+          this.timer = null;
+        }, 20 * 1000);
+      }
+    } else if (newAppState === 'active') {
+      logger.info('【HomeMapView】 => onAppShow');
+      this.isAppEnterBackground = false;
+      if (!this.isInit) {
+        this.isInitP2p();
+      }
+    }
+  };
+
+  registerVisibilityEvent = () => {
+    AppState.addEventListener('change', this.eventChange);
+  };
+
+  removeVisibilityEvent = () => {
+    AppState.removeEventListener('change', this.eventChange);
+  };
+
+  isInitP2p = async () => {
+    this.isInit = await sweeperP2pInstance.initP2pSdk();
     // 采用p2p 传输协议进行数据传输
-    P2pAPI.initRobotP2pSDK();
-    P2pAPI.connectDeviceByP2P()
-      .then(() => {
-        P2pAPI.startObserverSweeperDataByP2P(1);
-        if (P2pAPI.isSupportReconnectP2P()) {
-          // 添加p2p断开连接监听事件
-          this.removeOnP2PErrorHandle = P2pAPI.onP2PError();
+    if (this.isInit) {
+      logger.info('【HomeMapView】 => P2p start connecting');
+      sweeperP2pInstance.connectDevice(
+        () => {
+          sweeperP2pInstance.startObserverSweeperDataByP2P(1);
+          sweeperP2pInstance.onSessionStatusChange(sweeperP2pInstance.sessionStatusCallback);
+        },
+        () => {
+          sweeperP2pInstance.reconnectP2p(() => {
+            sweeperP2pInstance.startObserverSweeperDataByP2P(1);
+            // 这里失败重连需要注册断开重连的事件
+            sweeperP2pInstance.onSessionStatusChange(sweeperP2pInstance.sessionStatusCallback);
+          });
         }
-      })
-      .catch((e: any) => {
-        console.log('connectDeviceByP2P error ===>', e);
-        P2pAPI.reconnectDeviceByP2P();
-      });
+      );
+    }
+  };
+
+  /**
+   * 销毁P2p
+   */
+  unmount = async () => {
+    logger.info('【HomeMapView】 => Component has been started unmount');
+    this.isInit = false;
+    await sweeperP2pInstance.stopObserverSweeperDataByP2P();
+    await sweeperP2pInstance.deInitP2PSDK();
+  };
+
+  async componentDidMount() {
+    logger.info('【HomeMapView】 => Component has been started initP2p');
+    this.registerVisibilityEvent();
+    await this.isInitP2p();
 
     if (!this.mapRef) return;
     const manager = this.mapRef.getManager();
@@ -122,10 +184,12 @@ export default class HomeMapView extends Component<IProps, IState> {
     });
   }
 
+  /**
+   * 组件销毁时注销P2p
+   */
   async componentWillUnmount() {
-    typeof this.removeOnP2PErrorHandle === 'function' && this.removeOnP2PErrorHandle();
-    // 退出面板，销毁p2p通道
-    P2pAPI.deInitP2pSDK();
+    this.removeVisibilityEvent();
+    await this.unmount();
   }
 
   /**
@@ -168,6 +232,7 @@ export default class HomeMapView extends Component<IProps, IState> {
   };
 
   onMapLoadEnd = (success: boolean) => {
+    logger.info('【HomeMapView】 ==> onMapLoadEnd');
     this.setState({ mapLoadEnd: success });
   };
 
@@ -215,6 +280,12 @@ export default class HomeMapView extends Component<IProps, IState> {
       curData = foldableRoomIds.filter((i: string) => i !== roomId);
     }
     Store.mapDataState.setData({ foldableRoomIds: curData });
+  };
+
+  onLoggerInfo = (data: { info: string; theme: string; args: any }) => {
+    if (data) {
+      console.log(data.info || '', data.theme || '', ...Object.values(data.args || {}));
+    }
   };
 
   /**
@@ -279,6 +350,7 @@ export default class HomeMapView extends Component<IProps, IState> {
           onLaserMapPoints={this.onLaserMapPoints}
           onClickSplitArea={this.onClickSplitArea}
           onClickRoom={this.onClickRoom}
+          onLoggerInfo={this.onLoggerInfo}
           mapLoadEnd={mapLoadEnd}
           pathVisible={true}
         />

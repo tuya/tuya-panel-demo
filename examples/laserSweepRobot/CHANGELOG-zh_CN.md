@@ -2,6 +2,15 @@
 
 该项目的所有显着更改都将记录在该文件中。 请参阅 [standard-version](https://github.com/conventional-changelog/standard-version) 了解提交指南。
 
+## [1.0.5] - 2023-07-17
+
+- P2p组件从SweeperKit 迁移到TTT Kit 上适配更多的业务场景
+
+1. 将SweeperKit 的P2p能力迁移到TTT 的P2p能力
+
+2. 增加多楼层的缓存策略, 提升渲染性能
+
+3. 扫地机数据流性能提升
 
 ## [1.0.4] - 2023-07-17
 
