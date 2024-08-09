@@ -10352,10 +10352,10 @@ tuya-panel-icon@^0.1.3:
   dependencies:
     react-native-svg "5.5.1"
 
-tuya-panel-kit@4.10.0:
-  version "4.10.0"
-  resolved "https://mirrors.huaweicloud.com/repository/npm/tuya-panel-kit/-/tuya-panel-kit-4.10.0.tgz#051f815112e1bdd40f66c76c102ddfed7a0ce7a1"
-  integrity sha512-RxbqK9QnAeuLKmNZbqjtyA3nGpTo69Flm7o7FOWIPW2WFZ+H9nbsWRjtXxYg7IRhyyz2ijnXebwgWoudRGYkrg==
+tuya-panel-kit@^4.10.0:
+  version "4.10.2"
+  resolved "https://registry.npmmirror.com/tuya-panel-kit/-/tuya-panel-kit-4.10.2.tgz#e1ecbd52faf8b748cfbf4e67a1942ae1e25a048d"
+  integrity sha512-1BHyMAxzQAMAysq2fEsZvY0wtKjlC4EuGdMMC2Z4lTs9I/sTE8jPjjIA+Lq0rQejg63rc4I5jmyVKidmKOCVyg==
   dependencies:
     "@react-native-community/masked-view" "0.1.10"
     "@react-navigation/native" "5.7.3"
