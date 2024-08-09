@@ -62,6 +62,7 @@ const toggleNativePage = (key: string, time?: any) => {
       TYIpcNative.enterParamPlayBack(sendParam);
       break;
     case 'paramCloudBack':
+      sendParam.destroyCamera = false;
       TYIpcNative.enterParamCloudBack(sendParam);
       break;
     case 'paramMessageAll':
